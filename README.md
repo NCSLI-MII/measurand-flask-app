@@ -16,6 +16,7 @@ resources
 
 * Create a working directory
 * Create the conda environment
+* For virtual environments, use [miniforge](https://github.com/conda-forge/miniforge)
 ```
 conda create -n <environment_name> --file requirements.txt
 ```
@@ -39,4 +40,4 @@ export FLASK_ENV=development
 flask run
 ```
 
-![Schema](taxonomyschema.png)
+![Schema](./taxonomyschema.png)
