@@ -40,5 +40,9 @@ export FLASK_APP=app
 export FLASK_ENV=development
 flask run
 ```
+* Go to the localhost on browser http://127.0.0.1/5000
+* The administration view can be found at http://127.0.0.1/5000/admin
+
+Below is a diagram of the database schema implemented as a flask [model](./miiflask/flask/model.py).
 
 ![Schema](./taxonomyschema.png)
