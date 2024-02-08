@@ -1,0 +1,1128 @@
+[
+    {
+        "id": "s_ml_absorbance_ra::000081",
+        "reference": "r_si_one::000135",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_cd.sr.m-2_ra::000083",
+        "reference": "r_si_lx::000114",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_cd.sr_ra::000082",
+        "reference": "r_si_lm::000113",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_electronvolt_ra::000063",
+        "reference": "r_electronvolt::000068",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_foot_ra::000068",
+        "reference": "r_foot::000073",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_im_gallon_ra::000094",
+        "reference": "r_im_gallon::000088",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_imp_degree_bi_180::000088",
+        "reference": "r_imp_degree_bound_180::000065",
+        "scale_type": "bounded",
+        "tags": []
+    },
+    {
+        "id": "s_ml_imp_degree_bi_360::000087",
+        "reference": "r_imp_degree_bound_360::000064",
+        "scale_type": "bounded",
+        "tags": []
+    },
+    {
+        "id": "s_ml_imp_degree_ra::000084",
+        "reference": "r_imp_degree::000063",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_imp_fahrenheit_in::000089",
+        "reference": "r_imp_fahrenheit::000084",
+        "scale_type": "interval",
+        "tags": []
+    },
+    {
+        "id": "s_ml_imp_fahrenheit_ra::000090",
+        "reference": "r_imp_fahrenheit::000084",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_imp_pound_ra::000070",
+        "reference": "r_imp_pound::000075",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_mile_ra::000069",
+        "reference": "r_mile::000074",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_reflectance_ra::000079",
+        "reference": "r_si_one::000135",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_A.m-1_ra::000044",
+        "reference": "r_si_A.m-1::000044",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_A.m-2_ra::000043",
+        "reference": "r_si_A.m-2::000043",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_A_ra::000098",
+        "reference": "r_si_A::000092",
+        "scale_type": "ratio",
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "s_ml_si_A.s.kg-1_ra::000059",
+        "reference": "r_si_A.s.kg-1::000060",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_A.s.m-2_ra::000054",
+        "reference": "r_si_A.s.m-2::000055",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_A.s.m-3_ra::000053",
+        "reference": "r_si_A.s.m-3::000054",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_A.s_ra::000130",
+        "reference": "r_si_A.s::000124",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_A.V-1_ra::000027",
+        "reference": "r_si_A.V-1::000027",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_Bq_ra::000121",
+        "reference": "r_si_Bq::000115",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_cd.m-2_ra::000138",
+        "reference": "r_si_cd.m-2::000132",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_cd_ra::000101",
+        "reference": "r_si_cd::000095",
+        "scale_type": "ratio",
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "s_ml_si_cd.sr.m-2_ra::000032",
+        "reference": "r_si_cd.sr.m-2::000032",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_cd.sr_ra::000031",
+        "reference": "r_si_cd.sr::000031",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_Cel_in::000118",
+        "reference": "r_si_Celsius_T::000112",
+        "scale_type": "interval",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_Cel_ra::000117",
+        "reference": "r_si_Celsius_dT::000111",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_C.kg-1_ra::000018",
+        "reference": "r_si_C.kg-1::000017",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_cm-1_ra::000065",
+        "reference": "r_si_cm-1::000070",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_C.m-2_ra::000013",
+        "reference": "r_si_C.m-2::000012",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_C.m-3_ra::000012",
+        "reference": "r_si_C.m-3::000011",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_cm3_ra::000093",
+        "reference": "r_si_cm3::000087",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_C_ra::000109",
+        "reference": "r_si_C::000103",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_C.V-1_ra::000025",
+        "reference": "r_si_C.V-1::000025",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_F.m-1_ra::000014",
+        "reference": "r_si_F.m-1::000013",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_F_ra::000111",
+        "reference": "r_si_F::000105",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_g.m2.s-3.A-1_ra::000075",
+        "reference": "r_si_g.m2.s-3.A-1::000080",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_Gy_ra::000122",
+        "reference": "r_si_Gy::000116",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_Gy.s-1_ra::000019",
+        "reference": "r_si_Gy.s-1::000018",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_H.m-1_ra::000015",
+        "reference": "r_si_H.m-1::000014",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_H_ra::000116",
+        "reference": "r_si_H::000110",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_Hz_ra::000104",
+        "reference": "r_si_Hz::000098",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_J.K-1.kg-1_ra::000008",
+        "reference": "r_si_J.K-1.kg-1::000007",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_J.K-1.mol-1_ra::000017",
+        "reference": "r_si_J.K-1.mol-1::000016",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_J.K-1_ra::000007",
+        "reference": "r_si_J.K-1::000006",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_J.kg-1_ra::000034",
+        "reference": "r_si_J.kg-1::000034",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_J.m-3_ra::000010",
+        "reference": "r_si_J.m-3::000009",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_J.mol-1_ra::000016",
+        "reference": "r_si_J.mol-1::000015",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_J_ra::000107",
+        "reference": "r_si_J::000101",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_J.s-1_ra::000023",
+        "reference": "r_si_J.s-1::000023",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kat.m-3_ra::000022",
+        "reference": "r_si_kat.m-3::000021",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kat_ra::000124",
+        "reference": "r_si_kat::000118",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg-1.m-2.s3.A2_ra::000134",
+        "reference": "r_si_kg-1.m-2.s3.A2::000128",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg-1.m-2.s4.A2_ra::000132",
+        "reference": "r_si_kg-1,m-2.s4.A2::000126",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg-1.m-3.s4.A2_ra::000055",
+        "reference": "r_si_kg-1.m-3.s4.A2::000056",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m-1.s-1_ra::000046",
+        "reference": "r_si_kg.m-1.s-1::000047",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m-1.s-2_ra::000127",
+        "reference": "r_si_kg.m-1.s-2::000121",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m-2_ra::000041",
+        "reference": "r_si_kg.m-2::000041",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m2.s-2.A-1_ra::000135",
+        "reference": "r_si_kg.m2.s-2.A-1::000129",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m2.s-2.A-2_ra::000137",
+        "reference": "r_si_kg.m2.s-2.A-2::000131",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m2.s-2.K-1_ra::000049",
+        "reference": "r_si_kg.m2.s-2.K-1::000050",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m2.s-2.mol-1.K-1_ra::000058",
+        "reference": "r_si_kg.m2.s-2.mol-1.K-1::000059",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m2.s-2.mol-1_ra::000057",
+        "reference": "r_si_kg.m2.s-2.mol-1::000058",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m2.s-2_ra::000128",
+        "reference": "r_si_kg.m2.s-2::000122",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m2.s-3.A-1_ra::000131",
+        "reference": "r_si_kg.m2.s-3.A-1::000125",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m2.s-3.A-2_ra::000133",
+        "reference": "r_si_kg.m2.s-3.A-2::000127",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m2.s-3_ra::000129",
+        "reference": "r_si_kg.m2.s-3::000123",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m-3_ra::000040",
+        "reference": "r_si_kg.m-3::000040",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m.s-2.A-2_ra::000056",
+        "reference": "r_si_kg.m.s-2.A-2::000057",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m.s-2_ra::000126",
+        "reference": "r_si_kg.m.s-2::000120",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m.s-3.A-1_ra::000052",
+        "reference": "r_si_kg.m.s-3.A-1::000053",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.m.s-3.K-1_ra::000051",
+        "reference": "r_si_kg.m.s-3.K-1::000052",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg_ra::000095",
+        "reference": "r_si_kg::000089",
+        "scale_type": "ratio",
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.s-2.A-1_ra::000136",
+        "reference": "r_si_kg.s-2.A-1::000130",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.s-2_ra::000047",
+        "reference": "r_si_kg.s-2::000048",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_kg.s-3_ra::000048",
+        "reference": "r_si_kg.s-3::000049",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_km_ra::000066",
+        "reference": "r_si_km::000072",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_K_ra::000099",
+        "reference": "r_si_K::000093",
+        "scale_type": "ratio",
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "s_ml_si_litre_ra::000092",
+        "reference": "r_si_litre::000086",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_lm.m-2_ra::000033",
+        "reference": "r_si_lm.m-2::000033",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_lm_ra::000119",
+        "reference": "r_si_lm::000113",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_lx_ra::000120",
+        "reference": "r_si_lx::000114",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_m-1_ra::000039",
+        "reference": "r_si_m-1::000039",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_m2_ra::000035",
+        "reference": "r_si_m2::000035",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_m2.s-2.K-1_ra::000050",
+        "reference": "r_si_m2.s-2.K-1::000051",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_m2.s-2_ra::000139",
+        "reference": "r_si_m2.s-2::000133",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_m2.s-3_ra::000060",
+        "reference": "r_si_m2.s-3::000061",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_m3.kg-1_ra::000042",
+        "reference": "r_si_m3.kg-1::000042",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_m3_ra::000036",
+        "reference": "r_si_m3::000036",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_mg.m2.s-3.A-1_ra::000076",
+        "reference": "r_si_mg.m2.s-3.A-1::000081",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_minute_ra::000091",
+        "reference": "r_si_minute::000085",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_mol.m-3_ra::000045",
+        "reference": "r_si_mol.m-3::000045",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_mol_ra::000100",
+        "reference": "r_si_mol::000094",
+        "scale_type": "ratio",
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "s_ml_si_mol.s-1.m-3_ra::000062",
+        "reference": "r_si_mol.s-1.m-3::000062",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_mol.s-1_ra::000140",
+        "reference": "r_si_mol.s-1::000134",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_m_ra::000096",
+        "reference": "r_si_m::000090",
+        "scale_type": "ratio",
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "s_ml_si_m.s-1_ra::000037",
+        "reference": "r_si_m.s-1::000037",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_m.s-2_ra::000038",
+        "reference": "r_si_m.s-2::000038",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_mV_ra::000071",
+        "reference": "r_si_mV::000076",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_ng.m2.s-3.A-1_ra::000078",
+        "reference": "r_si_ng.m2.s-3.A-1::000083",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_N.m-1_ra::000003",
+        "reference": "r_si_N.m-1::000002",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_N.m_ra::000002",
+        "reference": "r_si_N.m::000022",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_nm_ra::000067",
+        "reference": "r_si_nm::000071",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_N_ra::000105",
+        "reference": "r_si_N::000099",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_nV_ra::000073",
+        "reference": "r_si_nV::000078",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_Ohm_ra::000112",
+        "reference": "r_si_Ohm::000106",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_one_ra::000141",
+        "reference": "r_si_one::000135",
+        "scale_type": "ratio",
+        "tags": [
+            "si_unity"
+        ]
+    },
+    {
+        "id": "s_ml_si_Pa_ra::000106",
+        "reference": "r_si_Pa::000100",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_Pa.s_ra::000001",
+        "reference": "r_si_Pa.s::000001",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_pV_ra::000074",
+        "reference": "r_si_pV::000079",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_rad_bi_pi::000085",
+        "reference": "r_si_rad_bound_pi::000067",
+        "scale_type": "bounded",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_rad_bi_two_pi::000086",
+        "reference": "r_si_rad_bound_2pi::000066",
+        "scale_type": "bounded",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_rad_ra::000102",
+        "reference": "r_si_rad::000096",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_rad.s-1_ra::000004",
+        "reference": "r_si_rad.s-1::000003",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_rad.s-2_ra::000005",
+        "reference": "r_si_rad.s-2::000004",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_s-1_ra::000125",
+        "reference": "r_si_s-1::000119",
+        "scale_type": "ratio",
+        "tags": [
+            "si_systematic_for_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_s-2_ra::000061",
+        "reference": "r_si_s-2::000046",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_systematic_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_s_ra::000097",
+        "reference": "r_si_s::000091",
+        "scale_type": "ratio",
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "s_ml_si_S_ra::000113",
+        "reference": "r_si_S::000107",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_sr_ra::000103",
+        "reference": "r_si_sr::000097",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_Sv_ra::000123",
+        "reference": "r_si_Sv::000117",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_THz_ra::000064",
+        "reference": "r_si_THz::000069",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_T_ra::000115",
+        "reference": "r_si_T::000109",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_ug.m2.s-3.A-1_ra::000077",
+        "reference": "r_si_ug.m2.s-3.A-1::000082",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_uV_ra::000072",
+        "reference": "r_si_uV::000077",
+        "scale_type": "ratio",
+        "tags": []
+    },
+    {
+        "id": "s_ml_si_V.A-1_ra::000026",
+        "reference": "r_si_V.A-1::000026",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_V.m-1_ra::000011",
+        "reference": "r_si_V.m-1::000010",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_V_ra::000110",
+        "reference": "r_si_V::000104",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_V.s_ra::000028",
+        "reference": "r_si_V.s::000028",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_W.A-1_ra::000024",
+        "reference": "r_si_W.A-1::000024",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_Wb.A-1_ra::000030",
+        "reference": "r_si_Wb.A-1::000030",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_Wb.m-2_ra::000029",
+        "reference": "r_si_Wb.m-2::000029",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special",
+            "derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_Wb_ra::000114",
+        "reference": "r_si_Wb::000108",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_W.m-1.K-1_ra::000009",
+        "reference": "r_si_W.m-1.K-1::000008",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_W.m-2_ra::000006",
+        "reference": "r_si_W.m-2::000005",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_W_ra::000108",
+        "reference": "r_si_W::000102",
+        "scale_type": "ratio",
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "s_ml_si_W.sr-1.m-2_ra::000021",
+        "reference": "r_si_W.sr-1.m-2::000020",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_si_W.sr-1_ra::000020",
+        "reference": "r_si_W.sr-1::000019",
+        "scale_type": "ratio",
+        "tags": [
+            "derived",
+            "si_alternative_derived"
+        ]
+    },
+    {
+        "id": "s_ml_transmittance_ra::000080",
+        "reference": "r_si_one::000135",
+        "scale_type": "ratio",
+        "tags": []
+    }
+]

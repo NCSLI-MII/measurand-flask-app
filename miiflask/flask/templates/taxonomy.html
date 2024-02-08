@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="title">{% block title %} Measurands {% endblock %}</h1>
+    <div class="content">
+        {% for m in measurands %}
+        <p>
+        <div class="service">
+            <a href="{{ url_for('measurand', measurand_id=m.id) }}">
+                {{ m.name }}
+            </a> &nbsp
+        </div>
+        </p>
+        {% endfor %}
+        
+    </div>
+{% endblock %} 

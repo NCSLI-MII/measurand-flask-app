@@ -1,0 +1,8 @@
+{
+    "path":"/tmp/miiflask",
+    "database":"/tmp/miiflask/miiflask.db",
+    "usertables":"/tmp/miiflask/tables_",
+    "measurands": "resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
+    "aspects": "resources/m-layer/aspects.json",
+    "scales": "resources/m-layer/scales.json"
+}

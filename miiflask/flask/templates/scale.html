@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="title">{% block title %} Scale {{ scale.id }} {{ scale.uid_name }} {% endblock %}</h1>
+    <div class="content">
+        <div class="service">
+            <b>
+                <p>Identifier: ({{ scale.uid }}, {{ scale.uid_name }})</p>
+            </b>
+            <b>
+                <p>Reference: {{ scale.reference }}</p>
+            </b>
+            <b>
+                <p>Type of scale: {{ scale.scale_type }}</p>
+            </b>
+            <b>
+                <p>Associated Aspects</p>
+                <select multiple="multiple">
+                {% for aspect in scale.aspects %}
+                    <option onClick="window.location = '/aspect/{{ aspect.id }}'">{{ aspect.name }}</option>
+                {% endfor %}
+                </select>
+            </b>
+        </div>
+    </div>
+{% endblock %}

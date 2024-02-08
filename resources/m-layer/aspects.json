@@ -1,0 +1,770 @@
+[
+    {
+        "id": "a_ml_absorbance::000010",
+        "name": "absorbance",
+        "symbol": "A",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_absorbed_dose::000086",
+        "name": "absorbed dose",
+        "symbol": "D",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_absorbed_dose_rate::000059",
+        "name": "absorbed dose rate",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_acceleration::000023",
+        "name": "acceleration",
+        "symbol": "a",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_activity::000084",
+        "name": "activity",
+        "symbol": "A",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_amount<H2>::000001",
+        "name": "amount_<H2>",
+        "symbol": "H2",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_amount<Na2SO4>::000002",
+        "name": "amount<Na2SO4>",
+        "symbol": "Na2SO4",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_amount_of_heat::000071",
+        "name": "amount of heat",
+        "symbol": "Q",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_amount_of_substance::000018",
+        "name": "amount of substance",
+        "symbol": "n",
+        "definition": null,
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "a_ml_amount_of_substance_concentration::000030",
+        "name": "amount of substance concentration",
+        "symbol": "c",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_angular_acceleration::000038",
+        "name": "angular acceleration",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_angular_frequency::000037",
+        "name": "angular frequency",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_angular_velocity::000036",
+        "name": "angular velocity",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_area::000020",
+        "name": "area",
+        "symbol": "A",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_capacitance::000076",
+        "name": "capacitance",
+        "symbol": "C",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_catalytic_activity::000088",
+        "name": "catalytic activity",
+        "symbol": "K",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_catalytic_activity_concentration::000062",
+        "name": "catalytic activity concentration",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_current_density::000028",
+        "name": "current density",
+        "symbol": "j",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_density::000025",
+        "name": "density",
+        "symbol": "\\rho",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_dose_equivalent::000087",
+        "name": "dose equivalent",
+        "symbol": "H",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_dynamic_viscosity::000033",
+        "name": "dynamic viscosity",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_electrical_potential_difference::000075",
+        "name": "electrical potential",
+        "symbol": "\\varphi",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_electric_charge::000074",
+        "name": "electric charge",
+        "symbol": "q",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_electric_charge_density::000049",
+        "name": "electric charge density",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_electric_conductance::000078",
+        "name": "conductance",
+        "symbol": "G",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_electric_current::000016",
+        "name": "electric current",
+        "symbol": "I",
+        "definition": null,
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "a_ml_electric_displacement::000052",
+        "name": "electric displacement",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_electric_field_strength::000048",
+        "name": "electric field strength",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_electric_flux_density::000051",
+        "name": "electric flux density",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_electric_resistance::000077",
+        "name": "electric resistance",
+        "symbol": "R",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_energy::000069",
+        "name": "energy",
+        "symbol": "E",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_energy_density::000047",
+        "name": "energy density",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_entropy::000042",
+        "name": "entropy",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_exposure::000058",
+        "name": "exposure",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_force::000066",
+        "name": "force",
+        "symbol": "F",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_frequency::000065",
+        "name": "frequency",
+        "symbol": "f",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_hardness<Mohs>::000004",
+        "name": "mohs",
+        "symbol": "mohs",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_hardness<Vickers>::000003",
+        "name": "Vickers",
+        "symbol": "?",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_heat_capacity::000041",
+        "name": "heat capacity",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_heat_flux_density::000039",
+        "name": "heat flux density",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_illuminance::000083",
+        "name": "illuminance",
+        "symbol": "E_v",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_inductance::000081",
+        "name": "inductance",
+        "symbol": "L ",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_irradiance::000040",
+        "name": "irradiance",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_ITS90::000008",
+        "name": "ITS-90",
+        "symbol": "T_90",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_kerma::000085",
+        "name": "kerma",
+        "symbol": "K",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_length::000014",
+        "name": "length",
+        "symbol": "L",
+        "definition": null,
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "a_ml_luminance::000032",
+        "name": "luminance",
+        "symbol": "L_v",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_luminous_flux::000082",
+        "name": "luminous flux",
+        "symbol": "\\Phi_v",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_luminous_intensity::000019",
+        "name": "luminous intensity",
+        "symbol": "I_v",
+        "definition": null,
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "a_ml_magenetic_field_strength::000029",
+        "name": "magenetic field strength",
+        "symbol": "H",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_magnetic_flux::000079",
+        "name": "magnetic flux",
+        "symbol": "\\Phi",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_magnetic_flux_density::000080",
+        "name": "magnetic flux density",
+        "symbol": "B",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_mass::000013",
+        "name": "mass",
+        "symbol": "M",
+        "definition": null,
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "a_ml_mass_concentration::000031",
+        "name": "mass concentration",
+        "symbol": "\\rho",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_molar_energy::000055",
+        "name": "molar energy",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_molar_entropy::000056",
+        "name": "molar entropy",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_molar_heat_capacity::000057",
+        "name": "molar heat capacity",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_moment_of_force::000034",
+        "name": "moment of force",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_optical_density::000011",
+        "name": "optical density",
+        "symbol": "OD",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_period::000006",
+        "name": "period",
+        "symbol": "T",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_permeability::000054",
+        "name": "permeability",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_permittivity::000053",
+        "name": "permittivity",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_photon_energy::000007",
+        "name": "photon energy",
+        "symbol": "E",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_plane_angle::000063",
+        "name": "plane angle",
+        "symbol": "ang",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_power::000072",
+        "name": "power",
+        "symbol": "P",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_pressure::000067",
+        "name": "pressure",
+        "symbol": "P",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_radiance::000061",
+        "name": "radiance",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_radiant_flux::000073",
+        "name": "radian flux",
+        "symbol": "\\Phi",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_radiant_intensity::000060",
+        "name": "radiant intensity",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_reflectance::000012",
+        "name": "reflectance",
+        "symbol": "R",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_solid_angle::000064",
+        "name": "solid angle",
+        "symbol": "\\Omega",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_specific_energy::000045",
+        "name": "specific energy",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_specific_entropy::000044",
+        "name": "specific entropy",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_specific_heat_capacity::000043",
+        "name": "specific heat capacity",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_specific_volume::000027",
+        "name": "specific volume",
+        "symbol": "\\nu",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_speed::000022",
+        "name": "speed",
+        "symbol": "v",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_stress::000068",
+        "name": "stress",
+        "symbol": "\\sigma",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    },
+    {
+        "id": "a_ml_surface_charge_density::000050",
+        "name": "surface charge density",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_surface_density::000026",
+        "name": "surface density",
+        "symbol": "\\rho_A",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_surface_tension::000035",
+        "name": "surface tension",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_thermal_conductivity::000046",
+        "name": "thermal conductivity",
+        "symbol": null,
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_thermodynamic_temperature::000017",
+        "name": "thermodynamic temperature",
+        "symbol": "T",
+        "definition": null,
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "a_ml_time::000015",
+        "name": "time",
+        "symbol": "t",
+        "definition": null,
+        "tags": [
+            "si_base"
+        ]
+    },
+    {
+        "id": "a_ml_transmittance::000009",
+        "name": "transmittance",
+        "symbol": "T",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_volume::000021",
+        "name": "volume",
+        "symbol": "V",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_wavelength::000005",
+        "name": "wavelength",
+        "symbol": "\\lambda",
+        "definition": null,
+        "tags": []
+    },
+    {
+        "id": "a_ml_wavenumber::000024",
+        "name": "wavenumber",
+        "symbol": "\\sigma",
+        "definition": null,
+        "tags": [
+            "si_derived"
+        ]
+    },
+    {
+        "id": "a_ml_work::000070",
+        "name": "work",
+        "symbol": "W",
+        "definition": null,
+        "tags": [
+            "si_special"
+        ]
+    }
+]

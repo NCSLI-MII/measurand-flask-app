@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="title">{% block title %} Measurand {{ measurand.id }} {% endblock %}</h1>
+    <div class="content">
+        <div class="measurand">
+            <b>
+                <p class="measurand">Taxon: {{ measurand.taxon.name }}</p>
+            </b>
+            <b>
+                <p>Parameters</p>
+                {% for p in measurand.parameters %}
+                     <p>{{ p.quantitykind.name }}</p>
+                {% endfor %}
+                </select>
+            </b>
+            <pre> {{ response }} </pre>
+        </div>
+    </div>
+{% endblock %} 
+

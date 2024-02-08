@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="title">{% block title %} Measurement Information {% endblock %}</h1>
+     <div class="content">   
+        <p>
+        <a href="taxonomy"> Taxonomy</a>
+        </p>
+    </div>
+    <div class="content">
+        <div>
+        <h2>Defined Taxons</h2>
+        <div>
+        <select multiple="multiple">
+        {% for m in measurands %}
+            <option onClick="window.location = '/measurand/{{ m.id }}'">{{ m.name }}</option>
+        {% endfor %}
+        </select>
+    </div>
+    <div class="content">
+        <div>
+        <h2>Defined Quantity Kinds</h2>
+        <div>
+        <select multiple="multiple">
+        {% for a in aspects %}
+             <option onClick="window.location = '/aspect/{{ a.id }}'">{{ a.name }}</option>
+        {% endfor %}
+        </select>
+    </div>
+    <div class="content">
+        <div>
+        <h2>Defined Scales</h2>
+        <div>
+        <select multiple="multiple">
+        {% for scale in scales %}
+              <option onClick="window.location = '/scale/{{ scale.id }}'">{{ scale.reference }}</option>
+        {% endfor %}
+        </select>
+    </div>
+{% endblock %}
