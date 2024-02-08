@@ -30,6 +30,7 @@ python dbinit.py -p builder.json -m
 ```
 /tmp/miiflask/miiflask.db
 ```
+```
 python dbinit.py -p builder.json -d
 ```
 * Run the flask app from 
