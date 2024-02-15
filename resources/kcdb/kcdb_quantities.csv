@@ -1,0 +1,1762 @@
+Absorbed dose/rate to air
+Absorbed dose/rate to water
+Absorbed dose/rate to graphite
+Absorbed dose/rate to tissue
+Absorbed dose/rate to other material
+Kerma/rate
+Reference kerma rate
+Ambient dose equivalent/rate
+Directional dose equivalent/rate
+"Personal dose equivalent/rate, penetrating"
+"Personal dose equivalent/rate, superficial"
+Kerma length product
+Kerma area product
+X-ray tube voltage
+Absorbed dose/rate
+Personal dose equivalent/rate
+Activity
+Activity per unit mass
+Activity per unit area
+Activity per unit volume
+Surface emission rate
+Surface emission rate per unit area
+Emission rate per unit solid angle
+Emission rate
+Efficiency of gamma-ray spectrometers (versus energy)
+Efficiency of ionization chambers
+Efficiency of contamination monitors
+Efficiency
+Emission rate
+Emission anisotropy
+Fluence
+Fluence rate
+Ambient dose equivalent
+Ambient dose equivalent rate
+Personal dose equivalent
+Personal dose equivalent rate
+Absorbed dose to water
+Absorbed dose rate to water
+Absorbed dose to graphite
+Absorbed dose rate to graphite
+Absorbed dose to tissue
+Absorbed dose rate to tissue
+Absorbed dose to other material
+Absorbed dose rate to other material
+Absorbed dose/rate
+Sound pressure response level
+Sound pressure level
+Pressure sensitivity level
+Charge sensitivity (magnitude)
+Voltage sensitivity (magnitude)
+"Responsivity, spectral, power"
+Correlated colour temperature
+Luminous intensity
+"Illuminance responsivity, tungsten lamp"
+Luminous flux
+Illuminance
+Luminance
+"Irradiance, spectral"
+Free-field sensitivity level
+Charge sensitivity
+Voltage sensitivity
+Ultrasonic power (in free field)
+Wavelength
+"Responsivity, laser, power"
+Responsivity
+Mass
+Mass flowrate
+Volume flowrate
+Volume
+Voltage sensitivity (modulus)
+Time scale difference
+Frequency
+Time interval
+Free-field response level
+Charge sensitivity (modulus)
+"Transmittance, regular, spectral"
+"Absorbance, regular, spectral"
+"IIluminance responsivity, tungsten source"
+System response level
+"Responsivity, spectral"
+Correlated colour temperature (CCT) response
+Chromaticity response
+Luminance factor
+Luminance coefficient
+"Illuminance responsivity, tungsten source"
+Conventional mass
+Force
+"Charge sensitivity (shock, modulus)"
+Acceleration
+Acceleration (shock)
+"Voltage sensitivity (shock, modulus)"
+RF power: measurements (calibration factor) in balanced lines
+Scalar RF reflection coefficient and attenuation: reflection measurements in balanced lines
+Scalar RF reflection coefficient and attenuation: attenuation measurements in balanced lines
+Scattering parameters: reflection coefficient (Sii) in coaxials (values in linear terms: magnitude)
+"Scattering parameters: reflection coefficient (Sii) in coaxials, (values in linear terms: real and imaginary)"
+"RF attenuation, in coaxials (values in dB)"
+DC voltage sources: low values
+RF power: calibration factor in coaxials
+DC voltage sources: single values
+DC voltage sources up to 1100 V
+DC voltage meters: multiple ranges
+DC resistance sources: low values
+DC resistance: sources
+DC resistance sources: high values
+DC resistance sources: standards for high current
+DC resistance sources: multiple ranges
+DC resistance sources: temperature coefficients
+DC resistance meters: low values
+DC resistance meters: intermediate values
+DC resistance meters: high values
+DC current sources: low values
+DC current sources: intermediate values
+DC current meters: low values
+DC current meters: intermediate values
+Self inductance: lower than 1 mH
+Self inductance: 1 mH to 1 H
+Self inductance: higher than 1 H
+Self inductance: meters
+Capacitance for low loss capacitors
+Capacitance for dielectric capacitors
+Capacitance: meters
+AC/DC voltage transfer difference at lower voltage
+AC/DC voltage transfer difference at medium voltage
+AC/DC voltage transfer difference at higher voltage
+AC voltage up to 1000 V: meters
+AC/DC current transfer difference
+AC current up to 100 A: sources
+AC current up to 100 A: meters
+AC power: single phase (frequency <= 400 Hz)
+AC energy: single phase (frequency <= 400 Hz)
+RF power: absolute power in coaxials
+RF power: absolute power in waveguides
+RF power: measurements in balanced lines
+Temperature
+Acceleration (modulus)
+Sound power level
+Ultrasonic power
+Liquid volume flow
+Static volume
+Gas volume flow
+AC high voltage ratio: imaginary component
+AC low voltage ratio: imaginary component
+AC current ratio: imaginary component
+Capacitance: low frequency
+AC voltage
+Power and energy single phase. Power at frequencies <= 400 Hz
+Power and energy three phase
+Capacitance: high voltage
+Inductance
+DC voltage
+High DC voltage
+DC current
+AC current
+AC high voltage ratio: real component
+AC low voltage ratio: real component
+AC current ratio: real component
+AC/DC difference
+DC resistance
+Laser radiations
+"Colour, emitted, x, y"
+"Radiance, spectral"
+"Reflectance, diffuse, spectral"
+"Reflectance, regular, spectral"
+Luminance responsivity
+"Responsivity, laser lines, power"
+Correlated color temperature
+"Responsivity, laser, energy"
+"Responsivity, UV, broadband irradiance"
+"Responsivity, UV, broadband radiant exposure"
+"Laser power, spectral total radiant"
+Absolute pressure
+Gauge pressure
+Negative gauge pressure
+Differential pressure
+Kinematic viscosity
+Air-conduction response level
+Free-field sensitivity
+End standards
+Line standards
+Angle artifacts
+Flatness standards
+Distribution temperature
+"Responsivity, laser power"
+"Fiber optic power meter, linearity"
+"Responsivity, fiber optic power"
+Volume water flowrate
+Volume gas flowrate
+Mass water flowrate
+Volume of liquid
+"Shock sensitivity (voltage, magnitude)"
+Density of solid
+Density of liquid
+"Force: compression, tension"
+Mass (E2)
+Absolute pressure: oil medium
+Gauge pressure: oil medium
+Static volume of liquid
+Gas flowrate volume
+CMM artifacts
+Diameter standards
+"Colour, surface x, y"
+"Colour transmitted x,y"
+"Transmittance, diffuse, spectral"
+"Colour, surface Y"
+Colour transmitted Y
+"Responsivity, spectral power"
+"Transmittance, diffuse, spectral, T"
+Dynamic viscosity
+Liquid flowing quantity: mass and volume
+Flowrate volume/mass (low pressure gas)
+Flowrate volume (low pressure gas)
+Humidity
+DC voltage sources: intermediate values
+DC voltage meters: intermediate values
+DC voltage ratios: up to 1100 V
+DC resistance standards and sources: low values
+DC resistance standards and sources: high values
+AC voltage: AC/DC transfer difference at medium voltage
+AC voltage: AC/DC transfer difference at higher voltage
+AC current: AC/DC transfer difference
+DC resistance standards and sources: temperature coefficients
+DC resistance standards and sources: intermediate values
+DC resistance standards and sources: standards for high current
+DC resistance standards and sources: multiple ranges
+AC resistance: real component
+AC voltage up to 1000 V: sources
+"AC power and energy: single phase (frequency <= 400 Hz), active power"
+"AC power and energy: single phase (frequency <= 400 Hz), active energy"
+"AC power and energy: three phase, active power"
+"AC power and energy: three phase, active energy"
+RF voltage: sources
+RF voltage: meters
+"Colour, surface, x, y, Y"
+"Colour, surface, L*a*b*"
+"Colour, emitted, u, v"
+"Colour, emitted, u-prime, v-prime"
+"Colour, emitted, Lab"
+"Colour, surface, Lab"
+"Colour, transmitted, x, y, Y"
+"Colour, transmitted, Lab"
+"Responsivity, spectral, irradiance"
+"Power, spectral total radiant, laser"
+Charge sensitivity (phase shift)
+Voltage sensitivity (phase shift)
+Impedance (up to the MHz range): Capacitance for dielectric capacitors
+AC voltage up to 1100 V: sources
+DC voltage meters: low values
+AC voltage up to 1100 V: meters
+"AC voltage (up to the MHz range): AC voltage ratio up to 1100 V, real component (or modulus)"
+"AC voltage (up to the MHz range): AC voltage ratio up to 1100 V, imaginary component (or argument)"
+High AC voltage: voltage transformer ratio error and phase displacement (real component)
+High AC voltage: voltage transformer ratio error and phase displacement (imaginary component)
+High AC current: current transformer ratio error and phase displacement (real component)
+High AC current: current transformer ratio error and phase displacement (imaginary component)
+Impedance (up to the MHz range): Capacitance for low loss capacitors
+"Impedance (up to the MHz range): inductance: self-inductance, low values"
+"Impedance (up to the MHz range): inductance: self-inductance, intermediate values"
+"Impedance (up to the MHz range): inductance: self-inductance, high values"
+AC voltage (up to the MHz range): AC/DC voltage transfer: AC/DC transfer difference at lower voltage
+AC voltage (up to the MHz range): AC/DC voltage transfer: AC/DC transfer difference at medium voltage
+AC voltage (up to the MHz range): AC/DC voltage transfer: AC/DC transfer difference at higher voltage
+AC power and energy: three phase
+Illuminance responsivity
+Pressure field sensitivity level
+Force response level
+Mechanical impedance
+Air conduction response
+Bone conduction response
+Acceleration output (modulus)
+Shock sensitivity (charge)
+Shock sensitivity (voltage)
+AC voltage ratio: attenuation and gain: real component
+AC voltage ratio: attenuation and gain: imaginary component
+Magnetic fields below 50 kHz: DC magnetic flux density and applied magnetic field strength
+Magnetic fields below 50 kHz: DC shielding factor (ratio of DC magnetic flux density)
+RF power: calibration factor and effective efficiency in coaxials
+RF power: calibration factor and effective efficiency in waveguides
+Scalar RF reflection coefficient and attenuation: attenuation in coaxials
+Scattering parameters: reflection coefficient (Sii) in coaxials
+Scattering parameters: reflection coefficient (Sii) in waveguides
+Noise: noise temperature or excess noise ratio in coaxials
+Noise: noise temperature or excess noise ratio in waveguides
+Antenna properties: antenna gain
+Capacitance: dissipation factor for low loss capacitor
+Capacitance: dissipation factor for dielectric capacitor
+RF voltage and current: RF-DC difference
+AC high voltage: ratio error
+High AC current: ratio error
+High AC current: phase displacement
+AC high voltage: phase displacement
+Inductance: self inductance and equivalent series resistance
+AC/DC voltage transfer: AC/DC difference at lower voltage
+AC/DC voltage transfer: AC/DC difference at medium voltage
+AC/DC voltage transfer: AC/DC difference at higher voltage
+AC/DC current transfer: AC/DC transfer difference
+AC power and energy: single phase (frequency <= 400 Hz)
+High DC voltage: sources
+High DC voltage: meters
+High DC voltage: ratios
+Magnetic field below 50 kHz: magnetic flux
+Magnetic fields below 50 kHz: AC magnetic flux density and applied magnetic field strength
+Magnetic fields below 50 kHz: turn area (ratio of magnetic flux and magnetic flux density)
+Electromagnetic fields above 50 kHz: electric field strength
+Electromagnetic fields above 50 kHz: magnetic field strength
+Electromagnetic fields above 50 kHz: power flux density
+Scattering parameters: transmission coefficient (Sij) in coaxials
+Scattering parameters: transmission coefficient (Sij) in waveguides
+Antenna properties: antenna factor
+DC current sources: high values
+Soft magnetic bulk materials: magnetic polarisation
+Soft magnetic bulk materials: magnetic field strength
+Soft magnetic bulk materials: remanent flux density
+Soft magnetic bulk materials: coercive field strength
+Hard magnetic material: remanent magnetic flux density
+Hard magnetic material: coercive field strength HcB
+Hard magnetic material: coercive field strength HcJ
+Hard magnetic material: energy product (BH)max
+Capacitance and dissipation factor for low loss capacitors
+Capacitance: dissipation factor
+AC high voltage ratio: phase displacement
+AC high current ratio: phase displacement
+Scalar RF reflection coefficient and attenuation: VSWR in coaxials
+Scalar RF reflection coefficient and attenuation: reflection coefficient in waveguides
+DC current meters: high values
+Capacitance and dissipation factor for dielectric capacitors
+"Inductance: self inductance and equivalent series resistance, intermediate values"
+AC/DC voltage transfer: AC/DC transfer difference at lower voltage
+AC/DC voltage transfer: AC/DC transfer difference at medium voltage
+AC/DC voltage transfer: AC/DC transfer difference at higher voltage
+"AC power and energy: single phase (frequency <= 400 Hz), reactive power"
+"AC power and energy: single phase (frequency <= 400 Hz), apparent power"
+"AC power and energy: single phase (frequency <= 400 Hz), reactive energy"
+"AC power and energy: single phase (frequency <= 400 Hz), apparent energy"
+"AC power and energy: three phase, reactive power"
+"AC power and energy: three phase, apparent power"
+"AC power and energy: three phase, reactive energy"
+"AC power and energy: three phase, apparent energy"
+High DC current: sources
+High DC current: meters
+High DC current: shunts
+AC high voltage: sources
+AC high voltage: meters
+AC high voltage ratio: ratio error
+High AC current sources
+High AC current: meters
+AC high current: ratio error
+Radio frequency power: absolute power in coaxials
+Radio frequency power: calibration factor and efficiency in coaxials
+Scalar RF reflection coefficient and attenuation: attenuation in waveguides
+Radio frequency voltage and current: RF-DC difference
+Radio frequency voltage and current: RF voltage sources
+Radio frequency voltage and current: RF voltage meters
+DC voltage meters: very low values
+AC voltage ratio up to 1100 V: real and imaginary component
+Phase angle: sources
+Phase angle: meters
+Current and voltage waveform: voltage harmonic distorsion
+Radio frequency power: calibration factor and effective efficiency in coaxials
+"Scattering parameters: reflection coefficient (Sii) in coaxials, magnitude"
+"Scattering parameters: reflection coefficient (Sii) in coaxials, real and imaginary"
+Signal and pulse characteristics: pulse amplitude
+Signal and pulse characteristics: pulse time parameters
+"Signal and pulse characteristics: modulation, AM and FM"
+"Inductance: self inductance and equivalent series resistance, low values"
+AC power and energy: single phase
+AC resistance: meters
+Inductance: meters
+Hardness
+DC resistance meters: intermediate  values
+AC voltage: AC/DC transfer difference at lower voltage
+AC voltage ratio up to 1100 V: real component
+AC voltage ratio up to 1100 V: imaginary component
+"Self inductance and equivalent series resistance, low values"
+"Self inductance and equivalent series resistance, intermediate values"
+"Self inductance and equivalent series resistance, high values"
+Dew-point temperature
+Force: compression
+Torque
+DC resistance standards and sources: lower values
+DC resistance meter: intermediate values
+AC current ratio
+AC voltage ratio
+Reflection coefficient: in waveguide magnitude
+Reflection coefficient: in waveguide phase (with magnitude of reflection coefficient above 0.1)
+Reflection coefficient: in waveguide phase (with magnitude of reflection coefficient <= 0.1)
+"Transmission coefficient: waveguides, phase"
+HF power: effective efficiency in coaxial
+HF power: effective efficiency in waveguide
+Impulse spectrum amplitude
+Pulse amplitude
+"Transmission coefficient: coaxials, phase"
+Pulse transition duration
+Reflection coefficient: in coaxial magnitude
+Reflection coefficient: in coaxial phase (with magnitude of reflection coefficient above 0.1)
+Reflection coefficient: in coaxial phase (with magnitude of reflection coefficient <= 0.1)
+Phase
+Phase: meters
+Phase: sources
+Time delay interval
+AC/DC difference (current)
+AC/DC transfer difference
+Capacitance
+AC current: meters
+AC current: sources
+"AC power and energy: single phase (frequency > 400 Hz), active energy"
+"AC power and energy: single phase (frequency > 400 Hz), active power"
+"AC power and energy: single phase (frequency > 400 Hz), reactive energy"
+"AC power and energy: single phase (frequency > 400 Hz), reactive power"
+AC/DC transfer difference at lower voltage
+DC current: sources
+DC resistance: meters
+HF noise: noise temperature in waveguide
+"Transmission coefficient: waveguides, magnitude"
+Pulse settling
+AC voltage ratio relative to input voltage
+AC voltage: meters
+DC current: meters
+AC voltage: sources
+HF field strength: electric and magnetic field stength
+HF noise: noise temperature in coaxial
+"Transmission coefficient: coaxials, magnitude"
+"Scattering parameters: reflection coefficient (Sii) in waveguides, real and imaginary"
+Signal and pulse characteristics
+"Signal and pulse characterictics: pulse time parameters, duration of pulse and duration of front"
+Signal and pulse parameters: pulse time parameters
+Signal and pulse parameters: FM modulation
+Signal and pulse characterictics: harmonic content
+AC resistance: time constant
+Capacitance: dissipation factor for low loss capacitors
+Dielectric properties: loss tangent
+High voltage impedance: dissipation factor
+"Scattering parameters: transmission coefficient (Sij) in coaxials, real and imaginary"
+AC voltage ratio: attenuation and gain: attenuation
+DC resistance standards and sources: temperature coefficient
+Capacitance: dissipation factor for dielectric capacitors
+Magnetic fields below 50 kHz: DC magnetic flux density
+High AC current: ratio phase displacement
+Noise: noise temperature in coaxials
+Noise: noise temperature in waveguides
+Noise: radio brightness temperature
+Noise: spectral radiance in free space
+RF voltage and current: RF current
+"Dielectric properties: relative permittivity, real component"
+Hard magnetic material: coercive magnetic field strength HCB
+Hard magnetic material: maximum energy product (B·H)max
+Hard magnetic material: magnetic moment
+RF power: non-CW power
+"Inductance: self inductance, low values"
+"Inductance: self inductance, intermediate values"
+AC resistance: AC/DC difference
+AC resistance: resistors for high current
+Capacitance for transformed capacitors
+Dielectric properties: relative permittivity: real component
+"Feebly magnetic, paramagnetic and diamagnetic material: DC magnetic susceptibility"
+High voltage impedance: capacitance
+AC high voltage: peak values
+Lumped impedance: admittance: inductance
+Lumped impedance: admittance: capacitance
+Lumped impedance: admittance: Q-factor for objects of inductive nature
+"Lumped impedance: admittance: Q-factor, capacitor"
+"Lumped impedance: admittance: Q-factor, inductor"
+Current and voltage waveform: voltage harmonic distortion
+Electric fields below 50 kHz: electrostatic field strength
+Electric fields below 50 kHz: electric field strength
+Magnetic fields below 50 kHz: AC magnetic flux density
+RF power: calibration factor in waveguides
+"Inductance: self inductance, high values"
+Inductance: mutual inductance
+Inductance: quality factor
+Magnetic fields below 50 kHz: magnetic flux
+Magnetic fields below 50 kHz: magnetic flux per unit current
+Magnetic fields below 50 kHz: turn area
+Magnetic fields below 50 kHz: DC magnetic flux density per unit current
+Magnetic fields below 50 kHz: AC magnetic flux density per unit current
+Magnetic fields below 50 kHz: magnetic field gradient
+Magnetic fields below 50 kHz: magnetic field gradient per unit current
+Pulsed high voltage and current: lightning impulse voltage parameters
+Pulsed high voltage and current: lightning impulse time parameters
+Pulsed high voltage and current: switching impulse voltage parameters
+Pulsed high voltage and current: switching impulse time parameters
+Soft magnetic  sheet and powder materials: specific total power loss
+Soft magnetic bulk material: permeability
+DC voltage sources: low values ranges
+"AC voltage (up to the MHz range): AC voltage up to 1100 V, sources"
+"AC voltage (up to the MHz range): AC voltage up to 1100 V, meters"
+Absolute pressure: gas medium
+Gauge pressure: gas medium
+DC voltage sources: low value ranges
+"Impedance (up to the MHz range), capacitance, capacitance and dissipation factor for dielectric capacitors"
+"Signal and pulse characteristics: modulation, AM"
+"Signal and pulse characteristics: modulation, FM"
+Signal and pulse characteristics: distortion and harmonic content
+Radio frequency power: absolute power on coaxials
+Radio frequency power: calibration factor and effective efficiency on coaxials
+Radio frequency power: absolute power in waveguide
+Radio frequency power: calibration factor and effective efficiency in waveguide
+Inductance: meter
+"AC power and energy: three phase (frequency <= 400 Hz), active power"
+"AC power and energy: three phase (frequency <= 400 Hz), reactive power"
+High AC voltage: sources
+High AC voltage: meters
+High AC voltage: ratio error
+High AC voltage: ratio: phase displacement
+"AC power and energy: three phase (frequency <= 400 Hz), active energy"
+"AC power and energy: three phase (frequency <= 400 Hz), reactive energy"
+Gauge pressure: liquid medium
+Volume of solid
+Gas flow speed
+Scattering parameters: reflection coefficient in coaxials: magnitude
+DC voltage sources: intermerdiate values
+DC resistance sources: intermediate values
+"AC power and energy: single phase, power"
+AC voltage ratio: real component
+AC voltage ratio: imaginary component
+Phase angle relative to 1 pulse per second
+Rate of change of frequency
+Total Vector Error (TVE)
+"Pulsed high voltage and current: lightning impulse voltage parameters, voltage ratio non-linearity"
+"Pulsed high voltage and current: step response parameters, experimental response time"
+"Pulsed high voltage and current: step response parameters, partial response time"
+"Pulsed high voltage and current: step response parameters, overshoot beta"
+Current harmonics
+Flicker severity
+AC resistance: phase defect angle
+Magnetic fields below 50 kHz: DC magnetic flux
+"Pulsed high voltage and current: lightning impulse voltage parameters, voltage ratio"
+"Pulsed high voltage and current: lightning impulse time parameters, front time"
+Voltage harmonics
+"Pulsed high voltage and current: switching impulse voltage parameter, voltage ratio"
+"Pulsed high voltage and current: switching impulse voltage parameter, voltage ratio non-linearity"
+"Pulsed high voltage and current: switching impulse time parameters, time to peak"
+Frequency
+"Pulsed high voltage and current: step response parameters, setting time"
+"Pulsed high voltage and current: lightning impulse time parameters, time to half value"
+"Pulsed high voltage and current: front chopped lightning impulse voltage parameters, ratio"
+"Pulsed high voltage: front chopped lightning impulse voltage parameters, time-to-chopping"
+"Pulsed high voltage and current: switching impulse time parameters, time to half value"
+DC voltage ratios: up to 1000 V
+"AC power and energy: single phase, distorted current"
+"Inductance: self inductance and equivalent series resistance, high values"
+"AC voltage up to 1100 V, sources"
+DC resistance standards and  sources: high values
+RF attenuation in coaxials
+Capacitance and dissipation factor for low loss capacitor
+DC voltage sources : intermediate values
+Noise: Amplifier noise parameters: noise figure
+"Scattering parameters: transmission coefficient (Sij) in waveguides, magnitude"
+"Scattering parameters: transmission coefficient (Sij)  in waveguides, phase"
+"Scattering parameters: effective source match, magnitude"
+"Scattering parameters: effective source match, phase"
+"Scattering parameters: directivity, magnitude"
+"Scattering parameters: directivity, phase"
+Scattering parameters: reflection coefficient (Sii) for common mode systems
+Signal and pulse characteristics: pulse amplitude U
+Signal and pulse characteristics: pulse time parameters: risetime
+RF voltage and current: RF coupling factor
+"RF characteristic impedance:
+ mechanical cross dimensions"
+Electrical conductivity: metallic materials
+"Scattering parameters: reflection coefficient (Sii) in coaxials, phase"
+Pulsed high voltage and current: impulse current time parameters
+"Scattering parameters: reflection coefficient (Sii) in waveguides, phase"
+"Scattering parameters: transmission coefficient (Sij) in coaxials, magnitude"
+"Scattering parameters: transmission coefficient (Sij) in coaxials, phase"
+Capacitance and dissipation factor for capacitors: dissipation factor
+Capacitance and dissipation factor for low loss capacitors: dissipation factor
+High voltage impedance: capacitance dissipation factor
+Pulsed high voltage and current: response parameters: response time
+Pulsed high voltage and current: response parameters: overshoot
+Pulsed high voltage and current: response parameters: settling time
+Electric discharge: apparent charge
+RF power: effective efficiency in waveguides
+"Signal and pulse characteristics: modulation, FM Deviation"
+Lumped impedance: admittance: resistance: real component
+"Lumped impedance: admittance: inductance, meters"
+"Lumped impedance: admittance: capacitance, meters"
+Electrical conductivity: liquid
+Electrical conductivity: semiconducting and similar materials
+DC voltage sources: single value
+Magnetic field below 50 kHz: turn area
+RF power: effective efficiency in coaxial
+Noise: noise temperature or excess noise ratio in waveguide
+"Current and voltage waveform: non sinusoidal waveforms, steady state: harmonic current"
+Soft magnetic sheet material: specific total power loss
+Soft magnetic sheet materials: specific total power loss
+Soft magnetic sheet materials: peak value of DC magnetic polarisation
+Soft magnetic sheet materials: peak value of AC magnetic polarisation
+Soft magnetic sheet materials: peak value of magnetic strength
+Soft magnetic sheet materials: RMS value of magnetic field strength
+Soft magnetic sheet material: specific apparent power
+Soft magnetic sheet materials: specific apparent power
+Soft magnetic sheet material: peak permeability
+Soft magnetic  materials: peak permeability
+Soft magnetic bulk material: coercive magnetic field strength
+Soft magnetic bulk material: coercive field strength
+Soft magnetic bulk material: magnetic saturation polarisation
+Hard magnetic materials: remanent magnetic flux density
+"Hard magnetic materials: coercive field strength (HCB, HCJ)"
+Hard magnetic materials: maximum energy product (B·H)max
+Hard magnetic materials: magnetic flux density
+Hard magnetic materials: magnetic polarisation
+"Current and voltage waveform: non sinusoidal waveforms, steady state: harmonic voltage"
+"Current and voltage waveform: non sinusoidal waveforms, steady state: harmonic power"
+"AC power and energy: single phase, active power"
+"AC power and energy: single phase, active energy"
+"AC power and energy: single phase, reactive power"
+"AC power and energy: single phase, apparent power"
+DC current: ratios up to 100 A
+High DC  current: ratios above 100 A
+High DC voltage: DC voltage meter
+DC resistance standards for high current
+"Acceleration (shock, modulus)"
+"Shock sensitivity (charge, modulus)"
+"Shock sensitivity (voltage, modulus)"
+Surface texture
+Roundness standards
+Bone-conduction response level
+High AC current (phase)
+High pulsed AC current (phase)
+DC current ratio
+Attenuation
+Reflection coefficient
+DC voltage: single values
+AC resistance: phase
+Power loss (in-phase)
+Power loss (quadrature)
+Energy (sinusoidal)
+Power (non-sinusoidal)
+Power (sinusoidal)
+DC voltage ratios
+Capacitance: magnitude
+Turns ratio (quadrature and in-phase)
+AC voltage ratio (in-phase and quadrature)
+"Pulsed high voltage, lightning impulse parameters: peak voltage"
+"Pulsed high voltage, lightning impulse parameters: front time"
+"Pulsed high voltage, lightning impulse parameters: time to half value"
+"Pulsed high voltage, switching impulse parameters: peak voltage"
+"Pulsed high voltage, switching impulse parameters: front time"
+"Pulsed high voltage, switching impulse parameters: time to half value"
+AC current ratio (in-phase and quadrature)
+High AC current (amplitude)
+High pulsed AC current (amplitude)
+RF power
+RF measurements: RF-DC difference
+Resistance
+AC resistance: magnitude
+AC/DC voltage transfer
+AC/DC current transfer
+"AC power and energy: single phase (frequency >= 400 Hz), active energy"
+"Responsivity spectral, power"
+"Responsivity laser, power"
+"Emittance, spectral"
+BRDF
+Reflectance factor
+Radiance factor
+Wavenumber
+Correlated colour temperature response
+"Colour, transmitted, L*a*b*"
+"Reflectance, hemispherical, spectral"
+"Radiant intensity, spectral"
+"Responsivity, spectral, radiance"
+2.1.1
+Whiteness
+AC high voltage capacitance bridges: dissipation factor
+High AC current: current transformer ratio error
+High AC current: current transformer phase displacement
+High AC voltage: AC high voltage transformers: ratio error
+High AC voltage: AC high voltage transformers: phase displacement
+Impedance (up to the MHz range): capacitance: dissipation factor for dielectric capacitors
+Impedance (up to the MHz range): capacitance: meters
+Impedance (up to the MHz range): inductance: meters
+Impedance: AC resistance: modulus
+Impedance: AC resistance: meters
+AC high voltage capacitance bridges: capacitance ratio
+High AC voltage: high voltage impedance: capacitance
+High AC voltage: high voltage impedance: dissipation factor
+High AC voltage: AC high voltage: peak values
+DC resistance meters: low  values
+DC current meters: low and intermediate values
+High AC voltage: AC high voltage: sources
+High AC voltage: AC high voltage: meters
+High DC voltage: high DC voltage: sources
+High DC voltage: high DC voltage: meters
+High DC voltage: high DC voltage: ratios
+Pressure sensitivity level (modulus)
+Angular acceleration (modulus)
+Shock sensitivity (modulus)
+DC voltage sources: single vaues
+Capacitance: low-loss capacitors
+Averaged luminous intensity
+Volume or mass flowrate
+Fibre wavelength
+Fibre attenuation
+"Color, emitted"
+"Responsivity, blackbody total irradiance"
+"Responsivity, UV BB irradiance"
+"Power, spectral total radiant"
+Fibre responsivity
+Fibre length
+Gravitational acceleration
+Volume liquid flowrate
+Mass gas flowrate
+Air velocity
+Liquid static volume
+Liquid mass flow
+Volume hydrocarbon flowrate
+Mass liquid flowrate
+Mass of liquid
+Force: tension
+Electrostatic actuator response
+Gloss
+"Radiance factor, spectral"
+"Radiance factor, total (reflected plus luminescent), spectral"
+"Radiance factor, reflected, spectral"
+"Reflectance, regular spectral"
+Capacitance: air capacitors
+Air Temperature
+Dew-point
+Relative humidity
+Viscosity
+Pressure sensitivity level (phase)
+"Color, emitted, x, y"
+"Colour surface x,y,Y"
+"Colour surface L,a,b"
+"Fiber optics, wavelength"
+Luminous exposure
+Luminous exposure responsivity
+"Chromatic dispersion, slope"
+"Fiber optics, chromatic dispersion"
+"Chromatic dispersion, zero wavelength"
+Spectral radiant flux
+Surface texture standards
+Angle by circle dividers
+Length instruments
+Angle instruments
+Gear standards
+Screw standards
+Spur gear
+Cylindricity standards
+Internal API screw thread gauge
+External API screw thread gauge
+Film thickness
+Reference materials
+"Positioning instruments, 3-D Instruments"
+Positioning instruments
+"Film thickness, or layer thickness"
+Negative gauge pressure: gas medium
+"Differential pressure, liquid medium"
+"Differential pressure, gas medium"
+Angle standards
+Straightness standards
+1-D gratings
+"Surface texture, step height"
+Complex geometry
+Long distance
+Screw threads
+"2-D, 3-D instruments"
+Pressure artifacts
+Refractive index of materials measuring instruments
+Angle prisms
+Line scales
+Miscellaneous complex geometry
+Thermal expansivity
+Small-angle generators
+"Colour, transmitted, x,y,Y"
+Chromatic dispersion
+Zero dispersion wavelength
+"Colour, surface, La*b*"
+Dispersion slope
+"BRDF, spectral"
+Frequency response (modulus)
+"Colour rendering, Ra"
+Volume flowrate (or Mass flowrate); liquid
+Reflection coefficient: in coaxial phase (with magnitude of reflection coefficient >= 0.1)
+Reflection coefficient s11: in coaxial magnitude
+Reflection coefficient s11: in coaxial phase (with magnitude of reflection coefficient <= 0.1)
+Reflection coefficient s11: in coaxial phase (with magnitude of reflection coefficient >= 0.1)
+Reflection coefficient s22: in coaxial magnitude
+Reflection coefficient s22: in coaxial phase (with magnitude of reflection coefficient <= 0.1)
+Reflection coefficient s22: in coaxial phase (with magnitude of reflection coefficient >= 0.1)
+RF voltage
+Liquid flow
+Gas flow
+Quantity of liquid
+Flow speed
+Volume or mass gas flowrate
+Liquid volume flowrate
+Liquid mass flowrate
+Capacitance and dissipation factor for dielectric capacitors: dissipation factor
+"DC voltage sources, low value ranges"
+AC high voltage transformer: ratio error
+AC high voltage transformer: phase displacement
+"AC high current, current transformers: ratio error"
+Capacitance and dissipation factor for dielectric capacitors: capacitance
+"Colour, surface, L*,a*,b*"
+Hand Instruments
+Index of refraction
+Electrical conductivity: semiconducting materials
+Scalar RF attenuation: in coaxials
+DC high voltage: sources
+DC high voltage: meters
+RF power: calibration factor in waveguide
+Scattering parameters: transmission coefficient in coaxial: magnitude
+Signal and pulse characteristics: pulse rise time
+RF voltage: RF-DC transfer difference
+AC voltage ratio: real component and imaginary component
+Characteristic impedance: electrical parameters
+AC current ratio: real component and imaginary component
+Scattering parameters: reflection coefficient (Sii) in waveguide
+AC resistance: real and imaginary component
+Current and voltage waveform
+Various dimensional
+Roughness standards
+DC resistance: ratios
+High AC current: phase error
+"Inductance: equivalent series resistance, low values"
+"Inductance: equivalent series resistance, intermediate values"
+"Inductance: equivalent series resistance, high values"
+High AC current: current tranformer phase displacement
+"Signal and pulse characteristics: pulse time parameters, pulse risetime"
+High DC voltage: high voltage meters
+Hydrophone free-field sensitivity
+Correlated color temperature response
+"Colour, emitted, colour space: x, y"
+"Colour, emitted, colour space: u, v"
+"Colour, emitted, colour space: u', v'"
+"Refractive index, spectral"
+"Radiance, total"
+"Responsivity, solar, irradiance"
+Form
+Voltage sensivity (modulus)
+"Attenuation, optical fibre components"
+Attenuation
+Zero chromatic dispersion wavelength
+Length
+Length (distance scale deviation)
+Length (distance scale offset)
+"Responsivity, solar, spectral, irradiance"
+High AC voltage: voltage transformer ratio error
+High AC voltage: voltage transformer phase displacement
+"AC power and energy: three phase, active phase"
+High AC voltage: RMS value
+AC current: AC/DC current transfer
+High DC voltage: average value
+AC resistance:resistors for high current
+High DC current: average value
+Scalar RF reflection coefficient: in waveguides
+Scalar RF attenuation: in waveguides
+Scattering parameters: effective source match
+Current and voltage waveform: voltage total harmonic distortion (THD)
+Soft magnetic sheet and powder materials: specific total power loss
+Soft magnetic sheet and powder materials: peak value of AC magnetic polarisation
+Soft magnetic sheet and powder materials: peak value of  magnetic field strength
+Soft magnetic sheet and powder materials: RMS value of magnetic field strength
+Soft magnetic sheet and powder materials: specific apparent power
+Soft magnetic bulk materials: magnetic saturation polarization
+Magnetic fields below 50 kHz: AC magnetic field strength
+Electromagnetic fields above 50 kHz: AC magnetic flux density
+AC resistance: argument
+"Scattering parameters: transmission coefficient (Sij) in waveguides, real and imaginary"
+Capacitance: dissipation factor for transformed capacitors
+Antenna properties: reflection coefficient
+"Signal and pulse characteristics: pulse amplitude aberrations, preshoot and overshoot"
+Signal and pulse characteristics: pulse settling
+High AC current: ratio: phase displacement
+Scalar RF attenuation and gain: in coaxials
+Scalar RF attenuation and gain: in waveguides
+Dielectric properties: relative permittivity: imaginary component
+Magnetic fields: DC magnetic flux density
+Magnetic fields: DC magnetic field strength
+RF characteristic impedance: electrical parameters
+Mutual inductance
+HF power: calibration factor in coaxials
+HF power: calibration factor in waveguides
+DC resistance standards and sources: standards for high currents
+High AC current: RMS value
+Current and voltage waveform: mains frequency current harmonics
+"Current and voltage waveform: non sinusoidal waveforms, harmonic measurements for current waveforms, fluctuating  harmonics"
+"Current and voltage waveform: flicker severity (Pst) square wave, sine wave and complex modulation"
+Current and voltage waveform: flicker severity (Pst) complex modulation
+RF noise: noise temperature in waveguides
+Capacitance: transformed capacitors
+RF noise: noise temperature in coaxials
+Magnetic fields: AC magnetic flux density
+Magnetic fields: turn area
+Magnetic fields: AC magnetic field strength
+Magnetic fields: magnetic field strength per unit current
+Soft magnetic sheet and powder materials: peak permeability
+Soft magnetic bulk materials: permeability
+"Feebly magnetic, paramagnetic and diamagnetic materials: DC relative magnetic permeability"
+Hard magnetic materials: coercive field strength HCB
+Hard magnetic materials: coercive field strength HCJ
+Hard magnetic materials: maximum energy product: (B·H)max
+Hard magnetic materials: magnetic moment
+Scalar RF reflection coefficient: in coaxials
+Scalar RF reflection and attenuation: directivity
+AC power: single phase (frequency >= 400 Hz)
+AC energy: single phase (frequency >= 400 Hz)
+"Inductance: meters, low values"
+"Inductance: meters, intermediate values"
+DC voltage sources
+Reflection coefficient (Sii) in coaxials (values in linear terms: magnitude)
+Reflection coefficient (Sii) in coaxials (phase)
+Effective source match
+Excess noise ratio in coaxials
+Amplitude noise parameters (noise figure)
+Amplitude noise parameters (gain)
+"Transmission coefficient (Sij): coaxials, magnitude"
+"Transmission coefficient (Sij): coaxials, phase"
+High AC voltage: peak values
+Inductance: self inductance
+Impulse voltage and current: lightning impulse test voltage value
+Impulse voltage and current: lightning impulse front time
+Impulse voltage and current: lightning impulse time to half value
+Impulse voltage and current: switching impulse test voltage value
+Calibration factor in coaxials
+Absolute power in coaxials
+DC resistance meters: high  values
+High voltage impedance: dissipation factor for capacitance
+High voltage impedance: loss angle for inductance
+High voltage impedance: burden: argument
+AC voltage ratio: argument
+AC voltage ratio: modulus
+Impulse voltage and current: switching impulse time to peak
+High voltage impedance: inductance
+High voltage impedance: burden: modulus
+DC current sources: transconductance ratio
+AC resistance: modulus
+AC current up to 100 A: sources: transconductance
+Impulse voltage and current: impulse current peak value
+Impulse voltage and current: impulse current time parameters
+Pulsed high voltage and current: switching impulse time time to half value
+DC voltage ratios: up to 1100V
+"Scalar RF reflection coefficient: in waveguides, magnitude"
+"Scalar RF attenuation: in coaxials, magnitude"
+"Scalar RF attenuation: in waveguides, magnitude"
+Electric charge: meters
+AC voltage ratio: attenuation
+Lumped impedance: quality factor
+RF noise: phase noise
+"Electric discharge: response, time parameters"
+High voltage impedance: resistance
+Impulse voltage and current: switching impulse time to half value
+Pulsed high voltage and current: impulse current parameters
+High DC current: ratios
+Impulse voltage and current: lightning impulse time to chopping
+"Electric discharge: response, crest value"
+RF power: effective efficiency in coaxials
+Capacitance: dielectric capacitors
+"Inductance: self inductance,  low values"
+High AC current: ratio: current transformer ratio error
+Electric discharge: response
+Signal and pulse characteristics: pulse risetime and duration
+Scattering parameters: reflection coefficients (Sii) for common mode systems
+Scattering parameters: transmission coefficient (Sij) for common mode systems
+High AC current: ratio:  current transformer phase displacement
+High AC current: ratio: current transformer phase displacement
+"Scattering parameters: transmission coefficient (Sij) in coaxials, abs(Sij) in logarithmic"
+Scattering parameters: reflection coefficient (Sii) in coaxials: real and imaginary
+Soft magnetic sheet materials: specific loss
+Soft magnetic sheet materials: apparent power
+Soft magnetic sheet materials: value of magnetic field strength
+Magnetic fields below 50 kHz: magnetic flux density per unit current
+Soft magnetic sheet materials: value of DC magnetic polarisation
+Soft magnetic sheet materials: value of AC magnetic polarisation
+Soft magnetic sheet materials: resistivity
+"Feebly magnetic, paramagnetic materials: DC magnetic susceptibility"
+"Hard magnetic materials: magnetic polarization, remanent magnetic flux density"
+Hard magnetic materials: coercive field strength (HCJ)
+Hard magnetic materials: coercive field strength (HCB)
+Hard magnetic materials: maximum energy product
+Electric discharge: response: amplitude value
+Soft magnetic sheet materials: relative permeability
+High AC current: pulsating current let-through energy
+High AC current: pulsating current peak value
+RF voltage and current: RF voltage division factor
+RF power: calibraton factor in waveguides
+Current and voltage waveform: mains frequency harmonics
+Current and voltage waveform: mains frequency harmonic distortion
+Electric charge: sources
+"AC power and energy: single phase, power loss"
+"AC power and energy: three phase, power loss"
+"Current and voltage waveform: mains frequency voltage fluctuations, square or sine wave or other modulation"
+Magnetic fields below 50 kHz: DC magnetic field strength
+AC resistance: imaginary component
+"Scattering parameters (vectors): transmission coefficient (Sij) in coaxials, magnitude (absolute value)"
+"Scattering parameters (vectors): reflection coefficient (Sii) in coaxials, magnitude (absolute value)"
+AC resistance: standards
+"Current and voltage waveform: flicker severity (Pst), square or sine wave modulation"
+Attenuation on coaxialss
+Impulse voltage and current: very fast transient
+Impulse voltage and current: lightning impulse voltage front time
+Impulse voltage and current: lightning impulse voltage time to half value
+Impulse voltage and current: switching impulse voltage time to peak
+Impulse voltage and current: switching impulse voltage time to half value
+Current and voltage waveform: mains frequency voltage harmonics
+Electromagnetic fields above 50 kHz: electric field strength (far field)
+High frequency measurements: antenna gain
+"Signal and pulse characteristics: pulse time parameters: rise time, fall time, pulse width and phase"
+Soft magnetic bulk materials: magnetic saturation polarisation
+Magnetic data storage media: surface profile of magnetic stripes
+"High voltage impedance: burden, argument"
+Current transformer bridge for conventional and non-conventional with analog output types
+Current transformer and non-conventional current transformer with analog output
+"Scattering parameters: transmission coefficient (Sij) in coaxials, real and imaginary component"
+"Scattering parameters: reflection coefficient (Sii) in coaxials, real and imaginary component"
+Signal and pulse characteristics: frequency modulation
+Signal and pulse characteristics: amplitude modulation
+Magnetic data storage media: signal amplitude of magnetic stripes
+"High voltage impedance: burden, real component"
+"Current and voltage waveform: mains frequency voltage fluctuations, square wave modulation"
+Signal and pulse characteristics: distortion
+Signal and pulse characteristics: harmonic content
+Signal and pulse characteristics: pulse time parameters: time interval
+DC current sources: imtermediate values
+Liquid volume
+Liquid mass
+Liquid flowrate: volume
+Nanoparticle size
+Air speed
+Gas flowrate
+Hydrocarbon flowrate
+Absolute pressure: vacuum
+Molar flowrate
+Water flowrate
+AC voltage ratio: real component: resistance ratio
+AC voltage ratio: real component: angle
+Impulse voltage and current: response time of step response
+Impulse voltage and current: overshoot of step response
+Impulse voltage and current: settling time of step response
+RF characteristic impedance: mechanical cross dimensions
+"RF characteristic impedance: mechanical dimensions, length"
+Impulse voltage and current: switching impulse voltage test voltage value
+Impulse voltage and current: switching impulse time parameters
+Soft magnetic sheet materials: specific total power loss (alternating field)
+Soft magnetic sheet materials: peak value of AC magnetic polarization
+Soft magnetic sheet materials: peak value of magnetic field strength (alternating field)
+Soft magnetic bulk materials: coercive field strength (quasi-static field)
+Soft magnetic bulk materials: coercive field strength (static field)
+Soft magnetic bulk materials: magnetic saturation polarization (quasi-static field)
+"AC resistance: AC/DC difference, fixed resistor"
+AC resistance: resistors for high current: AC current shunt
+"Ratios up to 100 A: resistive dividers, DC current comparators, current transducers"
+Impulse voltage and current: impulse current front time
+Density of LPG
+Torque: clockwise and anticlockwise
+Thermal energy (temperature difference)
+"Gas flowing quantity, volume"
+"Liquid flowing quantity, volume"
+Thermal energy (indication of temperature signal by the calculator)
+Thermal energy (as a function of liquid flowrate and temperature difference)
+Flowrate mass (low pressure gas)
+Flowrate volume (high pressure gas)
+Flowrate mass (high pressure gas)
+Flowrate volume (pressurized air)
+Flowrate mass (pressurized air)
+Flowrate mass (high temperature)
+Liquid flowrate: mass
+Thermal energy
+Volume flowrate (average)
+Mass flowrate (average)
+Volume (liquid)
+Bending stiffness
+Negative gauge mode
+Liquid dynamic (flowing) volume
+Liquid flowing quantity: mass or volume
+Volume liquidhydrocarbon flowrate
+"Absolute pressure: gas medium, vacuum"
+Liquid flowrate
+Mass flowrate (liquid)
+Mass (liquid)
+Volume (gas)
+"Differential pressure, oil medium"
+Volume (static)
+"Force: tension, compression"
+"Torque: clockwise, anti-clockwise"
+Gravity (free fall) acceleration
+Volume hydrocarbon liquid flow rate
+Volume natural gas flowrate
+Mass cryogenic liquid flow rate meter factor
+Fibre optics. Length
+"Scattering parameters: reflection coefficient (Sii) in waveguides, magnitude"
+"Scattering parameters: transmission coefficient (Sij) on waveguide, magnitude"
+"Scattering parameters: transmission coefficient (Sij) on waveguide, phase"
+Scattering parameters: transmission coefficients (Sij) for common mode systems
+RF noise: excess noise ratio in coaxials
+RF voltage and current: coupling factor
+AC voltage meters: amplitude
+AC voltage meters: phase
+AC voltage: real component
+AC voltage: imaginary component
+RF voltage and current: RF transfer impedance
+AC resistance: high current shunt: amplitude ratio between current in and voltage out AC resistance: resistors for high current
+"AC resistance: meters, modulus"
+"AC resistance: meters, argument"
+AC resistance
+"AC power and energy: three phase, active or reactive energy"
+Mass density
+Mass/unit area
+Mass fraction
+Amount-of-substance content
+Amount of silicon oxide expressed as a thickness of SiO2 on Si
+pH
+Electrolytic conductivity
+Isotope amount ratio n(10B)/n(11B)
+Areal density of antimony atoms in a layer
+BET specific surface area
+"Micropore volume, specific pore volume (Gurvich)"
+"Pore width, hydraulic pore radius"
+"Specific pore volume at 395 MPa, whole pressure-volume curve"
+"Median pore diameter d50, whole diameter-volume curve"
+Certified single values: specific pore volume
+Certified single values: pore diameter d50
+Certified pressure-volume curve between 0.28 MPa and 1.41 MPa
+Certified pressure-volume curve between 0.12 MPa and 0.88 MPa
+Amount-of-substance concentration
+Volume fraction
+Mass concentration
+"Isotope amount ratio, n(AHg)/n(198Hg)"
+Amount of SiO2 expressed as thickness of SiO2 on Si
+Amount-of-substance fraction of Fe
+Isotope amount ratio
+Absolute isotope amount ratio
+δB-11
+"Isotope ratios iPb/jPb with i, j = 204, 206, 207, 208"
+isotope ratio
+Amount-of-substance fraction
+Isotope abundance
+Specific pore volume
+Pore diameter
+Modal pore diameter
+Specific adsorption of nitrogen
+DNA copy number ratio
+"Amount-of-substance of SiO2, expressed as thickness of SiO2 on Si"
+Atomic fraction of Fe
+Amount-of-substance of silicon oxides expressed as thickness of SiO2 on Si
+Atomic fraction
+Mole fraction
+Average pore diameter
+Specific adsorption
+Amount-of-substance flow
+Amount content
+Conventional ion activity
+DNA fragment copy number content
+Relative carbon isotope ratio
+Copy number ratio
+DNA fragment copy number
+Relative nitrogen isotope ratio
+Number concentration
+Charge concentration
+Amount-of-substance content or amount content
+Molar fraction
+Carbon isotope ratio relative to VPDB-LSVEC
+Molality
+Molar mass
+d13CVPDB (Carbon isotope ratio relative to VPDB)
+Copy number concentration
+DNA copy number ratio of two DNA fragments with specified sequence
+Copy number  ratio [ Exogenous sequence/ endogenous sequence ]
+Mass fraction (dry mass base)
+Mass fraction (dry mass correction)
+δC-13_VPDB
+DNA copy number ratio of MON810 in comparison to maize endogenous gene
+""
+Signal and pulse characteristics: pulse time parameters: rise time
+Signal and pulse characteristics: pulse time parameters: risetime
+Pressure sensitivity level
+""
+Volume of liquid
+Volume of liquid
+Volume of liquid
+Absolute pressure
+Gauge pressure
+Acceleration of free fall
+Capacitance: capacitance and dissipation factor for low loss capacitors
+"AC power and energy: single phase (frequencies below or equal to 400 Hz), active power"
+"AC power and energy: three phase (frequencies below or equal to 400 Hz), active power"
+"AC power and energy: single phase (frequencies below or equal to 400 Hz), reactive power"
+AC power and energy: three phase reactive power
+"AC power and energy: single phase (frequencies below or equal to 400 Hz), active energy"
+"AC power and energy: three phase (frequencies below or equal to 400 Hz), active energy"
+"AC power and energy: single phase (frequencies below or equal to 400 Hz), reactive energy"
+"AC power and energy: three phase (frequencies below or equal to 400 Hz), reactive energy"
+"Inductance: self inductance and equivalent series resistance, intermediate values (above or equal to 1 mH to 1 H)"
+"Inductance: self inductance and equivalent series resistance, low values (lower than 1 mH)"
+Force: tension and compression
+Mass and volume gas flowrate (low pressure gas)
+Free-field sensitivity (modulus)
+Electroacoustic radiation conductance
+Ultrasonic pressure
+DC Voltage: Intermediate Values
+DC Current: Intermediate Values
+Thermal expansitivity
+"AC Voltage, V: meters"
+"AC Current, A: meters"
+DC Resistance (Low values equal to 1 ohm)
+thickness
+DC Resistance (Intermediate values from 10 ohm up to 10 kohm)
+AC/DC transfer difference at medium voltage
+AC/DC transfer difference at higher voltage
+δ 13CVPDB-LSVEC
+Crystal interplanar spacing
+sucralose
+Volume hydrocarbon flow rate
+Volume water flow rate
+Volume flow rate
+"Transmittance regular, spectral"
+"Angle of rotation of plane of polarization, spectral"
+RF Power: absolute power in coaxial line
+"Scattering parameters: reflection coefficient (Sii) in coaxial line, real and imaginary"
+"Scattering parameters: transmission coefficient (Sij) in coaxial line, module"
+"Scattering parameters: transmission coefficient (Sij) in coaxial line, phase"
+Scalar RF attenuation in coaxial line
+RF power: calibration factor in coaxial line
+Length Standard
+Volume of liquid.
+Angle by circle-dividers
+Angle artefacts
+length
+Mass gas flow rate
+Haze
+Free-field sensitivity level (modulus)
+Air conduction response level
+Bone conduction response level
+Acceleration frequency response (modulus)
+Shock charge sensitivity (modulus)
+Shock voltage sensitivity (modulus)
+"Absolute pressure, gas medium"
+"Gauge pressure, gas medium"
+Absolute pressure gas medium
+"AC power and energy: single phase (f <= 400 Hz), apparent power"
+"AC power and energy: single phase (f <= 400 Hz), active power"
+"AC power and energy: single phase (f <= 400 Hz), reactive power"
+"AC power and energy: single phase (f > 400 Hz), apparent power"
+"AC power and energy: single phase (f > 400 Hz), active power"
+"AC power and energy: single phase (f > 400 Hz), reactive power"
+High AC voltage: RMS value for high AC voltage
+High AC current: High AC current RMS value
+RF noise: noise temperature in coaxial line
+"Scattering parameters: reflection coefficient (Sii) in coaxial line, magnitude"
+"Scattering parameters: reflection coefficient (Sii) in coaxial line, phase"
+"Scattering parameters: reflection coefficient (Sii) in waveguide, magnitude"
+"Scattering parameters: reflection coefficient (Sii) in waveguide, phase"
+"Scattering parameters: transmission coefficient (Sij) in coaxial line, magnitude"
+"Scattering parameters: transmission coefficient (Sij) in waveguide, magnitude"
+"Scattering parameters: transmission coefficient (Sij) in waveguide, phase"
+Amount ratio
+Amount-of-substance ratio
+HF antenna parameter: antenna gain
+HF antenna parameter: polarization
+HF antenna parameter: antenna polarization
+HF antenna parameter: antenna pattern
+RF power: absolute power on coaxials
+RF power: calibration factor on coaxials
+Radio frequency power: calibration factor on coaxial lines
+lx
+Electromagnetic fields above 50 kHz: рower flux density
+Signal and pulse characteristics: FM modulation
+Lumped impedance/admittance (using RF techniques):inductance (L)
+"DC resistance standards and sources, high values (resistance R) (above 1 MΩ)"
+"AC power and energy: single phase (f<=400 Hz), active power"
+"DC voltage sources, single values"
+"DC voltage sources, low and intermediate value ranges"
+"DC voltage meters, intermediate values"
+DC voltage sources: low values range
+AC/DC voltage transfer: AC/DC transfer difference at low voltages
+AC/DC voltage transfer: AC/DC transfer difference at medium voltages
+AC/DC voltage transfer: AC/DC transfer difference at higher voltages
+Radio frequency voltage and current: RF/DC difference
+Radio frequency voltage and current: RF voltage source
+Volume Gas Flow Rate
+Air Flow Speed
+central length L
+AC voltage up to 1100 V : sources
+Angle by circle divider
+Dew point temperature
+"Radiant flux, spectral"
+"Colour, emitted, y"
+"Colour, emitted u"
+"Colour, emitted v"
+"AC voltage ratio, argument"
+Capacitance: capacitance for low loss capacitors
+Capacitance: capacitance for dielectric capacitors
+Capacitance: low loss capacitors
+AC voltage: AC/DC transfer difference at low voltages
+AC voltage: AC/DC transfer difference at medium voltages
+AC voltage: AC/DC transfer difference at higher voltages
+AC power and energy: single phase (frequencies below or equal to 400 Hz): active power
+AC power and energy: single phase (frequencies below or equal to 400 Hz): reactive power
+AC power and energy: single phase (frequencies below or equal to 400 Hz): apparent power
+AC power and energy: single phase (frequencies below or equal to 400 Hz): active energy
+AC power and energy: single phase (frequencies below or equal to 400 Hz): reactive energy
+AC power and energy: three phase: active power
+AC power and energy: three phase: reactive power
+AC power and energy: three phase: apparent power
+AC power and energy: three phase: active energy
+AC power and energy: three phase: reactive energy
+DC resistance standards and sources: power coefficients
+DC resistance standards and sources: pressure coefficients
+DC resistance ratios
+High DC voltage: ratio
+High voltage impedance: burden: apparent power
+High voltage impedance: burden: power factor
+High DC current: ratio
+Absolute power in coxial line
+Calibration factor in coxial line
+Reflection coefficient (Sii) in coxial line (values in linear terms: magnitude)
+Reflection coefficient (Sii) in coxial line (phase)
+Transmission coefficient (Sij) in coxial line (values in dB: magnitude)
+Transmission coefficient (Sij) in coxial line (values in linear terms: phase)
+Excess noise ratio in coaxial line
+Parameters for other impulse voltage types: other impulse measuring system
+RF power: calibration factor and effective efficiency in waveguide
+"Scalar RF reflection coefficient: in waveguide, magnitude"
+"Scalar RF attenuation: in coaxial line, magnitude"
+"Scalar RF attenuation: in waveguide, magnitude"
+"Scattering parameters: reflection coefficient (Sii) in waveguide, real and imaginary"
+"Scattering parameters: transmission coefficient (Sij) in waveguide, real and imaginary"
+"Scattering parameters: transmission coefficient (Sij) in coaxial line, real and imaginary"
+RF voltage: RF voltage meters
+Scalar RF attenuation: in coaxial line
+RF power: effective efficiency in coaxial line
+"Scattering parameters: reflection coefficient (Sii) in planar line, magnitude"
+"Scattering parameters: reflection coefficient (Sii) in planar line, phase"
+"Scattering parameters: transmission (Sij) in planar line, magnitude"
+"Scattering parameters: transmission (Sij) in planar line, phase"
+Antenna gain
+Signal and pulse characteristics: pulse time parameters: step response
+Hard magnetic material: maximum energy product (B H)max
+HF power: calibration factor in coaxial line
+HF power: calibration factor in waveguide
+Scalar RF attenuation and gain: in coaxial line
+Scalar RF attenuation and gain: in waveguide
+Scattering parameters: transmission coefficient (Sij) in waveguide real and imaginary
+AC current: AC-DC transfer difference
+RF power: Calibration factor and effective efficiency in coaxial line
+100
+Scalar RF reflection coefficient: in coaxial line
+Scattering parameters(vectors): Reflection coefficient (Sii) in coaxial line (values in linear terms: real and imaginary)
+Scattering parameters(vectors): Transmission coefficient (Sij) in coaxial line (magnitude)
+Scattering parameters(vectors): Transmission coefficient (Sij) in coaxial line (phase)
+DC current ratios: ratios up to 100 A
+AC voltage: AC-DC transfer difference at low voltages
+AC voltage: AC-DC transfer difference at medium voltages
+Impulse voltage and current: impulse current scale factor
+Impulse voltage and current: impulse current rise time
+Impulse voltage and current: peak value
+Electric discharge: rise time of partial discharge pulse
+High DC current ratio
+DC current meters: intermediate value
+AC voltage: AC-DC transfer difference at higher voltages
+Capacitance: low loss capacitor
+Capacitance: dielectric capacitor
+AC-DC current transfer: AC-DC transfer difference
+"AC power and energy: single phase (frequency below or equal to 400 Hz), active power"
+"AC power and energy: single phase (frequency below or equal to 400 Hz), apparent power"
+High DC voltage: Average value of DC voltage
+High DC voltage: High DC voltage ratio
+"High voltage impedance: burden, imaginary component"
+High AC voltage and voltage transformers: voltage transformers: ratio error
+High AC voltage and voltage transformers: voltage transformers: phase displacement
+High AC current and current transformers: current transformers: ratio error
+High AC current and current transformers: current transformers: phase displacement
+RF power: absolute power in waveguide
+RF power: calibration factor on waveguides
+RF power: effective efficiency in waveguide
+"Scattering parameters: reflection coefficient (Sii) in coaxial line, real and imaginary component"
+"Scattering parameters: transmission coefficient (Sij) in coaxial line, real and imaginary component"
+"Scattering parameters: reflection coefficient (Sii) on waveguides, real and imaginary"
+"Scattering parameters: transmission coefficient (Sij) on waveguides, real and imaginary"
+DC resistance meters: intermediate value
+Capacitance: capacitance for low loss capacitor
+Capacitance: capacitance for dielectric capacitor
+Capacitance:
+AC voltage up to 10 V: sources
+AC-DC voltage transfer: AC-DC difference at low voltages
+AC-DC voltage transfer: AC-DC difference at intermediate voltages
+AC-DC voltage transfer: AC-DC transfer difference at higher voltages
+"AC voltage ratio, attenuation and gain: real component"
+"AC voltage ratio, attenuation and gain: imaginary component"
+AC power and energy: single phase at frequencies below 400 Hz
+High DC voltage : ratios
+AC high voltage:sources
+AC high voltage:meters
+AC high voltage : ratio error
+AC high voltage : ratio : Phase displacement
+High AC current : ratio error
+High DC current : sources
+High DC current : meters
+High DC current : ratios
+RF power: calibration factor and effective efficiency on coaxials
+RF power: calibration factor and effective efficiency on waveguides
+Scattering parameters: reflection coefficient (Sii) on coaxials
+Scattering parameters: reflection coefficient (Sii) on waveguides
+Scattering parameters: transmission coefficient (Sij) on coaxials
+Scattering parameters: transmission coefficient (Sij) on waveguides
+DC current meters intermediate values
+Phase angl: meters
+RF power: calibration factor in coaxial
+Scattering parameters: reflection coefficient in coaxial: magnitude
+"Scattering parameters: Directivity, effective source match: reflection coefficient in coaxial: magnitude"
+δ13CVPDB (Carbon isotope ratio relative to VPDB)
+mg/g
+Amount of substance concentration
+Gravity acceleration
+Hardness Brinell
+Hardness Rockwell HRA
+amount-of-substace fraction
+"AC power and energy:single phase (frequency below or equal to 400Hz), active power"
+Electric Field probe
+Scattering parameters: Transmission coefficient in coaxials
+Scattering parameters: Reflection coefficient in coaxials
+ABSOLUTE GRAVIMETERS
+Negative pressure
+Amount of substance fraction
+Specific adsorption of N2 or Kr
+Hardness Rockwell HRBW
+Hardness Rockwell HRC
+"Gauge pressure, oil medium"
+"ٍScattering parameters (vectors), Reflection coefficient in coaxial (real and imaginary)"
+Alcohol by volume
+Airborne Particle Number Concentration
+Scalar RF attenuation in waveguides
+Amount -of-substance fraction
+"AC power and energy: three phase (frequency <= 400 Hz), apparent power"
+"AC power and energy: single phase (frequency <= 400 Hz), appearnt power"
+"AC power and energy: three phase (frequency <= 400 Hz), apparent energy"
+µg/g
+Benzo (k) fluoranthene
+Copy number ratio [ Exogenous sequence/ endogenous sequence ]
+610-19
+mol/kg
+"Inductance: self inductance,intermediate values"
+isotope amount ratio n(iMg)/n(jMg)
+isotope amount ratio n(iCd)/n(jCd)
+isotope amount ratio n(iPb)/n(jPb)
+isotope amount ratio n(iPd)/n(jPd)
+isotope amount ratio n(iPt)/n(jPt)
+isotope amount fraction n(iPb)/n(Pb)
+Mass and volume flow rates
+Magnetic fields below 50 kHz: magnetic flux density
+mg/kg
+Specific adsorption of Kr
+amount
+Absolute frequency
+cantidad de contenido de hydrogen ion
+Short circuit current under standard test conditions according to IEC 60904-3:2008 expressed in A
+"Inductance: self inductance and equivalent series resistance, low values (< 1 mH)"
+"Inductance: self inductance and equivalent series resistance, intermediate values (≥ 1 mH to 1 H)"
+"Inductance: self inductance and equivalent series resistance, high values (> 1 H)"
+Capacitance and dissipation factor: low loss capacitor
+mass
+Vacuum wavelength
+Magnetic fields below 50 kHz: magnetic field strength
+Impulse voltage and current: lightning impulse voltage scale factor
+Impulse voltage and current: switching impulse voltage scale factor
+"AC power and energy: three phase (frequency <= 400 Hz), reactive"
+1482 standard inductors
+"ٍScattering parameters (vectors), (11.3.1) Reflection coefficient (Sii) in coaxial ( values in linear terms: magnitude and phase)"
+"ٍScattering parameters (vectors), (11.3.1) Reflection coefficient (Sii) in coaxial ( values in linear terms: magnitude )"
+Reflection coefficient (Sii) in coaxial line ( values in linear terms: magnitude )
+"Pulsed high voltage, lightning impulse parameters: scale factor"
+Quantity of fluid
+Pulsed high voltage and current: switching impulse voltage scale factor
+"Pulsed high voltage and current: lightning impulse voltage parameters, scale factor"
+"Pulsed high voltage and current: switching impulse voltage parameters, scale factor"
+"line spacing, L"
+grid point coordinates L; deviation from squareness
+CMM artefacts
+"RF transmission coefficient, in coaxials (values in linear )"
+Charge sensitivity (phase)
+Voltage sensitivity (phase)
+Scalar RF reflection coefficient measurements in balanced lines
+Nanoparticle diameter
+risetime
+Reference materials: 5 nm to 500 nm
+High AC voltage: composite and harmonic voltage signal
+Specific adsorption of N2 or Kr as appropriate
+AC high voltage and voltage transformers: voltage transformers: phase displacement
+Transmission coefficient (Sij) in coaxial line (values in linear terms: phase)
+Transmission coefficient (Sij) in coaxial line (values in dB: magnitude)
+Coil Constant for permanent magnet measurement: DC
+Hard magnetic materials: Magnetic dipole moment
+Constant of Helmholtz coil
+Antenna Radiation pattern
+antenna pair reference site attenuation
+AC power: single phase (f>=400Hz)
+DC energy
+AC current ratio up to 100A: real component
+AC current ratio up to 100A: imaginary component
+"AC power and energy: three phase (f <= 400 Hz), active power"
+Phase angle: phase shift of shunt
+VOR Phase:VOR generator and meter
+VOR Phase
+Antenna properties: group delay
+Dew/frost-point temperature
+RF power: effective efficiency in waveguides Power sensor
+RF power: calibration factor in waveguides Power sensor
+RF power: effective efficiency in waveguides Thermoelectric mount
+RF power: calibration factor in waveguides Thermoelectric mount
+RF power: absolute power on coaxial Power meter
+RF power: effective efficiency in coaxial Power sensor
+RF power: calibration factor in coaxial Power sensor
+Impulse voltage and current: lightning impulse voltage test voltage value
+Impulse voltage and current: lightning impulse extreme voltage value
+Impulse voltage and current: lightning impulse voltage time to chopping
+Impulse voltage and current: impulse energy
+Dielectric properties: relative permittivity: real part
+%HR
+ºC
+RF power: absolute power on coaxial
+DC current meters high values
+"AC power and energy: single phase (f <= 400 Hz), active energy (with harmonics)"
+High DC voltage: Average value of DC voltage:
+Pulsed high voltage and current: front chopped lightning impulse voltage parameters
+"High Voltage, AC power and energy: single phase (f <= 400 Hz), active energy (with harmonics)"
+"High Voltage, AC power and energy: single phase (f <= 400 Hz), active energy (with voltage harmonics)"
+"High Voltage, AC power and energy: single phase (f <= 400 Hz), active energy (with current harmonics and interharmonics)"
+"High Voltage, AC power and energy: single phase (f <= 400 Hz), active energy (with voltage harmonics THD<11%)"
+"High Voltage, AC power and energy: single phase (f <= 400 Hz), active energy (with current harmonics)"
+Short circuit current under standard test conditions according to IEC 60904-3:2019 expressed in A
+"Colour, emitted, x"
+"Chromaticity response, x"
+"Chromaticity response, y"
+liquid density reference samples
+Short circuit current under standard test conditions according to IEC 60904-3 expressed in A
+Rockwell Hardness HRA
+Rockwell Hardness HRC
+fibre
+Impulse voltage and current: very fast transient test voltage value
+TEST_DUPLICATE_Impulse voltage and current: very fast transient test voltage value
+Impulse voltage and current: very fast transient settling time
+Electric discharge: apparent charge q
+Antenna property: antenna pattern
+Parameters for lightning impulse voltage
+Parameters for switching impulse voltage
+Parameters for impulse current
+Impulse voltage and current: very fast transient peak value
+"AC power and energy: single phase (f <= 400 Hz), energy"
+"AC power and energy: three phase, energy"
+High DC current: ratio linearity
+Antenna properties: antenna pattern
+"Responsivity, laser energy"
+"Inductance: self inductance,high values"
+Dew/frost point temperature
+"Spectral characteristics (center wavelength, mode spacing, linewidth)"
+Wavelength Scale
+Density
+maximun flatness desviation
+Absolute flatness desviation
+parallelism
+"Sphere (ball): diameter, L."
+"Sphere and hemispheres, internal cylinder (ring) and external cylinder (plug): roudness"
+Precision line scale: line spacing L
+polarization mode dispersion
+Scattering parameters: Transmission coefficient in coaxials (real and imaginary)
+Scattering parameters: Reflection coefficient in coaxials (real and imaginary)
+Resistance ratio
+Parameters for lightning impulse voltage: front time
+Parameters for lightning impulse voltage: time to half value
+Parameters for lightning impulse voltage: time to chopping
+Parameters for switching impulse voltage: switching impulse voltage test voltage value / scale factor
+"Parameters for lightning impulse voltage: lightning impulse voltage peak value, test voltage value, extreme value, scale factor"
+Parameters for switching impulse voltage: time to peak
+Parameters for impulse current: time parameters
+"High voltage impedance: burden, parallel resistance"
+"High voltage impedance: burden, parallel reactance"
+"High voltage impedance: burden, serial resistance"
+"High voltage impedance: burden, serial reactance"
+Force: Compression and tension
+End Standard
+Vacuum wavelength
+Optical Length (distance scale deviation)
+Optical Length (distance scale offset)
+1.56 mg/kg
+isotopic ratio of 28Si/29Si and 30Si/29Si
+isotopic ratio of 30Si/29Si
+isotopic ratio of 28Si/29Si
+10000 mg/kg
+"mass fraction, mg/kg"
+SNV-containing DNA/total gene region DNA copy number ratio (variant allelic frequency - vAF)
+Deletion-containing DNA/total gene region DNA copy number ratio (variant allelic frequency - vAF)
+DNA copy number concentration
+RNA copy number concentration
+10000
+1000
+1000 mg/kg
+Vickers Hardness
+mm
+≤15bp Deletion-containing DNA/total gene region DNA copy number ratio (variant allelic frequency - vAF)
+error of indicated angle
+Single Nucleotide Variant (SNV)-containing DNA/total gene region DNA copy number ratio (variant allelic frequency (vAF))
+"mass fraction, kg/kg"
+mass fraction of nickel in fresh water
+mass fraction of lead in fresh water
+mass fraction of sodium in fresh water
+mass fraction of calcium in fresh water
+mass fraction of magnesium in fresh water
+mass fraction of potassium in fresh water
+mass fraction of zinc in fresh water
+mass fraction of iron in fresh water
+mass fraction of cadmium in fresh water
+mass fraction of arsenic in fresh water
+"Gauge pressure, liquid medium"
+"Impedance (up to the MHz range), Capacitance and dissipation factor for low loss capacitors"
+Current and voltage waveform: short-term flicker severity (Pst) square or sine wave modulation
+Current and voltage waveform: instantaneous flicker severity (Pinst) square or sine wave modulation
+"Current and voltage waveform: short-term flicker severity (Pst), square or sine wave modulation"
+"Current and voltage waveform: instantaneous flicker severity (Pinst), square or sine wave modulation"
+Radius of curvature
+Sag
+Focal length standard
+Opthalmic power
+Prism Diopter
+Mass standards
+Pitch diameter
+"Illuminance, Tugsten source"
+Angle (excluded)
+Angle (included)
+Out of roundness
+Diameter
+Face spacing
+Out of roundness (RONt)
+Modulus of free-field sensitivity
+эталонные образцы плотности жидкости
+Flatness
+Phase shift
+Whiteness (CIE whiteness value W10)
+Brightness (ISO brightness R457)
+DC Resistance (Intermediate values from 1 ohm up to 10 ohm)
+DC resistance (high values)
+Absorbance
+Whiteness (ISO brightness R457)
+"Amount-of-substance of HfO2, expressed as thickness of HfO2 on Si in nm"
+Piston Pipette
+"mass fraction, %"
+amount5 of substance fraction
+DC resistance: DC resistance standards and sources: low values
+DC resistance: DC resistance standards and sources: intermediate values
+Carbon isotope delta ratio relative to VPDB
+Mass fraction (DNA/DNA)
+Mole concentration
+isotope delta relative to SRM 976
+isotope delta relative to SRM 981
+mS
+Specific Adsorbtion of Ar at P/Po=0.1
+Specific Adsorbtion of Ar at P/Po=0.01
+Specific Adsorbtion of Ar at P/Po=0.001
+Specific Adsorbtion of Ar at P/Po=0.0001
+isotope delta (δ65/63Cu)
+"isotope delta (δ65/63Cu) expressed as ""per mill (‰)"""
+ng/g
+Voltage sensitivity sensitivity (phase shift)
+"Colour, surface, x, y, Y. L*a*b"
+"Colour, surface, L*a*b"
+Reflection coefficient (Sii) in coaxial line (phase)
+Transmission coefficient (Sij) in coaxial line (phase)
+amount of substance content
+Impulse voltage and current: Parameters for lightning impulse voltage: test/peak voltage value
+High DC voltage: high voltage sources
+Impulse voltage and current: Parameters for lightning impulse voltage: test voltage value
+Switching impulse voltage: peak voltage value
+Parameters for switching impulse voltage: time to half value
+High AC Voltage: RMS Values
+High AC high voltage: Peak values
+Electromagnetic fields above 50 kHz: turn area
+Impulse voltage and current: front-chopped lightning impulse extreme value
+Impulse voltage and current: front-chopped lightning impulse voltage time to chopping
+angles of pyramid rhombic-based
+angle between opposite edges
+indenter constant c
+angle between opposite faces
+Inclination of indenter axis
+Planarity
+line of junction of the four faces
+Comparision with the scale realized with the national indenter
+Angle
+Cone angle
+Straightness of the generatrix
+Tip dimension
+angle between the opposite faces of the vertex
+flatness of the four faces of the pyramid
+angle between the axis of the diamond pyramid and the axis of the indenter holder
+Comparision with reference diamond indenter(s)
+inclination of the axis of the diamond cone to the axis of the indenter holder
+angle between the axis of the diamond pyramid and the axis of the indenter-holder
+Flatness of the four faces of the square-based diamond pyramid
+straightness of the generatrix of the diamond cone
+Line of junction between opposite faces
+length of the line of junction between opposite faces
+Radius of the spherical tip
+AC high voltage : phase displacement
+AC high voltage : ratios
+Peak voltage
+Scalar RF reflection coefficient: in coaxial line (not using VNA)
+Absolute power in coaxial line
+"Scattering parameters: reflection coefficient (Sii) on coaxials, phase"
+"Scattering parameters: reflection coefficient (Sii) on coaxials, magnitude"
+"Scattering parameters: reflection coefficient (Sii) on waveguides, magnitude"
+"Scattering parameters: reflection coefficient (Sii) on waveguides, phase"
+"Scattering parameters: transmission coefficient (Sij) on coaxials, magnitude"
+"Scattering parameters: trasmission coefficient (Sij) on coaxials, phase"
+High DC voltage: Test Voltage Value
+Switching impulse voltage: test voltage value
+amount of substance expressed as thickness
+DC Resistance (Intermediate values from 1 ohm up to 10 kohm)
+Spectral attenuation
+"Location offset, OTDR"
+"Distance scale deviation, OTDR"
+"Colour, surface, x"
+"Colour, surface, y"
+"Colour, surface. Y"
+"Colour, surface. L*"
+"Colour, surface, xyY; coordinate x"
+"Colour, surface, xyY; coordinate y"
+"Colour, surface, xyY; relative luminance Y"
+"Colour, surface, L*a*b*; L*"
+"Colour, surface, L*a*b*; a*"
+"Colour, surface, L*a*b*; b*"
+"Colour, surface, x,y,Y; coordinate x"
+"Colour, surface, x,y,Y; coordinate y"
+"Colour, surface, x,y,Y; relative luminance Y"
+Parameters for lightning impulse voltage: overshoot
+DC Resistance (Intermediate values from 10 ohm up to 1 Mohm)
+DC Resistance (Intermediate values equal to 10 kohm)
+DC resistance: intermediate values
+DC resistance: high values
+AC power: single phase active power
+Current and Voltage Waveform: Harmonic Voltage
+Current and Voltage Waveform: Harmonic Current
+Current and Voltage Waveform: Flicker Severity (Pst) for Voltage
+Phase Angle
+Candela
+Gravity
+Scattering parameters: voltage standing wave ratio (VSWR) in coaxials
+Scattering parameters: tracking in coaxials
+"Colour, surface, x,y,Y"
+Viscometer constant
+Specific Adsorbtion of Ar
+"Isotopic abundance, 191Ir"
+Specific adsorption of Kr or N2
+airborne particle charge concentration
+mol/mol
+ug/kg
+copper isotope ratio
+carbon isotope delta
+Variation in length
+Gauge block comparators: error of indicated displacement
+Specific Adsorption of Ar
+Colour surface L*a*b
+mass fraction mg/kg
+0.1
+100 g
+500 g
+1000 g
+5000 g
+mass fraction µg/g
+0.001
+0.002
+0.003
+0.2

@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 from miiflask.flask.db import bind_engine
 from miiflask.mappers.mlayer_mapper import MlayerMapper
 from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
+from miiflask.mappers.kcdb_mapper import KcdbMapper
 
 
 def main(parms):
@@ -34,6 +35,10 @@ def main(parms):
         miimapper.extractTaxonomy()
         miimapper.flattenTaxonomy()
         miimapper.loadTaxonomy()
+
+        kcdbmapper = KcdbMapper(session, parms)
+        kcdbmapper.loadQuantities()
+        kcdbmapper.loadServices()
         session.commit()
         session.close()
 

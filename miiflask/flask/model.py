@@ -234,6 +234,21 @@ class KcdbCmc(Base):
         return self.id
 
 
+class KcdbQuantity(Base):
+    __tablename__ = "kcdb_quantity"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(200))
+
+class KcdbService(Base):
+    __tablename__ = "kcdb_service"
+    id = Column(String(50), primary_key=True)
+    area_id = Column(String(10))
+    area = Column(String(50))
+    branch_id = Column(String(20))
+    branch = Column(String(50))
+    service = Column(String(200))
+    subservice = Column(String(200))
+
 # KCDB quantityValue description
 # Requires mapper from KCDB quantity Value to quantity kind
 class QuantityValue(Base):
@@ -274,6 +289,17 @@ class QuantityValue(Base):
 
 # Generate marshmallow schemas
 
+class KcdbQuantitySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbQuantity
+        include_relationships = True
+        load_instance = True
+
+class KcdbServiceSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbService
+        include_relationships = True
+        load_instance = True
 
 class ScaleSchema(SQLAlchemyAutoSchema):
     class Meta:

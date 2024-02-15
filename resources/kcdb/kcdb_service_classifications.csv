@@ -1,0 +1,262 @@
+Id,Area Id,Area,Branch Id,Branch,Service,Subservice
+AUV.AUV/A.6.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Audiometers,Response of audiometers
+AUV.AUV/A.4.4,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Ear simulators,Impedance head force measuring chain
+AUV.AUV/A.4.3,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Ear simulators,Impedance head force transducer
+AUV.AUV/A.4.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Ear simulators,Mechanical couplers (air)
+AUV.AUV/A.4.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Ear simulators,Reference couplers or artificial ears (air)
+AUV.AUV/A.1.3,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Measurement microphones,Diffuse field sensitivity level (air)
+AUV.AUV/A.1.4,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Measurement microphones,Electrostatic actuator normalized response
+AUV.AUV/A.1.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Measurement microphones,Free-field sensitivity level (air)
+AUV.AUV/A.1.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Measurement microphones,Pressure sensitivity level (air)
+AUV.AUV/A.5.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Reference sound sources,Output of reference sound sources
+AUV.AUV/A.2.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Sound calibrators,Multi-frequency sound calibrators
+AUV.AUV/A.2.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Sound calibrators,Single frequency sound calibrators
+AUV.AUV/A.3.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/A,Sound in air,Sound measuring instruments,Response of sound measuring instruments
+AUV.AUV/W.11.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/W,Sound in water,Hydrophones (medical ultrasonic),Free-field sensitivity
+AUV.AUV/W.11.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/W,Sound in water,Hydrophones (medical ultrasonic),Pressure sensitivity
+AUV.AUV/W.12.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/W,Sound in water,Hydrophones (underwater acoustics),Free-field sensitivity
+AUV.AUV/W.12.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/W,Sound in water,Hydrophones (underwater acoustics),Pressure sensitivity
+AUV.AUV/W.14.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/W,Sound in water,Ultrasound transducer,Output from ultrasound transducer
+AUV.AUV/W.13.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/W,Sound in water,Ultrasound transducer with generator,Output from ultrasound transducer with generator
+AUV.AUV/V.32.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration calibrator,Acceleration output
+AUV.AUV/V.32.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration calibrator,Shock output
+AUV.AUV/V.33.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration measuring chain / accelerometer,Charge sensitivity
+AUV.AUV/V.33.5,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration measuring chain / accelerometer,Current sensitivity
+AUV.AUV/V.33.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration measuring chain / accelerometer,Shock charge sensitivity
+AUV.AUV/V.33.6,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration measuring chain / accelerometer,Shock current sensitivity
+AUV.AUV/V.33.4,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration measuring chain / accelerometer,Shock voltage sensitivity
+AUV.AUV/V.33.3,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration measuring chain / accelerometer,Voltage sensitivity
+AUV.AUV/V.31.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration measuring instrument,Frequency response
+AUV.AUV/V.31.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Acceleration measuring instrument,Shock response
+AUV.AUV/V.35.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration calibrator,Angular acceleration output
+AUV.AUV/V.35.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration calibrator,Angular shock output
+AUV.AUV/V.36.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration measuring chain / accelerometer,Charge sensitivity
+AUV.AUV/V.36.5,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration measuring chain / accelerometer,Current sensitivity
+AUV.AUV/V.36.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration measuring chain / accelerometer,Shock charge sensitivity
+AUV.AUV/V.36.6,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration measuring chain / accelerometer,Shock current sensitivity
+AUV.AUV/V.36.4,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration measuring chain / accelerometer,Shock voltage sensitivity
+AUV.AUV/V.36.3,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration measuring chain / accelerometer,Voltage sensitivity
+AUV.AUV/V.34.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration measuring instrument,Angular acceleration response
+AUV.AUV/V.34.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular acceleration measuring instrument,Shock response
+AUV.AUV/V.22.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular vibration,Angular acceleration calibrator
+AUV.AUV/V.22.4,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular vibration,Angular acceleration measuring chain
+AUV.AUV/V.22.3,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular vibration,Angular acceleration measuring chain / accelerometer
+AUV.AUV/V.22.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Angular vibration,Angular acceleration measuring instrument
+AUV.AUV/V.30.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,AUV auxilary instruments and/or services,Vibration signal conditionner
+AUV.AUV/V.23.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Dynamic force,Force measuring chain /force transducer for mechanical impedance and mobility measurements…
+AUV.AUV/V.23.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Dynamic force,Force measuring instrument for mechanical impedance and mobility measurements or modal testing
+AUV.AUV/V.38.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Force measuring chain or force transducer for mechanical impedance and mobility measurements or modal testing,Charge sensitivity
+AUV.AUV/V.38.5,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Force measuring chain or force transducer for mechanical impedance and mobility measurements or modal testing,Current sensitivity
+AUV.AUV/V.38.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Force measuring chain or force transducer for mechanical impedance and mobility measurements or modal testing,Shock charge sensitivity
+AUV.AUV/V.38.6,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Force measuring chain or force transducer for mechanical impedance and mobility measurements or modal testing,Shock Current sensitivity
+AUV.AUV/V.38.4,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Force measuring chain or force transducer for mechanical impedance and mobility measurements or modal testing,Shock voltage sensitivity
+AUV.AUV/V.38.3,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Force measuring chain or force transducer for mechanical impedance and mobility measurements or modal testing,Voltage sensitivity
+AUV.AUV/V.37.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Force measuring instrument for mechanical impedance and mobility measurements or modal testing,Frequency response
+AUV.AUV/V.37.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Force measuring instrument for mechanical impedance and mobility measurements or modal testing,Shock response
+AUV.AUV/V.21.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Linear vibration,Acceleration calibrator
+AUV.AUV/V.21.4,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Linear vibration,Acceleration measuring chain
+AUV.AUV/V.21.3,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Linear vibration,Acceleration measuring chain / accelerometer
+AUV.AUV/V.21.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Linear vibration,Acceleration measuring instrument
+AUV.AUV/V.45.1,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Vibration signal conditioner,Charge sensitivity
+AUV.AUV/V.45.3,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Vibration signal conditioner,Current Sensitivity
+AUV.AUV/V.45.2,AUV,"Acoustics, Ultrasound, Vibration",AUV/V,Vibration,Vibration signal conditioner,Voltage sensitivity
+EM.EM/AC.6.3,EM,Electricity and Magnetism,EM/AC,"AC voltage, current, and power",AC current,AC current ratio up to 100 A
+EM.EM/AC.6.2,EM,Electricity and Magnetism,EM/AC,"AC voltage, current, and power",AC current,AC current up to 100 A
+EM.EM/AC.6.1,EM,Electricity and Magnetism,EM/AC,"AC voltage, current, and power",AC current,AC-DC current transfer
+EM.EM/AC.7.1,EM,Electricity and Magnetism,EM/AC,"AC voltage, current, and power",AC power,AC power and energy
+EM.EM/AC.5.3,EM,Electricity and Magnetism,EM/AC,"AC voltage, current, and power",AC voltage (up to the MHz range),"AC voltage ratio up to 1100 V, atten & gain"
+EM.EM/AC.5.2,EM,Electricity and Magnetism,EM/AC,"AC voltage, current, and power",AC voltage (up to the MHz range),AC voltage up to 1100 V
+EM.EM/AC.5.1,EM,Electricity and Magnetism,EM/AC,"AC voltage, current, and power",AC voltage (up to the MHz range),AC-DC voltage transfer
+EM.EM/DC.3.2,EM,Electricity and Magnetism,EM/DC,"DC voltage, current, and resistance",DC current (up to 100 A),DC current meters
+EM.EM/DC.3.3,EM,Electricity and Magnetism,EM/DC,"DC voltage, current, and resistance",DC current (up to 100 A),DC current ratios
+EM.EM/DC.3.1,EM,Electricity and Magnetism,EM/DC,"DC voltage, current, and resistance",DC current (up to 100 A),DC current sources
+EM.EM/DC.2.2,EM,Electricity and Magnetism,EM/DC,"DC voltage, current, and resistance",DC resistance,DC resistance meters
+EM.EM/DC.2.3,EM,Electricity and Magnetism,EM/DC,"DC voltage, current, and resistance",DC resistance,DC resistance ratios
+EM.EM/DC.2.1,EM,Electricity and Magnetism,EM/DC,"DC voltage, current, and resistance",DC resistance,DC resistance standards and sources
+EM.EM/DC.1.2,EM,Electricity and Magnetism,EM/DC,"DC voltage, current, and resistance",DC voltage (up to 1100 V),DC voltage meters
+EM.EM/DC.1.3,EM,Electricity and Magnetism,EM/DC,"DC voltage, current, and resistance",DC voltage (up to 1100 V),DC voltage ratios
+EM.EM/DC.1.1,EM,Electricity and Magnetism,EM/DC,"DC voltage, current, and resistance",DC voltage (up to 1100 V),DC voltage sources
+EM.EM/Field.10.1,EM,Electricity and Magnetism,EM/Field,Electric and magnetic fields,Electric and magnetic fields,Electric fields at freq. below 50 kHz
+EM.EM/Field.10.3,EM,Electricity and Magnetism,EM/Field,Electric and magnetic fields,Electric and magnetic fields,Electromagnetic fields at freq. above 50 kHz
+EM.EM/Field.10.2,EM,Electricity and Magnetism,EM/Field,Electric and magnetic fields,Electric and magnetic fields,Magnetic fields at freq. below 50 kHz
+EM.EM/HV.8.3,EM,Electricity and Magnetism,EM/HV,High voltage and current,High voltage and current,AC high voltage and voltage transformers
+EM.EM/HV.8.5,EM,Electricity and Magnetism,EM/HV,High voltage and current,High voltage and current,Electric discharge
+EM.EM/HV.8.6,EM,Electricity and Magnetism,EM/HV,High voltage and current,High voltage and current,High AC current and current transformers
+EM.EM/HV.8.7,EM,Electricity and Magnetism,EM/HV,High voltage and current,High voltage and current,High DC current
+EM.EM/HV.8.1,EM,Electricity and Magnetism,EM/HV,High voltage and current,High voltage and current,High DC voltage
+EM.EM/HV.8.2,EM,Electricity and Magnetism,EM/HV,High voltage and current,High voltage and current,High voltage impedance
+EM.EM/HV.8.4,EM,Electricity and Magnetism,EM/HV,High voltage and current,High voltage and current,Pulsed high voltage and current
+EM.EM/Imped.4.1,EM,Electricity and Magnetism,EM/Imped,Impedance up to the MHz range,Impedance (up to the MHz range),AC resistance
+EM.EM/Imped.4.2,EM,Electricity and Magnetism,EM/Imped,Impedance up to the MHz range,Impedance (up to the MHz range),Capacitance
+EM.EM/Imped.4.3,EM,Electricity and Magnetism,EM/Imped,Impedance up to the MHz range,Impedance (up to the MHz range),Inductance
+EM.EM/Mater.12.2,EM,Electricity and Magnetism,EM/Mater,Materials,Measurements on materials,Dielectric properties
+EM.EM/Mater.12.1,EM,Electricity and Magnetism,EM/Mater,Materials,Measurements on materials,Electrical conductivity
+EM.EM/Mater.12.5,EM,Electricity and Magnetism,EM/Mater,Materials,Measurements on materials,"Feebly magnetic, paramagnetic and diamagnetic material"
+EM.EM/Mater.12.6,EM,Electricity and Magnetism,EM/Mater,Materials,Measurements on materials,Hard magnetic material
+EM.EM/Mater.12.7,EM,Electricity and Magnetism,EM/Mater,Materials,Measurements on materials,Magnetic data storage media
+EM.EM/Mater.12.4,EM,Electricity and Magnetism,EM/Mater,Materials,Measurements on materials,Soft magnetic bulk material
+EM.EM/Mater.12.3,EM,Electricity and Magnetism,EM/Mater,Materials,Measurements on materials,Soft magnetic sheet and powder materials
+EM.EM/OtherDC.9.3,EM,Electricity and Magnetism,EM/OtherDC,Other DC and low frequency measurements,Other DC and low frequency measurements,Current and voltage waveform
+EM.EM/OtherDC.9.1,EM,Electricity and Magnetism,EM/OtherDC,Other DC and low frequency measurements,Other DC and low frequency measurements,Electric charge
+EM.EM/OtherDC.9.2,EM,Electricity and Magnetism,EM/OtherDC,Other DC and low frequency measurements,Other DC and low frequency measurements,Phase angle
+EM.EM/RF.11.5,EM,Electricity and Magnetism,EM/RF,Radio frequency measurements,Radio frequency measurements,Antenna properties
+EM.EM/RF.11.8,EM,Electricity and Magnetism,EM/RF,Radio frequency measurements,Radio frequency measurements,Lumped impedance - admittance
+EM.EM/RF.11.4,EM,Electricity and Magnetism,EM/RF,Radio frequency measurements,Radio frequency measurements,Noise
+EM.EM/RF.11.9,EM,Electricity and Magnetism,EM/RF,Radio frequency measurements,Radio frequency measurements,RF characteristic impedance
+EM.EM/RF.11.1,EM,Electricity and Magnetism,EM/RF,Radio frequency measurements,Radio frequency measurements,RF power
+EM.EM/RF.11.7,EM,Electricity and Magnetism,EM/RF,Radio frequency measurements,Radio frequency measurements,RF voltage and current
+EM.EM/RF.11.2,EM,Electricity and Magnetism,EM/RF,Radio frequency measurements,Radio frequency measurements,Scalar RF reflection coef. and attenuation
+EM.EM/RF.11.3,EM,Electricity and Magnetism,EM/RF,Radio frequency measurements,Radio frequency measurements,Scattering parameters (vectors)
+EM.EM/RF.11.6,EM,Electricity and Magnetism,EM/RF,Radio frequency measurements,Radio frequency measurements,Signal and pulse characteristics
+L.L/DimMet.3.4,L,Length,L/DimMet,Dimensional metrology,Angle,Angle artefacts
+L.L/DimMet.3.1,L,Length,L/DimMet,Dimensional metrology,Angle,Angle by circle dividers
+L.L/DimMet.3.3,L,Length,L/DimMet,Dimensional metrology,Angle,Angle instruments
+L.L/DimMet.3.5,L,Length,L/DimMet,Dimensional metrology,Angle,Angle prisms
+L.L/DimMet.3.2,L,Length,L/DimMet,Dimensional metrology,Angle,Small-angle generators
+L.L/DimMet.5.4,L,Length,L/DimMet,Dimensional metrology,Complex geometry,Coordinate Measuring Machine (CMM) artefacts
+L.L/DimMet.5.3,L,Length,L/DimMet,Dimensional metrology,Complex geometry,Gear standards
+L.L/DimMet.5.6,L,Length,L/DimMet,Dimensional metrology,Complex geometry,Hardness
+L.L/DimMet.5.2,L,Length,L/DimMet,Dimensional metrology,Complex geometry,Screw standards
+L.L/DimMet.5.1,L,Length,L/DimMet,Dimensional metrology,Complex geometry,Surface texture standards
+L.L/DimMet.5.5,L,Length,L/DimMet,Dimensional metrology,Complex geometry,Two-dimension and three-dimension instruments
+L.L/DimMet.4.4,L,Length,L/DimMet,Dimensional metrology,Form,Cylindricity standards
+L.L/DimMet.4.1,L,Length,L/DimMet,Dimensional metrology,Form,Flatness standards
+L.L/DimMet.4.5,L,Length,L/DimMet,Dimensional metrology,Form,Optical standards
+L.L/DimMet.4.2,L,Length,L/DimMet,Dimensional metrology,Form,Roundness standards
+L.L/DimMet.4.3,L,Length,L/DimMet,Dimensional metrology,Form,Straightness standards
+L.L/DimMet.2.4,L,Length,L/DimMet,Dimensional metrology,Linear dimensions,Diameter standards
+L.L/DimMet.2.2,L,Length,L/DimMet,Dimensional metrology,Linear dimensions,End standards
+L.L/DimMet.2.1,L,Length,L/DimMet,Dimensional metrology,Linear dimensions,Length instruments
+L.L/DimMet.2.3,L,Length,L/DimMet,Dimensional metrology,Linear dimensions,Line standards
+L.L/DimMet.2.5,L,Length,L/DimMet,Dimensional metrology,Linear dimensions,Standards of 1D Dimensions
+L.L/DimMet.6.1,L,Length,L/DimMet,Dimensional metrology,Various dimensional,Hand instruments
+L.L/DimMet.6.6,L,Length,L/DimMet,Dimensional metrology,Various dimensional,Layer thickness
+L.L/DimMet.6.4,L,Length,L/DimMet,Dimensional metrology,Various dimensional,Long distance
+L.L/DimMet.6.7,L,Length,L/DimMet,Dimensional metrology,Various dimensional,Not attributed 1
+L.L/DimMet.6.2,L,Length,L/DimMet,Dimensional metrology,Various dimensional,Pressure artefacts
+L.L/DimMet.6.5,L,Length,L/DimMet,Dimensional metrology,Various dimensional,Reference materials
+L.L/DimMet.6.3,L,Length,L/DimMet,Dimensional metrology,Various dimensional,Thermal expansivity
+L.L/Laser.1.2,L,Length,L/Laser,Laser frequencies,Radiations of the mise en pratique,Lamp radiations
+L.L/Laser.1.1,L,Length,L/Laser,Laser frequencies,Radiations of the mise en pratique,Laser radiations
+M.M/Dens.2.2,M,Mass and related quantities,M/Dens,Density,Density,Density of liquid
+M.M/Dens.2.1,M,Mass and related quantities,M/Dens,Density,Density,Density of solid
+M.M/Dens.2.3,M,Mass and related quantities,M/Dens,Density,Density,Refractive index of liquid
+M.M/FF.9.10,M,Mass and related quantities,M/FF,Fluid flow,Fluid flow,Fluid flow
+M.M/Force.4.2,M,Mass and related quantities,M/Force,Force,Force,Compression
+M.M/Force.4.1,M,Mass and related quantities,M/Force,Force,Force,Tension
+M.M/Force.4.3,M,Mass and related quantities,M/Force,Force,Force,Tension and compression
+M.M/Gra.8.1,M,Mass and related quantities,M/Gra,Gravity,Gravity,Gravity
+M.M/Har.7.1,M,Mass and related quantities,M/Har,Hardness,Hardness,Hardness
+M.M/Mass.1.1,M,Mass and related quantities,M/Mass,"Mass, mass standards",Mass,Mass standard
+M.M/Pres.3.1,M,Mass and related quantities,M/Pres,Pressure,Pressure,Absolute pressure
+M.M/Pres.3.3,M,Mass and related quantities,M/Pres,Pressure,Pressure,Differential pressure
+M.M/Pres.3.4,M,Mass and related quantities,M/Pres,Pressure,Pressure,Dynamic pressure
+M.M/Pres.3.2,M,Mass and related quantities,M/Pres,Pressure,Pressure,Gauge pressure
+M.M/Tor.5.1,M,Mass and related quantities,M/Tor,Torque,Torque,Torque
+M.M/Vis.6.2,M,Mass and related quantities,M/Vis,Viscosity,Viscosity,Capillary viscometers
+M.M/Vis.6.1,M,Mass and related quantities,M/Vis,Viscosity,Viscosity,Certified Newtonian reference liquids
+M.M/Vis.6.3,M,Mass and related quantities,M/Vis,Viscosity,Viscosity,Viscosity measurement of Newtonian liquids
+PR.PR/Fibre.7.5,PR,Photometry and Radiometry,PR/Fibre,Fibre optics,Fibre optics,Attenuation
+PR.PR/Fibre.7.7,PR,Photometry and Radiometry,PR/Fibre,Fibre optics,Fibre optics,Chromatic dispersion
+PR.PR/Fibre.7.11,PR,Photometry and Radiometry,PR/Fibre,Fibre optics,Fibre optics,Fibre Polarization mode dispersion (inactive)
+PR.PR/Fibre.7.10,PR,Photometry and Radiometry,PR/Fibre,Fibre optics,Fibre optics,Length
+PR.PR/Fibre.7.3,PR,Photometry and Radiometry,PR/Fibre,Fibre optics,Fibre optics,Modal properties
+PR.PR/Fibre.7.8,PR,Photometry and Radiometry,PR/Fibre,Fibre optics,Fibre optics,Polarization mode dispersion
+PR.PR/Fibre.7.1,PR,Photometry and Radiometry,PR/Fibre,Fibre optics,Fibre optics,Responsivity
+PR.PR/Fibre.7.2,PR,Photometry and Radiometry,PR/Fibre,Fibre optics,Fibre optics,Wavelength
+PR.PR/Photo.1.7,PR,Photometry and Radiometry,PR/Photo,Photometry,Photometry,Averaged luminous intensity
+PR.PR/Photo.1.4,PR,Photometry and Radiometry,PR/Photo,Photometry,Photometry,Illuminance
+PR.PR/Photo.1.2,PR,Photometry and Radiometry,PR/Photo,Photometry,Photometry,Illuminance responsivity
+PR.PR/Photo.1.5,PR,Photometry and Radiometry,PR/Photo,Photometry,Photometry,Luminance
+PR.PR/Photo.1.6,PR,Photometry and Radiometry,PR/Photo,Photometry,Photometry,Luminance responsivity
+PR.PR/Photo.1.8,PR,Photometry and Radiometry,PR/Photo,Photometry,Photometry,Luminous exposure
+PR.PR/Photo.1.3,PR,Photometry and Radiometry,PR/Photo,Photometry,Photometry,Luminous flux
+PR.PR/Photo.1.1,PR,Photometry and Radiometry,PR/Photo,Photometry,Photometry,Luminous intensity
+PR.PR/Detector.2.11,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsitivity, solar, spectral, irradiance"
+PR.PR/Detector.2.8,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, blackbody, total irradiance"
+PR.PR/Detector.2.5,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, laser, energy"
+PR.PR/Detector.2.4,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, laser, power"
+PR.PR/Detector.2.7,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, solar, irradiance"
+PR.PR/Detector.2.6,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, solar, power"
+PR.PR/Detector.2.2,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, spectral, irradiance"
+PR.PR/Detector.2.1,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, spectral, power"
+PR.PR/Detector.2.3,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, spectral, radiance"
+PR.PR/Detector.2.12,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, terrestrial irradiance"
+PR.PR/Detector.2.9,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, UV, broadband irradiance"
+PR.PR/Detector.2.10,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Properties of detectors,"Responsivity, UV, broadband radiant exposure"
+PR.PR/Detector.3.1,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral emission properties of sources,"Irradiance, spectral"
+PR.PR/Detector.3.3,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral emission properties of sources,"Power, spectral total radiant"
+PR.PR/Detector.3.2,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral emission properties of sources,"Radiance, spectral"
+PR.PR/Detector.3.5,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral emission properties of sources,"Radiant flux, spectral"
+PR.PR/Detector.3.4,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral emission properties of sources,"Radiant intensity, spectral"
+PR.PR/Detector.5.5,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,Chromaticity response
+PR.PR/Detector.5.6,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour rendering, Ra"
+PR.PR/Detector.5.4,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour, emitted"
+PR.PR/Detector.5.2,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,Correlated colour temperature
+PR.PR/Detector.5.3,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,Correlated colour temperature response
+PR.PR/Detector.5.1,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,Distribution temperature
+PR.PR/Detector.5.7,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Radiance, total"
+PR.PR/Detector.5.8,PR,Photometry and Radiometry,PR/Detector,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Radiant flux, total"
+PR.PR/Mater.6.2,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, Lab"
+PR.PR/Mater.6.1,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, x, y, Y"
+PR.PR/Mater.6.4,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, transmitted, Lab"
+PR.PR/Mater.6.3,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, transmitted, x, y, Y"
+PR.PR/Mater.6.6,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,Gloss
+PR.PR/Mater.6.7,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,Haze
+PR.PR/Mater.6.10,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,Luminance coefficient
+PR.PR/Mater.6.9,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,Luminance factor
+PR.PR/Mater.6.5,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,Retroreflectance
+PR.PR/Mater.6.12,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Colour and other spectral.-int. meas. of materials,Whiteness
+PR.PR/Mater.4.4,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Absorbance, diffuse, spectral"
+PR.PR/Mater.4.3,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Absorbance, regular, spectral"
+PR.PR/Mater.4.17,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Angle of rotation of polarization plane, spectral"
+PR.PR/Mater.4.11,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,BRDF
+PR.PR/Mater.4.18,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Ellipsometric angles phi, delta, spectral"
+PR.PR/Mater.4.9,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,Emissivity
+PR.PR/Mater.4.10,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Emittance, spectral"
+PR.PR/Mater.4.14,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,Luminescent radiance factor
+PR.PR/Mater.4.13,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,Radiance factor
+PR.PR/Mater.4.12,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,Reflectance factor
+PR.PR/Mater.4.5,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Reflectance, diffuse, spectral"
+PR.PR/Mater.4.7,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Reflectance, hemispherical, spectral"
+PR.PR/Mater.4.6,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Reflectance, regular, spectral"
+PR.PR/Mater.4.16,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Refractive index, spectral"
+PR.PR/Mater.4.2,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Transmittance, diffuse, spectral"
+PR.PR/Mater.4.1,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,"Transmittance, regular, spectral"
+PR.PR/Mater.4.15,PR,Photometry and Radiometry,PR/Mater,Properties of materials,Spectral properties of materials,Wavelength
+T.T/H.4.1,T,Thermometry,T/H,Humidity,Dynamic generators,Dew-point generators
+T.T/H.4.3,T,Thermometry,T/H,Humidity,Dynamic generators,Flow mixing
+T.T/H.4.4,T,Thermometry,T/H,Humidity,Dynamic generators,"Permeation tube, diffusion tube"
+T.T/H.4.2,T,Thermometry,T/H,Humidity,Dynamic generators,Relative humidity generators
+T.T/H.3.1,T,Thermometry,T/H,Humidity,Hygrometers,Dew-point hygrometers
+T.T/H.3.4,T,Thermometry,T/H,Humidity,Hygrometers,Other hygrometers
+T.T/H.3.2,T,Thermometry,T/H,Humidity,Hygrometers,Psychrometers
+T.T/H.3.3,T,Thermometry,T/H,Humidity,Hygrometers,Relative humidity sensors
+T.T/H.5.2,T,Thermometry,T/H,Humidity,Static generators,Reference gases
+T.T/H.5.1,T,Thermometry,T/H,Humidity,Static generators,"Salt solutions (saturated, unsaturated)"
+T.T/T.1.2,T,Thermometry,T/T,Temperature,Items for defining ITS-90,Complete apparatus realizing fixed-points
+T.T/T.1.1,T,Thermometry,T/T,Temperature,Items for defining ITS-90,Primary fixed-point cells
+T.T/T.1.3,T,Thermometry,T/T,Temperature,Items for defining ITS-90,Standard platinum resistance therm. (SPRTs)
+T.T/T.1.4,T,Thermometry,T/T,Temperature,Items for defining ITS-90,Standard radiation thermometers
+T.T/T.2.4,T,Thermometry,T/T,Temperature,Items for disseminating ITS-90 and PLTS 2000,Liquid-in-glass thermometers
+T.T/T.2.8,T,Thermometry,T/T,Temperature,Items for disseminating ITS-90 and PLTS 2000,Other measurement services
+T.T/T.2.6,T,Thermometry,T/T,Temperature,Items for disseminating ITS-90 and PLTS 2000,Other thermometers
+T.T/T.2.5,T,Thermometry,T/T,Temperature,Items for disseminating ITS-90 and PLTS 2000,Radiation thermometry
+T.T/T.2.2,T,Thermometry,T/T,Temperature,Items for disseminating ITS-90 and PLTS 2000,Resistance thermometers
+T.T/T.2.1,T,Thermometry,T/T,Temperature,Items for disseminating ITS-90 and PLTS 2000,Secondary fixed-point cells and apparatus
+T.T/T.2.7,T,Thermometry,T/T,Temperature,Items for disseminating ITS-90 and PLTS 2000,Temperature sensors with display unit
+T.T/T.2.3,T,Thermometry,T/T,Temperature,Items for disseminating ITS-90 and PLTS 2000,Thermocouples
+T.T/T.7.1,T,Thermometry,T/T,Temperature,Items used for disseminating thermodynamic temperature,Radiation thermometry
+T.T/TQ.6.2,T,Thermometry,T/TQ,Thermophysical quantities,Thermophysical quantities,Caloric property
+T.T/TQ.6.3,T,Thermometry,T/TQ,Thermophysical quantities,Thermophysical quantities,Radiative property
+T.T/TQ.6.1,T,Thermometry,T/TQ,Thermophysical quantities,Thermophysical quantities,Thermal transport property
+T.T/TQ.6.4,T,Thermometry,T/TQ,Thermophysical quantities,Thermophysical quantities,Thermo-mechanical property
+TF.TF/F.2.3,TF,Time and Frequency,TF/F,Frequency,Frequency,Frequency meter
+TF.TF/F.2.2,TF,Time and Frequency,TF/F,Frequency,Frequency,General frequency source
+TF.TF/F.2.1,TF,Time and Frequency,TF/F,Frequency,Frequency,Standard frequency source
+TF.TF/TI.3.3,TF,Time and Frequency,TF/TI,Time interval,Time interval,Period meter
+TF.TF/TI.3.1,TF,Time and Frequency,TF/TI,Time interval,Time interval,Period source
+TF.TF/TI.3.4,TF,Time and Frequency,TF/TI,Time interval,Time interval,Time interval meter
+TF.TF/TI.3.2,TF,Time and Frequency,TF/TI,Time interval,Time interval,Time interval source
+TF.TF/TSD.1.1,TF,Time and Frequency,TF/TSD,Time scale difference,Time scale difference,Local clock
+TF.TF/TSD.1.2,TF,Time and Frequency,TF/TSD,Time scale difference,Time scale difference,Remote clock

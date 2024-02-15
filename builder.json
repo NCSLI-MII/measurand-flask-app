@@ -4,5 +4,7 @@
     "usertables":"/tmp/miiflask/tables_",
     "measurands": "resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
     "aspects": "resources/m-layer/aspects.json",
-    "scales": "resources/m-layer/scales.json"
+    "scales": "resources/m-layer/scales.json",
+    "quantities": "resources/kcdb/kcdb_quantities.csv",
+    "services": "resources/kcdb/kcdb_service_classifications.csv"
 }
