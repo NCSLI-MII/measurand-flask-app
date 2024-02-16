@@ -33,11 +33,10 @@ python dbinit.py -p builder.json -m
 ```
 python dbinit.py -p builder.json -d
 ```
-* Run the flask app from 
+* Update database path in flask [config](./miiflask/flask/config.py) if changed in builder.json. 
+* Run the flask app from the flask directory
 ``` 
 cd miiflask/flask
-export FLASK_APP=app
-export FLASK_ENV=development
 flask run
 ```
 * Go to the localhost on browser http://127.0.0.1/5000

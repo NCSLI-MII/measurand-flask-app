@@ -50,7 +50,7 @@ class TaxonomyMapper:
         }
         self._schemas = {}
         self._schemas["taxon"] = model.TaxonSchema()
-        self._schemas["aspect"] = model.QuantityKindSchema()
+        self._schemas["aspect"] = model.AspectSchema()
         self._schemas["discipline"] = model.DisciplineSchema()
         self._schemas["measurand"] = model.MeasurandSchema()
         self._schemas["parameter"] = model.ParameterSchema()
@@ -159,29 +159,32 @@ class TaxonomyMapper:
         Load or create from DB
         """
         # print(taxon)
-        quantitykind_data = {
-            "name": taxon["mtc:Result"]["uom:Quantity"]["@name"]
-        }
+        # quantitykind_data = {
+        #     "name": taxon["mtc:Result"]["uom:Quantity"]["@name"]
+        # }
         discipline_data = {"label": taxon["mtc:Discipline"]["@name"]}
         taxon_data = {
             "name": taxon["@name"],
             "process": taxon["@name"].split(".")[0],
+            "quantitykind": taxon["mtc:Result"]["uom:Quantity"]["@name"]
         }
 
         # Measurands can have the same taxon but differ in parameters
         # Look at rule 10
         measurand_data = {"name": taxon["@name"]}
-
-        quantitykind = (
-            self.Session.query(model.QuantityKind)
-            .filter(model.QuantityKind.name == quantitykind_data["name"])
-            .first()
-        )
-        if not quantitykind:
-            quantitykind = self._schemas["aspect"].load(
-                quantitykind_data, session=self.Session
-            )
-            self.Session.add(quantitykind)
+        
+        # TBD
+        # Update Measurands to mlayer aspects
+        # aspect = (
+        #    self.Session.query(model.Aspect)
+        #    .filter(model.Aspect.name == aspect_data["name"])
+        #    .first()
+        #)
+        #if not aspect:
+        #    aspect = self._schemas["aspect"].load(
+        #        aspect_data, session=self.Session
+        #    )
+        #    self.Session.add(quantitykind)
 
         discipline = (
             self.Session.query(model.Discipline)
@@ -204,7 +207,7 @@ class TaxonomyMapper:
                 taxon_data, session=self.Session
             )
             taxon_.discipline = discipline
-            taxon_.quantitykind = quantitykind
+            # taxon_.quantitykind = quantitykind
             self.Session.add(taxon_)
 
         measurand = (
@@ -217,7 +220,7 @@ class TaxonomyMapper:
                 measurand_data, session=self.Session
             )
             measurand.taxon = taxon_
-            measurand.quantitykind = quantitykind
+            measurand.quantitykind = taxon_data["quantitykind"]
             self.Session.add(measurand)
 
             # TBD need to validate existing parameters of measurand
@@ -228,20 +231,20 @@ class TaxonomyMapper:
                     )
                     if "uom:Quantity" in parm.keys():
                         parm_qk_data = {"name": parm["uom:Quantity"]["@name"]}
-                        parm_quantitykind = (
-                            self.Session.query(model.QuantityKind)
-                            .filter(
-                                model.QuantityKind.name == parm_qk_data["name"]
-                            )
-                            .first()
-                        )
-                        if not parm_quantitykind:
-                            parm_quantitykind = self._schemas["aspect"].load(
-                                parm_qk_data, session=self.Session
-                            )
-                            self.Session.add(parm_quantitykind)
-                            print(parm_qk_data)
-                        parameter.quantitykind = parm_quantitykind
+                        # parm_quantitykind = (
+                        #     self.Session.query(model.QuantityKind)
+                        #     .filter(
+                        #         model.QuantityKind.name == parm_qk_data["name"]
+                        #    )
+                        #    .first()
+                        # )
+                        # if not parm_quantitykind:
+                        #    parm_quantitykind = self._schemas["aspect"].load(
+                        #        parm_qk_data, session=self.Session
+                        #    )
+                        #    self.Session.add(parm_quantitykind)
+                        #    print(parm_qk_data)
+                        parameter.quantitykind = parm_qk_data["name"] #parm_quantitykind
                     measurand.parameters.append(parameter)
 
         return measurand
