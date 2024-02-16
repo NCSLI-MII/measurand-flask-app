@@ -33,7 +33,7 @@ python dbinit.py -p builder.json -m
 ```
 python dbinit.py -p builder.json -d
 ```
-* Update database path in flask [config](./miiflask/model/config.py) if changed in builder.json. 
+* Update database path in flask [config](./miiflask/flask/config.py) if changed in builder.json. 
 * Run the flask app from the flask directory
 ``` 
 cd miiflask/flask
