@@ -22,12 +22,12 @@ from operator import attrgetter
 
 from miiflask.flask.model import (
     Measurand,
-    QuantityKind,
+    Aspect, 
     Scale,
     Domain,
     KcdbCmc, 
 )
-from miiflask.flask.model import QuantityKindSchema, MeasurandSchema
+from miiflask.flask.model import AspectSchema, MeasurandSchema
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
@@ -35,15 +35,13 @@ from miiflask.flask.app import db
 
 from marshmallow import pprint as mpprint
 
-qk_schema = QuantityKindSchema()
+qk_schema = AspectSchema()
 m_schema = MeasurandSchema()
 
 
 class MyModelView(ModelView):
     column_display_pk = True
     column_hide_backrefs = False
-    
-
 
 
 class CMCView(ModelView):

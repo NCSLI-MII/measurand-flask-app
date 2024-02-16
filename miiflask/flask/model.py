@@ -25,19 +25,20 @@ scaleaspect_table = Table(
     "scaleaspect_table",
     Base.metadata,
     Column("scale_id", ForeignKey("scale_table.id"), primary_key=True),
-    Column("aspect_id", ForeignKey("quantitykind_table.id"), primary_key=True),
+    Column("aspect_id", ForeignKey("aspect_table.id"), primary_key=True),
 )
 
 
-# Populate the QuantityKind table from M-Layer Aspects
-class QuantityKind(Base):
-    # QuantityKind will be referenced by many tables
+# M-Layer Aspect
+class Aspect(Base):
+    # Aspect will be referenced by many tables
     # Do not keep relationship to other tables
-    __tablename__ = "quantitykind_table"
-    id = Column(Integer, primary_key=True, index=True)
-    uid = Column(String(50))
-    uid_name = Column(String(50))
+    __tablename__ = "aspect_table"
+    id = Column(String(10), primary_key=True)
     name = Column(String(50))
+    ml_name = Column(String(50))
+    symbol = Column(String(50))
+    reference = Column(String(50))
     scales = relationship(
         "Scale", secondary=scaleaspect_table, back_populates="aspects"
     )
@@ -48,20 +49,19 @@ class QuantityKind(Base):
 
 class Scale(Base):
     __tablename__ = "scale_table"
-    id = Column(Integer, primary_key=True, index=True)
-    uid = Column(String(50))
-    uid_name = Column(String(50))
-    scale_type = Column(
-        Enum("ratio", "interval", "bounded", "ordinal", "nominal"),
-        nullable=False,
-    )
-    reference = Column(String(50))
+    id = Column(String(10), primary_key=True)
+    ml_name = Column(String(50))
+    #scale_type = Column(
+    #    Enum("ratio", "interval", "bounded", "ordinal", "nominal"),
+    #    nullable=False,
+    #)
+    # reference = Column(String(50))
     aspects = relationship(
-        "QuantityKind", secondary=scaleaspect_table, back_populates="scales"
+        "Aspect", secondary=scaleaspect_table, back_populates="scales"
     )
 
     def __str__(self):
-        return self.uid_name
+        return self.ml_name
 
 
 class Reference(Base):
@@ -90,11 +90,12 @@ class Measurand(Base):
     id = Column(Integer, primary_key=True, index=True)
     taxon_id = Column(Integer, ForeignKey("taxon.id"))
     name = Column(String(50))
-    quantity_id = Column(
-        String(50), ForeignKey("quantitykind_table.id"), nullable=True
+    quantitykind = Column(String(50))
+    aspect_id = Column(
+        String(50), ForeignKey("aspect_table.id"), nullable=True
     )  # One-to-one
     taxon = relationship("Taxon", back_populates="measurand")
-    quantitykind = relationship("QuantityKind")
+    aspect = relationship("Aspect")
     # One to many parameters
     parameters = relationship("Parameter", back_populates="measurand")
 
@@ -110,10 +111,11 @@ class Parameter(Base):
     measurand_id = Column(Integer, ForeignKey("measurand.id"))
     measurand = relationship("Measurand", back_populates="parameters")
     name = Column(String(50))
-    quantity_id = Column(
-        String(50), ForeignKey("quantitykind_table.id"), nullable=True
+    quantitykind = Column(String(50))
+    aspect_id = Column(
+        String(50), ForeignKey("aspect_table.id"), nullable=True
     )  # One-to-one
-    quantitykind = relationship("QuantityKind")
+    aspect = relationship("Aspect")
 
     def __str__(self):
         return self.name
@@ -125,11 +127,12 @@ class Taxon(Base):
     name = Column(
         String(50)
     )  # Name should be constructor from init with Taxon attributes following BNF grammar
+    quantitykind = Column(String(50))
     process = Column(String(10))  # Source | Measure
-    quantity_id = Column(
-        String(50), ForeignKey("quantitykind_table.id"), nullable=True
+    aspect_id = Column(
+        String(50), ForeignKey("aspect_table.id"), nullable=True
     )  # One-to-one
-    quantitykind = relationship("QuantityKind")
+    aspect = relationship("Aspect")
     qualifier = Column(String(50))
     # Individual taxon may be used in many measurands
     # With bakc_populates if no id for taxon is given
@@ -257,10 +260,10 @@ class QuantityValue(Base):
     __tablename__ = "quantityvalue_table"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
-    quantity_kind = Column(
-        String(50), ForeignKey("quantitykind_table.name"), nullable=True
-    )
-    quantitykind = relationship("QuantityKind")
+    #aspect = Column(
+    #    String(50), ForeignKey("aspect_table.id"), nullable=True
+    #)
+    #aspect = relationship("Aspect")
 
 
 ###############################################################
@@ -302,17 +305,20 @@ class KcdbServiceSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
 class ScaleSchema(SQLAlchemyAutoSchema):
+    # requires serializing enum
+    #scale_type = marshmallow_sqlalchemy.fields.Method("get_scale_type")
+
     class Meta:
         model = Scale
         include_relationships = True
         load_instance = True
 
 
-class QuantityKindSchema(SQLAlchemyAutoSchema):
+class AspectSchema(SQLAlchemyAutoSchema):
     scales = Nested(ScaleSchema, many=True)
 
     class Meta:
-        model = QuantityKind
+        model = Aspect
         include_relationships = True
         load_instance = True
 
