@@ -61,7 +61,7 @@ class MeasurandView(ModelView):
 @app.route("/")
 def index():
     measurands = Measurand.query.all()
-    aspects = QuantityKind.query.all()
+    aspects = Aspect.query.all()
     scales = Scale.query.all()
     return render_template(
         "index.html",
