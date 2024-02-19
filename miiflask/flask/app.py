@@ -21,6 +21,7 @@ from miiflask.flask.db import Base
 from miiflask.flask.model import (
     Measurand,
     Aspect,
+    Unit,
     Scale,
     KcdbCmc,
     KcdbQuantity,
@@ -60,10 +61,11 @@ from miiflask.flask.views import (
 
 admin = Admin(app, name="qms", template_mode="bootstrap3")
 admin.add_view(ModelView(Domain, db.session))
-admin.add_view(MeasurandView(Measurand, db.session))
 admin.add_view(MyModelView(Aspect, db.session))
-admin.add_view(MyModelView(KcdbQuantity, db.session))
-admin.add_view(MyModelView(KcdbService, db.session))
 admin.add_view(MyModelView(Scale, db.session))
+admin.add_view(MyModelView(Unit, db.session))
+admin.add_view(MeasurandView(Measurand, db.session))
+admin.add_view(MyModelView(KcdbService, db.session))
+admin.add_view(MyModelView(KcdbQuantity, db.session))
 admin.add_view(CMCView(KcdbCmc, db.session))
 

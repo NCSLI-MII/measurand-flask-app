@@ -27,9 +27,11 @@ class MlayerMapper:
         # self._dbpath = (self._path_root / 'data/nrc_mis.db')
         self._aspects = {}
         self._scales = {}
+        self._units = {}
         self._schemas = {
             "aspect": model.AspectSchema(),
             "scale": model.ScaleSchema(),
+            "unit": model.UnitSchema()
         }
         self.Session = session
 
@@ -50,6 +52,19 @@ class MlayerMapper:
                 for aspect in data:
                     self._aspects[aspect["id"]] = aspect
 
+    def extractMlayerUnits(self):
+        
+        response = requests.get(self._api + "/units")
+        print(response.status_code)
+        if response.status_code  == 200: 
+            for unit in response.json():
+                self._units[unit["id"]] = unit
+        else:
+            with self._units_path.open() as f:
+                data = json.load(f)
+                for unit in data:
+                    self._units[unit["id"]] = unit
+    
     def extractMlayerScales(self):
         
         response = requests.get(self._api + "/scales")
@@ -124,6 +139,25 @@ class MlayerMapper:
                 self.Session.add(aspect)
                 print(aspect.name)
 
+    
+    def loadUnitCollection(self):
+        for key in self._units:
+            unit = (
+                self.Session.query(model.Unit)
+                .filter(model.Unit.id == key)
+                .first()
+            )
+            if not unit:
+                data_ = {
+                    "id": key,
+                    "name": self._units[key]["name"],
+                    #"scale_type": self._scales[key]["type"],
+                }
+                unit = self._schemas["unit"].load(
+                    data_, session=self.Session
+                )
+                self.Session.add(unit)
+    
     def loadScaleCollection(self):
         for key in self._scales:
             # uid = self.getTableIdentifier(self._scales[key][1])
@@ -133,14 +167,22 @@ class MlayerMapper:
                 .first()
             )
             if not scale:
+                #print(self._scales[key])
                 data_ = {
                     "id": key,
                     "ml_name": self._scales[key]["ml_name"],
+                    #"unit_id": self._scales[key]["unit_id"],
                     #"scale_type": self._scales[key]["type"],
                 }
                 scale = self._schemas["scale"].load(
                     data_, session=self.Session
                 )
+                unit = (
+                    self.Session.query(model.Unit)
+                    .filter(model.Unit.id == self._scales[key]["unit_id"])
+                    .first()
+                )
+                scale.unit = unit
                 self.Session.add(scale)
 
 

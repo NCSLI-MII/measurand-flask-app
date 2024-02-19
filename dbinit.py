@@ -28,6 +28,8 @@ def main(parms):
         mapper = MlayerMapper(session, parms)
         mapper.extractMlayerAspects()
         mapper.loadAspectCollection()
+        mapper.extractMlayerUnits()
+        mapper.loadUnitCollection()
         mapper.extractMlayerScales()
         mapper.loadScaleCollection()
 

@@ -33,7 +33,7 @@
         <div>
         <select multiple="multiple">
         {% for scale in scales %}
-              <option onClick="window.location = '/scale/{{ scale.id }}'">{{ scale.reference }}</option>
+              <option onClick="window.location = '/scale/{{ scale.id }}'">{{ scale.ml_name }}</option>
         {% endfor %}
         </select>
     </div>

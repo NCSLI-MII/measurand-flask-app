@@ -47,6 +47,21 @@ class Aspect(Base):
         return self.name
 
 
+class Unit(Base):
+    __tablename__ = "unit_table"
+    id = Column(String(50), primary_key=True)
+    name = Column(String(100))
+    symbol = Column(String(50))
+    definition = Column(String(50))
+    # ucum = relationship("UCUM")
+    # qudt = relationship("QUDT")
+    # system = relationship("System")
+    # dimensions = Column(String(10))
+    # prefix
+    def __str__(self):
+        return self.name
+
+
 class Scale(Base):
     __tablename__ = "scale_table"
     id = Column(String(10), primary_key=True)
@@ -55,7 +70,11 @@ class Scale(Base):
     #    Enum("ratio", "interval", "bounded", "ordinal", "nominal"),
     #    nullable=False,
     #)
-    # reference = Column(String(50))
+    #unit_id = Column(String(50))
+    unit_id = Column(
+        String(50), ForeignKey("unit_table.id"), nullable=True
+    )  # One-to-one
+    unit = relationship("Unit")
     aspects = relationship(
         "Aspect", secondary=scaleaspect_table, back_populates="scales"
     )
@@ -64,20 +83,6 @@ class Scale(Base):
         return self.ml_name
 
 
-class Reference(Base):
-    __tablename__ = "reference_table"
-    id = Column(Integer, primary_key=True, index=True)
-    uid = Column(String(50))
-    uid_name = Column(String(50))
-    name = Column(String(50))
-
-    # ucum = relationship("UCUM")
-    # qudt = relationship("QUDT")
-    # system = relationship("System")
-    # dimensions = Column(String(10))
-    # prefix
-    def __str__(self):
-        return self.name
 
 
 # MII Taxonomy Model
@@ -221,6 +226,16 @@ kcdb_classifier_map = Table(
     ),
 )
 
+kcdb_measurand_map = Table(
+    "kcdb_measurand_map",
+    Base.metadata,
+    Column("kcdb_service_id", ForeignKey("kcdb_service.id"), primary_key=True),
+    Column(
+        "measurand_id",
+        ForeignKey("measurand.id"),
+        primary_key=True,
+    ),
+)
 
 # MRA SIM Calibration and Measurement Capabilities entries in the KCDB
 class KcdbCmc(Base):
@@ -242,6 +257,7 @@ class KcdbQuantity(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(200))
 
+
 class KcdbService(Base):
     __tablename__ = "kcdb_service"
     id = Column(String(50), primary_key=True)
@@ -251,7 +267,9 @@ class KcdbService(Base):
     branch = Column(String(50))
     service = Column(String(200))
     subservice = Column(String(200))
-
+    measurands = relationship(
+        "Measurand", secondary=kcdb_measurand_map, backref="kcdbservices"
+    )
 # KCDB quantityValue description
 # Requires mapper from KCDB quantity Value to quantity kind
 class QuantityValue(Base):
@@ -298,16 +316,26 @@ class KcdbQuantitySchema(SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
+
 class KcdbServiceSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = KcdbService
         include_relationships = True
         load_instance = True
 
+
+class UnitSchema(SQLAlchemyAutoSchema):
+
+    class Meta:
+        model = Unit
+        include_relationships = True
+        load_instance = True
+
+
 class ScaleSchema(SQLAlchemyAutoSchema):
     # requires serializing enum
     #scale_type = marshmallow_sqlalchemy.fields.Method("get_scale_type")
-
+    unit = Nested(UnitSchema)
     class Meta:
         model = Scale
         include_relationships = True
@@ -319,13 +347,6 @@ class AspectSchema(SQLAlchemyAutoSchema):
 
     class Meta:
         model = Aspect
-        include_relationships = True
-        load_instance = True
-
-
-class ReferenceSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Reference
         include_relationships = True
         load_instance = True
 
