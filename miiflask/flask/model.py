@@ -61,6 +61,8 @@ class Unit(Base):
     def __str__(self):
         return self.name
 
+    def __unicode__(self):
+        return self.name
 
 class Scale(Base):
     __tablename__ = "scale_table"
@@ -80,6 +82,9 @@ class Scale(Base):
     )
 
     def __str__(self):
+        return self.ml_name
+
+    def __unicode__(self):
         return self.ml_name
 
 
@@ -267,6 +272,7 @@ class KcdbService(Base):
     branch = Column(String(50))
     service = Column(String(200))
     subservice = Column(String(200))
+    individualservice = Column(String(200))
     measurands = relationship(
         "Measurand", secondary=kcdb_measurand_map, backref="kcdbservices"
     )
