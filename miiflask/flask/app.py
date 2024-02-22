@@ -23,6 +23,7 @@ from miiflask.flask.model import (
     Aspect,
     Unit,
     Scale,
+    Parameter,
     KcdbCmc,
     KcdbQuantity,
     KcdbService,
@@ -64,6 +65,7 @@ admin.add_view(ModelView(Domain, db.session))
 admin.add_view(MyModelView(Aspect, db.session))
 admin.add_view(MyModelView(Scale, db.session))
 admin.add_view(MyModelView(Unit, db.session))
+admin.add_view(MyModelView(Parameter, db.session))
 admin.add_view(MeasurandView(Measurand, db.session))
 admin.add_view(MyModelView(KcdbService, db.session))
 admin.add_view(MyModelView(KcdbQuantity, db.session))

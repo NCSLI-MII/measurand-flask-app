@@ -40,8 +40,15 @@ m_schema = MeasurandSchema()
 
 
 class MyModelView(ModelView):
+    def _id_formatter(view, context, model, name):
+        _url = f'{view.url}/details/?id={model.id}'
+        print(_url)
+        return Markup(u"<a href='%s'>%s</a>" % (_url, model.id)
+                ) if model.id else u""
+    can_view_details = True
     column_display_pk = True
     column_hide_backrefs = False
+    column_formatters = {'id': _id_formatter}
 
 
 class CMCView(ModelView):
@@ -51,9 +58,23 @@ class CMCView(ModelView):
 
 
 class MeasurandView(ModelView):
+    
+    def _id_formatter(view, context, model, name):
+        print(model.__dict__)
+        return Markup(u"<a href='%s'>%s</a>" % (url_for('%s.details_view' % model.__tablename__, id=model.id), model.id)
+                ) if model.id else u""
+    can_export = True
     column_display_pk = True
+    can_view_details = True
     column_hide_backrefs = False
+    column_formatters = {'id': _id_formatter}
     column_list = ("id", "name", "quantitykind", "parameters")
+    column_details_list = ("id", 
+            "name", 
+            "aspect",
+            "quantitykind", 
+            "parameters")
+    
 
 
 
