@@ -31,7 +31,7 @@ from miiflask.flask.model import AspectSchema, MeasurandSchema
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
-
+from miiflask.mappers.taxonomy_mapper import dicttoxml_taxonomy, getTaxonDict
 
 from marshmallow import pprint as mpprint
 
@@ -97,6 +97,18 @@ def taxonomy():
     measurands = measurand.query.all()
     return render_template("taxonomy.html", measurands=measurands)
 
+@app.route("/taxonomy/export")
+def taxonomy_export():
+    measurand = Measurand()
+    measurands = measurand.query.all()
+    taxons = []
+    
+    for obj in measurands:
+        taxons.append(getTaxonDict(obj, m_schema))
+    xml = dicttoxml_taxonomy(taxons)
+    response = app.make_response(xml)
+    response.mimetype = "text/xml"
+    return response
 
 @app.route("/measurand/<string:measurand_id>/", methods=["GET", "POST"])
 def measurand(measurand_id):
