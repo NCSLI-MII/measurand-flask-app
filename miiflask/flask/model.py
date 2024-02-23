@@ -51,8 +51,11 @@ class Unit(Base):
     __tablename__ = "unit_table"
     id = Column(String(50), primary_key=True)
     name = Column(String(100))
+    ml_name = Column(String(100))
     symbol = Column(String(50))
-    definition = Column(String(50))
+    # special = Column(String(50))
+    reference = Column(String(50))
+    # systems = Column(String(50))
     # ucum = relationship("UCUM")
     # qudt = relationship("QUDT")
     # system = relationship("System")

@@ -24,6 +24,7 @@ class MlayerMapper:
         self._api = parms["api_mlayer"]
         self._scales_path = Path(parms["scales"]).resolve()
         self._aspects_path = Path(parms["aspects"]).resolve()
+        self._units_path = Path(parms["units"]).resolve()
         # self._dbpath = (self._path_root / 'data/nrc_mis.db')
         self._aspects = {}
         self._scales = {}
@@ -132,6 +133,7 @@ class MlayerMapper:
                     "ml_name":  self._aspects[key]["ml_name"],
                     "symbol":  self._aspects[key]["symbol"],
                     "reference":  self._aspects[key]["reference"]
+
                 }
                 aspect = self._schemas["aspect"].load(
                     data_, session=self.Session
@@ -151,6 +153,9 @@ class MlayerMapper:
                 data_ = {
                     "id": key,
                     "name": self._units[key]["name"],
+                    "ml_name": self._units[key]["ml_name"],
+                    "symbol": self._units[key]["symbol"],
+                    "reference": self._units[key]["reference"],
                     #"scale_type": self._scales[key]["type"],
                 }
                 unit = self._schemas["unit"].load(
