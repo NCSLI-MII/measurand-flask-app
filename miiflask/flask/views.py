@@ -73,7 +73,9 @@ class MeasurandView(ModelView):
             "name", 
             "aspect",
             "quantitykind", 
-            "parameters")
+            "parameters",
+            "definition"
+                           )
     
 
 
