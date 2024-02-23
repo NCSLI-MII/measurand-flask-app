@@ -14,7 +14,64 @@ import xmltodict
 from marshmallow import pprint as mpprint
 from miiflask.flask import model
 import pandas as pd
+from lxml import etree
 
+def dicttoxml_taxonomy(taxons):
+    taxonomy = {
+        "mtc:Taxonomy": {
+            "@xmlns:uom": "https://cls-schemas.s3.us-west-1.amazonaws.com/UOM_Database",
+            "@xmlns:mtc": "https://cls-schemas.s3.us-west-1.amazonaws.com/MetrologyTaxonomyCatalog",
+        }
+    }
+    taxonomy["mtc:Taxonomy"]["mtc:Taxon"] = taxons
+    xml = xmltodict.unparse(taxonomy, pretty=True)
+    
+    #pretty_xml = etree.tostring(xml, pretty_print=True, encoding=str)
+
+    return xml
+
+def getTaxonDict(obj, schema):
+    #mpprint(self._schemas["measurand"].dumps(obj, indent=2))
+    #data = self._schemas["measurand"].dump(obj)
+    data = schema.dump(obj) 
+    if "name" not in data.keys():
+        return None
+
+    taxon = {}
+    taxon["mtc:Taxon"] = {}
+    taxon["mtc:Taxon"]["@name"] = data.pop("name")
+    taxon["mtc:Taxon"]["@deprecated"] = "false"
+    taxon["mtc:Taxon"]["@replacement"] = ""
+    taxon["mtc:Taxon"]["mtc:Definition"] = data.pop("definition", "")
+    taxon["mtc:Taxon"]["mtc:Discipline"] = {
+        "@name": data.pop("discipline", "")
+    }
+    taxon["mtc:Taxon"]["mtc:ExternalReference"] = {
+        "@name": data.pop("exref_name", ""),
+        "mtc:url": data.pop("exref_url", ""),
+    }
+    taxon["mtc:Taxon"]["mtc:Parameter"] = []
+    if "parameters" in data.keys():
+        for parm in data["parameters"]:
+            if parm["name"] == "id":
+                continue
+            if parm["name"] == "measurand":
+                continue
+            taxon["mtc:Taxon"]["mtc:Parameter"].append(
+                {
+                    "@name": parm["name"],
+                    "@optional": "false",
+                    "@uom:Quantity": "",
+                }
+            )
+    taxon["mtc:Taxon"]["mtc:Result"] = {
+        "@name": data.pop("result", ""),
+        "uom:Quantity": {"@name": data.pop("uom", "")},
+    }
+
+    print(data)
+    print(xmltodict.unparse(taxon))
+    return taxon
 
 class TaxonomyMapper:
     """
@@ -98,60 +155,6 @@ class TaxonomyMapper:
         # pprint(xmltodict.unparse(taxon))
         return taxon["mtc:Taxon"]
 
-    def dicttoxml_taxonomy(self, taxons):
-        taxonomy = {
-            "mtc:Taxonomy": {
-                "@xmlns:uom": "https://cls-schemas.s3.us-west-1.amazonaws.com/UOM_Database",
-                "@xmlns:mtc": "https://cls-schemas.s3.us-west-1.amazonaws.com/MetrologyTaxonomyCatalog",
-            }
-        }
-        taxonomy["mtc:Taxonomy"]["mtc:Taxon"] = taxons
-        xml = xmltodict.unparse(taxonomy)
-
-        return xml
-
-    def getTaxonDict(self, obj):
-        mpprint(self._schemas["measurand"].dumps(obj, indent=2))
-        data = self._schemas["measurand"].dump(obj)
-
-        if "name" not in data.keys():
-            return None
-
-        taxon = {}
-        taxon["mtc:Taxon"] = {}
-        taxon["mtc:Taxon"]["@name"] = data.pop("name")
-        taxon["mtc:Taxon"]["@deprecated"] = "false"
-        taxon["mtc:Taxon"]["@replacement"] = ""
-        taxon["mtc:Taxon"]["mtc:Definition"] = data.pop("definition", "")
-        taxon["mtc:Taxon"]["mtc:Discipline"] = {
-            "@name": data.pop("discipline", "")
-        }
-        taxon["mtc:Taxon"]["mtc:ExternalReference"] = {
-            "@name": data.pop("exref_name", ""),
-            "mtc:url": data.pop("exref_url", ""),
-        }
-        taxon["mtc:Taxon"]["mtc:Parameter"] = []
-        if "parameters" in data.keys():
-            for parm in data["parameters"]:
-                if parm["name"] == "id":
-                    continue
-                if parm["name"] == "measurand":
-                    continue
-                taxon["mtc:Taxon"]["mtc:Parameter"].append(
-                    {
-                        "@name": parm["name"],
-                        "@optional": "false",
-                        "@uom:Quantity": "",
-                    }
-                )
-        taxon["mtc:Taxon"]["mtc:Result"] = {
-            "@name": data.pop("result", ""),
-            "uom:Quantity": {"@name": data.pop("uom", "")},
-        }
-
-        print(data)
-        print(xmltodict.unparse(taxon))
-        return taxon
 
     def getMeasurandObject(self, taxon):
         """
