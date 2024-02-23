@@ -63,7 +63,8 @@ class KcdbMapper:
                         "branch_id": row[3],
                         "branch": row[4],
                         "service": row[5],
-                        "subservice": row[6]
+                        "subservice": row[6],
+                        "individualservice": row[7]
                     }
                     service = self._schemas["service"].load(
                         data_, session=self.Session
