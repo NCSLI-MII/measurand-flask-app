@@ -15,6 +15,64 @@ from marshmallow import pprint as mpprint
 from miiflask.flask import model
 import pandas as pd
 
+def dicttoxml_taxonomy(taxons):
+    taxonomy = {
+        "mtc:Taxonomy": {
+            "@xmlns:uom": "https://cls-schemas.s3.us-west-1.amazonaws.com/UOM_Database",
+            "@xmlns:mtc": "https://cls-schemas.s3.us-west-1.amazonaws.com/MetrologyTaxonomyCatalog",
+            "mtc:Taxon": taxons
+        
+        }
+    }
+    xml = xmltodict.unparse(taxonomy, pretty=True)
+
+    return xml
+
+def getTaxonDict(obj, schema):
+    #mpprint(self._schemas["measurand"].dumps(obj, indent=2))
+    #data = self._schemas["measurand"].dump(obj)
+    data = schema.dump(obj)
+    print(data)
+    if "name" not in data.keys():
+        return None
+
+    taxon = {}
+    #taxon["mtc:Taxon"] = {}
+    taxon["@name"] = data.pop("name")
+    taxon["@deprecated"] = data['taxon'].pop("deprecated")
+    taxon["@replacement"] = ""
+    taxon["mtc:Definition"] = data.pop("definition", "")
+    taxon["mtc:Discipline"] = {
+        "@name": data.pop("discipline", "")
+    }
+    taxon["mtc:ExternalReference"] = {
+        "@name": data.pop("exref_name", ""),
+        "mtc:url": data.pop("exref_url", ""),
+    }
+    taxon["mtc:Parameter"] = []
+    if "parameters" in data.keys():
+        for parm in data["parameters"]:
+            if parm["name"] == "id":
+                continue
+            if parm["name"] == "measurand":
+                continue
+            taxon["mtc:Parameter"].append(
+                {
+                    "@name": parm["name"],
+                    "@optional": parm["optional"],
+                    "mtc:Definition": parm["definition"],
+                    "uom:Quantity": {"@name": parm["quantitykind"]}
+                },
+
+            )
+    taxon["mtc:Result"] = {
+        "@name": data.pop("result", ""),
+        "uom:Quantity": {"@name": data.pop("quantitykind", "")},
+    }
+
+    print(data)
+    #print(xmltodict.unparse(taxon))
+    return taxon
 
 class TaxonomyMapper:
     """
@@ -98,60 +156,6 @@ class TaxonomyMapper:
         # pprint(xmltodict.unparse(taxon))
         return taxon["mtc:Taxon"]
 
-    def dicttoxml_taxonomy(self, taxons):
-        taxonomy = {
-            "mtc:Taxonomy": {
-                "@xmlns:uom": "https://cls-schemas.s3.us-west-1.amazonaws.com/UOM_Database",
-                "@xmlns:mtc": "https://cls-schemas.s3.us-west-1.amazonaws.com/MetrologyTaxonomyCatalog",
-            }
-        }
-        taxonomy["mtc:Taxonomy"]["mtc:Taxon"] = taxons
-        xml = xmltodict.unparse(taxonomy)
-
-        return xml
-
-    def getTaxonDict(self, obj):
-        mpprint(self._schemas["measurand"].dumps(obj, indent=2))
-        data = self._schemas["measurand"].dump(obj)
-
-        if "name" not in data.keys():
-            return None
-
-        taxon = {}
-        taxon["mtc:Taxon"] = {}
-        taxon["mtc:Taxon"]["@name"] = data.pop("name")
-        taxon["mtc:Taxon"]["@deprecated"] = "false"
-        taxon["mtc:Taxon"]["@replacement"] = ""
-        taxon["mtc:Taxon"]["mtc:Definition"] = data.pop("definition", "")
-        taxon["mtc:Taxon"]["mtc:Discipline"] = {
-            "@name": data.pop("discipline", "")
-        }
-        taxon["mtc:Taxon"]["mtc:ExternalReference"] = {
-            "@name": data.pop("exref_name", ""),
-            "mtc:url": data.pop("exref_url", ""),
-        }
-        taxon["mtc:Taxon"]["mtc:Parameter"] = []
-        if "parameters" in data.keys():
-            for parm in data["parameters"]:
-                if parm["name"] == "id":
-                    continue
-                if parm["name"] == "measurand":
-                    continue
-                taxon["mtc:Taxon"]["mtc:Parameter"].append(
-                    {
-                        "@name": parm["name"],
-                        "@optional": "false",
-                        "@uom:Quantity": "",
-                    }
-                )
-        taxon["mtc:Taxon"]["mtc:Result"] = {
-            "@name": data.pop("result", ""),
-            "uom:Quantity": {"@name": data.pop("uom", "")},
-        }
-
-        print(data)
-        print(xmltodict.unparse(taxon))
-        return taxon
 
     def getMeasurandObject(self, taxon):
         """
@@ -166,12 +170,16 @@ class TaxonomyMapper:
         taxon_data = {
             "name": taxon["@name"],
             "process": taxon["@name"].split(".")[0],
-            "quantitykind": taxon["mtc:Result"]["uom:Quantity"]["@name"]
+            "quantitykind": taxon["mtc:Result"]["uom:Quantity"]["@name"],
+            "deprecated": taxon["@deprecated"]
         }
 
         # Measurands can have the same taxon but differ in parameters
         # Look at rule 10
-        measurand_data = {"name": taxon["@name"]}
+        measurand_data = {"name": taxon["@name"],
+                          "definition": taxon['mtc:Definition'],
+                          "result":taxon["mtc:Result"]["@name"],
+                          }
         
         # TBD
         # Update Measurands to mlayer aspects
@@ -227,10 +235,15 @@ class TaxonomyMapper:
             if "mtc:Parameter" in taxon.keys():
                 for parm in taxon["mtc:Parameter"]:
                     parameter = self._schemas["parameter"].load(
-                        {"name": parm["@name"]}, session=self.Session
+                            {"name": parm["@name"], 
+                             "optional": parm["@optional"]}, 
+                            session=self.Session
                     )
                     if "uom:Quantity" in parm.keys():
-                        parm_qk_data = {"name": parm["uom:Quantity"]["@name"]}
+                        parm_qk_data = {"name": parm["uom:Quantity"]["@name"],
+                                        "definition": parm["mtc:Definition"],
+                                        }
+                                        
                         # parm_quantitykind = (
                         #     self.Session.query(model.QuantityKind)
                         #     .filter(
@@ -295,8 +308,9 @@ class TaxonomyMapper:
                         "uom:Quantity": {
                             "@name": parm[self._namespaces["quantity"]][
                                 "@name"
-                            ]
+                            ],
                         },
+                        "mtc:Definition": parm[self._namespaces["definition"]],
                     }
                     mii_taxons_dict[taxon["@name"]]["mtc:Parameter"].append(
                         _dict

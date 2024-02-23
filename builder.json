@@ -8,5 +8,6 @@
     "units": "resources/m-layer/units.json",
     "quantities": "resources/kcdb/kcdb_quantities.csv",
     "services": "resources/kcdb/kcdb_service_classifications.csv",
-    "api_mlayer": "https://dr49upesmsuw0.cloudfront.net"
+    "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
+    "use_api": true
 }

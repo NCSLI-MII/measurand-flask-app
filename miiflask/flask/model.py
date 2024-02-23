@@ -10,7 +10,7 @@
 SQLAlchemy Data Model 
 """
 from miiflask.flask.db import Base
-from sqlalchemy import ForeignKey, Column, Integer, String, Table, Text, Enum
+from sqlalchemy import ForeignKey, Column, Integer, String, Table, Text, Enum, UnicodeText, Boolean
 from sqlalchemy.orm import relationship
 
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
@@ -103,12 +103,14 @@ class Measurand(Base):
     id = Column(Integer, primary_key=True, index=True)
     taxon_id = Column(Integer, ForeignKey("taxon.id"))
     name = Column(String(50))
+    result = Column(String(50))
     quantitykind = Column(String(50))
     aspect_id = Column(
         String(50), ForeignKey("aspect_table.id"), nullable=True
     )  # One-to-one
     taxon = relationship("Taxon", back_populates="measurand")
     aspect = relationship("Aspect")
+    definition = Column(UnicodeText)
     # One to many parameters
     parameters = relationship("Parameter", back_populates="measurand")
 
@@ -125,6 +127,8 @@ class Parameter(Base):
     measurand = relationship("Measurand", back_populates="parameters")
     name = Column(String(50))
     quantitykind = Column(String(50))
+    definition = Column(UnicodeText)
+    optional = Column(Boolean)
     aspect_id = Column(
         String(50), ForeignKey("aspect_table.id"), nullable=True
     )  # One-to-one
@@ -140,6 +144,8 @@ class Taxon(Base):
     name = Column(
         String(50)
     )  # Name should be constructor from init with Taxon attributes following BNF grammar
+    deprecated = Column(Boolean)
+    
     quantitykind = Column(String(50))
     process = Column(String(10))  # Source | Measure
     aspect_id = Column(
@@ -367,20 +373,23 @@ class ParameterSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
 
+class TaxonSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Taxon
+        include_relationships = True
+        load_instance = True
+
+
 class MeasurandSchema(SQLAlchemyAutoSchema):
     parameters = Nested(ParameterSchema, many=True)
-
+    taxon = Nested(TaxonSchema)
+    
     class Meta:
         model = Measurand
         include_relatiohsips = True
         load_instance = True
 
 
-class TaxonSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Taxon
-        include_relationships = True
-        load_instance = True
 
 
 class DisciplineSchema(SQLAlchemyAutoSchema):

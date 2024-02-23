@@ -22,6 +22,7 @@ class MlayerMapper:
     def __init__(self, session, parms):
         # self._path_root = get_project_root()
         self._api = parms["api_mlayer"]
+        self._doapi = parms['use_api']
         self._scales_path = Path(parms["scales"]).resolve()
         self._aspects_path = Path(parms["aspects"]).resolve()
         self._units_path = Path(parms["units"]).resolve()
@@ -41,12 +42,13 @@ class MlayerMapper:
         return str(uuid_)
 
     def extractMlayerAspects(self):
-        response = requests.get(self._api + "/aspects")
-        print(response.status_code)
-       
-        if response.status_code  == 200: 
-            for aspect in response.json():
-                self._aspects[aspect["id"]] = aspect
+        if self._doapi is True:
+            response = requests.get(self._api + "/aspects")
+            print(response.status_code)
+           
+            if response.status_code  == 200: 
+                for aspect in response.json():
+                    self._aspects[aspect["id"]] = aspect
         else:
             with self._aspects_path.open() as f:
                 data = json.load(f)
@@ -54,25 +56,28 @@ class MlayerMapper:
                     self._aspects[aspect["id"]] = aspect
 
     def extractMlayerUnits(self):
-        
-        response = requests.get(self._api + "/units")
-        print(response.status_code)
-        if response.status_code  == 200: 
-            for unit in response.json():
-                self._units[unit["id"]] = unit
-        else:
-            with self._units_path.open() as f:
-                data = json.load(f)
-                for unit in data:
+        if self._doapi is True:        
+            response = requests.get(self._api + "/units")
+            print(response.status_code)
+            if response.status_code  == 200: 
+                for unit in response.json():
                     self._units[unit["id"]] = unit
+        else:
+            try:
+                with self._units_path.open() as f:
+                    data = json.load(f)
+                    for unit in data:
+                        self._units[unit["id"]] = unit
+            except:
+                print("Units file not found")
     
     def extractMlayerScales(self):
-        
-        response = requests.get(self._api + "/scales")
-        print(response.status_code)
-        if response.status_code  == 200: 
-            for scale in response.json():
-                self._scales[scale["id"]] = scale
+        if self._doapi is True:
+            response = requests.get(self._api + "/scales")
+            print(response.status_code)
+            if response.status_code  == 200: 
+                for scale in response.json():
+                    self._scales[scale["id"]] = scale
         else:
             with self._scales_path.open() as f:
                 data = json.load(f)

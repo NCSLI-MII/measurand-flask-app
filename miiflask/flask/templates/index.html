@@ -2,20 +2,23 @@
 
 {% block content %}
     <h1 class="title">{% block title %} Measurement Information {% endblock %}</h1>
-     <div class="content">   
-        <p>
-        <a href="taxonomy"> Taxonomy</a>
-        </p>
-    </div>
     <div class="content">
         <div>
-        <h2>Defined Taxons</h2>
+            <h2> Measurand Taxonomy </h2>
+        <div>
+        <p>
+        <a href="taxonomy"> Measurands </a> <br />
+        <a href="{{ url_for('taxonomy_export') }}"> Export taxonomy </a>
+        </p>
+        <div>
+        <h3>Defined Taxons</h3>
         <div>
         <select multiple="multiple">
         {% for m in measurands %}
             <option onClick="window.location = '/measurand/{{ m.id }}'">{{ m.name }}</option>
         {% endfor %}
         </select>
+        </div>
     </div>
     <div class="content">
         <div>
