@@ -51,6 +51,10 @@ class MyModelView(ModelView):
     column_formatters = {'id': _id_formatter}
 
 
+class KcdbServiceView(MyModelView):
+    column_searchable_list = ['area_id']
+    page_size = 100
+
 class CMCView(ModelView):
     column_display_pk = True
     column_hide_backrefs = False
