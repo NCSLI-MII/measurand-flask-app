@@ -44,6 +44,9 @@ def main(parms):
         kcdbmapper = KcdbMapper(session, parms)
         kcdbmapper.loadQuantities()
         kcdbmapper.loadServices()
+        if parms['use_api'] is True:
+            if parms['update_resources'] is True:
+                kcdbmapper.updateLocalResources()
         session.commit()
         session.close()
 
