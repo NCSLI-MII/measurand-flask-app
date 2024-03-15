@@ -88,7 +88,6 @@ class TaxonomyMapper:
 
     def __init__(self, session, parms):
         self._path = Path(parms["measurands"]).resolve()
-        self._tables = Path(parms["usertables"]+'taxonomy').resolve()
         self._schema_taxonomy = "https://cls-schemas.s3.us-west-1.amazonaws.com/MetrologyTaxonomyCatalog"
         self._schema_uom = (
             "https://cls-schemas.s3.us-west-1.amazonaws.com/UOM_Database"
@@ -349,6 +348,8 @@ class TaxonomyMapper:
         self._mii_taxons_list = mii_taxons_flat
 
     def flattenTaxonomy(self):
+        # DEPRECATED
+        # Set tables path if needed
         rows = list()
         for taxon in self._mii_taxons_dict:
             row = [self._mii_taxons_dict[taxon]["@name"]]

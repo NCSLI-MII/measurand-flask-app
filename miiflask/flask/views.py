@@ -9,29 +9,25 @@
 """
 
 """
-from flask import render_template, redirect, url_for, make_response, send_file, Markup
+from flask import (render_template,
+                   redirect,
+                   url_for,
+                   Markup)
 from flask_admin.contrib.sqla import ModelView
-from flask_admin.contrib.sqla.view import func
-
-from io import StringIO, BytesIO
-import csv
-import pandas as pd
-
-from itertools import groupby
-from operator import attrgetter
 
 from miiflask.flask.model import (
     Measurand,
-    Aspect, 
+    Aspect,
     Scale,
-    Domain,
-    KcdbCmc, 
 )
 from miiflask.flask.model import AspectSchema, MeasurandSchema
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
 from miiflask.mappers.taxonomy_mapper import dicttoxml_taxonomy, getTaxonDict
+from miiflask.mappers.mlayer_mapper import MlayerMapper
+from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
+from miiflask.mappers.kcdb_mapper import KcdbMapper
 
 from marshmallow import pprint as mpprint
 
@@ -44,7 +40,7 @@ class MyModelView(ModelView):
         _url = f'{view.url}/details/?id={model.id}'
         print(_url)
         return Markup(u"<a href='%s'>%s</a>" % (_url, model.id)
-                ) if model.id else u""
+                      ) if model.id else u""
     can_view_details = True
     column_display_pk = True
     column_hide_backrefs = False
@@ -55,6 +51,7 @@ class KcdbServiceView(MyModelView):
     column_searchable_list = ['area_id']
     page_size = 100
 
+
 class CMCView(ModelView):
     column_display_pk = True
     column_hide_backrefs = False
@@ -62,7 +59,7 @@ class CMCView(ModelView):
 
 
 class MeasurandView(ModelView):
-    
+
     def _id_formatter(view, context, model, name):
         print(model.__dict__)
         return Markup(u"<a href='%s'>%s</a>" % (url_for('%s.details_view' % model.__tablename__, id=model.id), model.id)
@@ -73,20 +70,19 @@ class MeasurandView(ModelView):
     column_hide_backrefs = False
     column_formatters = {'id': _id_formatter}
     column_list = ("id", "name", "quantitykind", "parameters")
-    column_details_list = ("id", 
-            "name", 
-            "aspect",
-            "quantitykind", 
-            "parameters",
-            "definition"
+    column_details_list = ("id",
+                           "name",
+                           "aspect",
+                           "quantitykind",
+                           "parameters",
+                           "definition"
                            )
-    
-
-
 
 
 @app.route("/")
 def index():
+    meta = db.session.info
+    print(meta)
     measurands = Measurand.query.all()
     aspects = Aspect.query.all()
     scales = Scale.query.all()
@@ -97,24 +93,63 @@ def index():
         scales=scales,
     )
 
+
+@app.route("/initialize")
+def initialize():
+
+    parms = {
+            # "path": "/tmp/miiflask",
+            # "database": "/tmp/miiflask/miiflask.db",
+            # "usertables": "/tmp/miiflask/tables_",
+            "measurands": "../../resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
+            "aspects": "../../resources/m-layer/aspects.json",
+            "scales": "../../resources/m-layer/scales.json",
+            "units": "../../resources/m-layer/units.json",
+            "quantities": "../../resources/kcdb/kcdb_quantities.csv",
+            "services": "../../resources/kcdb/kcdb_service_classifications.csv",
+            "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
+            "use_api": False,
+            "update_resources": False
+        }
+    
+    mapper = MlayerMapper(db.session, parms)
+    mapper.extractMlayerAspects()
+    mapper.loadAspectCollection()
+    mapper.extractMlayerUnits()
+    mapper.loadUnitCollection()
+    mapper.extractMlayerScales()
+    mapper.loadScaleCollection()
+
+    miimapper = TaxonomyMapper(db.session, parms)
+    miimapper.extractTaxonomy()
+    miimapper.loadTaxonomy()
+
+    kcdbmapper = KcdbMapper(db.session, parms)
+    kcdbmapper.loadQuantities()
+    kcdbmapper.loadServices()
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
 @app.route("/taxonomy/")
 def taxonomy():
     measurand = Measurand()
     measurands = measurand.query.all()
     return render_template("taxonomy.html", measurands=measurands)
 
+
 @app.route("/taxonomy/export")
 def taxonomy_export():
     measurand = Measurand()
     measurands = measurand.query.all()
     taxons = []
-    
     for obj in measurands:
         taxons.append(getTaxonDict(obj, m_schema))
     xml = dicttoxml_taxonomy(taxons)
     response = app.make_response(xml)
     response.mimetype = "text/xml"
     return response
+
 
 @app.route("/measurand/<string:measurand_id>/", methods=["GET", "POST"])
 def measurand(measurand_id):
@@ -129,7 +164,7 @@ def measurand(measurand_id):
 @app.route("/aspect/<string:aspect_id>/", methods=["GET", "POST"])
 def aspect(aspect_id):
     print("Get Aspect ", aspect_id)
-    a = QuantityKind.query.get_or_404(aspect_id)
+    a = Aspect.query.get_or_404(aspect_id)
     a_schema = qk_schema.dumps(a, indent=2)
     print(a.id)
     mpprint(a_schema)
@@ -142,5 +177,3 @@ def scale(scale_id):
     s = Scale.query.get_or_404(scale_id)
     print(s.id)
     return render_template("scale.html", scale=s)
-
-
