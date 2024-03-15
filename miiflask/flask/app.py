@@ -9,6 +9,8 @@
 """
 
 """
+from os import environ
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
@@ -16,7 +18,9 @@ from flask_admin.contrib.sqla import ModelView
 
 # This is vanilla SQLAlchemy declarative base
 # 
-from miiflask.flask.db import Base
+from miiflask.flask.db import Base, bind_engine
+
+from miiflask.flask.config import TestingConfig, DevelopmentConfig
 
 from miiflask.flask.model import (
     Measurand,
@@ -30,8 +34,9 @@ from miiflask.flask.model import (
     Domain
 )
 
-
-app = Flask(__name__)
+print('Creating app ', __name__)
+def create_app(config=TestingConfig):
+    app = Flask(__name__)
 
 # TBD
 # Configure with environment variables
@@ -39,7 +44,8 @@ app = Flask(__name__)
 # FLASK_ENV = testing
 # FLASK_ENV = development
 
-app.config.from_object('miiflask.flask.config.TestingConfig')
+    app.config.from_object(config)
+    return app
 
 # Difference between flask sqlalchemy declarative base and vanilla sqlalchemcy
 # Ability to use query.Model
@@ -48,7 +54,26 @@ app.config.from_object('miiflask.flask.config.TestingConfig')
 # The following model_class is customizing the flask db.Model
 # Which is there to include the metadata object in flask.db
 # Flask is just used to connect to db, not create db
-db = SQLAlchemy(app, model_class=Base)
+
+env = environ['FLASK_ENV']
+print('ENVIRONMENT: ', env)
+if(env == 'testing'):
+    app = create_app()
+elif(env=='development'):
+    app = create_app(DevelopmentConfig)
+else:
+    print("App not configured")
+
+print('Testing ', app.config.get('TESTING'))
+print('DEBUG ', app.config.get('DEBUG'))
+print('URI ', app.config.get('SQLALCHEMY_DATABASE_URI')) 
+if app.config.get('TESTING') is True: 
+    print("TESTING: create db for in-memory")
+    db = SQLAlchemy(app, model_class=Base)
+    with app.app_context():
+        db.create_all() 
+else:    
+    db = SQLAlchemy(app, model_class=Base)
 
 print("Running the App and using views")
 
@@ -71,4 +96,8 @@ admin.add_view(MeasurandView(Measurand, db.session))
 admin.add_view(KcdbServiceView(KcdbService, db.session))
 admin.add_view(MyModelView(KcdbQuantity, db.session))
 admin.add_view(CMCView(KcdbCmc, db.session))
+    
+
+
+
 

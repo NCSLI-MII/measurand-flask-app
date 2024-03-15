@@ -35,11 +35,7 @@ def main(parms):
 
         miimapper = TaxonomyMapper(session, parms)
         miimapper.extractTaxonomy()
-        miimapper.flattenTaxonomy()
         miimapper.loadTaxonomy()
-        #xml = miimapper.dicttoxml_taxonomy(miimapper._mii_taxons_list)
-        #with open("/tmp/junk.xml", "w") as f:
-        #    f.write(xml)
 
         kcdbmapper = KcdbMapper(session, parms)
         kcdbmapper.loadQuantities()

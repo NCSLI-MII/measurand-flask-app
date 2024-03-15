@@ -7,10 +7,18 @@
 # Distributed under terms of the Copyright © 2022 National Research Council Canada. license.
 
 """
-SQLAlchemy Data Model 
+SQLAlchemy Data Model
 """
 from miiflask.flask.db import Base
-from sqlalchemy import ForeignKey, Column, Integer, String, Table, Text, Enum, UnicodeText, Boolean
+from sqlalchemy import (ForeignKey,
+                        Column,
+                        Integer,
+                        String,
+                        Table,
+                        Text,
+                        UnicodeText,
+                        Boolean
+                        )
 from sqlalchemy.orm import relationship
 
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
@@ -61,21 +69,22 @@ class Unit(Base):
     # system = relationship("System")
     # dimensions = Column(String(10))
     # prefix
+
     def __str__(self):
         return self.name
 
     def __unicode__(self):
         return self.name
 
+
 class Scale(Base):
     __tablename__ = "scale_table"
     id = Column(String(10), primary_key=True)
     ml_name = Column(String(50))
-    #scale_type = Column(
+    # scale_type = Column(
     #    Enum("ratio", "interval", "bounded", "ordinal", "nominal"),
     #    nullable=False,
-    #)
-    #unit_id = Column(String(50))
+    # )
     unit_id = Column(
         String(50), ForeignKey("unit_table.id"), nullable=True
     )  # One-to-one
