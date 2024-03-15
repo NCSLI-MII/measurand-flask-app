@@ -33,7 +33,12 @@ python dbinit.py -p builder.json -m
 ```
 python dbinit.py -p builder.json -d
 ```
-* Update database path in flask [config](./miiflask/flask/config.py) if changed in builder.json. 
+* Update database path in flask [config](./miiflask/flask/config.py) if changed in builder.json.
+* To extract data from the KCDB and m-layer APIs, update the builder.json file.
+```
+use_api=true
+```
+
 ### Running the flask application
 Two modes have configurations for running the flask application. Before running the application export the Flask environment.
 * Testing configuration runs an in-memory database that requires extracting and loading the data each time. 
@@ -56,6 +61,6 @@ flask run
 * The administration view can be found at http://127.0.0.1/5000/admin
 * For in-memory, you'll need to load some data. Go to http://127.0.0.1/5000/initialize
 
-Below is a diagram of the database schema implemented as a flask [model](./miiflask/flask/model.py).
+Below was a diagram of the database schema implemented as a flask [model](./miiflask/flask/model.py).
 
 ![Schema](./taxonomyschema.png)
