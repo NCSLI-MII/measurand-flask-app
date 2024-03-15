@@ -26,6 +26,8 @@ class MlayerMapper:
         self._scales_path = Path(parms["scales"]).resolve()
         self._aspects_path = Path(parms["aspects"]).resolve()
         self._units_path = Path(parms["units"]).resolve()
+        self._conversions_path = Path(parms["conversions"]).resolve()
+        self._casts_path = Path(parms["casts"]).resolve()
         # self._dbpath = (self._path_root / 'data/nrc_mis.db')
         self._aspects = {}
         self._scales = {}
@@ -84,46 +86,73 @@ class MlayerMapper:
                 for scale in data:
                     self._scales[scale["id"]] = scale
 
+    
     def getScaleAspectAssociations(self):
         # Obtaining ScaleAspect associations more complicated
         # M-layer (concept package) conversions only associate scales
         # use the conversion file name to look up the aspect?
         # Casting associates scale-aspect pairs
         # Scales_for associate many scales to the same aspect
-        mltypes = ["conversion", "scales_for"]
-        associations = {}
-        for _type in mltypes:
-            for path in Path(self._path / _type).rglob("*json"):
-                print(path)
-                tag = path.name.split("/")[-1].split(".")[0]
-
-                if tag in self._aspects.keys():
-                    print(tag)
-                    associations[tag] = []
-                    try:
-                        with path.open() as f:
-                            data = json.load(f)
-                            if _type == "conversion":
-                                for cnv in data:
-                                    associations[tag].append(cnv["src"])
-                                    associations[tag].append(cnv["dst"])
-                            if _type == "scales_for":
-                                for cnv in data:
-                                    associations[tag].append(cnv["src"])
-                                    associations[tag].append(cnv["dst"])
-                            if _type == "casting":
-                                pass
-                                # for cnv in data:
-                                # associations[cnv['src'][1]]
-                    except Exception as e:
-                        print("Cannot open ", path.name)
-                        print(e)
-                    associations[tag] = set(
-                        tuple(i) for i in associations[tag]
+        if self._doapi is True:
+            response = requests.get(self._api + "/conversions")
+            print(response.status_code)
+            if response.status_code  == 200: 
+                for conversion in response.json():
+                    aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.Aspect.id == key)
+                        .first()
                     )
-
-        return associations
-
+                    
+        else:
+            with self._conversions_path.open() as f:
+                data = json.load(f)
+                for conversion in data:
+                    aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.Aspect.id == conversion['aspect_id'])
+                        .first()
+                    )
+                    src_scale = (
+                        self.Session.query(model.Scale)
+                        .filter(model.Scale.id == conversion['src_scale_id'])
+                        .first()
+                    )
+                    dst_scale = (
+                        self.Session.query(model.Scale)
+                        .filter(model.Scale.id == conversion['dst_scale_id'])
+                        .first()
+                    )
+                    aspect.scales.append(src_scale)
+                    aspect.scales.append(dst_scale)
+            
+            with self._casts_path.open() as f:
+                data = json.load(f)
+                for conversion in data:
+                    src_aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.Aspect.id == conversion['src_aspect_id'])
+                        .first()
+                    )
+                    src_scale = (
+                        self.Session.query(model.Scale)
+                        .filter(model.Scale.id == conversion['src_scale_id'])
+                        .first()
+                    )
+                    dst_aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.Aspect.id == conversion['dst_aspect_id'])
+                        .first()
+                    )
+                    dst_scale = (
+                        self.Session.query(model.Scale)
+                        .filter(model.Scale.id == conversion['dst_scale_id'])
+                        .first()
+                    )
+                    src_aspect.scales.append(src_scale)
+                    dst_aspect.scales.append(dst_scale)
+                    
+        
     def loadAspectCollection(self):
         for key in self._aspects:
             aspect = (

@@ -79,6 +79,19 @@ class MeasurandView(ModelView):
                            )
 
 
+class AspectView(ModelView):
+
+    can_export = True
+    column_display_pk = True
+    can_view_details = True
+    column_hide_backrefs = False
+    # column_formatters = {'id': _id_formatter}
+    column_list = ("id", "name", "ml_name", "scales")
+    column_details_list = ("id",
+                           "name",
+                           "ml_name",
+                           "scales",
+                           )
 @app.route("/")
 def index():
     meta = db.session.info
@@ -105,6 +118,8 @@ def initialize():
             "aspects": "../../resources/m-layer/aspects.json",
             "scales": "../../resources/m-layer/scales.json",
             "units": "../../resources/m-layer/units.json",
+            "conversions": "../../resources/m-layer/conversions.json",
+            "casts": "../../resources/m-layer/casts.json",
             "quantities": "../../resources/kcdb/kcdb_quantities.csv",
             "services": "../../resources/kcdb/kcdb_service_classifications.csv",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
@@ -119,6 +134,7 @@ def initialize():
     mapper.loadUnitCollection()
     mapper.extractMlayerScales()
     mapper.loadScaleCollection()
+    mapper.getScaleAspectAssociations()
 
     miimapper = TaxonomyMapper(db.session, parms)
     miimapper.extractTaxonomy()

@@ -83,12 +83,13 @@ from miiflask.flask.views import (
         MeasurandView,
         CMCView,
         MyModelView,
-        KcdbServiceView
+        KcdbServiceView,
+        AspectView
         )
 
 admin = Admin(app, name="qms", template_mode="bootstrap3")
 admin.add_view(ModelView(Domain, db.session))
-admin.add_view(MyModelView(Aspect, db.session))
+admin.add_view(AspectView(Aspect, db.session))
 admin.add_view(MyModelView(Scale, db.session))
 admin.add_view(MyModelView(Unit, db.session))
 admin.add_view(MyModelView(Parameter, db.session))

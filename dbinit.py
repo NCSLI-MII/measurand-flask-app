@@ -32,6 +32,7 @@ def main(parms):
         mapper.loadUnitCollection()
         mapper.extractMlayerScales()
         mapper.loadScaleCollection()
+        mapper.getScaleAspectAssociations()
 
         miimapper = TaxonomyMapper(session, parms)
         miimapper.extractTaxonomy()
