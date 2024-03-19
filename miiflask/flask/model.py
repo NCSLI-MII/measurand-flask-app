@@ -32,8 +32,8 @@ from marshmallow_sqlalchemy.fields import Nested
 scaleaspect_table = Table(
     "scaleaspect_table",
     Base.metadata,
-    Column("scale_id", ForeignKey("scale_table.id"), primary_key=True),
-    Column("aspect_id", ForeignKey("aspect_table.id"), primary_key=True),
+    Column("scale_id", ForeignKey("scale.id"), primary_key=True),
+    Column("aspect_id", ForeignKey("aspect.id"), primary_key=True),
 )
 
 
@@ -41,7 +41,7 @@ scaleaspect_table = Table(
 class Aspect(Base):
     # Aspect will be referenced by many tables
     # Do not keep relationship to other tables
-    __tablename__ = "aspect_table"
+    __tablename__ = "aspect"
     id = Column(String(10), primary_key=True)
     name = Column(String(50))
     ml_name = Column(String(50))
@@ -56,7 +56,7 @@ class Aspect(Base):
 
 
 class Unit(Base):
-    __tablename__ = "unit_table"
+    __tablename__ = "unit"
     id = Column(String(50), primary_key=True)
     name = Column(String(100))
     ml_name = Column(String(100))
@@ -78,7 +78,7 @@ class Unit(Base):
 
 
 class Scale(Base):
-    __tablename__ = "scale_table"
+    __tablename__ = "scale"
     id = Column(String(10), primary_key=True)
     ml_name = Column(String(50))
     # scale_type = Column(
@@ -86,7 +86,7 @@ class Scale(Base):
     #    nullable=False,
     # )
     unit_id = Column(
-        String(50), ForeignKey("unit_table.id"), nullable=True
+        String(50), ForeignKey("unit.id"), nullable=True
     )  # One-to-one
     unit = relationship("Unit")
     aspects = relationship(
@@ -115,7 +115,7 @@ class Measurand(Base):
     result = Column(String(50))
     quantitykind = Column(String(50))
     aspect_id = Column(
-        String(50), ForeignKey("aspect_table.id"), nullable=True
+        String(50), ForeignKey("aspect.id"), nullable=True
     )  # One-to-one
     taxon = relationship("Taxon", back_populates="measurand")
     aspect = relationship("Aspect")
@@ -139,7 +139,7 @@ class Parameter(Base):
     definition = Column(UnicodeText)
     optional = Column(Boolean)
     aspect_id = Column(
-        String(50), ForeignKey("aspect_table.id"), nullable=True
+        String(50), ForeignKey("aspect.id"), nullable=True
     )  # One-to-one
     aspect = relationship("Aspect")
 
@@ -158,7 +158,7 @@ class Taxon(Base):
     quantitykind = Column(String(50))
     process = Column(String(10))  # Source | Measure
     aspect_id = Column(
-        String(50), ForeignKey("aspect_table.id"), nullable=True
+        String(50), ForeignKey("aspect.id"), nullable=True
     )  # One-to-one
     aspect = relationship("Aspect")
     qualifier = Column(String(50))
@@ -167,7 +167,7 @@ class Taxon(Base):
     # SQLAlchemy will create a new one
     measurand = relationship("Measurand", back_populates="taxon")
     discipline_id = Column(
-        Integer, ForeignKey("discipline_table.id"), nullable=True
+        Integer, ForeignKey("discipline.id"), nullable=True
     )
     discipline = relationship("Discipline", back_populates="taxon")
 
@@ -180,7 +180,7 @@ class Taxon(Base):
 
 
 class Domain(Base):
-    __tablename__ = "domain_table"
+    __tablename__ = "domain"
     id = Column(Integer, primary_key=True, index=True)
     label = Column(String(10))
     title = Column(String(50))
@@ -196,7 +196,7 @@ class Domain(Base):
 
 # Disciplines should be one to many aspects or quantity kinds in taxonomy
 class Discipline(Base):
-    __tablename__ = "discipline_table"
+    __tablename__ = "discipline"
     id = Column(Integer, primary_key=True, index=True)
     label = Column(String(50))
     taxon = relationship("Taxon", back_populates="discipline")
@@ -252,7 +252,7 @@ kcdb_classifier_map = Table(
 kcdb_measurand_map = Table(
     "kcdb_measurand_map",
     Base.metadata,
-    Column("kcdb_service_id", ForeignKey("kcdb_service.id"), primary_key=True),
+    Column("kcdb_service_id", ForeignKey("kcdbservice.id"), primary_key=True),
     Column(
         "measurand_id",
         ForeignKey("measurand.id"),
@@ -276,13 +276,13 @@ class KcdbCmc(Base):
 
 
 class KcdbQuantity(Base):
-    __tablename__ = "kcdb_quantity"
+    __tablename__ = "kcdbquantity"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(200))
 
 
 class KcdbService(Base):
-    __tablename__ = "kcdb_service"
+    __tablename__ = "kcdbservice"
     id = Column(String(50), primary_key=True)
     area_id = Column(String(10))
     area = Column(String(50))

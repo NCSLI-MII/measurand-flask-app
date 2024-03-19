@@ -64,6 +64,7 @@ class MeasurandView(ModelView):
         print(model.__dict__)
         return Markup(u"<a href='%s'>%s</a>" % (url_for('%s.details_view' % model.__tablename__, id=model.id), model.id)
                 ) if model.id else u""
+    
     can_export = True
     column_display_pk = True
     can_view_details = True
@@ -79,13 +80,50 @@ class MeasurandView(ModelView):
                            )
 
 
-class AspectView(ModelView):
+class ScaleView(ModelView):
 
+    def _link_formatter(view, context, model, name):
+        field = getattr(model, name)
+        url = url_for('unit.details_view', id=field.id)
+        return Markup('<a href="{}">{}</a>'.format(url, field))
+    
+                
     can_export = True
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
-    # column_formatters = {'id': _id_formatter}
+    column_formatters = {'unit': _link_formatter}
+    column_list = ("id", "ml_name", "unit")
+    column_details_list = ("id",
+                           "ml_name",
+                           "unit",
+                           )
+                         
+
+class AspectView(ModelView):
+
+    def _id_formatter(view, context, model, name):
+        print(model.__dict__)
+        return Markup(u"<a href='%s'>%s</a>" % (url_for('%s.details_view' % model.__tablename__, id=model.id), model.id)
+                ) if model.id else u""
+    
+    
+    def _scale_formatter(view, context, model, name):
+        urls = []
+        for s in model.scales:
+            #print(s.id)
+            #field = getattr(model, name)
+            url = url_for('scale.details_view', id = s.id)
+            urls.append('<a href="{}">{}</a>'.format(url, s.id))
+
+        return Markup((',').join(urls))
+                
+    can_export = True
+    column_display_pk = True
+    can_view_details = True
+    column_hide_backrefs = False
+    column_formatters = {'id': _id_formatter,
+                         'scales': _scale_formatter}
     column_list = ("id", "name", "ml_name", "scales")
     column_details_list = ("id",
                            "name",
