@@ -31,7 +31,10 @@ from miiflask.flask.model import (
     KcdbCmc,
     KcdbQuantity,
     KcdbService,
-    Domain
+    Domain,
+    Conversion,
+    Cast,
+    TransformFunction
 )
 
 print('Creating app ', __name__)
@@ -85,7 +88,8 @@ from miiflask.flask.views import (
         MyModelView,
         KcdbServiceView,
         AspectView,
-        ScaleView
+        ScaleView,
+        ConversionView
         )
 
 admin = Admin(app, name="qms", template_mode="bootstrap3")
@@ -93,7 +97,10 @@ admin.add_view(ModelView(Domain, db.session))
 admin.add_view(AspectView(Aspect, db.session))
 admin.add_view(ScaleView(Scale, db.session))
 admin.add_view(MyModelView(Unit, db.session))
+admin.add_view(ConversionView(Conversion, db.session))
+admin.add_view(MyModelView(Cast, db.session))
 admin.add_view(MyModelView(Parameter, db.session))
+admin.add_view(MyModelView(TransformFunction, db.session))
 admin.add_view(MeasurandView(Measurand, db.session))
 admin.add_view(KcdbServiceView(KcdbService, db.session))
 admin.add_view(MyModelView(KcdbQuantity, db.session))

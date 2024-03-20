@@ -28,6 +28,7 @@ class MlayerMapper:
         self._units_path = Path(parms["units"]).resolve()
         self._conversions_path = Path(parms["conversions"]).resolve()
         self._casts_path = Path(parms["casts"]).resolve()
+        self._functions_path = Path(parms["functions"]).resolve()
         # self._dbpath = (self._path_root / 'data/nrc_mis.db')
         self._aspects = {}
         self._scales = {}
@@ -35,7 +36,8 @@ class MlayerMapper:
         self._schemas = {
             "aspect": model.AspectSchema(),
             "scale": model.ScaleSchema(),
-            "unit": model.UnitSchema()
+            "unit": model.UnitSchema(),
+            "transform": model.TransformFunctionSchema(),
         }
         self.Session = session
 
@@ -86,7 +88,51 @@ class MlayerMapper:
                 for scale in data:
                     self._scales[scale["id"]] = scale
 
-    
+   
+    def etlFunctions(self):
+
+        if self._doapi is True:
+            response = requests.get(self._api + "/functions")
+            print(response.status_code)
+            if response.status_code  == 200: 
+                for item in response.json():
+                    fcn = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.TransformFunction.id == item['id'])
+                        .first()
+                    )
+                    if not fcn:
+                        data_ = {
+                            "id": item['id'], 
+                            "ml_name": item["ml_name"],
+
+                        }
+                        fcn = self._schemas["transform"].load(
+                            data_, session=self.Session
+                        )
+                        self.Session.add(fcn)
+
+                    
+        else:
+            with self._functions_path.open() as f:
+                data = json.load(f)
+                for item in data:
+                    fcn = (
+                        self.Session.query(model.TransformFunction)
+                        .filter(model.TransformFunction.id == item['id'])
+                        .first()
+                    )
+                    if not fcn:
+                        data_ = {
+                            "id": item['id'], 
+                            "ml_name": item["ml_name"],
+
+                        }
+                        fcn = self._schemas["transform"].load(
+                            data_, session=self.Session
+                        )
+                        self.Session.add(fcn)
+
     def getScaleAspectAssociations(self):
         # Obtaining ScaleAspect associations more complicated
         # M-layer (concept package) conversions only associate scales
@@ -125,6 +171,27 @@ class MlayerMapper:
                     )
                     aspect.scales.append(src_scale)
                     aspect.scales.append(dst_scale)
+                    
+                    data_ = {
+                            "src_scale_id": conversion['src_scale_id'],
+                            "dst_scale_id": conversion['dst_scale_id'],
+                            "aspect_id": conversion['aspect_id'],
+                    }
+                    
+                    #obj_ = self._schemas["conversion"].load(
+                    #        data_, session=self.Session
+                    #    )
+                    cnv = model.Conversion(src_scale_id=conversion['src_scale_id'],
+                                           dst_scale_id=conversion['dst_scale_id'],
+                                           aspect_id=conversion['aspect_id'],
+                                           function_id=conversion['function_id'])
+                    self.Session.add(cnv)
+                    #except:
+                    #    print("Could not create conversion")
+                    #    print("src: {}, dst: {}, aspect: {}".format(conversion['src_scale_id'],
+                     #                                               conversion['dst_scale_id'],
+                      #                                              conversion['aspect_id']))
+                        
             
             with self._casts_path.open() as f:
                 data = json.load(f)
@@ -151,6 +218,12 @@ class MlayerMapper:
                     )
                     src_aspect.scales.append(src_scale)
                     dst_aspect.scales.append(dst_scale)
+                    cst = model.Cast(src_scale_id=conversion['src_scale_id'],
+                                     dst_scale_id=conversion['dst_scale_id'],
+                                     src_aspect_id=conversion['src_aspect_id'],
+                                     dst_aspect_id=conversion['dst_aspect_id'],
+                                     function_id=conversion['function_id'])
+                    self.Session.add(cst)
                     
         
     def loadAspectCollection(self):
