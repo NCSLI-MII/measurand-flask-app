@@ -42,12 +42,13 @@ class Conversion(Base):
     src_scale_id = Column("src_scale_id", ForeignKey("scale.id"), primary_key=True)
     dst_scale_id = Column("dst_scale_id", ForeignKey("scale.id"), primary_key=True)
     aspect_id = Column("aspect_id", ForeignKey("aspect.id"), primary_key=True)
-    function_id = Column("function_id", ForeignKey("transformfunction.id"))
+    transform_id = Column("transform_id", ForeignKey("transform.id"))
+    parameters = Column(UnicodeText)
     
     src_scale = relationship('Scale', foreign_keys=[src_scale_id])
     dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
     aspect = relationship('Aspect', foreign_keys=[aspect_id]) #, back_populates='conversions')
-    function = relationship('TransformFunction', foreign_keys=[function_id])
+    transform = relationship('Transform', foreign_keys=[transform_id])
     
     def __str__(self):
         return "{}.{}.{}".format(self.src_scale_id, 
@@ -61,13 +62,14 @@ class Cast(Base):
     src_aspect_id = Column("src_aspect_id", ForeignKey("aspect.id"), primary_key=True)
     dst_scale_id = Column("dst_scale_id", ForeignKey("scale.id"), primary_key=True)
     dst_aspect_id = Column("dst_aspect_id", ForeignKey("aspect.id"), primary_key=True)
-    function_id = Column("function_id", ForeignKey("transformfunction.id"))
+    transform_id = Column("transform_id", ForeignKey("transform.id"))
+    parameters = Column(UnicodeText)
 
     src_scale = relationship('Scale', foreign_keys=[src_scale_id])
     src_aspect = relationship('Aspect', foreign_keys=[src_aspect_id]) 
     dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
     dst_aspect = relationship('Aspect', foreign_keys=[dst_aspect_id]) 
-    function = relationship('TransformFunction', foreign_keys=[function_id])
+    transform = relationship('Transform', foreign_keys=[transform_id])
 
     def __str__(self):
         return "{}.{}.{}.{}".format(self.src_scale_id, 
@@ -76,12 +78,12 @@ class Cast(Base):
                                  self.dst_aspect_id)
 
 
-class TransformFunction(Base):
-    __tablename__ = "transformfunction"
+class Transform(Base):
+    __tablename__ = "transform"
     id = Column(String(10), primary_key=True)
     ml_name = Column(String(50))
-    py_function = Column(String(50))
-    py_names_in_scope = Column(String(50))
+    py_function = Column(UnicodeText)
+    py_names_in_scope = Column(UnicodeText)
     comments = Column(UnicodeText)
     
     def __str__(self):
@@ -171,8 +173,8 @@ class Scale(Base):
 # Measurands may have same taxon but different parameters
 class Measurand(Base):
     __tablename__ = "measurand"
-    id = Column(Integer, primary_key=True, index=True)
-    taxon_id = Column(Integer, ForeignKey("taxon.id"))
+    id = Column(String(100), primary_key=True, index=True)
+    taxon_id = Column(String(100), ForeignKey("taxon.id"))
     name = Column(String(50))
     result = Column(String(50))
     quantitykind = Column(String(50))
@@ -211,7 +213,7 @@ class Parameter(Base):
 
 class Taxon(Base):
     __tablename__ = "taxon"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String(100), primary_key=True, index=True)
     name = Column(
         String(50)
     )  # Name should be constructor from init with Taxon attributes following BNF grammar
@@ -234,7 +236,7 @@ class Taxon(Base):
     discipline = relationship("Discipline", back_populates="taxon")
 
     def __str__(self):
-        return self.name
+        return self.id
 
 
 # Traditional CC areas and team labels
@@ -436,11 +438,18 @@ class AspectSchema(SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
+class TransformSchema(SQLAlchemyAutoSchema):
+    
+    class Meta:
+        model = Transform
+        include_relationships = True
+        load_instance = True
 
 class ConversionSchema(SQLAlchemyAutoSchema):
     src_scale = Nested(ScaleSchema)
     dst_scale = Nested(ScaleSchema)
     aspect = Nested(AspectSchema)
+    transform = Nested(TransformSchema)
     
     class Meta:
         model = Conversion
@@ -448,12 +457,6 @@ class ConversionSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
 
-class TransformFunctionSchema(SQLAlchemyAutoSchema):
-    
-    class Meta:
-        model = TransformFunction
-        include_relationships = True
-        load_instance = True
 
 
 class ParameterSchema(SQLAlchemyAutoSchema):

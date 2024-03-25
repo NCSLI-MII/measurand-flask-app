@@ -37,7 +37,7 @@ class MlayerMapper:
             "aspect": model.AspectSchema(),
             "scale": model.ScaleSchema(),
             "unit": model.UnitSchema(),
-            "transform": model.TransformFunctionSchema(),
+            "transform": model.TransformSchema(),
         }
         self.Session = session
 
@@ -118,14 +118,17 @@ class MlayerMapper:
                 data = json.load(f)
                 for item in data:
                     fcn = (
-                        self.Session.query(model.TransformFunction)
-                        .filter(model.TransformFunction.id == item['id'])
+                        self.Session.query(model.Transform)
+                        .filter(model.Transform.id == item['id'])
                         .first()
                     )
                     if not fcn:
                         data_ = {
                             "id": item['id'], 
                             "ml_name": item["ml_name"],
+                            "py_function": item["py_function"],
+                            "py_names_in_scope": item["py_names_in_scope"],
+                            "comments": item["comments"]
 
                         }
                         fcn = self._schemas["transform"].load(
@@ -184,7 +187,8 @@ class MlayerMapper:
                     cnv = model.Conversion(src_scale_id=conversion['src_scale_id'],
                                            dst_scale_id=conversion['dst_scale_id'],
                                            aspect_id=conversion['aspect_id'],
-                                           function_id=conversion['function_id'])
+                                           transform_id=conversion['function_id'],
+                                           parameters=conversion['parameters'])
                     self.Session.add(cnv)
                     #except:
                     #    print("Could not create conversion")
@@ -195,34 +199,35 @@ class MlayerMapper:
             
             with self._casts_path.open() as f:
                 data = json.load(f)
-                for conversion in data:
+                for cast in data:
                     src_aspect = (
                         self.Session.query(model.Aspect)
-                        .filter(model.Aspect.id == conversion['src_aspect_id'])
+                        .filter(model.Aspect.id == cast['src_aspect_id'])
                         .first()
                     )
                     src_scale = (
                         self.Session.query(model.Scale)
-                        .filter(model.Scale.id == conversion['src_scale_id'])
+                        .filter(model.Scale.id == cast['src_scale_id'])
                         .first()
                     )
                     dst_aspect = (
                         self.Session.query(model.Aspect)
-                        .filter(model.Aspect.id == conversion['dst_aspect_id'])
+                        .filter(model.Aspect.id == cast['dst_aspect_id'])
                         .first()
                     )
                     dst_scale = (
                         self.Session.query(model.Scale)
-                        .filter(model.Scale.id == conversion['dst_scale_id'])
+                        .filter(model.Scale.id == cast['dst_scale_id'])
                         .first()
                     )
                     src_aspect.scales.append(src_scale)
                     dst_aspect.scales.append(dst_scale)
-                    cst = model.Cast(src_scale_id=conversion['src_scale_id'],
-                                     dst_scale_id=conversion['dst_scale_id'],
-                                     src_aspect_id=conversion['src_aspect_id'],
-                                     dst_aspect_id=conversion['dst_aspect_id'],
-                                     function_id=conversion['function_id'])
+                    cst = model.Cast(src_scale_id=cast['src_scale_id'],
+                                     dst_scale_id=cast['dst_scale_id'],
+                                     src_aspect_id=cast['src_aspect_id'],
+                                     dst_aspect_id=cast['dst_aspect_id'],
+                                     transform_id=cast['function_id'],
+                                     parameters=cast['parameters'])
                     self.Session.add(cst)
                     
         

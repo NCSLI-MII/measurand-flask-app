@@ -37,11 +37,18 @@ m_schema = MeasurandSchema()
 
 def _link_formatter(view, context, model, name):
     field = getattr(model, name)
+    
     url = url_for('{}.details_view'.format(name), id=field.id)
     return Markup('<a href="{}">{}</a>'.format(url, field))
 
 
 def _id_formatter(view, context, model, name):
+    field = getattr(model, name)
+    #print(model)
+    #print(field)
+    #print(name)
+    #print(model.__tablename__)
+    #print(model.id)
     return Markup(u"<a href='%s'>%s</a>" % (url_for('%s.details_view' % model.__tablename__, id=model.id), model.id)
             ) if model.id else u""
 
@@ -70,7 +77,7 @@ class CMCView(ModelView):
     column_list = ("id", "tags")
 
 
-class MeasurandView(MyModelView):
+class MeasurandView(ModelView):
 
     #def _id_formatter(view, context, model, name):
     #    print(model.__dict__)
@@ -81,7 +88,7 @@ class MeasurandView(MyModelView):
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
-    column_formatters = {'id': _id_formatter}
+    #column_formatters = {'id': _id_formatter}
     column_list = ("id", "name", "quantitykind", "parameters")
     column_details_list = ("id",
                            "name",
@@ -131,10 +138,8 @@ class ScaleView(MyModelView):
                            )
                          
 
-class ConversionView(MyModelView):
-    pass
-    #column_formatters = {'function': _link_formatter}
-                         
+class CastConversionView(MyModelView):
+    column_formatters = {'transform': _link_formatter}
 
 
 class AspectView(MyModelView):
