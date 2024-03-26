@@ -37,29 +37,16 @@ m_schema = MeasurandSchema()
 
 def _link_formatter(view, context, model, name):
     field = getattr(model, name)
-    
     url = url_for('{}.details_view'.format(name), id=field.id)
     return Markup('<a href="{}">{}</a>'.format(url, field))
 
 
 def _id_formatter(view, context, model, name):
-    field = getattr(model, name)
-    #print(model)
-    #print(field)
-    #print(name)
-    #print(model.__tablename__)
-    #print(model.id)
-    return Markup(u"<a href='%s'>%s</a>" % (url_for('%s.details_view' % model.__tablename__, id=model.id), model.id)
-            ) if model.id else u""
+    url = url_for(f'{model.__tablename__}.details_view', id=model.id)
+    return Markup(f"<a href={url}>{model.id}</a>") if model.id else u""
 
 
 class MyModelView(ModelView):
-    
-    #def _id_formatter(view, context, model, name):
-    #    _url = f'{view.url}/details/?id={model.id}'
-    #    print(_url)
-    #    return Markup(u"<a href='%s'>%s</a>" % (_url, model.id)
-    #                  ) if model.id else u""
     can_view_details = True
     column_display_pk = True
     column_hide_backrefs = False
@@ -88,7 +75,7 @@ class MeasurandView(ModelView):
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
-    #column_formatters = {'id': _id_formatter}
+    column_formatters = {'id': _id_formatter}
     column_list = ("id", "name", "quantitykind", "parameters")
     column_details_list = ("id",
                            "name",

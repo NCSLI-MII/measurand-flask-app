@@ -173,7 +173,7 @@ class Scale(Base):
 # Measurands may have same taxon but different parameters
 class Measurand(Base):
     __tablename__ = "measurand"
-    id = Column(String(100), primary_key=True, index=True)
+    id = Column(UnicodeText, primary_key=True, index=True)
     taxon_id = Column(String(100), ForeignKey("taxon.id"))
     name = Column(String(50))
     result = Column(String(50))
