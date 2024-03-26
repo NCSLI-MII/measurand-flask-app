@@ -26,6 +26,9 @@ class MlayerMapper:
         self._scales_path = Path(parms["scales"]).resolve()
         self._aspects_path = Path(parms["aspects"]).resolve()
         self._units_path = Path(parms["units"]).resolve()
+        self._conversions_path = Path(parms["conversions"]).resolve()
+        self._casts_path = Path(parms["casts"]).resolve()
+        self._functions_path = Path(parms["functions"]).resolve()
         # self._dbpath = (self._path_root / 'data/nrc_mis.db')
         self._aspects = {}
         self._scales = {}
@@ -33,7 +36,8 @@ class MlayerMapper:
         self._schemas = {
             "aspect": model.AspectSchema(),
             "scale": model.ScaleSchema(),
-            "unit": model.UnitSchema()
+            "unit": model.UnitSchema(),
+            "transform": model.TransformSchema(),
         }
         self.Session = session
 
@@ -84,46 +88,149 @@ class MlayerMapper:
                 for scale in data:
                     self._scales[scale["id"]] = scale
 
+   
+    def etlFunctions(self):
+
+        if self._doapi is True:
+            response = requests.get(self._api + "/functions")
+            print(response.status_code)
+            if response.status_code  == 200: 
+                for item in response.json():
+                    fcn = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.TransformFunction.id == item['id'])
+                        .first()
+                    )
+                    if not fcn:
+                        data_ = {
+                            "id": item['id'], 
+                            "ml_name": item["ml_name"],
+
+                        }
+                        fcn = self._schemas["transform"].load(
+                            data_, session=self.Session
+                        )
+                        self.Session.add(fcn)
+
+                    
+        else:
+            with self._functions_path.open() as f:
+                data = json.load(f)
+                for item in data:
+                    fcn = (
+                        self.Session.query(model.Transform)
+                        .filter(model.Transform.id == item['id'])
+                        .first()
+                    )
+                    if not fcn:
+                        data_ = {
+                            "id": item['id'], 
+                            "ml_name": item["ml_name"],
+                            "py_function": item["py_function"],
+                            "py_names_in_scope": item["py_names_in_scope"],
+                            "comments": item["comments"]
+
+                        }
+                        fcn = self._schemas["transform"].load(
+                            data_, session=self.Session
+                        )
+                        self.Session.add(fcn)
+
     def getScaleAspectAssociations(self):
         # Obtaining ScaleAspect associations more complicated
         # M-layer (concept package) conversions only associate scales
         # use the conversion file name to look up the aspect?
         # Casting associates scale-aspect pairs
         # Scales_for associate many scales to the same aspect
-        mltypes = ["conversion", "scales_for"]
-        associations = {}
-        for _type in mltypes:
-            for path in Path(self._path / _type).rglob("*json"):
-                print(path)
-                tag = path.name.split("/")[-1].split(".")[0]
-
-                if tag in self._aspects.keys():
-                    print(tag)
-                    associations[tag] = []
-                    try:
-                        with path.open() as f:
-                            data = json.load(f)
-                            if _type == "conversion":
-                                for cnv in data:
-                                    associations[tag].append(cnv["src"])
-                                    associations[tag].append(cnv["dst"])
-                            if _type == "scales_for":
-                                for cnv in data:
-                                    associations[tag].append(cnv["src"])
-                                    associations[tag].append(cnv["dst"])
-                            if _type == "casting":
-                                pass
-                                # for cnv in data:
-                                # associations[cnv['src'][1]]
-                    except Exception as e:
-                        print("Cannot open ", path.name)
-                        print(e)
-                    associations[tag] = set(
-                        tuple(i) for i in associations[tag]
+        if self._doapi is True:
+            response = requests.get(self._api + "/conversions")
+            print(response.status_code)
+            if response.status_code  == 200: 
+                for conversion in response.json():
+                    aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.Aspect.id == key)
+                        .first()
                     )
-
-        return associations
-
+                    
+        else:
+            with self._conversions_path.open() as f:
+                data = json.load(f)
+                for conversion in data:
+                    aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.Aspect.id == conversion['aspect_id'])
+                        .first()
+                    )
+                    src_scale = (
+                        self.Session.query(model.Scale)
+                        .filter(model.Scale.id == conversion['src_scale_id'])
+                        .first()
+                    )
+                    dst_scale = (
+                        self.Session.query(model.Scale)
+                        .filter(model.Scale.id == conversion['dst_scale_id'])
+                        .first()
+                    )
+                    aspect.scales.append(src_scale)
+                    aspect.scales.append(dst_scale)
+                    
+                    data_ = {
+                            "src_scale_id": conversion['src_scale_id'],
+                            "dst_scale_id": conversion['dst_scale_id'],
+                            "aspect_id": conversion['aspect_id'],
+                    }
+                    
+                    #obj_ = self._schemas["conversion"].load(
+                    #        data_, session=self.Session
+                    #    )
+                    cnv = model.Conversion(src_scale_id=conversion['src_scale_id'],
+                                           dst_scale_id=conversion['dst_scale_id'],
+                                           aspect_id=conversion['aspect_id'],
+                                           transform_id=conversion['function_id'],
+                                           parameters=conversion['parameters'])
+                    self.Session.add(cnv)
+                    #except:
+                    #    print("Could not create conversion")
+                    #    print("src: {}, dst: {}, aspect: {}".format(conversion['src_scale_id'],
+                     #                                               conversion['dst_scale_id'],
+                      #                                              conversion['aspect_id']))
+                        
+            
+            with self._casts_path.open() as f:
+                data = json.load(f)
+                for cast in data:
+                    src_aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.Aspect.id == cast['src_aspect_id'])
+                        .first()
+                    )
+                    src_scale = (
+                        self.Session.query(model.Scale)
+                        .filter(model.Scale.id == cast['src_scale_id'])
+                        .first()
+                    )
+                    dst_aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter(model.Aspect.id == cast['dst_aspect_id'])
+                        .first()
+                    )
+                    dst_scale = (
+                        self.Session.query(model.Scale)
+                        .filter(model.Scale.id == cast['dst_scale_id'])
+                        .first()
+                    )
+                    src_aspect.scales.append(src_scale)
+                    dst_aspect.scales.append(dst_scale)
+                    cst = model.Cast(src_scale_id=cast['src_scale_id'],
+                                     dst_scale_id=cast['dst_scale_id'],
+                                     src_aspect_id=cast['src_aspect_id'],
+                                     dst_aspect_id=cast['dst_aspect_id'],
+                                     transform_id=cast['function_id'],
+                                     parameters=cast['parameters'])
+                    self.Session.add(cst)
+                    
+        
     def loadAspectCollection(self):
         for key in self._aspects:
             aspect = (

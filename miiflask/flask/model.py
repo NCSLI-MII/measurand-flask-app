@@ -32,16 +32,68 @@ from marshmallow_sqlalchemy.fields import Nested
 scaleaspect_table = Table(
     "scaleaspect_table",
     Base.metadata,
-    Column("scale_id", ForeignKey("scale_table.id"), primary_key=True),
-    Column("aspect_id", ForeignKey("aspect_table.id"), primary_key=True),
+    Column("scale_id", ForeignKey("scale.id"), primary_key=True),
+    Column("aspect_id", ForeignKey("aspect.id"), primary_key=True),
 )
 
 
+class Conversion(Base):
+    __tablename__ = "conversion"
+    src_scale_id = Column("src_scale_id", ForeignKey("scale.id"), primary_key=True)
+    dst_scale_id = Column("dst_scale_id", ForeignKey("scale.id"), primary_key=True)
+    aspect_id = Column("aspect_id", ForeignKey("aspect.id"), primary_key=True)
+    transform_id = Column("transform_id", ForeignKey("transform.id"))
+    parameters = Column(UnicodeText)
+    
+    src_scale = relationship('Scale', foreign_keys=[src_scale_id])
+    dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
+    aspect = relationship('Aspect', foreign_keys=[aspect_id]) #, back_populates='conversions')
+    transform = relationship('Transform', foreign_keys=[transform_id])
+    
+    def __str__(self):
+        return "{}.{}.{}".format(self.src_scale_id, 
+                                 self.dst_scale_id, 
+                                 self.aspect_id)
+
+
+class Cast(Base):
+    __tablename__ = "cast"
+    src_scale_id = Column("src_scale_id", ForeignKey("scale.id"), primary_key=True)
+    src_aspect_id = Column("src_aspect_id", ForeignKey("aspect.id"), primary_key=True)
+    dst_scale_id = Column("dst_scale_id", ForeignKey("scale.id"), primary_key=True)
+    dst_aspect_id = Column("dst_aspect_id", ForeignKey("aspect.id"), primary_key=True)
+    transform_id = Column("transform_id", ForeignKey("transform.id"))
+    parameters = Column(UnicodeText)
+
+    src_scale = relationship('Scale', foreign_keys=[src_scale_id])
+    src_aspect = relationship('Aspect', foreign_keys=[src_aspect_id]) 
+    dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
+    dst_aspect = relationship('Aspect', foreign_keys=[dst_aspect_id]) 
+    transform = relationship('Transform', foreign_keys=[transform_id])
+
+    def __str__(self):
+        return "{}.{}.{}.{}".format(self.src_scale_id, 
+                                 self.src_aspect_id,
+                                 self.dst_scale_id, 
+                                 self.dst_aspect_id)
+
+
+class Transform(Base):
+    __tablename__ = "transform"
+    id = Column(String(10), primary_key=True)
+    ml_name = Column(String(50))
+    py_function = Column(UnicodeText)
+    py_names_in_scope = Column(UnicodeText)
+    comments = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.ml_name
+    
 # M-Layer Aspect
 class Aspect(Base):
     # Aspect will be referenced by many tables
     # Do not keep relationship to other tables
-    __tablename__ = "aspect_table"
+    __tablename__ = "aspect"
     id = Column(String(10), primary_key=True)
     name = Column(String(50))
     ml_name = Column(String(50))
@@ -50,13 +102,15 @@ class Aspect(Base):
     scales = relationship(
         "Scale", secondary=scaleaspect_table, back_populates="aspects"
     )
+    # Conversions should be related to the scale, aspect only disambiguates the expression
+    # conversions = relationship('Conversion', back_populates='aspect')
 
     def __str__(self):
         return self.name
 
 
 class Unit(Base):
-    __tablename__ = "unit_table"
+    __tablename__ = "unit"
     id = Column(String(50), primary_key=True)
     name = Column(String(100))
     ml_name = Column(String(100))
@@ -78,7 +132,7 @@ class Unit(Base):
 
 
 class Scale(Base):
-    __tablename__ = "scale_table"
+    __tablename__ = "scale"
     id = Column(String(10), primary_key=True)
     ml_name = Column(String(50))
     # scale_type = Column(
@@ -86,12 +140,22 @@ class Scale(Base):
     #    nullable=False,
     # )
     unit_id = Column(
-        String(50), ForeignKey("unit_table.id"), nullable=True
+        String(50), ForeignKey("unit.id"), nullable=True
     )  # One-to-one
     unit = relationship("Unit")
     aspects = relationship(
         "Aspect", secondary=scaleaspect_table, back_populates="scales"
     )
+    conversions = relationship('Conversion', 
+                               primaryjoin="(Scale.id == Conversion.src_scale_id)",
+                               viewonly=True
+                               )
+    casts = relationship('Cast', 
+                         primaryjoin="(Scale.id == Cast.src_scale_id)",
+                         viewonly=True
+                        )
+    #src_scales = relationship('Conversion', back_populates='src_scale')
+    #dst_scales = relationship('Conversion', back_populates='dst_scale')
 
     def __str__(self):
         return self.ml_name
@@ -109,13 +173,13 @@ class Scale(Base):
 # Measurands may have same taxon but different parameters
 class Measurand(Base):
     __tablename__ = "measurand"
-    id = Column(Integer, primary_key=True, index=True)
-    taxon_id = Column(Integer, ForeignKey("taxon.id"))
+    id = Column(UnicodeText, primary_key=True, index=True)
+    taxon_id = Column(String(100), ForeignKey("taxon.id"))
     name = Column(String(50))
     result = Column(String(50))
     quantitykind = Column(String(50))
     aspect_id = Column(
-        String(50), ForeignKey("aspect_table.id"), nullable=True
+        String(50), ForeignKey("aspect.id"), nullable=True
     )  # One-to-one
     taxon = relationship("Taxon", back_populates="measurand")
     aspect = relationship("Aspect")
@@ -139,7 +203,7 @@ class Parameter(Base):
     definition = Column(UnicodeText)
     optional = Column(Boolean)
     aspect_id = Column(
-        String(50), ForeignKey("aspect_table.id"), nullable=True
+        String(50), ForeignKey("aspect.id"), nullable=True
     )  # One-to-one
     aspect = relationship("Aspect")
 
@@ -149,7 +213,7 @@ class Parameter(Base):
 
 class Taxon(Base):
     __tablename__ = "taxon"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String(100), primary_key=True, index=True)
     name = Column(
         String(50)
     )  # Name should be constructor from init with Taxon attributes following BNF grammar
@@ -158,7 +222,7 @@ class Taxon(Base):
     quantitykind = Column(String(50))
     process = Column(String(10))  # Source | Measure
     aspect_id = Column(
-        String(50), ForeignKey("aspect_table.id"), nullable=True
+        String(50), ForeignKey("aspect.id"), nullable=True
     )  # One-to-one
     aspect = relationship("Aspect")
     qualifier = Column(String(50))
@@ -167,12 +231,12 @@ class Taxon(Base):
     # SQLAlchemy will create a new one
     measurand = relationship("Measurand", back_populates="taxon")
     discipline_id = Column(
-        Integer, ForeignKey("discipline_table.id"), nullable=True
+        Integer, ForeignKey("discipline.id"), nullable=True
     )
     discipline = relationship("Discipline", back_populates="taxon")
 
     def __str__(self):
-        return self.name
+        return self.id
 
 
 # Traditional CC areas and team labels
@@ -180,7 +244,7 @@ class Taxon(Base):
 
 
 class Domain(Base):
-    __tablename__ = "domain_table"
+    __tablename__ = "domain"
     id = Column(Integer, primary_key=True, index=True)
     label = Column(String(10))
     title = Column(String(50))
@@ -196,7 +260,7 @@ class Domain(Base):
 
 # Disciplines should be one to many aspects or quantity kinds in taxonomy
 class Discipline(Base):
-    __tablename__ = "discipline_table"
+    __tablename__ = "discipline"
     id = Column(Integer, primary_key=True, index=True)
     label = Column(String(50))
     taxon = relationship("Taxon", back_populates="discipline")
@@ -252,7 +316,7 @@ kcdb_classifier_map = Table(
 kcdb_measurand_map = Table(
     "kcdb_measurand_map",
     Base.metadata,
-    Column("kcdb_service_id", ForeignKey("kcdb_service.id"), primary_key=True),
+    Column("kcdb_service_id", ForeignKey("kcdbservice.id"), primary_key=True),
     Column(
         "measurand_id",
         ForeignKey("measurand.id"),
@@ -276,13 +340,13 @@ class KcdbCmc(Base):
 
 
 class KcdbQuantity(Base):
-    __tablename__ = "kcdb_quantity"
+    __tablename__ = "kcdbquantity"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(200))
 
 
 class KcdbService(Base):
-    __tablename__ = "kcdb_service"
+    __tablename__ = "kcdbservice"
     id = Column(String(50), primary_key=True)
     area_id = Column(String(10))
     area = Column(String(50))
@@ -368,14 +432,35 @@ class ScaleSchema(SQLAlchemyAutoSchema):
 
 class AspectSchema(SQLAlchemyAutoSchema):
     scales = Nested(ScaleSchema, many=True)
-
+    
     class Meta:
         model = Aspect
         include_relationships = True
         load_instance = True
 
+class TransformSchema(SQLAlchemyAutoSchema):
+    
+    class Meta:
+        model = Transform
+        include_relationships = True
+        load_instance = True
+
+class ConversionSchema(SQLAlchemyAutoSchema):
+    src_scale = Nested(ScaleSchema)
+    dst_scale = Nested(ScaleSchema)
+    aspect = Nested(AspectSchema)
+    transform = Nested(TransformSchema)
+    
+    class Meta:
+        model = Conversion
+        include_relationships = True
+        load_instance = True
+
+
+
 
 class ParameterSchema(SQLAlchemyAutoSchema):
+    
     class Meta:
         model = Parameter
         include_relationships = True

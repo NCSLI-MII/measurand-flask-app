@@ -166,7 +166,9 @@ class TaxonomyMapper:
         #     "name": taxon["mtc:Result"]["uom:Quantity"]["@name"]
         # }
         discipline_data = {"label": taxon["mtc:Discipline"]["@name"]}
+        id_ = taxon["@name"].replace('.', '')
         taxon_data = {
+            "id": id_,
             "name": taxon["@name"],
             "process": taxon["@name"].split(".")[0],
             "quantitykind": taxon["mtc:Result"]["uom:Quantity"]["@name"],
@@ -175,10 +177,12 @@ class TaxonomyMapper:
 
         # Measurands can have the same taxon but differ in parameters
         # Look at rule 10
-        measurand_data = {"name": taxon["@name"],
-                          "definition": taxon['mtc:Definition'],
-                          "result":taxon["mtc:Result"]["@name"],
-                          }
+        measurand_data = {
+                "id": id_, 
+                "name": taxon["@name"],
+                "definition": taxon['mtc:Definition'],
+                "result": taxon["mtc:Result"]["@name"],
+                }
         
         # TBD
         # Update Measurands to mlayer aspects

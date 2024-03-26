@@ -35,12 +35,18 @@ qk_schema = AspectSchema()
 m_schema = MeasurandSchema()
 
 
+def _link_formatter(view, context, model, name):
+    field = getattr(model, name)
+    url = url_for('{}.details_view'.format(name), id=field.id)
+    return Markup('<a href="{}">{}</a>'.format(url, field))
+
+
+def _id_formatter(view, context, model, name):
+    url = url_for(f'{model.__tablename__}.details_view', id=model.id)
+    return Markup(f"<a href={url}>{model.id}</a>") if model.id else u""
+
+
 class MyModelView(ModelView):
-    def _id_formatter(view, context, model, name):
-        _url = f'{view.url}/details/?id={model.id}'
-        print(_url)
-        return Markup(u"<a href='%s'>%s</a>" % (_url, model.id)
-                      ) if model.id else u""
     can_view_details = True
     column_display_pk = True
     column_hide_backrefs = False
@@ -60,10 +66,11 @@ class CMCView(ModelView):
 
 class MeasurandView(ModelView):
 
-    def _id_formatter(view, context, model, name):
-        print(model.__dict__)
-        return Markup(u"<a href='%s'>%s</a>" % (url_for('%s.details_view' % model.__tablename__, id=model.id), model.id)
-                ) if model.id else u""
+    #def _id_formatter(view, context, model, name):
+    #    print(model.__dict__)
+    #    return Markup(u"<a href='%s'>%s</a>" % (url_for('%s.details_view' % model.__tablename__, id=model.id), model.id)
+    #            ) if model.id else u""
+    
     can_export = True
     column_display_pk = True
     can_view_details = True
@@ -79,6 +86,76 @@ class MeasurandView(ModelView):
                            )
 
 
+class ScaleView(MyModelView):
+
+    
+    def _cnv_link_formatter(view, context, model, name):
+        urls = []
+        for s in model.conversions:
+            id_ = '{},{},{}'.format(s.src_scale_id,s.dst_scale_id,s.aspect_id)
+            url = url_for('conversion.details_view', 
+                          id = id_)
+            urls.append('<a href="{}">{}</a>'.format(url, id_.replace(',','.')))
+
+        return Markup((',').join(urls))
+                
+    def _cast_link_formatter(view, context, model, name):
+        urls = []
+        for s in model.casts:
+            id_ = '{},{},{},{}'.format(s.src_scale_id,s.src_aspect_id,s.dst_scale_id,s.dst_aspect_id)
+            url = url_for('cast.details_view', 
+                          id = id_)
+            urls.append('<a href="{}">{}</a>'.format(url, id_.replace(',','.')))
+
+        return Markup((',').join(urls))
+    
+    can_export = True
+    column_display_pk = True
+    can_view_details = True
+    column_hide_backrefs = False
+    column_formatters = {'unit': _link_formatter,
+                         'conversions': _cnv_link_formatter,
+                         'casts': _cast_link_formatter}
+    column_list = ("id", "ml_name", "unit")
+    column_details_list = ("id",
+                           "ml_name",
+                           "unit",
+                           "conversions",
+                           "casts"
+                           )
+                         
+
+class CastConversionView(MyModelView):
+    column_formatters = {'transform': _link_formatter}
+
+
+class AspectView(MyModelView):
+
+    
+    
+    def _scale_formatter(view, context, model, name):
+        urls = []
+        for s in model.scales:
+            #print(s.id)
+            #field = getattr(model, name)
+            url = url_for('scale.details_view', id = s.id)
+            urls.append('<a href="{}">{}</a>'.format(url, s.id))
+
+        return Markup((',').join(urls))
+                
+    can_export = True
+    column_display_pk = True
+    can_view_details = True
+    column_hide_backrefs = False
+    column_formatters = {'id': _id_formatter,
+                         'scales': _scale_formatter}
+    column_list = ("id", "name", "ml_name", "scales")
+    column_details_list = ("id",
+                           "name",
+                           "ml_name",
+                           "scales",
+                           "conversions"
+                           )
 @app.route("/")
 def index():
     meta = db.session.info
@@ -105,6 +182,9 @@ def initialize():
             "aspects": "../../resources/m-layer/aspects.json",
             "scales": "../../resources/m-layer/scales.json",
             "units": "../../resources/m-layer/units.json",
+            "conversions": "../../resources/m-layer/conversions.json",
+            "casts": "../../resources/m-layer/casts.json",
+            "functions": "../../resources/m-layer/functions.json",
             "quantities": "../../resources/kcdb/kcdb_quantities.csv",
             "services": "../../resources/kcdb/kcdb_service_classifications.csv",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
@@ -119,6 +199,8 @@ def initialize():
     mapper.loadUnitCollection()
     mapper.extractMlayerScales()
     mapper.loadScaleCollection()
+    mapper.etlFunctions()
+    mapper.getScaleAspectAssociations()
 
     miimapper = TaxonomyMapper(db.session, parms)
     miimapper.extractTaxonomy()
