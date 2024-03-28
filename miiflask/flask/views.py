@@ -87,7 +87,15 @@ class MeasurandView(ModelView):
 
 
 class ScaleView(MyModelView):
+    
+    def _link_dim_formatter(view, context, model, name):
+        urls = []
+        for s in model.system_dimensions:
+            url = url_for('dimension.details_view', 
+                          id = s.id)
+            urls.append('<a href="{}">{}</a>'.format(url, s.id)) 
 
+        return Markup((',').join(urls))
     
     def _cnv_link_formatter(view, context, model, name):
         urls = []
@@ -115,13 +123,15 @@ class ScaleView(MyModelView):
     column_hide_backrefs = False
     column_formatters = {'unit': _link_formatter,
                          'conversions': _cnv_link_formatter,
-                         'casts': _cast_link_formatter}
+                         'casts': _cast_link_formatter,
+                         'system_dimensions': _link_dim_formatter}
     column_list = ("id", "ml_name", "unit")
     column_details_list = ("id",
                            "ml_name",
                            "unit",
                            "conversions",
-                           "casts"
+                           "casts",
+                           "system_dimensions"
                            )
                          
 
@@ -175,16 +185,8 @@ def index():
 def initialize():
 
     parms = {
-            # "path": "/tmp/miiflask",
-            # "database": "/tmp/miiflask/miiflask.db",
-            # "usertables": "/tmp/miiflask/tables_",
             "measurands": "../../resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
-            "aspects": "../../resources/m-layer/aspects.json",
-            "scales": "../../resources/m-layer/scales.json",
-            "units": "../../resources/m-layer/units.json",
-            "conversions": "../../resources/m-layer/conversions.json",
-            "casts": "../../resources/m-layer/casts.json",
-            "functions": "../../resources/m-layer/functions.json",
+            "mlayer": "../../resources/m-layer",
             "quantities": "../../resources/kcdb/kcdb_quantities.csv",
             "services": "../../resources/kcdb/kcdb_service_classifications.csv",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
@@ -193,13 +195,21 @@ def initialize():
         }
     
     mapper = MlayerMapper(db.session, parms)
-    mapper.extractMlayerAspects()
-    mapper.loadAspectCollection()
-    mapper.extractMlayerUnits()
-    mapper.loadUnitCollection()
-    mapper.extractMlayerScales()
-    mapper.loadScaleCollection()
-    mapper.etlFunctions()
+    #mapper.getAspects()
+    mapper.getCollection('aspects')
+    mapper.getCollection('units')
+    mapper.getCollection('scales')
+    mapper.getCollection('functions')
+    mapper.getCollection('systems')
+    mapper.getCollection('dimensions')
+    mapper.getScaleDimension()
+    #mapper.loadAspectCollection()
+    #mapper.extractMlayerUnits()
+    #mapper.loadUnitCollection()
+    #mapper.extractMlayerScales()
+    #mapper.loadScaleCollection()
+    #mapper.getScales()
+    #mapper.etlFunctions()
     mapper.getScaleAspectAssociations()
 
     miimapper = TaxonomyMapper(db.session, parms)

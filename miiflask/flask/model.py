@@ -35,6 +35,12 @@ scaleaspect_table = Table(
     Column("scale_id", ForeignKey("scale.id"), primary_key=True),
     Column("aspect_id", ForeignKey("aspect.id"), primary_key=True),
 )
+scaledimension_table = Table(
+    "scaledimension_table",
+    Base.metadata,
+    Column("systematic_scale_id", ForeignKey("scale.id"), primary_key=True),
+    Column("dimension_id", ForeignKey("dimension.id"), primary_key=True),
+)
 
 
 class Conversion(Base):
@@ -77,6 +83,32 @@ class Cast(Base):
                                  self.dst_scale_id, 
                                  self.dst_aspect_id)
 
+class System(Base):
+    __tablename__ = 'system'
+    id = Column(String(10), primary_key=True)
+    ml_name = Column(String(10))
+    symbol = Column(String(10))
+    n = Column(Integer)
+    basis = Column(String(200))
+    reference = Column(String(50))
+
+    def __str__(self):
+        return self.symbol
+
+class Dimension(Base):
+    __tablename__ = 'dimension'
+    id = Column(String(10), primary_key=True)
+    formal_system_id = Column('formal_system_id', ForeignKey('system.id'), nullable=True)
+    systematic_scale_id = Column('systematic_scale_id', ForeignKey('scale.id'), nullable=True)
+    exponents = Column(String(40), nullable=True)
+    
+    systematic_scale = relationship(
+        "Scale", secondary=scaledimension_table, back_populates="system_dimensions"
+    )
+    formal_system = relationship("System")
+    #systematic_scale = relationship("Dimension", back_populates='systematic_scale')
+    def __str__(self):
+        return self.id
 
 class Transform(Base):
     __tablename__ = "transform"
@@ -143,6 +175,13 @@ class Scale(Base):
         String(50), ForeignKey("unit.id"), nullable=True
     )  # One-to-one
     unit = relationship("Unit")
+    system_dimensions_id = Column(String(10), ForeignKey('dimension.id'), nullable=True)
+    #dimension = relationship('Dimension', back_populates='scale')
+
+    system_dimensions = relationship(
+        "Dimension", secondary=scaledimension_table, back_populates="systematic_scale"
+    )
+    
     aspects = relationship(
         "Aspect", secondary=scaleaspect_table, back_populates="scales"
     )
@@ -419,16 +458,31 @@ class UnitSchema(SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
+class SystemSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = System
+        load_instance = True
+
+class DimensionSchema(SQLAlchemyAutoSchema):
+    # requires serializing enum
+    #scale_type = marshmallow_sqlalchemy.fields.Method("get_scale_type")
+    #systematic_scale = Nested(ScaleSchema)
+    formal_system = Nested(SystemSchema)
+
+    class Meta:
+        model = Dimension
+        include_relationships = True
+        load_instance = True
 
 class ScaleSchema(SQLAlchemyAutoSchema):
     # requires serializing enum
     #scale_type = marshmallow_sqlalchemy.fields.Method("get_scale_type")
     unit = Nested(UnitSchema)
+    dimension = Nested(DimensionSchema)
     class Meta:
         model = Scale
         include_relationships = True
         load_instance = True
-
 
 class AspectSchema(SQLAlchemyAutoSchema):
     scales = Nested(ScaleSchema, many=True)
