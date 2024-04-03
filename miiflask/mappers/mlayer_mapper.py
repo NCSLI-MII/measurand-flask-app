@@ -36,11 +36,12 @@ class MlayerMapper:
         self._units = {}
         self._schemas = {
             "aspect": model.AspectSchema(),
-            "scale": model.ScaleSchema(),
+            #"scale": model.ScaleSchema(),
             "unit": model.UnitSchema(),
             "transform": model.TransformSchema(),
             'system': model.SystemSchema(),
-            'dimension': model.DimensionSchema()
+            'dimension': model.DimensionSchema(),
+            'prefix': model.PrefixSchema()
         }
         self._transform = {
                 'aspects': self._transformAspect,
@@ -48,8 +49,10 @@ class MlayerMapper:
                 'units': self._transformUnit,
                 'functions': self._transformFunction,
                 'systems': self._transformSystem,
-                'dimensions': self._transformDimension
+                'dimensions': self._transformDimension,
+                'prefixes': self._transformPrefix
                 }
+        self._cache_objs = []
         self.Session = session
 
     def getTableIdentifier(self, uid):
@@ -75,6 +78,28 @@ class MlayerMapper:
             data_, session=self.Session
         )
         return aspect
+    
+    def _transformPrefix(self, obj):
+        prefix = (
+            self.Session.query(model.Prefix)
+            .filter(model.Prefix.id == obj['id'])
+            .first()
+        )
+        if prefix: return None
+        data_ = {
+            "id": obj['id'],
+            "name": obj["name"],
+            "ml_name": obj["ml_name"],
+            "symbol": obj["symbol"],
+            "reference": obj["reference"],
+            'numerator': float(obj['numerator'].replace('"','')),
+            'denominator': float(obj['denominator'].replace('"',''))
+        }
+        print(data_) 
+        prefix = self._schemas["prefix"].load(
+            data_, session=self.Session
+        )
+        return prefix
     
     def _transformUnit(self, obj):
         unit = (
@@ -110,15 +135,68 @@ class MlayerMapper:
             #"unit_id": self._scales[key]["unit_id"],
             #"scale_type": self._scales[key]["type"],
         }
-        scale = self._schemas["scale"].load(
-            data_, session=self.Session
-        )
+        #scale = self._schemas["scale"].load(
+        #    data_, session=self.Session
+        #)
+        scale = model.Scale(id=obj['id'], 
+                ml_name=obj['ml_name'],
+                scale_type=obj['type'],
+                is_systematic=obj['is_systematic'],
+                )
+        
         unit = (
             self.Session.query(model.Unit)
             .filter(model.Unit.id == obj["unit_id"])
             .first()
         )
         scale.unit = unit
+       
+        prefix = (
+            self.Session.query(model.Prefix)
+            .filter(model.Prefix.id == obj["prefix_id"])
+            .first()
+        )
+        scale.prefix = prefix
+        
+        system_dimensions = (
+            self.Session.query(model.Dimension)
+            .filter(model.Dimension.id == obj["system_dimensions_id"])
+            .first()
+        )
+        if system_dimensions:
+            scale.system_dimensions.append(system_dimensions)
+
+        # TBD
+        # Parent scale may not be loaded before derived scale 
+        # If root scale not loaded
+        # cache obj and reload
+        if obj['root_scale_id']:
+            root_scale = (
+                self.Session.query(model.Scale)
+                .filter(model.Scale.id == obj["root_scale_id"])
+                .first()
+            )
+            if not root_scale:
+                self._cache_objs.append(obj)
+                return None
+            scale.root_scale = root_scale
+        
+        # TBD
+        # validate self-referential table
+        # otherwise, use adjacency table for model
+        # 
+        if(obj['id'] == 'SC101' or obj['id'] == 'SC2'):
+            print(obj)
+            if scale.prefix:
+                print(scale.prefix.id)
+            for s in scale.system_dimensions:
+                print(s.id)
+            if scale.root_scale:
+                print(scale.root_scale.id)
+        #    if scale.derived_scales:
+        #        for s in scale.derived_scales:
+        #            print(s.id)
+        
         return scale
     
     def _transformFunction(self, obj):
@@ -155,6 +233,7 @@ class MlayerMapper:
         dimension = self._schemas['dimension'].load(
             data_, session=self.Session
         )
+        #TBD
         #scale = (
         #    self.Session.query(model.Scale)
         #    .filter(model.Scale.id == obj["systemic_scale_id"])

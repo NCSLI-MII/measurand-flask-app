@@ -17,13 +17,15 @@ from sqlalchemy import (ForeignKey,
                         Table,
                         Text,
                         UnicodeText,
-                        Boolean
+                        Boolean,
+                        Float
                         )
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow_sqlalchemy.fields import Nested
 
+from typing import Optional
 # Managing SQLAlchemy model outside of Flask
 # stackoverflow 28789063
 # github/flask-sqlalchemy issue "Manage external declarative bases"
@@ -141,6 +143,20 @@ class Aspect(Base):
         return self.name
 
 
+class Prefix(Base):
+    __tablename__ = "prefix"
+    id = Column(String(50), primary_key=True)
+    name = Column(String(100))
+    ml_name = Column(String(100))
+    symbol = Column(String(50))
+    numerator = Column(Float)
+    denominator = Column(Float)
+    reference = Column(String(50))
+    
+    def __str__(self):
+        return self.name
+
+
 class Unit(Base):
     __tablename__ = "unit"
     id = Column(String(50), primary_key=True)
@@ -163,6 +179,16 @@ class Unit(Base):
         return self.name
 
 
+class Node(Base):
+    __tablename__ = 'node'
+
+    id: Mapped[int] = mapped_column(String(50), primary_key=True)
+    parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey('node.id'))
+    children: Mapped[list['Node']] = relationship(back_populates='parent', remote_side=[id])
+    parent: Mapped['Node'] = relationship(back_populates='children')
+
+
+
 class Scale(Base):
     __tablename__ = "scale"
     id = Column(String(10), primary_key=True)
@@ -171,17 +197,24 @@ class Scale(Base):
     #    Enum("ratio", "interval", "bounded", "ordinal", "nominal"),
     #    nullable=False,
     # )
+    scale_type = Column(String(20))
+    root_scale_id: Mapped[Optional[int]] = mapped_column(ForeignKey('scale.id'), nullable=True)
+    root_scale: Mapped['Scale'] = relationship(remote_side=[id])
+    prefix_id = Column(
+        String(50), ForeignKey("prefix.id"), nullable=True
+    )  # One-to-one
+    prefix = relationship("Prefix")
+    
     unit_id = Column(
         String(50), ForeignKey("unit.id"), nullable=True
     )  # One-to-one
     unit = relationship("Unit")
+    
     system_dimensions_id = Column(String(10), ForeignKey('dimension.id'), nullable=True)
-    #dimension = relationship('Dimension', back_populates='scale')
-
     system_dimensions = relationship(
         "Dimension", secondary=scaledimension_table, back_populates="systematic_scale"
     )
-    
+    is_systematic = Column(Boolean) 
     aspects = relationship(
         "Aspect", secondary=scaleaspect_table, back_populates="scales"
     )
@@ -451,6 +484,13 @@ class KcdbServiceSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
 
+class PrefixSchema(SQLAlchemyAutoSchema):
+
+    class Meta:
+        model = Prefix
+        load_instance = True
+
+
 class UnitSchema(SQLAlchemyAutoSchema):
 
     class Meta:
@@ -478,7 +518,9 @@ class ScaleSchema(SQLAlchemyAutoSchema):
     # requires serializing enum
     #scale_type = marshmallow_sqlalchemy.fields.Method("get_scale_type")
     unit = Nested(UnitSchema)
+    prefix = Nested(PrefixSchema)
     dimension = Nested(DimensionSchema)
+#    root_scale = Nested(ScaleSchema, many=True) 
     class Meta:
         model = Scale
         include_relationships = True
