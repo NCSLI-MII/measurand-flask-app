@@ -36,21 +36,25 @@ class MlayerMapper:
         self._units = {}
         self._schemas = {
             "aspect": model.AspectSchema(),
-            #"scale": model.ScaleSchema(),
+            # "scale": model.ScaleSchema(),
             "unit": model.UnitSchema(),
             "transform": model.TransformSchema(),
             'system': model.SystemSchema(),
             'dimension': model.DimensionSchema(),
             'prefix': model.PrefixSchema()
         }
+
+        # Ordered list of transform to run
+        # Defines the loading order needed to establish object relations
+        # See getCollections
         self._transform = {
-                'aspects': self._transformAspect,
-                'scales': self._transformScale,
-                'units': self._transformUnit,
-                'functions': self._transformFunction,
+                'prefixes': self._transformPrefix,
                 'systems': self._transformSystem,
                 'dimensions': self._transformDimension,
-                'prefixes': self._transformPrefix
+                'aspects': self._transformAspect,
+                'units': self._transformUnit,
+                'scales': self._transformScale,
+                'functions': self._transformFunction,
                 }
         self._cache_objs = []
         self.Session = session
@@ -267,13 +271,18 @@ class MlayerMapper:
         return system
 
     def _loadCollection(self, type_, lst):
-        for data_ in lst:
-            obj = self._transform[type_](data_)
+        while lst:
+            obj = self._transform[type_](lst.pop())
             if not obj: 
                 continue
             self.Session.add(obj)
+    
+    def getCollections(self):
+        for collection in self._transform.keys():
+            print(collection)
+            self._getCollection(collection)
 
-    def getCollection(self, type_):
+    def _getCollection(self, type_):
         if self._doapi is True:
             response = requests.get(f'{self._api}/{type_}')
             print(response.status_code)
@@ -282,6 +291,8 @@ class MlayerMapper:
         else:
             with (self._resourceml / f'{type_}.json').resolve().open() as f:
                 self._loadCollection(type_, json.load(f))
+        if len(self._cache_objs) > 0:
+            self._loadCollection(type_, self._cache_objs)
     
     def _transformConversion(self, obj):
 

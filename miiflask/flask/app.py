@@ -92,7 +92,8 @@ from miiflask.flask.views import (
         KcdbServiceView,
         AspectView,
         ScaleView,
-        CastConversionView
+        CastConversionView,
+        DimensionView
         )
 
 admin = Admin(app, name="qms", template_mode="bootstrap3")
@@ -104,7 +105,7 @@ admin.add_view(MyModelView(Prefix, db.session, category="Mlayer"))
 admin.add_view(CastConversionView(Conversion, db.session, category="Mlayer"))
 admin.add_view(CastConversionView(Cast, db.session, category="Mlayer"))
 admin.add_view(MyModelView(Transform, db.session, category="Mlayer"))
-admin.add_view(MyModelView(Dimension, db.session, category="Mlayer"))
+admin.add_view(DimensionView(Dimension, db.session, category="Mlayer"))
 admin.add_view(MyModelView(System, db.session, category="Mlayer"))
 admin.add_view(MyModelView(Parameter, db.session, category="Measurand"))
 admin.add_view(MeasurandView(Measurand, db.session, category="Measurand"))

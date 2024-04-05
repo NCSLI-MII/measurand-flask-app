@@ -1,0 +1,42 @@
+[
+  {
+    "id": "SY1",
+    "ml_name": "si",
+    "symbol": "SI",
+    "n": 7,
+    "basis": "(AS2,SC1), (AS3,SC2), (AS4,SC3), (AS5,SC4), (AS6,SC5), (AS7,SC6), (AS8, SC7)",
+    "reference": "SI Brochure"
+  },
+  {
+    "id": "SY2",
+    "ml_name": "imp",
+    "symbol": "Imp",
+    "n": null,
+    "basis": null,
+    "reference": null
+  },
+  {
+    "id": "SY3",
+    "ml_name": "us-imp",
+    "symbol": "US-Imp",
+    "n": null,
+    "basis": null,
+    "reference": null
+  },
+  {
+    "id": "SY4",
+    "ml_name": "uk-imp",
+    "symbol": "UK-Imp",
+    "n": null,
+    "basis": null,
+    "reference": null
+  },
+  {
+    "id": "SY5",
+    "ml_name": "inch-pound",
+    "symbol": "ip",
+    "n": null,
+    "basis": null,
+    "reference": "NIST Special Publication 1038"
+  }
+]
