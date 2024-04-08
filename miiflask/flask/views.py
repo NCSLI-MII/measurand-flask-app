@@ -30,6 +30,7 @@ from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
 from miiflask.mappers.kcdb_mapper import KcdbMapper
 
 from marshmallow import pprint as mpprint
+import json
 
 qk_schema = AspectSchema()
 m_schema = MeasurandSchema()
@@ -97,7 +98,16 @@ class DimensionView(MyModelView):
             url = url_for('scale.details_view', id=s.id)
             urls.append('<a href="{}">{}</a>'.format(url, s.id))
         return Markup((',').join(urls))
- 
+    
+    def _exponents_formatter(view, context, model, name):
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        exponents = json.loads(field)
+        dim = ['T', 'L', 'M', 'I', '&#920', 'N', 'J']
+        dimQ = ''.join([m+'<sup>'+str(n)+'</sup>' for m,n in zip(dim,exponents)])
+        return Markup(dimQ)
+
     can_export = True
     column_display_pk = True
     can_view_details = True
@@ -111,7 +121,8 @@ class DimensionView(MyModelView):
                            "exponents")
     column_formatters = {"id": _id_formatter,
                          "formal_system": _link_system_formatter,
-                         "systematic_scales": _link_scale_formatter}
+                         "systematic_scales": _link_scale_formatter,
+                         "exponents": _exponents_formatter}
 
 
 class ScaleView(MyModelView):

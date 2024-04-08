@@ -26,14 +26,8 @@ from miiflask.mappers.kcdb_mapper import KcdbMapper
 def main(parms):
     with Session(engine) as session:
         mapper = MlayerMapper(session, parms)
-        #mapper.getAspects()
-        mapper.getCollection('aspects')
-        mapper.getUnits()
-        #mapper.extractMlayerUnits()
-        #mapper.loadUnitCollection()
-        #mapper.extractMlayerScales()
-        #mapper.loadScaleCollection()
-        mapper.getScales()
+        mapper.getCollections()
+        mapper.getScaleDimension()
         mapper.getScaleAspectAssociations()
 
         miimapper = TaxonomyMapper(session, parms)
