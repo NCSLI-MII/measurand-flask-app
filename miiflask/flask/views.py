@@ -104,8 +104,8 @@ class DimensionView(MyModelView):
         if field is None:
             return u""
         exponents = json.loads(field)
-        dim = ['T', 'L', 'M', 'I', '&#920', 'N', 'J']
-        dimQ = ''.join([m+'<sup>'+str(n)+'</sup>' for m,n in zip(dim,exponents)])
+        dim = ['M', 'L', 'T', 'I', '&#920', 'N', 'J']
+        dimQ = ''.join([m+'<sup>'+str(n)+'</sup>' for m, n in zip(dim, exponents)])
         return Markup(dimQ)
 
     can_export = True

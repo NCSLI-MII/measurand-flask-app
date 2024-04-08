@@ -133,6 +133,8 @@ class Dimension(Base):
     def __str__(self):
         # SI Brochure dimensions
         # dimQ = T^alphaL^betaM^gammaI^deltaTheta^epsilonN^psiJ^eta
+        # m-layer encoding
+        # dimQ = M^gammaL^betaT^alphaI^deltaTheta^epsilonN^psiJ^eta
         # Time Length Mass Current Temperature AmountOfSubstance LuminousIntensity
         return self.id
 
