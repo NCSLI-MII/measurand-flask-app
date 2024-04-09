@@ -31,4 +31,4 @@ def bind_engine(engine):
         rankdir="LR",
         concentrate=False,
     )
-    graph.write_png("taxonomyschema.png")
+    # graph.write_png("taxonomyschema.png")

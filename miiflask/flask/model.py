@@ -17,13 +17,15 @@ from sqlalchemy import (ForeignKey,
                         Table,
                         Text,
                         UnicodeText,
-                        Boolean
+                        Boolean,
+                        Float
                         )
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow_sqlalchemy.fields import Nested
 
+from typing import Optional
 # Managing SQLAlchemy model outside of Flask
 # stackoverflow 28789063
 # github/flask-sqlalchemy issue "Manage external declarative bases"
@@ -35,47 +37,106 @@ scaleaspect_table = Table(
     Column("scale_id", ForeignKey("scale.id"), primary_key=True),
     Column("aspect_id", ForeignKey("aspect.id"), primary_key=True),
 )
+scaledimension_table = Table(
+    "scaledimension_table",
+    Base.metadata,
+    Column("systematic_scale_id", ForeignKey("scale.id"), primary_key=True),
+    Column("dimension_id", ForeignKey("dimension.id"), primary_key=True),
+)
 
 
 class Conversion(Base):
     __tablename__ = "conversion"
-    src_scale_id = Column("src_scale_id", ForeignKey("scale.id"), primary_key=True)
-    dst_scale_id = Column("dst_scale_id", ForeignKey("scale.id"), primary_key=True)
-    aspect_id = Column("aspect_id", ForeignKey("aspect.id"), primary_key=True)
-    transform_id = Column("transform_id", ForeignKey("transform.id"))
+    src_scale_id = Column("src_scale_id",
+                          ForeignKey("scale.id"),
+                          primary_key=True)
+    dst_scale_id = Column("dst_scale_id",
+                          ForeignKey("scale.id"),
+                          primary_key=True)
+    aspect_id = Column("aspect_id",
+                       ForeignKey("aspect.id"),
+                       primary_key=True)
+    transform_id = Column("transform_id",
+                          ForeignKey("transform.id"))
     parameters = Column(UnicodeText)
     
     src_scale = relationship('Scale', foreign_keys=[src_scale_id])
     dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
-    aspect = relationship('Aspect', foreign_keys=[aspect_id]) #, back_populates='conversions')
+    aspect = relationship('Aspect', foreign_keys=[aspect_id])
     transform = relationship('Transform', foreign_keys=[transform_id])
     
     def __str__(self):
-        return "{}.{}.{}".format(self.src_scale_id, 
-                                 self.dst_scale_id, 
+        return "{}.{}.{}".format(self.src_scale_id,
+                                 self.dst_scale_id,
                                  self.aspect_id)
 
 
 class Cast(Base):
     __tablename__ = "cast"
-    src_scale_id = Column("src_scale_id", ForeignKey("scale.id"), primary_key=True)
-    src_aspect_id = Column("src_aspect_id", ForeignKey("aspect.id"), primary_key=True)
-    dst_scale_id = Column("dst_scale_id", ForeignKey("scale.id"), primary_key=True)
-    dst_aspect_id = Column("dst_aspect_id", ForeignKey("aspect.id"), primary_key=True)
-    transform_id = Column("transform_id", ForeignKey("transform.id"))
+    src_scale_id = Column("src_scale_id",
+                          ForeignKey("scale.id"),
+                          primary_key=True)
+    src_aspect_id = Column("src_aspect_id",
+                           ForeignKey("aspect.id"),
+                           primary_key=True)
+    dst_scale_id = Column("dst_scale_id",
+                          ForeignKey("scale.id"),
+                          primary_key=True)
+    dst_aspect_id = Column("dst_aspect_id",
+                           ForeignKey("aspect.id"),
+                           primary_key=True)
+    transform_id = Column("transform_id",
+                          ForeignKey("transform.id"))
     parameters = Column(UnicodeText)
 
     src_scale = relationship('Scale', foreign_keys=[src_scale_id])
-    src_aspect = relationship('Aspect', foreign_keys=[src_aspect_id]) 
+    src_aspect = relationship('Aspect', foreign_keys=[src_aspect_id])
     dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
-    dst_aspect = relationship('Aspect', foreign_keys=[dst_aspect_id]) 
+    dst_aspect = relationship('Aspect', foreign_keys=[dst_aspect_id])
     transform = relationship('Transform', foreign_keys=[transform_id])
 
     def __str__(self):
-        return "{}.{}.{}.{}".format(self.src_scale_id, 
-                                 self.src_aspect_id,
-                                 self.dst_scale_id, 
-                                 self.dst_aspect_id)
+        return "{}.{}.{}.{}".format(self.src_scale_id,
+                                    self.src_aspect_id,
+                                    self.dst_scale_id,
+                                    self.dst_aspect_id)
+
+
+class System(Base):
+    __tablename__ = 'system'
+    id = Column(String(10), primary_key=True)
+    ml_name = Column(String(10))
+    symbol = Column(String(10))
+    n = Column(Integer)
+    basis = Column(String(200))
+    reference = Column(String(50))
+
+    def __str__(self):
+        return self.symbol
+
+
+class Dimension(Base):
+    __tablename__ = 'dimension'
+    id = Column(String(10), primary_key=True)
+    formal_system_id = Column('formal_system_id',
+                              ForeignKey('system.id'),
+                              nullable=True)
+    systematic_scale_id = Column('systematic_scale_id',
+                                 ForeignKey('scale.id'),
+                                 nullable=True)
+    exponents = Column(String(40), nullable=True)
+    systematic_scales = relationship("Scale",
+                                     secondary=scaledimension_table,
+                                     back_populates="system_dimensions")
+    formal_system = relationship("System")
+
+    def __str__(self):
+        # SI Brochure dimensions
+        # dimQ = T^alphaL^betaM^gammaI^deltaTheta^epsilonN^psiJ^eta
+        # m-layer encoding
+        # dimQ = M^gammaL^betaT^alphaI^deltaTheta^epsilonN^psiJ^eta
+        # Time Length Mass Current Temperature AmountOfSubstance LuminousIntensity
+        return self.id
 
 
 class Transform(Base):
@@ -85,10 +146,11 @@ class Transform(Base):
     py_function = Column(UnicodeText)
     py_names_in_scope = Column(UnicodeText)
     comments = Column(UnicodeText)
-    
+
     def __str__(self):
         return self.ml_name
-    
+
+
 # M-Layer Aspect
 class Aspect(Base):
     # Aspect will be referenced by many tables
@@ -102,8 +164,23 @@ class Aspect(Base):
     scales = relationship(
         "Scale", secondary=scaleaspect_table, back_populates="aspects"
     )
-    # Conversions should be related to the scale, aspect only disambiguates the expression
+    # Conversions should be related to the scale,
+    # aspect only disambiguates the expression
     # conversions = relationship('Conversion', back_populates='aspect')
+
+    def __str__(self):
+        return self.name
+
+
+class Prefix(Base):
+    __tablename__ = "prefix"
+    id = Column(String(50), primary_key=True)
+    name = Column(String(100))
+    ml_name = Column(String(100))
+    symbol = Column(String(50))
+    numerator = Column(Float)
+    denominator = Column(Float)
+    reference = Column(String(50))
 
     def __str__(self):
         return self.name
@@ -115,14 +192,7 @@ class Unit(Base):
     name = Column(String(100))
     ml_name = Column(String(100))
     symbol = Column(String(50))
-    # special = Column(String(50))
     reference = Column(String(50))
-    # systems = Column(String(50))
-    # ucum = relationship("UCUM")
-    # qudt = relationship("QUDT")
-    # system = relationship("System")
-    # dimensions = Column(String(10))
-    # prefix
 
     def __str__(self):
         return self.name
@@ -131,26 +201,48 @@ class Unit(Base):
         return self.name
 
 
+class Node(Base):
+    __tablename__ = 'node'
+
+    id: Mapped[int] = mapped_column(String(50), primary_key=True)
+    parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey('node.id'))
+    children: Mapped[list['Node']] = relationship(back_populates='parent',
+                                                  remote_side=[id])
+    parent: Mapped['Node'] = relationship(back_populates='children')
+
+
 class Scale(Base):
     __tablename__ = "scale"
     id = Column(String(10), primary_key=True)
     ml_name = Column(String(50))
-    # scale_type = Column(
-    #    Enum("ratio", "interval", "bounded", "ordinal", "nominal"),
-    #    nullable=False,
-    # )
-    unit_id = Column(
-        String(50), ForeignKey("unit.id"), nullable=True
-    )  # One-to-one
+    scale_type = Column(String(20))
+    root_scale_id: Mapped[Optional[int]] = mapped_column(ForeignKey('scale.id'),
+                                                         nullable=True)
+    root_scale: Mapped['Scale'] = relationship(remote_side=[id])
+    prefix_id = Column(String(50),
+                       ForeignKey("prefix.id"),
+                       nullable=True)  # One-to-one
+    prefix = relationship("Prefix")
+    unit_id = Column(String(50),
+                     ForeignKey("unit.id"),
+                     nullable=True)  # One-to-one
     unit = relationship("Unit")
-    aspects = relationship(
-        "Aspect", secondary=scaleaspect_table, back_populates="scales"
-    )
-    conversions = relationship('Conversion', 
+    
+    system_dimensions_id = Column(String(10),
+                                  ForeignKey('dimension.id'),
+                                  nullable=True)
+    system_dimensions = relationship("Dimension",
+                                     secondary=scaledimension_table,
+                                     back_populates="systematic_scales")
+    is_systematic = Column(Boolean)
+    aspects = relationship("Aspect",
+                           secondary=scaleaspect_table,
+                           back_populates="scales")
+    conversions = relationship('Conversion',
                                primaryjoin="(Scale.id == Conversion.src_scale_id)",
                                viewonly=True
                                )
-    casts = relationship('Cast', 
+    casts = relationship('Cast',
                          primaryjoin="(Scale.id == Cast.src_scale_id)",
                          viewonly=True
                         )
@@ -164,13 +256,12 @@ class Scale(Base):
         return self.ml_name
 
 
-
-
 # MII Taxonomy Model
 # Attempt to model MII Taxon
 # One-to-one NRC Service to Measurand (CMC)
 # Measurands are unique but the taxon does not ensure uniqueness
 # Measurands may have same taxon but different parameters
+
 class Measurand(Base):
     __tablename__ = "measurand"
     id = Column(UnicodeText, primary_key=True, index=True)
@@ -218,7 +309,6 @@ class Taxon(Base):
         String(50)
     )  # Name should be constructor from init with Taxon attributes following BNF grammar
     deprecated = Column(Boolean)
-    
     quantitykind = Column(String(50))
     process = Column(String(10))  # Source | Measure
     aspect_id = Column(
@@ -412,6 +502,13 @@ class KcdbServiceSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
 
+class PrefixSchema(SQLAlchemyAutoSchema):
+
+    class Meta:
+        model = Prefix
+        load_instance = True
+
+
 class UnitSchema(SQLAlchemyAutoSchema):
 
     class Meta:
@@ -420,10 +517,27 @@ class UnitSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
 
+class SystemSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = System
+        load_instance = True
+
+
+class DimensionSchema(SQLAlchemyAutoSchema):
+    formal_system = Nested(SystemSchema)
+
+    class Meta:
+        model = Dimension
+        include_relationships = True
+        load_instance = True
+
+
 class ScaleSchema(SQLAlchemyAutoSchema):
-    # requires serializing enum
-    #scale_type = marshmallow_sqlalchemy.fields.Method("get_scale_type")
     unit = Nested(UnitSchema)
+    prefix = Nested(PrefixSchema)
+    dimension = Nested(DimensionSchema)
+    # root_scale = Nested(ScaleSchema, many=True)
+
     class Meta:
         model = Scale
         include_relationships = True
@@ -432,25 +546,26 @@ class ScaleSchema(SQLAlchemyAutoSchema):
 
 class AspectSchema(SQLAlchemyAutoSchema):
     scales = Nested(ScaleSchema, many=True)
-    
+
     class Meta:
         model = Aspect
         include_relationships = True
         load_instance = True
 
+
 class TransformSchema(SQLAlchemyAutoSchema):
-    
     class Meta:
         model = Transform
         include_relationships = True
         load_instance = True
+
 
 class ConversionSchema(SQLAlchemyAutoSchema):
     src_scale = Nested(ScaleSchema)
     dst_scale = Nested(ScaleSchema)
     aspect = Nested(AspectSchema)
     transform = Nested(TransformSchema)
-    
+
     class Meta:
         model = Conversion
         include_relationships = True

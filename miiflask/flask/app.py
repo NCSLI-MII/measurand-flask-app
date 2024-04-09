@@ -34,7 +34,10 @@ from miiflask.flask.model import (
     Domain,
     Conversion,
     Cast,
-    Transform
+    Transform,
+    Dimension,
+    System,
+    Prefix
 )
 
 print('Creating app ', __name__)
@@ -89,22 +92,26 @@ from miiflask.flask.views import (
         KcdbServiceView,
         AspectView,
         ScaleView,
-        CastConversionView
+        CastConversionView,
+        DimensionView
         )
 
 admin = Admin(app, name="qms", template_mode="bootstrap3")
 admin.add_view(ModelView(Domain, db.session))
-admin.add_view(AspectView(Aspect, db.session))
-admin.add_view(ScaleView(Scale, db.session))
-admin.add_view(MyModelView(Unit, db.session))
-admin.add_view(CastConversionView(Conversion, db.session))
-admin.add_view(CastConversionView(Cast, db.session))
-admin.add_view(MyModelView(Parameter, db.session))
-admin.add_view(MyModelView(Transform, db.session))
-admin.add_view(MeasurandView(Measurand, db.session))
-admin.add_view(KcdbServiceView(KcdbService, db.session))
-admin.add_view(MyModelView(KcdbQuantity, db.session))
-admin.add_view(CMCView(KcdbCmc, db.session))
+admin.add_view(AspectView(Aspect, db.session, category="Mlayer"))
+admin.add_view(ScaleView(Scale, db.session, category="Mlayer"))
+admin.add_view(MyModelView(Unit, db.session, category="Mlayer"))
+admin.add_view(MyModelView(Prefix, db.session, category="Mlayer"))
+admin.add_view(CastConversionView(Conversion, db.session, category="Mlayer"))
+admin.add_view(CastConversionView(Cast, db.session, category="Mlayer"))
+admin.add_view(MyModelView(Transform, db.session, category="Mlayer"))
+admin.add_view(DimensionView(Dimension, db.session, category="Mlayer"))
+admin.add_view(MyModelView(System, db.session, category="Mlayer"))
+admin.add_view(MyModelView(Parameter, db.session, category="Measurand"))
+admin.add_view(MeasurandView(Measurand, db.session, category="Measurand"))
+admin.add_view(KcdbServiceView(KcdbService, db.session, category="KCDB"))
+admin.add_view(MyModelView(KcdbQuantity, db.session, category="KCDB"))
+admin.add_view(CMCView(KcdbCmc, db.session, category="KCDB"))
     
 
 

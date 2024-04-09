@@ -1,0 +1,272 @@
+[
+  {
+    "id": "DI1",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1",
+    "exponents": "[1,0,0,0,0,0,0]"
+  },
+  {
+    "id": "DI10",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC45",
+    "exponents": "[1, 1, -2, 0, 0, 0, 0]"
+  },
+  {
+    "id": "DI11",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC46",
+    "exponents": "[1, -1, -2, 0, 0, 0, 0]"
+  },
+  {
+    "id": "DI12",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC47",
+    "exponents": "[1, 2, -2, 0, 0, 0, 0]"
+  },
+  {
+    "id": "DI13",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC48",
+    "exponents": "[1, 2, -3, 0, 0, 0, 0]"
+  },
+  {
+    "id": "DI14",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC49",
+    "exponents": "[0, 0, 1, 1, 0, 0, 0]"
+  },
+  {
+    "id": "DI15",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC50",
+    "exponents": "[1, 2, -3, -1, 0, 0, 0]"
+  },
+  {
+    "id": "DI16",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC51",
+    "exponents": "[-1, -2, 4, 2, 0, 0, 0]"
+  },
+  {
+    "id": "DI17",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC52",
+    "exponents": "[1, 2, -3, -2, 0, 0, 0]"
+  },
+  {
+    "id": "DI18",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC53",
+    "exponents": "[-1, -2, 3, 2, 0, 0, 0]"
+  },
+  {
+    "id": "DI19",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC54",
+    "exponents": "[1, 2, -2, -1, 0, 0, 0]"
+  },
+  {
+    "id": "DI2",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC2",
+    "exponents": "[0,1,0,0,0,0,0]"
+  },
+  {
+    "id": "DI20",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC55",
+    "exponents": "[1, 0, -2, -1, 0, 0, 0]"
+  },
+  {
+    "id": "DI21",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC56",
+    "exponents": "[1, 2, -2, -2, 0, 0, 0]"
+  },
+  {
+    "id": "DI22",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC57",
+    "exponents": "[0, -2, 0, 0, 0, 0, 1]"
+  },
+  {
+    "id": "DI23",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC58",
+    "exponents": "[0, 2, -2, 0, 0, 0, 0]"
+  },
+  {
+    "id": "DI24",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC59",
+    "exponents": "[0, 0, -1, 0, 0, 1, 0]"
+  },
+  {
+    "id": "DI25",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC775",
+    "exponents": "[0,2,0,0,0,0,0]"
+  },
+  {
+    "id": "DI26",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC776",
+    "exponents": "[0,3,0,0,0,0,0]"
+  },
+  {
+    "id": "DI27",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC801",
+    "exponents": "[0,1,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI28",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC802",
+    "exponents": "[0, 1, -2, 0, 0, 0, 0]"
+  },
+  {
+    "id": "DI29",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC803",
+    "exponents": "[0,3,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI3",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC3",
+    "exponents": "[0,0,1,0,0,0,0]"
+  },
+  {
+    "id": "DI30",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC827",
+    "exponents": "[0, -2, 0, 0, 0, 0, 0]"
+  },
+  {
+    "id": "DI31",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC828",
+    "exponents": "[1,1,0,0,0,0,0]"
+  },
+  {
+    "id": "DI32",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC829",
+    "exponents": "[1,-3,0,0,0,0,0]"
+  },
+  {
+    "id": "DI33",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC842",
+    "exponents": "[1,1,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI34",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC843",
+    "exponents": "[1,2,0,0,0,0,0]"
+  },
+  {
+    "id": "DI35",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC862",
+    "exponents": "[1,-1,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI36",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC864",
+    "exponents": "[0,2,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI37",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC902",
+    "exponents": "[0,0,0,0,-1,0,0]"
+  },
+  {
+    "id": "DI38",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC906",
+    "exponents": "[1,1,-3,0,-1,0,0]"
+  },
+  {
+    "id": "DI39",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC907",
+    "exponents": "[1,0,-3,0,-1,0,0]"
+  },
+  {
+    "id": "DI4",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC4",
+    "exponents": "[0,0,0,1,0,0,0]"
+  },
+  {
+    "id": "DI40",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC908",
+    "exponents": "[1,2,-2,0,-1,0,0]"
+  },
+  {
+    "id": "DI41",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC911",
+    "exponents": "[0,2,-2,0,-1,0,0]"
+  },
+  {
+    "id": "DI43",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC914",
+    "exponents": "[0,-1,0,1,0,0,0]"
+  },
+  {
+    "id": "DI44",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC916",
+    "exponents": "[1,3,-3,-2,0,0,0]"
+  },
+  {
+    "id": "DI45",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC918",
+    "exponents": "[-1,-3,3,2,0,0,0]"
+  },
+  {
+    "id": "DI47",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC920",
+    "exponents": "[-1,0,1,1,0,0,0]"
+  },
+  {
+    "id": "DI5",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC5",
+    "exponents": "[0,0,0,0,1,0,0]"
+  },
+  {
+    "id": "DI6",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC6",
+    "exponents": "[0,0,0,0,0,1,0]"
+  },
+  {
+    "id": "DI7",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC7",
+    "exponents": "[0,0,0,0,0,0,1]"
+  },
+  {
+    "id": "DI8",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC8",
+    "exponents": "[0,0,0,0,0,0,0]"
+  },
+  {
+    "id": "DI9",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC44",
+    "exponents": "[0, 0, -1, 0, 0, 0, 0]"
+  }
+]
