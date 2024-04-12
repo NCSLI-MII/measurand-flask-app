@@ -24,6 +24,7 @@ from miiflask.flask.config import TestingConfig, DevelopmentConfig
 
 from miiflask.flask.model import (
     Measurand,
+    Taxon,
     Aspect,
     Unit,
     Scale,
@@ -87,6 +88,7 @@ print("Running the App and using views")
 
 from miiflask.flask.views import (
         MeasurandView,
+        TaxonView,
         CMCView,
         MyModelView,
         KcdbServiceView,
@@ -109,6 +111,7 @@ admin.add_view(DimensionView(Dimension, db.session, category="Mlayer"))
 admin.add_view(MyModelView(System, db.session, category="Mlayer"))
 admin.add_view(MyModelView(Parameter, db.session, category="Measurand"))
 admin.add_view(MeasurandView(Measurand, db.session, category="Measurand"))
+admin.add_view(TaxonView(Taxon, db.session, category="Measurand"))
 admin.add_view(KcdbServiceView(KcdbService, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbQuantity, db.session, category="KCDB"))
 admin.add_view(CMCView(KcdbCmc, db.session, category="KCDB"))

@@ -264,7 +264,7 @@ class Scale(Base):
 
 class Measurand(Base):
     __tablename__ = "measurand"
-    id = Column(UnicodeText, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     taxon_id = Column(String(100), ForeignKey("taxon.id"))
     name = Column(String(50))
     result = Column(String(50))
@@ -304,7 +304,12 @@ class Parameter(Base):
 
 class Taxon(Base):
     __tablename__ = "taxon"
-    id = Column(String(100), primary_key=True, index=True)
+    # id = Column(UnicodeText, primary_key=True)
+    id: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
+    supertaxon_id: Mapped[Optional[str]] = mapped_column(ForeignKey('taxon.id'))
+    subtaxons: Mapped[list['Taxon']] = relationship(back_populates='supertaxon',
+                                                        remote_side=[id])
+    supertaxon: Mapped['Taxon'] = relationship(back_populates='subtaxons')
     name = Column(
         String(50)
     )  # Name should be constructor from init with Taxon attributes following BNF grammar

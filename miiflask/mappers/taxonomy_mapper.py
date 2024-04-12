@@ -155,6 +155,18 @@ class TaxonomyMapper:
         # pprint(xmltodict.unparse(taxon))
         return taxon["mtc:Taxon"]
 
+    
+    def getTaxonomyHierarchy(self):
+        # TBD
+        # Build the hierarchy post load
+
+        taxons = self.Session.query(model.Taxon).all()
+
+        for taxon in taxons:
+            parts = taxon.name.split('.')
+
+            
+
 
     def getMeasurandObject(self, taxon):
         """
@@ -178,7 +190,6 @@ class TaxonomyMapper:
         # Measurands can have the same taxon but differ in parameters
         # Look at rule 10
         measurand_data = {
-                "id": id_, 
                 "name": taxon["@name"],
                 "definition": taxon['mtc:Definition'],
                 "result": taxon["mtc:Result"]["@name"],

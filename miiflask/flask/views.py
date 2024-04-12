@@ -67,15 +67,29 @@ class CMCView(ModelView):
     column_list = ("id", "tags")
 
 
-class MeasurandView(ModelView):
+class TaxonView(ModelView):
     can_export = True
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
     column_formatters = {'id': _id_formatter}
+    column_list = ("id", "name", "deprecated") 
+    column_details_list = ("id",
+                           "name",
+                           "deprecated",
+                           )
+
+class MeasurandView(ModelView):
+    can_export = True
+    column_display_pk = True
+    can_view_details = True
+    column_hide_backrefs = False
+    column_formatters = {'id': _id_formatter,
+                         'taxon': _link_formatter}
     column_list = ("id", "name", "quantitykind", "parameters")
     column_details_list = ("id",
                            "name",
+                           "taxon",
                            "aspect",
                            "quantitykind",
                            "parameters",
@@ -246,7 +260,7 @@ def initialize():
             "quantities": "../../resources/kcdb/kcdb_quantities.csv",
             "services": "../../resources/kcdb/kcdb_service_classifications.csv",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
-            "use_api": True,
+            "use_api": False,
             "update_resources": False
         }
 
