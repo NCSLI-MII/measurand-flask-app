@@ -246,7 +246,7 @@ def initialize():
             "quantities": "../../resources/kcdb/kcdb_quantities.csv",
             "services": "../../resources/kcdb/kcdb_service_classifications.csv",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
-            "use_api": False,
+            "use_api": True,
             "update_resources": False
         }
 
