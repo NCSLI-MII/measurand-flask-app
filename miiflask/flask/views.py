@@ -64,7 +64,16 @@ class KcdbServiceView(MyModelView):
 class CMCView(ModelView):
     column_display_pk = True
     column_hide_backrefs = False
-    column_list = ("id", "tags")
+    column_searchable_list = ['area.label', 'quantity.value']
+    column_list = ('id',
+                   'kcdbCode',
+                   'area',
+                   'branch',
+                   'service',
+                   'subservice',
+                   'individualservice',
+                   'quantity',
+                   'measurands')
 
 
 class TaxonView(ModelView):
@@ -78,6 +87,7 @@ class TaxonView(ModelView):
                            "name",
                            "deprecated",
                            )
+
 
 class MeasurandView(ModelView):
     can_export = True
@@ -274,11 +284,12 @@ def initialize():
     miimapper.loadTaxonomy()
 
     kcdbmapper = KcdbMapper(db.session, parms)
-    #kcdbmapper.loadQuantities()
-    #kcdbmapper.loadServices()
-    kcdbmapper.getKcdbRefDataLocal()
+    kcdbmapper.loadQuantities()
+    kcdbmapper.loadServices()
+    # kcdbmapper.getKcdbRefDataLocal()
     kcdbmapper.getPhysicsCMCData()
-    kcdbmapper.dumpKcdbRefData()
+    # kcdbmapper.dumpKcdbRefData()
+    kcdbmapper.dumpKcdbCmcData()
     db.session.commit()
     return redirect(url_for('index'))
 

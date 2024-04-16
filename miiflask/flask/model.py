@@ -400,7 +400,7 @@ class ClassifierTag(Base):
 kcdb_classifier_map = Table(
     "kcdb_classifier_map",
     Base.metadata,
-    Column("kcdbcmc_id", ForeignKey("kcdbcmc_table.id"), primary_key=True),
+    Column("kcdbcmc_id", ForeignKey("kcdbcmc.id"), primary_key=True),
     Column(
         "classifiertag_id",
         ForeignKey("classifiertag_table.id"),
@@ -411,7 +411,9 @@ kcdb_classifier_map = Table(
 kcdb_measurand_map = Table(
     "kcdb_measurand_map",
     Base.metadata,
-    Column("kcdb_serviceclass_id", ForeignKey("kcdbserviceclass.id"), primary_key=True),
+    Column("kcdbcmc_id",
+           ForeignKey("kcdbcmc.id"),
+           primary_key=True),
     Column(
         "measurand_id",
         ForeignKey("measurand.id"),
@@ -421,7 +423,7 @@ kcdb_measurand_map = Table(
 
 # MRA SIM Calibration and Measurement Capabilities entries in the KCDB
 class KcdbCmc(Base):
-    __tablename__ = "kcdbcmc_table"
+    __tablename__ = "kcdbcmc"
     id = Column(Integer, primary_key=True)
     kcdbCode = Column(String(50))
     
@@ -450,8 +452,17 @@ class KcdbCmc(Base):
     )
     individualservice = relationship("KcdbIndividualService")
     
+    quantity_id = Column(
+        Integer, ForeignKey("kcdbquantity.id"), nullable=True
+    )
+    quantity = relationship("KcdbQuantity")
+    
     tags = relationship(
         "ClassifierTag", secondary=kcdb_classifier_map, backref="kcdbcmcs"
+    )
+    
+    measurands = relationship(
+        "Measurand", secondary=kcdb_measurand_map, backref="kcdbcmcs"
     )
     # parents = relationship("Parent", secondary=association_table, back_populates="children")
     # parent_id = Column(String(50), ForeignKey("parent_table.id"))
@@ -467,12 +478,18 @@ class KcdbQuantity(Base):
     label = Column(String(200))
     value = Column(UnicodeText)
 
+    def __str__(self):
+        return self.value
+
 
 class KcdbArea(Base):
     __tablename__ = "kcdbarea"
     id = Column(Integer, primary_key=True)
     label = Column(String(50))
     value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.label
 
 
 class KcdbBranch(Base):
@@ -480,6 +497,9 @@ class KcdbBranch(Base):
     id = Column(Integer, primary_key=True)
     label = Column(String(50))
     value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.value
 
     
 class KcdbService(Base):
@@ -487,6 +507,9 @@ class KcdbService(Base):
     id = Column(Integer, primary_key=True)
     label = Column(String(50))
     value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.value
 
 
 class KcdbSubservice(Base):
@@ -494,6 +517,9 @@ class KcdbSubservice(Base):
     id = Column(Integer, primary_key=True)
     label = Column(String(50))
     value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.value
 
 
 class KcdbIndividualService(Base):
@@ -501,6 +527,9 @@ class KcdbIndividualService(Base):
     id = Column(Integer, primary_key=True)
     label = Column(String(50))
     value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.value
 
 
 class KcdbServiceClass(Base):
@@ -513,9 +542,6 @@ class KcdbServiceClass(Base):
     service = Column(String(200))
     subservice = Column(String(200))
     individualservice = Column(String(200))
-    measurands = relationship(
-        "Measurand", secondary=kcdb_measurand_map, backref="kcdbserviceclasses"
-    )
 
 
 # KCDB quantityValue description
