@@ -274,8 +274,11 @@ def initialize():
     miimapper.loadTaxonomy()
 
     kcdbmapper = KcdbMapper(db.session, parms)
-    kcdbmapper.loadQuantities()
-    kcdbmapper.loadServices()
+    #kcdbmapper.loadQuantities()
+    #kcdbmapper.loadServices()
+    kcdbmapper.getKcdbRefDataLocal()
+    kcdbmapper.getPhysicsCMCData()
+    kcdbmapper.dumpKcdbRefData()
     db.session.commit()
     return redirect(url_for('index'))
 

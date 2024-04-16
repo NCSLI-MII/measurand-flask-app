@@ -411,7 +411,7 @@ kcdb_classifier_map = Table(
 kcdb_measurand_map = Table(
     "kcdb_measurand_map",
     Base.metadata,
-    Column("kcdb_service_id", ForeignKey("kcdbservice.id"), primary_key=True),
+    Column("kcdb_serviceclass_id", ForeignKey("kcdbserviceclass.id"), primary_key=True),
     Column(
         "measurand_id",
         ForeignKey("measurand.id"),
@@ -422,7 +422,34 @@ kcdb_measurand_map = Table(
 # MRA SIM Calibration and Measurement Capabilities entries in the KCDB
 class KcdbCmc(Base):
     __tablename__ = "kcdbcmc_table"
-    id = Column(String(50), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    kcdbCode = Column(String(50))
+    
+    area_id = Column(
+        Integer, ForeignKey("kcdbarea.id"), nullable=True
+    )
+    area = relationship("KcdbArea")
+    
+    branch_id = Column(
+        Integer, ForeignKey("kcdbbranch.id"), nullable=True
+    )
+    branch = relationship("KcdbBranch")
+    
+    service_id = Column(
+        Integer, ForeignKey("kcdbservice.id"), nullable=True
+    )
+    service = relationship("KcdbService")
+    
+    subservice_id = Column(
+        Integer, ForeignKey("kcdbsubservice.id"), nullable=True
+    )
+    subservice = relationship("KcdbSubservice")
+
+    individualservice_id = Column(
+        Integer, ForeignKey("kcdbindividualservice.id"), nullable=True
+    )
+    individualservice = relationship("KcdbIndividualService")
+    
     tags = relationship(
         "ClassifierTag", secondary=kcdb_classifier_map, backref="kcdbcmcs"
     )
@@ -436,12 +463,48 @@ class KcdbCmc(Base):
 
 class KcdbQuantity(Base):
     __tablename__ = "kcdbquantity"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(200))
+    id = Column(Integer, primary_key=True)
+    label = Column(String(200))
+    value = Column(UnicodeText)
 
 
+class KcdbArea(Base):
+    __tablename__ = "kcdbarea"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+
+
+class KcdbBranch(Base):
+    __tablename__ = "kcdbbranch"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+
+    
 class KcdbService(Base):
     __tablename__ = "kcdbservice"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+
+
+class KcdbSubservice(Base):
+    __tablename__ = "kcdbsubservice"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+
+
+class KcdbIndividualService(Base):
+    __tablename__ = "kcdbindividualservice"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+
+
+class KcdbServiceClass(Base):
+    __tablename__ = "kcdbserviceclass"
     id = Column(String(50), primary_key=True)
     area_id = Column(String(10))
     area = Column(String(50))
@@ -451,8 +514,10 @@ class KcdbService(Base):
     subservice = Column(String(200))
     individualservice = Column(String(200))
     measurands = relationship(
-        "Measurand", secondary=kcdb_measurand_map, backref="kcdbservices"
+        "Measurand", secondary=kcdb_measurand_map, backref="kcdbserviceclasses"
     )
+
+
 # KCDB quantityValue description
 # Requires mapper from KCDB quantity Value to quantity kind
 class QuantityValue(Base):
@@ -493,9 +558,23 @@ class QuantityValue(Base):
 
 # Generate marshmallow schemas
 
-class KcdbQuantitySchema(SQLAlchemyAutoSchema):
+class KcdbCmcSchema(SQLAlchemyAutoSchema):
     class Meta:
-        model = KcdbQuantity
+        model = KcdbCmc
+        include_relationships = True
+        load_instance = True
+
+
+class KcdbAreaSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbArea
+        include_relationships = True
+        load_instance = True
+
+
+class KcdbBranchSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbBranch
         include_relationships = True
         load_instance = True
 
@@ -503,6 +582,34 @@ class KcdbQuantitySchema(SQLAlchemyAutoSchema):
 class KcdbServiceSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = KcdbService
+        include_relationships = True
+        load_instance = True
+
+
+class KcdbSubserviceSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbSubservice
+        include_relationships = True
+        load_instance = True
+
+
+class KcdbIndividualServiceSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbIndividualService
+        include_relationships = True
+        load_instance = True
+
+
+class KcdbQuantitySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbQuantity
+        include_relationships = True
+        load_instance = True
+
+
+class KcdbServiceClassSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbServiceClass
         include_relationships = True
         load_instance = True
 

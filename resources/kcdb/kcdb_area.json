@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "value": "Acoustics, Ultrasound, Vibration",
+        "label": "AUV"
+    },
+    {
+        "id": 2,
+        "value": "Electricity and Magnetism",
+        "label": "EM"
+    },
+    {
+        "id": 3,
+        "value": "Length",
+        "label": "L"
+    },
+    {
+        "id": 4,
+        "value": "Mass and related quantities",
+        "label": "M"
+    },
+    {
+        "id": 5,
+        "value": "Photometry and Radiometry",
+        "label": "PR"
+    },
+    {
+        "id": 6,
+        "value": "Thermometry",
+        "label": "T"
+    },
+    {
+        "id": 7,
+        "value": "Time and Frequency",
+        "label": "TF"
+    }
+]
