@@ -457,6 +457,16 @@ class KcdbCmc(Base):
     )
     quantity = relationship("KcdbQuantity")
     
+    instrument_id = Column(
+        Integer, ForeignKey("kcdbinstrument.id"), nullable=True
+    )
+    instrument = relationship("KcdbInstrument")
+    
+    instrumentmethod_id = Column(
+        Integer, ForeignKey("kcdbinstrumentmethod.id"), nullable=True
+    )
+    instrumentmethod = relationship("KcdbInstrumentMethod")
+
     tags = relationship(
         "ClassifierTag", secondary=kcdb_classifier_map, backref="kcdbcmcs"
     )
@@ -471,6 +481,25 @@ class KcdbCmc(Base):
     def __str__(self):
         return self.id
 
+
+class KcdbInstrument(Base):
+    __tablename__ = "kcdbinstrument"
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String(200))
+    value = Column(UnicodeText)
+
+    def __str__(self):
+        return self.value
+
+
+class KcdbInstrumentMethod(Base):
+    __tablename__ = "kcdbinstrumentmethod"
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String(200))
+    value = Column(UnicodeText)
+
+    def __str__(self):
+        return self.value
 
 class KcdbQuantity(Base):
     __tablename__ = "kcdbquantity"
@@ -584,12 +613,20 @@ class QuantityValue(Base):
 
 # Generate marshmallow schemas
 
-class KcdbCmcSchema(SQLAlchemyAutoSchema):
+
+
+class KcdbInstrumentSchema(SQLAlchemyAutoSchema):
     class Meta:
-        model = KcdbCmc
+        model = KcdbInstrument
         include_relationships = True
         load_instance = True
 
+
+class KcdbInstrumentMethodSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbInstrumentMethod
+        include_relationships = True
+        load_instance = True
 
 class KcdbAreaSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -710,8 +747,6 @@ class ConversionSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
 
-
-
 class ParameterSchema(SQLAlchemyAutoSchema):
     
     class Meta:
@@ -737,10 +772,24 @@ class MeasurandSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
 
-
-
 class DisciplineSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Discipline
+        include_relationships = True
+        load_instance = True
+
+
+class KcdbCmcSchema(SQLAlchemyAutoSchema):
+    measurands = Nested(MeasurandSchema, many=True)
+    area = Nested(KcdbAreaSchema)
+    branch = Nested(KcdbBranchSchema)
+    service = Nested(KcdbServiceSchema)
+    subservice = Nested(KcdbSubserviceSchema)
+    individualservice = Nested(KcdbIndividualServiceSchema)
+    instrument = Nested(KcdbInstrumentSchema)
+    instrumentmethod = Nested(KcdbInstrumentMethodSchema)
+    quantity = Nested(KcdbQuantitySchema)
+    class Meta:
+        model = KcdbCmc
         include_relationships = True
         load_instance = True

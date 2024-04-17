@@ -73,7 +73,9 @@ class CMCView(ModelView):
                    'subservice',
                    'individualservice',
                    'quantity',
-                   'measurands')
+                   'measurands',
+                   'instrument',
+                   'instrumentmethod')
 
 
 class TaxonView(ModelView):
@@ -284,12 +286,7 @@ def initialize():
     miimapper.loadTaxonomy()
 
     kcdbmapper = KcdbMapper(db.session, parms)
-    kcdbmapper.loadQuantities()
     kcdbmapper.loadServices()
-    # kcdbmapper.getKcdbRefDataLocal()
-    kcdbmapper.getPhysicsCMCData()
-    # kcdbmapper.dumpKcdbRefData()
-    kcdbmapper.dumpKcdbCmcData()
     db.session.commit()
     return redirect(url_for('index'))
 
