@@ -169,7 +169,7 @@ class Aspect(Base):
     # conversions = relationship('Conversion', back_populates='aspect')
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Prefix(Base):
@@ -183,7 +183,7 @@ class Prefix(Base):
     reference = Column(String(50))
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Unit(Base):
@@ -195,7 +195,7 @@ class Unit(Base):
     reference = Column(String(50))
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
     def __unicode__(self):
         return self.name
@@ -250,7 +250,7 @@ class Scale(Base):
     #dst_scales = relationship('Conversion', back_populates='dst_scale')
 
     def __str__(self):
-        return self.ml_name
+        return f'{self.ml_name}'
 
     def __unicode__(self):
         return self.ml_name
@@ -279,7 +279,7 @@ class Measurand(Base):
     parameters = relationship("Parameter", back_populates="measurand")
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Parameter(Base):
@@ -299,7 +299,7 @@ class Parameter(Base):
     aspect = relationship("Aspect")
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Taxon(Base):
@@ -315,7 +315,7 @@ class Taxon(Base):
     )  # Name should be constructor from init with Taxon attributes following BNF grammar
     deprecated = Column(Boolean)
     quantitykind = Column(String(50))
-    process = Column(String(10))  # Source | Measure
+    processtype = Column(String(10))  # Source | Measure
     aspect_id = Column(
         String(50), ForeignKey("aspect.id"), nullable=True
     )  # One-to-one
@@ -331,7 +331,7 @@ class Taxon(Base):
     discipline = relationship("Discipline", back_populates="taxon")
 
     def __str__(self):
-        return self.id
+        return f'{self.id}'
 
 
 # Traditional CC areas and team labels
@@ -348,7 +348,7 @@ class Domain(Base):
     description_fr = Column(Text)
 
     def __str__(self):
-        return self.label
+        return f'{self.label}'
 
 
 
@@ -359,6 +359,9 @@ class Discipline(Base):
     id = Column(Integer, primary_key=True, index=True)
     label = Column(String(50))
     taxon = relationship("Taxon", back_populates="discipline")
+
+    def __str__(self):
+        return f'{self.label}'
 
 
 
@@ -479,7 +482,7 @@ class KcdbCmc(Base):
     # parents = relationship("Parent", back_populates='discipline') # bidirectional relationship
 
     def __str__(self):
-        return self.id
+        return f'{self.kcdbCode}'
 
 
 class KcdbInstrument(Base):

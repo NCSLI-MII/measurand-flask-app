@@ -83,6 +83,17 @@ class TaxonView(ModelView):
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
+    form_columns = ['id',
+                    'measurand',
+                    'aspect',
+                    'discipline',
+                    'subtaxons',
+                    'supertaxon',
+                    'deprecated',
+                    'name',
+                    'quantitykind',
+                    'processtype'] 
+    #form_excluded_columns = [
     column_formatters = {'id': _id_formatter}
     column_list = ("id", "name", "deprecated") 
     column_details_list = ("id",
@@ -96,6 +107,7 @@ class MeasurandView(ModelView):
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
+    #form_excluded_columns = ['aspect', 'parameters']
     column_formatters = {'id': _id_formatter,
                          'taxon': _link_formatter}
     column_list = ("id", "name", "quantitykind", "parameters")

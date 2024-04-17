@@ -182,7 +182,7 @@ class TaxonomyMapper:
         taxon_data = {
             "id": id_,
             "name": taxon["@name"],
-            "process": taxon["@name"].split(".")[0],
+            "processtype": taxon["@name"].split(".")[0],
             "quantitykind": taxon["mtc:Result"]["uom:Quantity"]["@name"],
             "deprecated": taxon["@deprecated"]
         }
