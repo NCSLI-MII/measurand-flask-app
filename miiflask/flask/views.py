@@ -84,7 +84,7 @@ class TaxonView(ModelView):
     can_view_details = True
     column_hide_backrefs = False
     form_columns = ['id',
-                    'measurand',
+                    'measurands',
                     'aspect',
                     'discipline',
                     'subtaxons',

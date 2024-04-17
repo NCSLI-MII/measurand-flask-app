@@ -18,7 +18,7 @@ from sqlalchemy import (ForeignKey,
                         Text,
                         UnicodeText,
                         Boolean,
-                        Float
+                        Float,
                         )
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
@@ -264,19 +264,18 @@ class Scale(Base):
 
 class Measurand(Base):
     __tablename__ = "measurand"
-    id = Column(Integer, primary_key=True, index=True)
-    taxon_id = Column(String(100), ForeignKey("taxon.id"))
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    taxon_id: Mapped[str] = mapped_column(ForeignKey("taxon.id"))
     name = Column(String(50))
     result = Column(String(50))
     quantitykind = Column(String(50))
-    aspect_id = Column(
-        String(50), ForeignKey("aspect.id"), nullable=True
-    )  # One-to-one
-    taxon = relationship("Taxon", back_populates="measurand")
-    aspect = relationship("Aspect")
+    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    # One-to-one
+    taxon: Mapped['Taxon'] = relationship(back_populates='measurands')
+    aspect: Mapped['Aspect'] = relationship()
     definition = Column(UnicodeText)
     # One to many parameters
-    parameters = relationship("Parameter", back_populates="measurand")
+    parameters: Mapped[list['Parameter']] = relationship(back_populates="measurand")
 
     def __str__(self):
         return f'{self.name}'
@@ -286,17 +285,17 @@ class Parameter(Base):
     # many-to-one
     # Reference a quantity for each parameter
     __tablename__ = "parameter"
-    id = Column(Integer, primary_key=True, index=True)
-    measurand_id = Column(Integer, ForeignKey("measurand.id"))
-    measurand = relationship("Measurand", back_populates="parameters")
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    measurand_id: Mapped[int] = mapped_column(ForeignKey("measurand.id"))
+    measurand: Mapped['Measurand'] = relationship(back_populates="parameters")
     name = Column(String(50))
     quantitykind = Column(String(50))
     definition = Column(UnicodeText)
     optional = Column(Boolean)
-    aspect_id = Column(
-        String(50), ForeignKey("aspect.id"), nullable=True
-    )  # One-to-one
-    aspect = relationship("Aspect")
+
+    # One-to-one
+    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    aspect: Mapped['Aspect'] = relationship()
 
     def __str__(self):
         return f'{self.name}'
@@ -316,19 +315,16 @@ class Taxon(Base):
     deprecated = Column(Boolean)
     quantitykind = Column(String(50))
     processtype = Column(String(10))  # Source | Measure
-    aspect_id = Column(
-        String(50), ForeignKey("aspect.id"), nullable=True
-    )  # One-to-one
-    aspect = relationship("Aspect")
+    # One-to-one
+    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    aspect: Mapped['Aspect'] = relationship()
     qualifier = Column(String(50))
     # Individual taxon may be used in many measurands
     # With bakc_populates if no id for taxon is given
     # SQLAlchemy will create a new one
-    measurand = relationship("Measurand", back_populates="taxon")
-    discipline_id = Column(
-        Integer, ForeignKey("discipline.id"), nullable=True
-    )
-    discipline = relationship("Discipline", back_populates="taxon")
+    measurands: Mapped['Measurand'] = relationship(back_populates="taxon")
+    discipline_id: Mapped[int] = mapped_column(ForeignKey("discipline.id"), nullable=True)
+    discipline: Mapped['Discipline'] = relationship(back_populates="taxon")
 
     def __str__(self):
         return f'{self.id}'
