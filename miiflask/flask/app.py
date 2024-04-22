@@ -39,6 +39,7 @@ from miiflask.flask.model import (
     KcdbIndividualService,
     KcdbInstrument,
     KcdbInstrumentMethod,
+    KcdbClassifierTag,
     Domain,
     Conversion,
     Cast,
@@ -101,6 +102,7 @@ from miiflask.flask.views import (
         CMCView,
         MyModelView,
         KcdbServiceView,
+        KcdbClassifierView,
         AspectView,
         ScaleView,
         CastConversionView,
@@ -130,6 +132,7 @@ admin.add_view(MyModelView(KcdbSubservice, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbIndividualService, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbInstrument, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbInstrumentMethod, db.session, category="KCDB"))
+admin.add_view(KcdbClassifierView(KcdbClassifierTag, db.session, category="KCDB"))
 admin.add_view(CMCView(KcdbCmc, db.session, category="KCDB"))
     
 

@@ -38,6 +38,15 @@ class KcdbMapper:
             "individualservice": model.KcdbIndividualServiceSchema(),
             'cmc': model.KcdbCmcSchema()
         }
+        self._classifiers = {'area': model.KcdbArea,
+                'branch': model.KcdbBranch,
+                'service': model.KcdbService,
+                'subservice': model.KcdbSubservice,
+                'individualservice': model.KcdbIndividualService,
+                'quantity': model.KcdbQuantity,
+                'instrument': model.KcdbInstrument,
+                'instrumentmethod': model.KcdbInstrumentMethod
+                }
         self.Session = session
 
     def _getRefDataQuantities(self):
@@ -149,7 +158,7 @@ class KcdbMapper:
                                                       self._schemas['individualservice']
                                                       )
                             self._transformKcdbServiceClass(serviceClass)
-    
+   
     def _getCmcMetadataLocal(self, cmc, obj):
         area = (self.Session.query(model.KcdbArea)
                 .filter(model.KcdbArea.id == obj['area']['id'])
@@ -189,30 +198,44 @@ class KcdbMapper:
 
         if area:
             cmc.area = area
+            self._getCmcClassifierTags(cmc, 'area', area)
         if branch:
             cmc.branch = branch
+            self._getCmcClassifierTags(cmc, 'branch', branch)
         if service:
             cmc.service = service
+            self._getCmcClassifierTags(cmc, 'service', service)
         if subservice:
             cmc.subservice = subservice
+            self._getCmcClassifierTags(cmc, 'subservice', subservice)
         if individualservice:
             cmc.individualservice = individualservice
+            self._getCmcClassifierTags(cmc, 'individualservice', individualservice)
         if quantity:
             cmc.quantity = quantity
+            self._getCmcClassifierTags(cmc, 'quantity', quantity)
         if instrument:
             cmc.instrument = instrument
+            self._getKcdbClassifierTag('instrument', instrument)
+            self._getCmcClassifierTags(cmc, 'instrument', instrument)
         else:
             instrument = model.KcdbInstrument()
             instrument.value = obj['instrument']
             self.Session.add(instrument)
             cmc.instrument = instrument
+            self._getKcdbClassifierTag('instrument', instrument)
+            self._getCmcClassifierTags(cmc, 'instrument', instrument)
         if instrumentMethod:
             cmc.instrumentMethod = instrumentMethod
+            self._getKcdbClassifierTag('instrumentmethod', instrumentMethod)
+            self._getCmcClassifierTags(cmc, 'instrumentmethod', instrumentMethod)
         else:
             instrumentMethod = model.KcdbInstrumentMethod()
             instrumentMethod.value = obj['instrumentmethod']
             self.Session.add(instrumentMethod)
             cmc.instrumentMethod = instrumentMethod
+            self._getKcdbClassifierTag('instrumentmethod', instrumentMethod)
+            self._getCmcClassifierTags(cmc, 'instrumentmethod', instrumentMethod)
     
     def _getCmcMetadata(self, cmc, obj):
         area = (self.Session.query(model.KcdbArea)
@@ -252,31 +275,82 @@ class KcdbMapper:
 
         if area:
             cmc.area = area
+            self._getCmcClassifierTags(cmc, 'area', area)
         if branch:
             cmc.branch = branch
+            self._getCmcClassifierTags(cmc, 'branch', branch)
         if service:
             cmc.service = service
+            self._getCmcClassifierTags(cmc, 'service', service)
         if subservice:
             cmc.subservice = subservice
+            self._getCmcClassifierTags(cmc, 'subservice', subservice)
         if individualservice:
             cmc.individualservice = individualservice
+            self._getCmcClassifierTags(cmc, 'individualservice', 'individualservice')
         if quantity:
             cmc.quantity = quantity
+            self._getCmcClassifierTags(cmc, 'quantity', quantity)
         if instrument:
             cmc.instrument = instrument
+            self._getCmcClassifierTags(cmc, 'instrument', instrument)
         else:
             instrument = model.KcdbInstrument()
             instrument.value = obj['instrument']
             self.Session.add(instrument)
             cmc.instrument = instrument
+            self._getKcdbClassifierTag('instrument', instrument)
+            self._getCmcClassifierTags(cmc, 'instrument', instrument)
         if instrumentMethod:
             cmc.instrumentMethod = instrumentMethod
+            self._getCmcClassifierTags(cmc, 'instrumentmethod', instrumentMethod)
         else:
             instrumentMethod = model.KcdbInstrumentMethod()
             instrumentMethod.value = obj['instrumentMethod']
             self.Session.add(instrumentMethod)
             cmc.instrumentMethod = instrumentMethod
+            self._getKcdbClassifierTag('instrumentmethod', instrumentMethod)
+            self._getCmcClassifierTags(cmc, 'instrumentmethod', instrumentMethod)
+
+    def _getCmcClassifierTags(self, cmc, class_, obj):
+        return
+        def _tag_id(class_, tag):
+            id_ = f'{class_}-{tag.id}-{tag.label}'
+            return id_
+        tag = (self.Session.query(model.KcdbClassifierTag)
+                .filter(model.KcdbClassifierTag.id == _tag_id(class_, obj))
+                .first()
+                )
+        if tag is None:
+            print("Cannot find tag")
+            print(obj.id, class_)
+            print(_tag_id(class_, obj))
+            print(tag)
+            return
+        cmc.kcdb_classifier_tags.append(tag)
     
+    def _getKcdbClassifierTag(self, class_, obj):
+        
+        def _tag_id(class_, tag):
+            id_ = f'{class_}-{tag.id}-{tag.label}'
+            return id_
+
+        tag = (self.Session.query(model.KcdbClassifierTag)
+                .filter(model.KcdbClassifierTag.id == _tag_id(class_, obj)).first()
+                )
+        if not tag:
+            tag = model.KcdbClassifierTag(kcdb_type=class_,
+                    kcdb_label=obj.label,
+                    kcdb_value=obj.value,
+                    kcdb_id=obj.id)
+            self.Session.add(tag)
+    
+    def _getKcdbClassifierTags(self):
+        for key in self._classifiers:
+            collection = (self.Session.query(self._classifiers[key])).all()
+            for obj in collection:
+                self._getKcdbClassifierTag(key,obj)
+        
     def _getPhysicsCmcDataLocal(self):
         with open('../../resources/kcdb/kcdb_cmc.json') as f:
             objs = json.load(f)
@@ -535,6 +609,7 @@ class KcdbMapper:
     def loadServices(self):
         if self._use_api is False:
             self._getKcdbRefDataLocal()
+            self._getKcdbClassifierTags()
             self._getPhysicsCmcDataLocal()
             #with open(self._services_path) as f:
             #    reader = csv.reader(f)
@@ -543,9 +618,12 @@ class KcdbMapper:
             #        self._load_service(row)
         elif self._use_api is True:
             self._getKcdbRefData()
+            self._getKcdbClassifierTags()
             self._getPhysicsCmcData()
-            if self._updateResources is True:
-                self.dumpKcdbRefData()
+        
+        
+        if self._updateResources is True:
+            self.dumpKcdbRefData()
 
             #for s in self._service_classifications[1:]:
             #    self._load_service(s)

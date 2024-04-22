@@ -384,14 +384,26 @@ class Discipline(Base):
 # tag table
 # object-tag map - single adjacency table will have problems with foreign keys unless all tables have GUID
 # Described as Toxi solution, see http://howto/philippkeller/2005/04/24/Tags-Database-schemas
-class ClassifierTag(Base):
-    __tablename__ = "classifiertag_table"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(50))
-    type = Column(String(50))
+class KcdbClassifierTag(Base):
+    __tablename__ = "kcdbclassifiertag"
+    id = Column(UnicodeText, primary_key=True)
+    kcdb_label = Column(String(50))
+    kcdb_value = Column(String(50))
+    kcdb_type = Column(String(50))
+    kcdb_id = Column(Integer)
+    
+    # Options for unique predefined primary key  
+    # Use column_property with a composite key from type and kcdb id, label and value
+    # Use sqlalchemy-utils UUIDType
+    
+    def __init__(self, **kwargs):
+        print(kwargs)
+        if 'id' not in kwargs:
+           kwargs['id'] = f'{kwargs["kcdb_type"]}-{kwargs["kcdb_id"]}-{kwargs["kcdb_label"]}'
+        super().__init__(**kwargs)
 
     def __str__(self):
-        return self.name
+        return f'{self.id}'
 
 
 # May require multiple association tables (tag maps)
@@ -401,8 +413,8 @@ kcdb_classifier_map = Table(
     Base.metadata,
     Column("kcdbcmc_id", ForeignKey("kcdbcmc.id"), primary_key=True),
     Column(
-        "classifiertag_id",
-        ForeignKey("classifiertag_table.id"),
+        "kcdbclassifiertag_id",
+        ForeignKey("kcdbclassifiertag.id"),
         primary_key=True,
     ),
 )
@@ -465,10 +477,13 @@ class KcdbCmc(Base):
         Integer, ForeignKey("kcdbinstrumentmethod.id"), nullable=True
     )
     instrumentmethod = relationship("KcdbInstrumentMethod")
+    
+    kcdb_classifier_tags = relationship('KcdbClassifierTag',
+            secondary=kcdb_classifier_map, backref="kcdbcmcs")
 
-    tags = relationship(
-        "ClassifierTag", secondary=kcdb_classifier_map, backref="kcdbcmcs"
-    )
+    #tags = relationship(
+    #    "ClassifierTag", secondary=kcdb_classifier_map, backref="kcdbcmcs"
+    #)
     
     measurands = relationship(
         "Measurand", secondary=kcdb_measurand_map, backref="kcdbcmcs"

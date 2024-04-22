@@ -55,13 +55,16 @@ class MyModelView(ModelView):
     column_hide_backrefs = False
     column_formatters = {'id': _id_formatter}
 
+class KcdbClassifierView(MyModelView):
+    column_searchable_list = ['id']
+    page_size = 100
 
 class KcdbServiceView(MyModelView):
     column_searchable_list = ['area_id']
     page_size = 100
 
 
-class CMCView(ModelView):
+class CMCView(MyModelView):
     column_display_pk = True
     column_hide_backrefs = False
     column_searchable_list = ['area.label', 'quantity.value']
