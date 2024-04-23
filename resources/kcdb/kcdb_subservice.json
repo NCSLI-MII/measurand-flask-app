@@ -1,1307 +1,1307 @@
 [
     {
-        "label": "1",
         "id": 1,
-        "value": "Pressure sensitivity level (air)"
+        "value": "Pressure sensitivity level (air)",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 2,
-        "value": "Free-field sensitivity level (air)"
+        "value": "Free-field sensitivity level (air)",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 3,
-        "value": "Diffuse field sensitivity level (air)"
+        "value": "Diffuse field sensitivity level (air)",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 4,
-        "value": "Single frequency sound calibrators"
+        "value": "Single frequency sound calibrators",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 5,
-        "value": "Multi-frequency sound calibrators"
+        "value": "Multi-frequency sound calibrators",
+        "label": "2"
     },
     {
-        "label": "1",
         "id": 6,
-        "value": "Response of sound measuring instruments"
+        "value": "Response of sound measuring instruments",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 7,
-        "value": "Reference couplers or artificial ears (air)"
+        "value": "Reference couplers or artificial ears (air)",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 8,
-        "value": "Mechanical couplers (air)"
+        "value": "Mechanical couplers (air)",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 9,
-        "value": "Impedance head force transducer"
+        "value": "Impedance head force transducer",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 10,
-        "value": "Impedance head force measuring chain"
+        "value": "Impedance head force measuring chain",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 11,
-        "value": "Output of reference sound sources"
+        "value": "Output of reference sound sources",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 12,
-        "value": "Response of audiometers"
+        "value": "Response of audiometers",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 13,
-        "value": "Acceleration measuring instrument"
+        "value": "Acceleration measuring instrument",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 14,
-        "value": "Acceleration calibrator"
+        "value": "Acceleration calibrator",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 15,
-        "value": "Acceleration measuring chain / accelerometer"
+        "value": "Acceleration measuring chain / accelerometer",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 16,
-        "value": "Acceleration measuring chain"
+        "value": "Acceleration measuring chain",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 17,
-        "value": "Angular acceleration measuring instrument"
+        "value": "Angular acceleration measuring instrument",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 18,
-        "value": "Angular acceleration calibrator"
+        "value": "Angular acceleration calibrator",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 19,
-        "value": "Angular acceleration measuring chain / accelerometer"
+        "value": "Angular acceleration measuring chain / accelerometer",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 20,
-        "value": "Angular acceleration measuring chain"
+        "value": "Angular acceleration measuring chain",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 21,
-        "value": "Force measuring instrument for mechanical impedance and mobility measurements or modal testing"
+        "value": "Force measuring instrument for mechanical impedance and mobility measurements or modal testing",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 22,
-        "value": "Force measuring chain /force transducer for mechanical impedance and mobility measurements…"
+        "value": "Force measuring chain /force transducer for mechanical impedance and mobility measurements…",
+        "label": "2"
     },
     {
-        "label": "1",
         "id": 23,
-        "value": "Vibration signal conditionner"
+        "value": "Vibration signal conditionner",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 24,
-        "value": "Free-field sensitivity"
+        "value": "Free-field sensitivity",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 25,
-        "value": "Pressure sensitivity"
+        "value": "Pressure sensitivity",
+        "label": "2"
     },
     {
-        "label": "1",
         "id": 26,
-        "value": "Free-field sensitivity"
+        "value": "Free-field sensitivity",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 27,
-        "value": "Pressure sensitivity"
+        "value": "Pressure sensitivity",
+        "label": "2"
     },
     {
-        "label": "1",
         "id": 28,
-        "value": "Output from ultrasound transducer with generator"
+        "value": "Output from ultrasound transducer with generator",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 29,
-        "value": "Output from ultrasound transducer"
+        "value": "Output from ultrasound transducer",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 30,
-        "value": "AC-DC voltage transfer"
+        "value": "AC-DC voltage transfer",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 31,
-        "value": "AC voltage up to 1100 V"
+        "value": "AC voltage up to 1100 V",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 32,
-        "value": "AC voltage ratio up to 1100 V, atten & gain"
+        "value": "AC voltage ratio up to 1100 V, atten & gain",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 33,
-        "value": "AC-DC current transfer"
+        "value": "AC-DC current transfer",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 34,
-        "value": "AC current up to 100 A"
+        "value": "AC current up to 100 A",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 35,
-        "value": "AC current ratio up to 100 A"
+        "value": "AC current ratio up to 100 A",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 36,
-        "value": "AC power and energy"
+        "value": "AC power and energy",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 37,
-        "value": "DC voltage sources"
+        "value": "DC voltage sources",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 38,
-        "value": "DC voltage meters"
+        "value": "DC voltage meters",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 39,
-        "value": "DC voltage ratios"
+        "value": "DC voltage ratios",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 40,
-        "value": "DC resistance standards and sources"
+        "value": "DC resistance standards and sources",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 41,
-        "value": "DC resistance meters"
+        "value": "DC resistance meters",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 42,
-        "value": "DC resistance ratios"
+        "value": "DC resistance ratios",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 43,
-        "value": "DC current sources"
+        "value": "DC current sources",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 44,
-        "value": "DC current meters"
+        "value": "DC current meters",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 45,
-        "value": "DC current ratios"
+        "value": "DC current ratios",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 46,
-        "value": "Electric fields at freq. below 50 kHz"
+        "value": "Electric fields at freq. below 50 kHz",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 47,
-        "value": "Magnetic fields at freq. below 50 kHz"
+        "value": "Magnetic fields at freq. below 50 kHz",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 48,
-        "value": "Electromagnetic fields at freq. above 50 kHz"
+        "value": "Electromagnetic fields at freq. above 50 kHz",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 49,
-        "value": "High DC voltage"
+        "value": "High DC voltage",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 50,
-        "value": "High voltage impedance"
+        "value": "High voltage impedance",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 51,
-        "value": "AC high voltage and voltage transformers"
+        "value": "AC high voltage and voltage transformers",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 52,
-        "value": "Pulsed high voltage and current"
+        "value": "Pulsed high voltage and current",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 53,
-        "value": "Electric discharge"
+        "value": "Electric discharge",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 54,
-        "value": "High AC current and current transformers"
+        "value": "High AC current and current transformers",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 55,
-        "value": "High DC current"
+        "value": "High DC current",
+        "label": "7"
     },
     {
-        "label": "1",
         "id": 56,
-        "value": "AC resistance"
+        "value": "AC resistance",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 57,
-        "value": "Capacitance"
+        "value": "Capacitance",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 58,
-        "value": "Inductance"
+        "value": "Inductance",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 59,
-        "value": "Electrical conductivity"
+        "value": "Electrical conductivity",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 60,
-        "value": "Dielectric properties"
+        "value": "Dielectric properties",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 61,
-        "value": "Soft magnetic sheet and powder materials"
+        "value": "Soft magnetic sheet and powder materials",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 62,
-        "value": "Soft magnetic bulk material"
+        "value": "Soft magnetic bulk material",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 63,
-        "value": "Feebly magnetic, paramagnetic and diamagnetic material"
+        "value": "Feebly magnetic, paramagnetic and diamagnetic material",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 64,
-        "value": "Hard magnetic material"
+        "value": "Hard magnetic material",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 65,
-        "value": "Magnetic data storage media"
+        "value": "Magnetic data storage media",
+        "label": "7"
     },
     {
-        "label": "1",
         "id": 66,
-        "value": "Electric charge"
+        "value": "Electric charge",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 67,
-        "value": "Phase angle"
+        "value": "Phase angle",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 68,
-        "value": "Current and voltage waveform"
+        "value": "Current and voltage waveform",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 69,
-        "value": "RF power"
+        "value": "RF power",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 70,
-        "value": "Scalar RF reflection coef. and attenuation"
+        "value": "Scalar RF reflection coef. and attenuation",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 71,
-        "value": "Scattering parameters (vectors)"
+        "value": "Scattering parameters (vectors)",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 72,
-        "value": "Noise"
+        "value": "Noise",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 73,
-        "value": "Antenna properties"
+        "value": "Antenna properties",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 74,
-        "value": "Signal and pulse characteristics"
+        "value": "Signal and pulse characteristics",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 75,
-        "value": "RF voltage and current"
+        "value": "RF voltage and current",
+        "label": "7"
     },
     {
-        "label": "8",
         "id": 76,
-        "value": "Lumped impedance - admittance"
+        "value": "Lumped impedance - admittance",
+        "label": "8"
     },
     {
-        "label": "9",
         "id": 77,
-        "value": "RF characteristic impedance"
+        "value": "RF characteristic impedance",
+        "label": "9"
     },
     {
-        "label": "1",
         "id": 78,
-        "value": "Length instruments"
+        "value": "Length instruments",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 79,
-        "value": "End standards"
+        "value": "End standards",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 80,
-        "value": "Line standards"
+        "value": "Line standards",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 81,
-        "value": "Diameter standards"
+        "value": "Diameter standards",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 82,
-        "value": "Angle by circle dividers"
+        "value": "Angle by circle dividers",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 83,
-        "value": "Small-angle generators"
+        "value": "Small-angle generators",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 84,
-        "value": "Angle instruments"
+        "value": "Angle instruments",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 85,
-        "value": "Angle artefacts"
+        "value": "Angle artefacts",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 86,
-        "value": "Angle prisms"
+        "value": "Angle prisms",
+        "label": "5"
     },
     {
-        "label": "1",
         "id": 87,
-        "value": "Flatness standards"
+        "value": "Flatness standards",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 88,
-        "value": "Roundness standards"
+        "value": "Roundness standards",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 89,
-        "value": "Straightness standards"
+        "value": "Straightness standards",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 90,
-        "value": "Cylindricity standards"
+        "value": "Cylindricity standards",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 91,
-        "value": "Optical standards"
+        "value": "Optical standards",
+        "label": "5"
     },
     {
-        "label": "1",
         "id": 92,
-        "value": "Surface texture standards"
+        "value": "Surface texture standards",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 93,
-        "value": "Screw standards"
+        "value": "Screw standards",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 94,
-        "value": "Gear standards"
+        "value": "Gear standards",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 95,
-        "value": "Coordinate Measuring Machine (CMM) artefacts"
+        "value": "Coordinate Measuring Machine (CMM) artefacts",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 96,
-        "value": "Two-dimension and three-dimension instruments"
+        "value": "Two-dimension and three-dimension instruments",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 97,
-        "value": "Hardness"
+        "value": "Hardness",
+        "label": "6"
     },
     {
-        "label": "1",
         "id": 98,
-        "value": "Hand instruments"
+        "value": "Hand instruments",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 99,
-        "value": "Pressure artefacts"
+        "value": "Pressure artefacts",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 100,
-        "value": "Thermal expansivity"
+        "value": "Thermal expansivity",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 101,
-        "value": "Long distance"
+        "value": "Long distance",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 102,
-        "value": "Reference materials"
+        "value": "Reference materials",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 103,
-        "value": "Layer thickness"
+        "value": "Layer thickness",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 104,
-        "value": "Not attributed 1"
+        "value": "Not attributed 1",
+        "label": "7"
     },
     {
-        "label": "1",
         "id": 105,
-        "value": "Laser radiations"
+        "value": "Laser radiations",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 106,
-        "value": "Lamp radiations"
+        "value": "Lamp radiations",
+        "label": "2"
     },
     {
-        "label": "1",
         "id": 107,
-        "value": "Density of solid"
+        "value": "Density of solid",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 108,
-        "value": "Density of liquid"
+        "value": "Density of liquid",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 109,
-        "value": "Refractive index of liquid"
+        "value": "Refractive index of liquid",
+        "label": "3"
     },
     {
-        "label": "10",
         "id": 110,
-        "value": "Fluid flow"
+        "value": "Fluid flow",
+        "label": "10"
     },
     {
-        "label": "1",
         "id": 111,
-        "value": "Tension"
+        "value": "Tension",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 112,
-        "value": "Compression"
+        "value": "Compression",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 113,
-        "value": "Tension and compression"
+        "value": "Tension and compression",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 114,
-        "value": "Mass standard"
+        "value": "Mass standard",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 115,
-        "value": "Absolute pressure"
+        "value": "Absolute pressure",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 116,
-        "value": "Gauge pressure"
+        "value": "Gauge pressure",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 117,
-        "value": "Differential pressure"
+        "value": "Differential pressure",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 118,
-        "value": "Dynamic pressure"
+        "value": "Dynamic pressure",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 119,
-        "value": "Torque"
+        "value": "Torque",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 120,
-        "value": "Certified Newtonian reference liquids"
+        "value": "Certified Newtonian reference liquids",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 121,
-        "value": "Capillary viscometers"
+        "value": "Capillary viscometers",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 122,
-        "value": "Viscosity measurement of Newtonian liquids"
+        "value": "Viscosity measurement of Newtonian liquids",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 123,
-        "value": "Hardness"
+        "value": "Hardness",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 124,
-        "value": "Gravity"
+        "value": "Gravity",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 125,
-        "value": "Responsivity, spectral, power"
+        "value": "Responsivity, spectral, power",
+        "label": "1"
     },
     {
-        "label": "10",
         "id": 126,
-        "value": "Responsivity, UV, broadband radiant exposure"
+        "value": "Responsivity, UV, broadband radiant exposure",
+        "label": "10"
     },
     {
-        "label": "11",
         "id": 127,
-        "value": "Responsitivity, solar, spectral, irradiance"
+        "value": "Responsitivity, solar, spectral, irradiance",
+        "label": "11"
     },
     {
-        "label": "2",
         "id": 128,
-        "value": "Responsivity, spectral, irradiance"
+        "value": "Responsivity, spectral, irradiance",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 129,
-        "value": "Responsivity, spectral, radiance"
+        "value": "Responsivity, spectral, radiance",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 130,
-        "value": "Responsivity, laser, power"
+        "value": "Responsivity, laser, power",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 131,
-        "value": "Responsivity, laser, energy"
+        "value": "Responsivity, laser, energy",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 132,
-        "value": "Responsivity, solar, power"
+        "value": "Responsivity, solar, power",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 133,
-        "value": "Responsivity, solar, irradiance"
+        "value": "Responsivity, solar, irradiance",
+        "label": "7"
     },
     {
-        "label": "8",
         "id": 134,
-        "value": "Responsivity, blackbody, total irradiance"
+        "value": "Responsivity, blackbody, total irradiance",
+        "label": "8"
     },
     {
-        "label": "9",
         "id": 135,
-        "value": "Responsivity, UV, broadband irradiance"
+        "value": "Responsivity, UV, broadband irradiance",
+        "label": "9"
     },
     {
-        "label": "1",
         "id": 136,
-        "value": "Irradiance, spectral"
+        "value": "Irradiance, spectral",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 137,
-        "value": "Radiance, spectral"
+        "value": "Radiance, spectral",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 138,
-        "value": "Power, spectral total radiant"
+        "value": "Power, spectral total radiant",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 139,
-        "value": "Radiant intensity, spectral"
+        "value": "Radiant intensity, spectral",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 140,
-        "value": "Radiant flux, spectral"
+        "value": "Radiant flux, spectral",
+        "label": "5"
     },
     {
-        "label": "1",
         "id": 141,
-        "value": "Distribution temperature"
+        "value": "Distribution temperature",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 142,
-        "value": "Correlated colour temperature"
+        "value": "Correlated colour temperature",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 143,
-        "value": "Correlated colour temperature response"
+        "value": "Correlated colour temperature response",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 144,
-        "value": "Colour, emitted"
+        "value": "Colour, emitted",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 145,
-        "value": "Chromaticity response"
+        "value": "Chromaticity response",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 146,
-        "value": "Colour rendering, Ra"
+        "value": "Colour rendering, Ra",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 147,
-        "value": "Radiance, total"
+        "value": "Radiance, total",
+        "label": "7"
     },
     {
-        "label": "8",
         "id": 148,
-        "value": "Radiant flux, total"
+        "value": "Radiant flux, total",
+        "label": "8"
     },
     {
-        "label": "1",
         "id": 149,
-        "value": "Responsivity"
+        "value": "Responsivity",
+        "label": "1"
     },
     {
-        "label": "10",
         "id": 150,
-        "value": "Length"
+        "value": "Length",
+        "label": "10"
     },
     {
-        "label": "11",
         "id": 151,
-        "value": "Fibre Polarization mode dispersion (inactive)"
+        "value": "Fibre Polarization mode dispersion (inactive)",
+        "label": "11"
     },
     {
-        "label": "2",
         "id": 152,
-        "value": "Wavelength"
+        "value": "Wavelength",
+        "label": "2"
     },
     {
-        "label": "5",
         "id": 153,
-        "value": "Attenuation"
+        "value": "Attenuation",
+        "label": "5"
     },
     {
-        "label": "7",
         "id": 154,
-        "value": "Chromatic dispersion"
+        "value": "Chromatic dispersion",
+        "label": "7"
     },
     {
-        "label": "1",
         "id": 155,
-        "value": "Transmittance, regular, spectral"
+        "value": "Transmittance, regular, spectral",
+        "label": "1"
     },
     {
-        "label": "10",
         "id": 156,
-        "value": "Emittance, spectral"
+        "value": "Emittance, spectral",
+        "label": "10"
     },
     {
-        "label": "11",
         "id": 157,
-        "value": "BRDF"
+        "value": "BRDF",
+        "label": "11"
     },
     {
-        "label": "12",
         "id": 158,
-        "value": "Reflectance factor"
+        "value": "Reflectance factor",
+        "label": "12"
     },
     {
-        "label": "13",
         "id": 159,
-        "value": "Radiance factor"
+        "value": "Radiance factor",
+        "label": "13"
     },
     {
-        "label": "14",
         "id": 160,
-        "value": "Luminescent radiance factor"
+        "value": "Luminescent radiance factor",
+        "label": "14"
     },
     {
-        "label": "15",
         "id": 161,
-        "value": "Wavelength"
+        "value": "Wavelength",
+        "label": "15"
     },
     {
-        "label": "16",
         "id": 162,
-        "value": "Refractive index, spectral"
+        "value": "Refractive index, spectral",
+        "label": "16"
     },
     {
-        "label": "17",
         "id": 163,
-        "value": "Angle of rotation of polarization plane, spectral"
+        "value": "Angle of rotation of polarization plane, spectral",
+        "label": "17"
     },
     {
-        "label": "18",
         "id": 164,
-        "value": "Ellipsometric angles phi, delta, spectral"
+        "value": "Ellipsometric angles phi, delta, spectral",
+        "label": "18"
     },
     {
-        "label": "2",
         "id": 165,
-        "value": "Transmittance, diffuse, spectral"
+        "value": "Transmittance, diffuse, spectral",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 166,
-        "value": "Absorbance, regular, spectral"
+        "value": "Absorbance, regular, spectral",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 167,
-        "value": "Absorbance, diffuse, spectral"
+        "value": "Absorbance, diffuse, spectral",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 168,
-        "value": "Reflectance, diffuse, spectral"
+        "value": "Reflectance, diffuse, spectral",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 169,
-        "value": "Reflectance, regular, spectral"
+        "value": "Reflectance, regular, spectral",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 170,
-        "value": "Reflectance, hemispherical, spectral"
+        "value": "Reflectance, hemispherical, spectral",
+        "label": "7"
     },
     {
-        "label": "9",
         "id": 171,
-        "value": "Emissivity"
+        "value": "Emissivity",
+        "label": "9"
     },
     {
-        "label": "1",
         "id": 172,
-        "value": "Colour, surface, x, y, Y"
+        "value": "Colour, surface, x, y, Y",
+        "label": "1"
     },
     {
-        "label": "10",
         "id": 173,
-        "value": "Luminance coefficient"
+        "value": "Luminance coefficient",
+        "label": "10"
     },
     {
-        "label": "12",
         "id": 174,
-        "value": "Whiteness"
+        "value": "Whiteness",
+        "label": "12"
     },
     {
-        "label": "2",
         "id": 175,
-        "value": "Colour, surface, Lab"
+        "value": "Colour, surface, Lab",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 176,
-        "value": "Colour, transmitted, x, y, Y"
+        "value": "Colour, transmitted, x, y, Y",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 177,
-        "value": "Colour, transmitted, Lab"
+        "value": "Colour, transmitted, Lab",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 178,
-        "value": "Retroreflectance"
+        "value": "Retroreflectance",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 179,
-        "value": "Gloss"
+        "value": "Gloss",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 180,
-        "value": "Haze"
+        "value": "Haze",
+        "label": "7"
     },
     {
-        "label": "9",
         "id": 181,
-        "value": "Luminance factor"
+        "value": "Luminance factor",
+        "label": "9"
     },
     {
-        "label": "1",
         "id": 182,
-        "value": "Luminous intensity"
+        "value": "Luminous intensity",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 183,
-        "value": "Illuminance responsivity"
+        "value": "Illuminance responsivity",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 184,
-        "value": "Luminous flux"
+        "value": "Luminous flux",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 185,
-        "value": "Illuminance"
+        "value": "Illuminance",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 186,
-        "value": "Luminance"
+        "value": "Luminance",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 187,
-        "value": "Luminance responsivity"
+        "value": "Luminance responsivity",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 188,
-        "value": "Averaged luminous intensity"
+        "value": "Averaged luminous intensity",
+        "label": "7"
     },
     {
-        "label": "8",
         "id": 189,
-        "value": "Luminous exposure"
+        "value": "Luminous exposure",
+        "label": "8"
     },
     {
-        "label": "1",
         "id": 190,
-        "value": "Dew-point hygrometers"
+        "value": "Dew-point hygrometers",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 191,
-        "value": "Psychrometers"
+        "value": "Psychrometers",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 192,
-        "value": "Relative humidity sensors"
+        "value": "Relative humidity sensors",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 193,
-        "value": "Other hygrometers"
+        "value": "Other hygrometers",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 194,
-        "value": "Dew-point generators"
+        "value": "Dew-point generators",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 195,
-        "value": "Relative humidity generators"
+        "value": "Relative humidity generators",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 196,
-        "value": "Flow mixing"
+        "value": "Flow mixing",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 197,
-        "value": "Permeation tube, diffusion tube"
+        "value": "Permeation tube, diffusion tube",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 198,
-        "value": "Salt solutions (saturated, unsaturated)"
+        "value": "Salt solutions (saturated, unsaturated)",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 199,
-        "value": "Reference gases"
+        "value": "Reference gases",
+        "label": "2"
     },
     {
-        "label": "1",
         "id": 200,
-        "value": "Primary fixed-point cells"
+        "value": "Primary fixed-point cells",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 201,
-        "value": "Complete apparatus realizing fixed-points"
+        "value": "Complete apparatus realizing fixed-points",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 202,
-        "value": "Standard platinum resistance therm. (SPRTs)"
+        "value": "Standard platinum resistance therm. (SPRTs)",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 203,
-        "value": "Standard radiation thermometers"
+        "value": "Standard radiation thermometers",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 204,
-        "value": "Secondary fixed-point cells and apparatus"
+        "value": "Secondary fixed-point cells and apparatus",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 205,
-        "value": "Resistance thermometers"
+        "value": "Resistance thermometers",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 206,
-        "value": "Thermocouples"
+        "value": "Thermocouples",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 207,
-        "value": "Liquid-in-glass thermometers"
+        "value": "Liquid-in-glass thermometers",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 208,
-        "value": "Radiation thermometry"
+        "value": "Radiation thermometry",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 209,
-        "value": "Other thermometers"
+        "value": "Other thermometers",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 210,
-        "value": "Temperature sensors with display unit"
+        "value": "Temperature sensors with display unit",
+        "label": "7"
     },
     {
-        "label": "8",
         "id": 211,
-        "value": "Other measurement services"
+        "value": "Other measurement services",
+        "label": "8"
     },
     {
-        "label": "1",
         "id": 212,
-        "value": "Thermal transport property"
+        "value": "Thermal transport property",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 213,
-        "value": "Caloric property"
+        "value": "Caloric property",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 214,
-        "value": "Radiative property"
+        "value": "Radiative property",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 215,
-        "value": "Thermo-mechanical property"
+        "value": "Thermo-mechanical property",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 216,
-        "value": "Standard frequency source"
+        "value": "Standard frequency source",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 217,
-        "value": "General frequency source"
+        "value": "General frequency source",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 218,
-        "value": "Frequency meter"
+        "value": "Frequency meter",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 219,
-        "value": "Period source"
+        "value": "Period source",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 220,
-        "value": "Time interval source"
+        "value": "Time interval source",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 221,
-        "value": "Period meter"
+        "value": "Period meter",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 222,
-        "value": "Time interval meter"
+        "value": "Time interval meter",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 223,
-        "value": "Local clock"
+        "value": "Local clock",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 224,
-        "value": "Remote clock"
+        "value": "Remote clock",
+        "label": "2"
     },
     {
-        "label": "5",
         "id": 256,
-        "value": "Standards of 1D Dimensions"
+        "value": "Standards of 1D Dimensions",
+        "label": "5"
     },
     {
-        "label": "3",
         "id": 257,
-        "value": "Modal properties"
+        "value": "Modal properties",
+        "label": "3"
     },
     {
-        "label": "8",
         "id": 258,
-        "value": "Polarization mode dispersion"
+        "value": "Polarization mode dispersion",
+        "label": "8"
     },
     {
-        "label": "1",
         "id": 259,
-        "value": "Radiation thermometry"
+        "value": "Radiation thermometry",
+        "label": "1"
     },
     {
-        "label": "12",
         "id": 260,
-        "value": "Responsivity, terrestrial irradiance"
+        "value": "Responsivity, terrestrial irradiance",
+        "label": "12"
     },
     {
-        "label": "1",
         "id": 261,
-        "value": "Frequency response"
+        "value": "Frequency response",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 262,
-        "value": "Shock response"
+        "value": "Shock response",
+        "label": "2"
     },
     {
-        "label": "1",
         "id": 263,
-        "value": "Acceleration output"
+        "value": "Acceleration output",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 264,
-        "value": "Shock output"
+        "value": "Shock output",
+        "label": "2"
     },
     {
-        "label": "1",
         "id": 265,
-        "value": "Charge sensitivity"
+        "value": "Charge sensitivity",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 266,
-        "value": "Shock charge sensitivity"
+        "value": "Shock charge sensitivity",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 267,
-        "value": "Voltage sensitivity"
+        "value": "Voltage sensitivity",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 268,
-        "value": "Shock voltage sensitivity"
+        "value": "Shock voltage sensitivity",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 269,
-        "value": "Current sensitivity"
+        "value": "Current sensitivity",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 270,
-        "value": "Shock current sensitivity"
+        "value": "Shock current sensitivity",
+        "label": "6"
     },
     {
-        "label": "1",
         "id": 271,
-        "value": "Angular acceleration response"
+        "value": "Angular acceleration response",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 272,
-        "value": "Angular acceleration output"
+        "value": "Angular acceleration output",
+        "label": "1"
     },
     {
-        "label": "1",
         "id": 273,
-        "value": "Charge sensitivity"
+        "value": "Charge sensitivity",
+        "label": "1"
     },
     {
-        "label": "3",
         "id": 274,
-        "value": "Voltage sensitivity"
+        "value": "Voltage sensitivity",
+        "label": "3"
     },
     {
-        "label": "5",
         "id": 275,
-        "value": "Current sensitivity"
+        "value": "Current sensitivity",
+        "label": "5"
     },
     {
-        "label": "1",
         "id": 276,
-        "value": "Frequency response"
+        "value": "Frequency response",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 277,
-        "value": "Shock response"
+        "value": "Shock response",
+        "label": "2"
     },
     {
-        "label": "1",
         "id": 278,
-        "value": "Charge sensitivity"
+        "value": "Charge sensitivity",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 279,
-        "value": "Shock charge sensitivity"
+        "value": "Shock charge sensitivity",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 280,
-        "value": "Voltage sensitivity"
+        "value": "Voltage sensitivity",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 281,
-        "value": "Shock voltage sensitivity"
+        "value": "Shock voltage sensitivity",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 282,
-        "value": "Charge sensitivity"
+        "value": "Charge sensitivity",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 283,
-        "value": "Voltage sensitivity"
+        "value": "Voltage sensitivity",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 284,
-        "value": "Current Sensitivity"
+        "value": "Current Sensitivity",
+        "label": "3"
     },
     {
-        "label": "2",
         "id": 285,
-        "value": "Shock response"
+        "value": "Shock response",
+        "label": "2"
     },
     {
-        "label": "2",
         "id": 286,
-        "value": "Angular shock output"
+        "value": "Angular shock output",
+        "label": "2"
     },
     {
-        "label": "2",
         "id": 287,
-        "value": "Shock charge sensitivity"
+        "value": "Shock charge sensitivity",
+        "label": "2"
     },
     {
-        "label": "4",
         "id": 288,
-        "value": "Shock voltage sensitivity"
+        "value": "Shock voltage sensitivity",
+        "label": "4"
     },
     {
-        "label": "6",
         "id": 289,
-        "value": "Shock current sensitivity"
+        "value": "Shock current sensitivity",
+        "label": "6"
     },
     {
-        "label": "5",
         "id": 290,
-        "value": "Current sensitivity"
+        "value": "Current sensitivity",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 291,
-        "value": "Shock Current sensitivity"
+        "value": "Shock Current sensitivity",
+        "label": "6"
     },
     {
-        "label": "4",
         "id": 292,
-        "value": "Electrostatic actuator normalized response"
+        "value": "Electrostatic actuator normalized response",
+        "label": "4"
     }
 ]

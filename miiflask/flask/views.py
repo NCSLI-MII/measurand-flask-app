@@ -91,7 +91,8 @@ class CMCView(MyModelView):
                    'instrumentmethod',
                    'baseUnit',
                    'uncertainityBaseUnit',
-                   'parameters'
+                   'parameters',
+                   'comments'
                    )
 
 

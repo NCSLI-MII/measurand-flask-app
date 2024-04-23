@@ -427,6 +427,7 @@ class KcdbCmc(Base):
     kcdbCode = Column(String(50))
     baseUnit = Column(UnicodeText)
     uncertaintyBaseUnit = Column(UnicodeText)
+    comments = Column(UnicodeText)
 
     area_id = Column(
         Integer, ForeignKey("kcdbarea.id"), nullable=True

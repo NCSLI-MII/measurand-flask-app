@@ -1,162 +1,162 @@
 [
     {
-        "label": "AUV/A",
         "id": 1,
-        "value": "Sound in air"
+        "value": "Sound in air",
+        "label": "AUV/A"
     },
     {
-        "label": "AUV/V",
         "id": 2,
-        "value": "Vibration"
+        "value": "Vibration",
+        "label": "AUV/V"
     },
     {
-        "label": "AUV/W",
         "id": 3,
-        "value": "Sound in water"
+        "value": "Sound in water",
+        "label": "AUV/W"
     },
     {
-        "label": "EM/AC",
         "id": 4,
-        "value": "AC voltage, current, and power"
+        "value": "AC voltage, current, and power",
+        "label": "EM/AC"
     },
     {
-        "label": "EM/DC",
         "id": 5,
-        "value": "DC voltage, current, and resistance"
+        "value": "DC voltage, current, and resistance",
+        "label": "EM/DC"
     },
     {
-        "label": "EM/Field",
         "id": 6,
-        "value": "Electric and magnetic fields"
+        "value": "Electric and magnetic fields",
+        "label": "EM/Field"
     },
     {
-        "label": "EM/HV",
         "id": 7,
-        "value": "High voltage and current"
+        "value": "High voltage and current",
+        "label": "EM/HV"
     },
     {
-        "label": "EM/Imped",
         "id": 8,
-        "value": "Impedance up to the MHz range"
+        "value": "Impedance up to the MHz range",
+        "label": "EM/Imped"
     },
     {
-        "label": "EM/Mater",
         "id": 9,
-        "value": "Materials"
+        "value": "Materials",
+        "label": "EM/Mater"
     },
     {
-        "label": "EM/OtherDC",
         "id": 10,
-        "value": "Other DC and low frequency measurements"
+        "value": "Other DC and low frequency measurements",
+        "label": "EM/OtherDC"
     },
     {
-        "label": "EM/RF",
         "id": 11,
-        "value": "Radio frequency measurements"
+        "value": "Radio frequency measurements",
+        "label": "EM/RF"
     },
     {
-        "label": "L/DimMet",
         "id": 12,
-        "value": "Dimensional metrology"
+        "value": "Dimensional metrology",
+        "label": "L/DimMet"
     },
     {
-        "label": "L/Laser",
         "id": 13,
-        "value": "Laser frequencies"
+        "value": "Laser frequencies",
+        "label": "L/Laser"
     },
     {
-        "label": "M/Dens",
         "id": 14,
-        "value": "Density"
+        "value": "Density",
+        "label": "M/Dens"
     },
     {
-        "label": "M/FF",
         "id": 15,
-        "value": "Fluid flow"
+        "value": "Fluid flow",
+        "label": "M/FF"
     },
     {
-        "label": "M/Force",
         "id": 16,
-        "value": "Force"
+        "value": "Force",
+        "label": "M/Force"
     },
     {
-        "label": "M/Mass",
         "id": 17,
-        "value": "Mass, mass standards"
+        "value": "Mass, mass standards",
+        "label": "M/Mass"
     },
     {
-        "label": "M/Pres",
         "id": 18,
-        "value": "Pressure"
+        "value": "Pressure",
+        "label": "M/Pres"
     },
     {
-        "label": "M/Tor",
         "id": 19,
-        "value": "Torque"
+        "value": "Torque",
+        "label": "M/Tor"
     },
     {
-        "label": "PR/Detector",
         "id": 20,
-        "value": "Properties of detectors and sources"
+        "value": "Properties of detectors and sources",
+        "label": "PR/Detector"
     },
     {
-        "label": "PR/Fibre",
         "id": 21,
-        "value": "Fibre optics"
+        "value": "Fibre optics",
+        "label": "PR/Fibre"
     },
     {
-        "label": "PR/Mater",
         "id": 22,
-        "value": "Properties of materials"
+        "value": "Properties of materials",
+        "label": "PR/Mater"
     },
     {
-        "label": "PR/Photo",
         "id": 23,
-        "value": "Photometry"
+        "value": "Photometry",
+        "label": "PR/Photo"
     },
     {
-        "label": "T/H",
         "id": 24,
-        "value": "Humidity"
+        "value": "Humidity",
+        "label": "T/H"
     },
     {
-        "label": "T/T",
         "id": 25,
-        "value": "Temperature"
+        "value": "Temperature",
+        "label": "T/T"
     },
     {
-        "label": "T/TQ",
         "id": 26,
-        "value": "Thermophysical quantities"
+        "value": "Thermophysical quantities",
+        "label": "T/TQ"
     },
     {
-        "label": "TF/F",
         "id": 27,
-        "value": "Frequency"
+        "value": "Frequency",
+        "label": "TF/F"
     },
     {
-        "label": "TF/TI",
         "id": 28,
-        "value": "Time interval"
+        "value": "Time interval",
+        "label": "TF/TI"
     },
     {
-        "label": "TF/TSD",
         "id": 29,
-        "value": "Time scale difference"
+        "value": "Time scale difference",
+        "label": "TF/TSD"
     },
     {
-        "label": "M/Vis",
         "id": 35,
-        "value": "Viscosity"
+        "value": "Viscosity",
+        "label": "M/Vis"
     },
     {
-        "label": "M/Har",
         "id": 36,
-        "value": "Hardness"
+        "value": "Hardness",
+        "label": "M/Har"
     },
     {
-        "label": "M/Gra",
         "id": 37,
-        "value": "Gravity"
+        "value": "Gravity",
+        "label": "M/Gra"
     }
 ]

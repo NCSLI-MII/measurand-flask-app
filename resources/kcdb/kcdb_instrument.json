@@ -1,592 +1,592 @@
 [
     {
-        "label": null,
         "id": 1,
-        "value": "Measurement microphone type LS1P"
+        "value": "Measurement microphone type LS1P",
+        "label": null
     },
     {
-        "label": null,
         "id": 2,
-        "value": "Measurement microphone type LS2P"
+        "value": "Measurement microphone type LS2P",
+        "label": null
     },
     {
-        "label": null,
         "id": 3,
-        "value": "Sound calibrator, single frequency 125 Hz to 1 kHz"
+        "value": "Sound calibrator, single frequency 125 Hz to 1 kHz",
+        "label": null
     },
     {
-        "label": null,
         "id": 4,
-        "value": "Ultrasound transducer"
+        "value": "Ultrasound transducer",
+        "label": null
     },
     {
-        "label": null,
         "id": 5,
-        "value": "Acceleration measuring chain / Accelerometer"
+        "value": "Acceleration measuring chain / Accelerometer",
+        "label": null
     },
     {
-        "label": null,
         "id": 6,
-        "value": "Sound calibrator, multi-frequency"
+        "value": "Sound calibrator, multi-frequency",
+        "label": null
     },
     {
-        "label": null,
         "id": 7,
-        "value": "HV capacitor: dissipation factor D"
+        "value": "HV capacitor: dissipation factor D",
+        "label": null
     },
     {
-        "label": null,
         "id": 8,
-        "value": "Solid-state standard: source noise, N"
+        "value": "Solid-state standard: source noise, N",
+        "label": null
     },
     {
-        "label": null,
         "id": 9,
-        "value": "Digital voltmeter"
+        "value": "Digital voltmeter",
+        "label": null
     },
     {
-        "label": null,
         "id": 10,
-        "value": "AC resistor and shunt"
+        "value": "AC resistor and shunt",
+        "label": null
     },
     {
-        "label": null,
         "id": 11,
-        "value": "Single phase power meter"
+        "value": "Single phase power meter",
+        "label": null
     },
     {
-        "label": null,
         "id": 12,
-        "value": "Three phase power, electricity meter"
+        "value": "Three phase power, electricity meter",
+        "label": null
     },
     {
-        "label": null,
         "id": 13,
-        "value": "High voltage divider"
+        "value": "High voltage divider",
+        "label": null
     },
     {
-        "label": null,
         "id": 14,
-        "value": "Voltage transformer"
+        "value": "Voltage transformer",
+        "label": null
     },
     {
-        "label": null,
         "id": 15,
-        "value": "Resistor"
+        "value": "Resistor",
+        "label": null
     },
     {
-        "label": null,
         "id": 16,
-        "value": "Standard fused silica capacitor"
+        "value": "Standard fused silica capacitor",
+        "label": null
     },
     {
-        "label": null,
         "id": 17,
-        "value": "Three terminal mica dielectric capacitor"
+        "value": "Three terminal mica dielectric capacitor",
+        "label": null
     },
     {
-        "label": null,
         "id": 18,
-        "value": "AC-DC transfer standard (multirange)"
+        "value": "AC-DC transfer standard (multirange)",
+        "label": null
     },
     {
-        "label": null,
         "id": 19,
-        "value": "Multijunction thermal voltage converter"
+        "value": "Multijunction thermal voltage converter",
+        "label": null
     },
     {
-        "label": null,
         "id": 20,
-        "value": "Thermal transfer standard based on multijunctions or solid state sensor"
+        "value": "Thermal transfer standard based on multijunctions or solid state sensor",
+        "label": null
     },
     {
-        "label": null,
         "id": 21,
-        "value": "Transformer loss measurement systems single phase"
+        "value": "Transformer loss measurement systems single phase",
+        "label": null
     },
     {
-        "label": null,
         "id": 22,
-        "value": "High voltage divider and digital recording system"
+        "value": "High voltage divider and digital recording system",
+        "label": null
     },
     {
-        "label": null,
         "id": 23,
-        "value": "Rogowski coil, current transducer"
+        "value": "Rogowski coil, current transducer",
+        "label": null
     },
     {
-        "label": null,
         "id": 24,
-        "value": "Transducers"
+        "value": "Transducers",
+        "label": null
     },
     {
-        "label": null,
         "id": 25,
-        "value": "Solid-state standard"
+        "value": "Solid-state standard",
+        "label": null
     },
     {
-        "label": null,
         "id": 26,
-        "value": "Transformer loss measurement systems three phase"
+        "value": "Transformer loss measurement systems three phase",
+        "label": null
     },
     {
-        "label": null,
         "id": 27,
-        "value": "Single phase electricity meter"
+        "value": "Single phase electricity meter",
+        "label": null
     },
     {
-        "label": null,
         "id": 28,
-        "value": "HV resistor"
+        "value": "HV resistor",
+        "label": null
     },
     {
-        "label": null,
         "id": 29,
-        "value": "Shunts"
+        "value": "Shunts",
+        "label": null
     },
     {
-        "label": null,
         "id": 30,
-        "value": "AC-DC transfer standard (multirange), thermal converters with range extender"
+        "value": "AC-DC transfer standard (multirange), thermal converters with range extender",
+        "label": null
     },
     {
-        "label": null,
         "id": 31,
-        "value": "Single phase HV reactor"
+        "value": "Single phase HV reactor",
+        "label": null
     },
     {
-        "label": null,
         "id": 32,
-        "value": "Single phase power transformer"
+        "value": "Single phase power transformer",
+        "label": null
     },
     {
-        "label": null,
         "id": 33,
-        "value": "Three phase HV reactor"
+        "value": "Three phase HV reactor",
+        "label": null
     },
     {
-        "label": null,
         "id": 34,
-        "value": "Three phase power transformer"
+        "value": "Three phase power transformer",
+        "label": null
     },
     {
-        "label": null,
         "id": 35,
-        "value": "Weld current monitor or meter, Rogowski coil, current transducer"
+        "value": "Weld current monitor or meter, Rogowski coil, current transducer",
+        "label": null
     },
     {
-        "label": null,
         "id": 36,
-        "value": "HV capacitor"
+        "value": "HV capacitor",
+        "label": null
     },
     {
-        "label": null,
         "id": 37,
-        "value": "Voltage transformer ratio bridge"
+        "value": "Voltage transformer ratio bridge",
+        "label": null
     },
     {
-        "label": null,
         "id": 38,
-        "value": "Current transformer"
+        "value": "Current transformer",
+        "label": null
     },
     {
-        "label": null,
         "id": 39,
-        "value": "Thermal voltage converter directly connected, with range extender"
+        "value": "Thermal voltage converter directly connected, with range extender",
+        "label": null
     },
     {
-        "label": null,
         "id": 40,
-        "value": "Calibrator, divider"
+        "value": "Calibrator, divider",
+        "label": null
     },
     {
-        "label": null,
         "id": 41,
-        "value": "Resistive divider"
+        "value": "Resistive divider",
+        "label": null
     },
     {
-        "label": null,
         "id": 42,
-        "value": "Three terminal air dielectric capacitor"
+        "value": "Three terminal air dielectric capacitor",
+        "label": null
     },
     {
-        "label": null,
         "id": 43,
-        "value": "Nano-voltmeter"
+        "value": "Nano-voltmeter",
+        "label": null
     },
     {
-        "label": null,
         "id": 44,
-        "value": "AC-DC transfer standard (multirange), thermal converters directly connected, with range extender"
+        "value": "AC-DC transfer standard (multirange), thermal converters directly connected, with range extender",
+        "label": null
     },
     {
-        "label": null,
         "id": 45,
-        "value": "Thermal converter plus shunt, AC-DC transfer standard plus shunt"
+        "value": "Thermal converter plus shunt, AC-DC transfer standard plus shunt",
+        "label": null
     },
     {
-        "label": null,
         "id": 46,
-        "value": "Single phase power transformers"
+        "value": "Single phase power transformers",
+        "label": null
     },
     {
-        "label": null,
         "id": 47,
-        "value": "Gauge block length"
+        "value": "Gauge block length",
+        "label": null
     },
     {
-        "label": null,
         "id": 48,
-        "value": "Frequency stabilized laser: vacuum wavelength"
+        "value": "Frequency stabilized laser: vacuum wavelength",
+        "label": null
     },
     {
-        "label": null,
         "id": 49,
-        "value": "Frequency stabilized laser: absolute frequency"
+        "value": "Frequency stabilized laser: absolute frequency",
+        "label": null
     },
     {
-        "label": null,
         "id": 50,
-        "value": "Pressure measuring device"
+        "value": "Pressure measuring device",
+        "label": null
     },
     {
-        "label": null,
         "id": 51,
-        "value": "Mass standard"
+        "value": "Mass standard",
+        "label": null
     },
     {
-        "label": null,
         "id": 52,
-        "value": "Natural gas Flow meters"
+        "value": "Natural gas Flow meters",
+        "label": null
     },
     {
-        "label": null,
         "id": 53,
-        "value": "Volume of mass standard 1 kg"
+        "value": "Volume of mass standard 1 kg",
+        "label": null
     },
     {
-        "label": null,
         "id": 54,
-        "value": "Volume of mass standard 5 kg"
+        "value": "Volume of mass standard 5 kg",
+        "label": null
     },
     {
-        "label": null,
         "id": 55,
-        "value": "Volume of mass standard 10 kg"
+        "value": "Volume of mass standard 10 kg",
+        "label": null
     },
     {
-        "label": null,
         "id": 56,
-        "value": "Volume of mass standard 100 g"
+        "value": "Volume of mass standard 100 g",
+        "label": null
     },
     {
-        "label": null,
         "id": 57,
-        "value": "Liquids"
+        "value": "Liquids",
+        "label": null
     },
     {
-        "label": null,
         "id": 58,
-        "value": "Volumetric test measure (pycnometer)"
+        "value": "Volumetric test measure (pycnometer)",
+        "label": null
     },
     {
-        "label": null,
         "id": 59,
-        "value": "Volume of mass standard 200 g"
+        "value": "Volume of mass standard 200 g",
+        "label": null
     },
     {
-        "label": null,
         "id": 60,
-        "value": "Volume of mass standard 2 kg"
+        "value": "Volume of mass standard 2 kg",
+        "label": null
     },
     {
-        "label": null,
         "id": 61,
-        "value": "Hydrometers"
+        "value": "Hydrometers",
+        "label": null
     },
     {
-        "label": null,
         "id": 62,
-        "value": "Spectrally-selective transmitting material"
+        "value": "Spectrally-selective transmitting material",
+        "label": null
     },
     {
-        "label": null,
         "id": 63,
-        "value": "General material"
+        "value": "General material",
+        "label": null
     },
     {
-        "label": null,
         "id": 64,
-        "value": "Spectrally-neutral filter"
+        "value": "Spectrally-neutral filter",
+        "label": null
     },
     {
-        "label": null,
         "id": 65,
-        "value": "Fluorescent material"
+        "value": "Fluorescent material",
+        "label": null
     },
     {
-        "label": null,
         "id": 66,
-        "value": "Neutral filters"
+        "value": "Neutral filters",
+        "label": null
     },
     {
-        "label": null,
         "id": 67,
-        "value": "Spectrally-neutral material"
+        "value": "Spectrally-neutral material",
+        "label": null
     },
     {
-        "label": null,
         "id": 68,
-        "value": "Spectrally-neutral reflecting material"
+        "value": "Spectrally-neutral reflecting material",
+        "label": null
     },
     {
-        "label": null,
         "id": 69,
-        "value": "Diffusely reflecting material"
+        "value": "Diffusely reflecting material",
+        "label": null
     },
     {
-        "label": null,
         "id": 70,
-        "value": "Tungsten lamp"
+        "value": "Tungsten lamp",
+        "label": null
     },
     {
-        "label": null,
         "id": 71,
-        "value": "Tungsten lamp with PTFE diffuser"
+        "value": "Tungsten lamp with PTFE diffuser",
+        "label": null
     },
     {
-        "label": null,
         "id": 72,
-        "value": "Broad band detector"
+        "value": "Broad band detector",
+        "label": null
     },
     {
-        "label": null,
         "id": 73,
-        "value": "Illuminance meter"
+        "value": "Illuminance meter",
+        "label": null
     },
     {
-        "label": null,
         "id": 74,
-        "value": "Tungsten-based source"
+        "value": "Tungsten-based source",
+        "label": null
     },
     {
-        "label": null,
         "id": 75,
-        "value": "Digital thermometer IPRT"
+        "value": "Digital thermometer IPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 76,
-        "value": "Digital thermometer thermocouple"
+        "value": "Digital thermometer thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 77,
-        "value": "Mercury-in-glass, total immersion, 0.5 °C graduation"
+        "value": "Mercury-in-glass, total immersion, 0.5 °C graduation",
+        "label": null
     },
     {
-        "label": null,
         "id": 78,
-        "value": "Mercury-in-glass, partial immersion, 0.2 °C graduation"
+        "value": "Mercury-in-glass, partial immersion, 0.2 °C graduation",
+        "label": null
     },
     {
-        "label": null,
         "id": 79,
-        "value": "Mercury-in-glass, partial immersion, 0.5 °C graduation"
+        "value": "Mercury-in-glass, partial immersion, 0.5 °C graduation",
+        "label": null
     },
     {
-        "label": null,
         "id": 80,
-        "value": "Long stem SPRT"
+        "value": "Long stem SPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 81,
-        "value": "Au/Pt thermocouple"
+        "value": "Au/Pt thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 82,
-        "value": "type S thermocouple"
+        "value": "type S thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 83,
-        "value": "type B thermocouple"
+        "value": "type B thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 84,
-        "value": "type E thermocouple"
+        "value": "type E thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 85,
-        "value": "type J thermocouple"
+        "value": "type J thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 86,
-        "value": "type K thermocouple"
+        "value": "type K thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 87,
-        "value": "type T thermocouple"
+        "value": "type T thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 88,
-        "value": "Industrial PRT"
+        "value": "Industrial PRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 89,
-        "value": "Chilled mirror Dew-point hygrometer"
+        "value": "Chilled mirror Dew-point hygrometer",
+        "label": null
     },
     {
-        "label": null,
         "id": 90,
-        "value": "Tin freezing point for SPRT"
+        "value": "Tin freezing point for SPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 91,
-        "value": "Thermistors"
+        "value": "Thermistors",
+        "label": null
     },
     {
-        "label": null,
         "id": 92,
-        "value": "Mercury-in-glass, total immersion, 0.1 °C graduation"
+        "value": "Mercury-in-glass, total immersion, 0.1 °C graduation",
+        "label": null
     },
     {
-        "label": null,
         "id": 93,
-        "value": "Mercury-in-glass, total immersion, 0.2 °C graduation"
+        "value": "Mercury-in-glass, total immersion, 0.2 °C graduation",
+        "label": null
     },
     {
-        "label": null,
         "id": 94,
-        "value": "Mercury-in-glass, total immersion, 1 °C graduation"
+        "value": "Mercury-in-glass, total immersion, 1 °C graduation",
+        "label": null
     },
     {
-        "label": null,
         "id": 95,
-        "value": "Mercury-in-glass, partial immersion, 0.1 °C graduation"
+        "value": "Mercury-in-glass, partial immersion, 0.1 °C graduation",
+        "label": null
     },
     {
-        "label": null,
         "id": 96,
-        "value": "type N thermocouple"
+        "value": "type N thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 97,
-        "value": "Mercury triple point for SPRT"
+        "value": "Mercury triple point for SPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 98,
-        "value": "Digital thermometer thermistor"
+        "value": "Digital thermometer thermistor",
+        "label": null
     },
     {
-        "label": null,
         "id": 99,
-        "value": "Mercury-in-glass, partial immersion, 1 °C graduation"
+        "value": "Mercury-in-glass, partial immersion, 1 °C graduation",
+        "label": null
     },
     {
-        "label": null,
         "id": 100,
-        "value": "Liquid-in-glass spirit, total immersion, 1 °C graduation"
+        "value": "Liquid-in-glass spirit, total immersion, 1 °C graduation",
+        "label": null
     },
     {
-        "label": null,
         "id": 101,
-        "value": "type R thermocouple"
+        "value": "type R thermocouple",
+        "label": null
     },
     {
-        "label": null,
         "id": 102,
-        "value": "Silver freezing point for SPRT"
+        "value": "Silver freezing point for SPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 103,
-        "value": "Argon triple point for SPRT"
+        "value": "Argon triple point for SPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 104,
-        "value": "Gallium melting point for SPRT"
+        "value": "Gallium melting point for SPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 105,
-        "value": "Indium freezing point for SPRT"
+        "value": "Indium freezing point for SPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 106,
-        "value": "Zinc freezing point for SPRT"
+        "value": "Zinc freezing point for SPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 107,
-        "value": "Aluminium freezing point for SPRT"
+        "value": "Aluminium freezing point for SPRT",
+        "label": null
     },
     {
-        "label": null,
         "id": 108,
-        "value": "Time difference meter"
+        "value": "Time difference meter",
+        "label": null
     },
     {
-        "label": null,
         "id": 109,
-        "value": "General frequency source"
+        "value": "General frequency source",
+        "label": null
     },
     {
-        "label": null,
         "id": 110,
-        "value": "Frequency counter"
+        "value": "Frequency counter",
+        "label": null
     },
     {
-        "label": null,
         "id": 111,
-        "value": "Local clock UTC(NRC)"
+        "value": "Local clock UTC(NRC)",
+        "label": null
     },
     {
-        "label": null,
         "id": 112,
-        "value": "Remote clocks vs. UTC"
+        "value": "Remote clocks vs. UTC",
+        "label": null
     },
     {
-        "label": null,
         "id": 113,
-        "value": "Local frequency standard"
+        "value": "Local frequency standard",
+        "label": null
     },
     {
-        "label": null,
         "id": 114,
-        "value": "Local clock"
+        "value": "Local clock",
+        "label": null
     },
     {
-        "label": null,
         "id": 115,
-        "value": "NRC-TimeLink<sup>TM</sup> - Remote Clock vs. UTC"
+        "value": "NRC-TimeLink<sup>TM</sup> - Remote Clock vs. UTC",
+        "label": null
     },
     {
-        "label": null,
         "id": 116,
-        "value": "Remote NTP server vs. UTC"
+        "value": "Remote NTP server vs. UTC",
+        "label": null
     },
     {
-        "label": null,
         "id": 117,
-        "value": "NRC-TimeLink<sup>TM</sup> - Remote Clock vs. UTC(NRC)"
+        "value": "NRC-TimeLink<sup>TM</sup> - Remote Clock vs. UTC(NRC)",
+        "label": null
     },
     {
-        "label": null,
         "id": 118,
-        "value": "Remote clocks vs. UTC(NRC)"
+        "value": "Remote clocks vs. UTC(NRC)",
+        "label": null
     }
 ]

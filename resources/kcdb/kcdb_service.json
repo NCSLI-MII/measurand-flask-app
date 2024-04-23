@@ -1,337 +1,337 @@
 [
     {
-        "label": "1",
         "id": 1,
-        "value": "Measurement microphones"
+        "value": "Measurement microphones",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 2,
-        "value": "Sound calibrators"
+        "value": "Sound calibrators",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 3,
-        "value": "Sound measuring instruments"
+        "value": "Sound measuring instruments",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 4,
-        "value": "Ear simulators"
+        "value": "Ear simulators",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 5,
-        "value": "Reference sound sources"
+        "value": "Reference sound sources",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 6,
-        "value": "Audiometers"
+        "value": "Audiometers",
+        "label": "6"
     },
     {
-        "label": "21",
         "id": 7,
-        "value": "Linear vibration"
+        "value": "Linear vibration",
+        "label": "21"
     },
     {
-        "label": "22",
         "id": 8,
-        "value": "Angular vibration"
+        "value": "Angular vibration",
+        "label": "22"
     },
     {
-        "label": "23",
         "id": 9,
-        "value": "Dynamic force"
+        "value": "Dynamic force",
+        "label": "23"
     },
     {
-        "label": "30",
         "id": 10,
-        "value": "AUV auxilary instruments and/or services"
+        "value": "AUV auxilary instruments and/or services",
+        "label": "30"
     },
     {
-        "label": "11",
         "id": 11,
-        "value": "Hydrophones (medical ultrasonic)"
+        "value": "Hydrophones (medical ultrasonic)",
+        "label": "11"
     },
     {
-        "label": "12",
         "id": 12,
-        "value": "Hydrophones (underwater acoustics)"
+        "value": "Hydrophones (underwater acoustics)",
+        "label": "12"
     },
     {
-        "label": "13",
         "id": 13,
-        "value": "Ultrasound transducer with generator"
+        "value": "Ultrasound transducer with generator",
+        "label": "13"
     },
     {
-        "label": "14",
         "id": 14,
-        "value": "Ultrasound transducer"
+        "value": "Ultrasound transducer",
+        "label": "14"
     },
     {
-        "label": "5",
         "id": 15,
-        "value": "AC voltage (up to the MHz range)"
+        "value": "AC voltage (up to the MHz range)",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 16,
-        "value": "AC current"
+        "value": "AC current",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 17,
-        "value": "AC power"
+        "value": "AC power",
+        "label": "7"
     },
     {
-        "label": "1",
         "id": 18,
-        "value": "DC voltage (up to 1100 V)"
+        "value": "DC voltage (up to 1100 V)",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 19,
-        "value": "DC resistance"
+        "value": "DC resistance",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 20,
-        "value": "DC current (up to 100 A)"
+        "value": "DC current (up to 100 A)",
+        "label": "3"
     },
     {
-        "label": "10",
         "id": 21,
-        "value": "Electric and magnetic fields"
+        "value": "Electric and magnetic fields",
+        "label": "10"
     },
     {
-        "label": "8",
         "id": 22,
-        "value": "High voltage and current"
+        "value": "High voltage and current",
+        "label": "8"
     },
     {
-        "label": "4",
         "id": 23,
-        "value": "Impedance (up to the MHz range)"
+        "value": "Impedance (up to the MHz range)",
+        "label": "4"
     },
     {
-        "label": "12",
         "id": 24,
-        "value": "Measurements on materials"
+        "value": "Measurements on materials",
+        "label": "12"
     },
     {
-        "label": "9",
         "id": 25,
-        "value": "Other DC and low frequency measurements"
+        "value": "Other DC and low frequency measurements",
+        "label": "9"
     },
     {
-        "label": "11",
         "id": 26,
-        "value": "Radio frequency measurements"
+        "value": "Radio frequency measurements",
+        "label": "11"
     },
     {
-        "label": "2",
         "id": 27,
-        "value": "Linear dimensions"
+        "value": "Linear dimensions",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 28,
-        "value": "Angle"
+        "value": "Angle",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 29,
-        "value": "Form"
+        "value": "Form",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 30,
-        "value": "Complex geometry"
+        "value": "Complex geometry",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 31,
-        "value": "Various dimensional"
+        "value": "Various dimensional",
+        "label": "6"
     },
     {
-        "label": "1",
         "id": 32,
-        "value": "Radiations of the mise en pratique"
+        "value": "Radiations of the mise en pratique",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 33,
-        "value": "Density"
+        "value": "Density",
+        "label": "2"
     },
     {
-        "label": "9",
         "id": 34,
-        "value": "Fluid flow"
+        "value": "Fluid flow",
+        "label": "9"
     },
     {
-        "label": "4",
         "id": 35,
-        "value": "Force"
+        "value": "Force",
+        "label": "4"
     },
     {
-        "label": "1",
         "id": 36,
-        "value": "Mass"
+        "value": "Mass",
+        "label": "1"
     },
     {
-        "label": "3",
         "id": 37,
-        "value": "Pressure"
+        "value": "Pressure",
+        "label": "3"
     },
     {
-        "label": "5",
         "id": 38,
-        "value": "Torque"
+        "value": "Torque",
+        "label": "5"
     },
     {
-        "label": "6",
         "id": 39,
-        "value": "Viscosity"
+        "value": "Viscosity",
+        "label": "6"
     },
     {
-        "label": "7",
         "id": 40,
-        "value": "Hardness"
+        "value": "Hardness",
+        "label": "7"
     },
     {
-        "label": "8",
         "id": 41,
-        "value": "Gravity"
+        "value": "Gravity",
+        "label": "8"
     },
     {
-        "label": "2",
         "id": 42,
-        "value": "Properties of detectors"
+        "value": "Properties of detectors",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 43,
-        "value": "Spectral emission properties of sources"
+        "value": "Spectral emission properties of sources",
+        "label": "3"
     },
     {
-        "label": "5",
         "id": 44,
-        "value": "Spectral.-int. meas. for sources and detectors"
+        "value": "Spectral.-int. meas. for sources and detectors",
+        "label": "5"
     },
     {
-        "label": "7",
         "id": 45,
-        "value": "Fibre optics"
+        "value": "Fibre optics",
+        "label": "7"
     },
     {
-        "label": "4",
         "id": 46,
-        "value": "Spectral properties of materials"
+        "value": "Spectral properties of materials",
+        "label": "4"
     },
     {
-        "label": "6",
         "id": 47,
-        "value": "Colour and other spectral.-int. meas. of materials"
+        "value": "Colour and other spectral.-int. meas. of materials",
+        "label": "6"
     },
     {
-        "label": "1",
         "id": 48,
-        "value": "Photometry"
+        "value": "Photometry",
+        "label": "1"
     },
     {
-        "label": "3",
         "id": 49,
-        "value": "Hygrometers"
+        "value": "Hygrometers",
+        "label": "3"
     },
     {
-        "label": "4",
         "id": 50,
-        "value": "Dynamic generators"
+        "value": "Dynamic generators",
+        "label": "4"
     },
     {
-        "label": "5",
         "id": 51,
-        "value": "Static generators"
+        "value": "Static generators",
+        "label": "5"
     },
     {
-        "label": "1",
         "id": 52,
-        "value": "Items for defining ITS-90"
+        "value": "Items for defining ITS-90",
+        "label": "1"
     },
     {
-        "label": "2",
         "id": 53,
-        "value": "Items for disseminating ITS-90 and PLTS 2000"
+        "value": "Items for disseminating ITS-90 and PLTS 2000",
+        "label": "2"
     },
     {
-        "label": "6",
         "id": 54,
-        "value": "Thermophysical quantities"
+        "value": "Thermophysical quantities",
+        "label": "6"
     },
     {
-        "label": "2",
         "id": 55,
-        "value": "Frequency"
+        "value": "Frequency",
+        "label": "2"
     },
     {
-        "label": "3",
         "id": 56,
-        "value": "Time interval"
+        "value": "Time interval",
+        "label": "3"
     },
     {
-        "label": "1",
         "id": 57,
-        "value": "Time scale difference"
+        "value": "Time scale difference",
+        "label": "1"
     },
     {
-        "label": "7",
         "id": 64,
-        "value": "Items used for disseminating thermodynamic temperature"
+        "value": "Items used for disseminating thermodynamic temperature",
+        "label": "7"
     },
     {
-        "label": "31",
         "id": 65,
-        "value": "Acceleration measuring instrument"
+        "value": "Acceleration measuring instrument",
+        "label": "31"
     },
     {
-        "label": "32",
         "id": 66,
-        "value": "Acceleration calibrator"
+        "value": "Acceleration calibrator",
+        "label": "32"
     },
     {
-        "label": "33",
         "id": 67,
-        "value": "Acceleration measuring chain / accelerometer"
+        "value": "Acceleration measuring chain / accelerometer",
+        "label": "33"
     },
     {
-        "label": "34",
         "id": 68,
-        "value": "Angular acceleration measuring instrument"
+        "value": "Angular acceleration measuring instrument",
+        "label": "34"
     },
     {
-        "label": "35",
         "id": 69,
-        "value": "Angular acceleration calibrator"
+        "value": "Angular acceleration calibrator",
+        "label": "35"
     },
     {
-        "label": "36",
         "id": 70,
-        "value": "Angular acceleration measuring chain / accelerometer"
+        "value": "Angular acceleration measuring chain / accelerometer",
+        "label": "36"
     },
     {
-        "label": "37",
         "id": 71,
-        "value": "Force measuring instrument for mechanical impedance and mobility measurements or modal testing"
+        "value": "Force measuring instrument for mechanical impedance and mobility measurements or modal testing",
+        "label": "37"
     },
     {
-        "label": "38",
         "id": 72,
-        "value": "Force measuring chain or force transducer for mechanical impedance and mobility measurements or modal testing"
+        "value": "Force measuring chain or force transducer for mechanical impedance and mobility measurements or modal testing",
+        "label": "38"
     },
     {
-        "label": "45",
         "id": 73,
-        "value": "Vibration signal conditioner"
+        "value": "Vibration signal conditioner",
+        "label": "45"
     }
 ]

@@ -309,7 +309,8 @@ class KcdbMapper:
                         'id': obj['id'],
                         'kcdbCode': obj['kcdbCode'],
                         'baseUnit': obj['baseUnit'],
-                        'uncertaintyBaseUnit': obj['uncertaintyBaseUnit']
+                        'uncertaintyBaseUnit': obj['uncertaintyBaseUnit'],
+                        'comments': obj['comments']
                     }
                     cmc = model.KcdbCmcSchema().load(
                         payload, session=self.Session
@@ -360,7 +361,8 @@ class KcdbMapper:
                                 'id': obj['id'],
                                 'kcdbCode': obj['kcdbCode'],
                                 'baseUnit': obj['cmcBaseUnit']['unit'],
-                                'uncertaintyBaseUnit': obj['cmcUncertaintyBaseUnit']['unit']
+                                'uncertaintyBaseUnit': obj['cmcUncertaintyBaseUnit']['unit'],
+                                'comments': obj['comments']
                             }
                             cmc = self._schemas['cmc'].load(
                                 payload, session=self.Session
