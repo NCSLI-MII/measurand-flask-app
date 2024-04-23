@@ -61,10 +61,11 @@ class KcdbServiceView(MyModelView):
     page_size = 100
 
 
-class CMCView(ModelView):
+class CMCView(MyModelView):
     column_display_pk = True
     column_hide_backrefs = False
     column_searchable_list = ['area.label', 'quantity.value']
+    column_filters = ('area', 'service')
     column_list = ('id',
                    'kcdbCode',
                    'area',
@@ -75,7 +76,23 @@ class CMCView(ModelView):
                    'quantity',
                    'measurands',
                    'instrument',
-                   'instrumentmethod')
+                   'instrumentmethod',
+                   )
+    column_details_list = ('id',
+                   'kcdbCode',
+                   'area',
+                   'branch',
+                   'service',
+                   'subservice',
+                   'individualservice',
+                   'quantity',
+                   'measurands',
+                   'instrument',
+                   'instrumentmethod',
+                   'baseUnit',
+                   'uncertainityBaseUnit',
+                   'parameters'
+                   )
 
 
 class TaxonView(ModelView):
@@ -285,6 +302,7 @@ def initialize():
             "services": "../../resources/kcdb/kcdb_service_classifications.csv",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
             "use_api": False,
+            "use_cmc_api": False,
             "update_resources": False
         }
 

@@ -1,3057 +1,3057 @@
 [
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 2,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 3,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 4,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Directivity",
+        "label": "3",
         "id": 5,
-        "label": "3"
+        "value": "Directivity"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 6,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 7,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Sound pressure level",
+        "label": "1",
         "id": 8,
-        "label": "1"
+        "value": "Sound pressure level"
     },
     {
-        "value": "Sound pressure level",
+        "label": "1",
         "id": 9,
-        "label": "1"
+        "value": "Sound pressure level"
     },
     {
-        "value": "Sound pressure response level",
+        "label": "1",
         "id": 10,
-        "label": "1"
+        "value": "Sound pressure response level"
     },
     {
-        "value": "Free-field response level",
+        "label": "2",
         "id": 11,
-        "label": "2"
+        "value": "Free-field response level"
     },
     {
-        "value": "Diffuse field response level",
+        "label": "3",
         "id": 12,
-        "label": "3"
+        "value": "Diffuse field response level"
     },
     {
-        "value": "Sound intensity response level",
+        "label": "4",
         "id": 13,
-        "label": "4"
+        "value": "Sound intensity response level"
     },
     {
-        "value": "System response level",
+        "label": "1",
         "id": 14,
-        "label": "1"
+        "value": "System response level"
     },
     {
-        "value": "Acoustic impedance",
+        "label": "2",
         "id": 15,
-        "label": "2"
+        "value": "Acoustic impedance"
     },
     {
-        "value": "Force response level",
+        "label": "1",
         "id": 16,
-        "label": "1"
+        "value": "Force response level"
     },
     {
-        "value": "Mechanical impedance",
+        "label": "2",
         "id": 17,
-        "label": "2"
+        "value": "Mechanical impedance"
     },
     {
-        "value": "Modulus of charge sensitivity",
+        "label": "1",
         "id": 18,
-        "label": "1"
+        "value": "Modulus of charge sensitivity"
     },
     {
-        "value": "Phase shift of charge sensitivity",
+        "label": "2",
         "id": 19,
-        "label": "2"
+        "value": "Phase shift of charge sensitivity"
     },
     {
-        "value": "Modulus of voltage sensitivity",
+        "label": "1",
         "id": 20,
-        "label": "1"
+        "value": "Modulus of voltage sensitivity"
     },
     {
-        "value": "Phase shift of voltage sensitivity",
+        "label": "2",
         "id": 21,
-        "label": "2"
+        "value": "Phase shift of voltage sensitivity"
     },
     {
-        "value": "Sound power level",
+        "label": "1",
         "id": 22,
-        "label": "1"
+        "value": "Sound power level"
     },
     {
-        "value": "Directivity",
+        "label": "2",
         "id": 23,
-        "label": "2"
+        "value": "Directivity"
     },
     {
-        "value": "Air-conduction response level",
+        "label": "1",
         "id": 24,
-        "label": "1"
+        "value": "Air-conduction response level"
     },
     {
-        "value": "Bone-conduction response level",
+        "label": "2",
         "id": 25,
-        "label": "2"
+        "value": "Bone-conduction response level"
     },
     {
-        "value": "Frequency response (modulus or phase)",
+        "label": "1",
         "id": 26,
-        "label": "1"
+        "value": "Frequency response (modulus or phase)"
     },
     {
-        "value": "Shock response (modulus)",
+        "label": "2",
         "id": 27,
-        "label": "2"
+        "value": "Shock response (modulus)"
     },
     {
-        "value": "Acceleration output (modulus)",
+        "label": "1",
         "id": 28,
-        "label": "1"
+        "value": "Acceleration output (modulus)"
     },
     {
-        "value": "Shock output (modulus)",
+        "label": "2",
         "id": 29,
-        "label": "2"
+        "value": "Shock output (modulus)"
     },
     {
-        "value": "Charge sensitivity (modulus or phase)",
+        "label": "1",
         "id": 30,
-        "label": "1"
+        "value": "Charge sensitivity (modulus or phase)"
     },
     {
-        "value": "Shock charge sensitivity (modulus)",
+        "label": "2",
         "id": 31,
-        "label": "2"
+        "value": "Shock charge sensitivity (modulus)"
     },
     {
-        "value": "Voltage sensitivity (modulus or phase)",
+        "label": "3",
         "id": 32,
-        "label": "3"
+        "value": "Voltage sensitivity (modulus or phase)"
     },
     {
-        "value": "Shock voltage sensitivity (modulus or phase)",
+        "label": "4",
         "id": 33,
-        "label": "4"
+        "value": "Shock voltage sensitivity (modulus or phase)"
     },
     {
-        "value": "Current sensitivity (modulus or phase)",
+        "label": "5",
         "id": 34,
-        "label": "5"
+        "value": "Current sensitivity (modulus or phase)"
     },
     {
-        "value": "Voltage sensitivity (modulus or phase)",
+        "label": "1",
         "id": 35,
-        "label": "1"
+        "value": "Voltage sensitivity (modulus or phase)"
     },
     {
-        "value": "Shock sensitivity (modulus)",
+        "label": "2",
         "id": 36,
-        "label": "2"
+        "value": "Shock sensitivity (modulus)"
     },
     {
-        "value": "Angular acceleration response (modulus)",
+        "label": "1",
         "id": 37,
-        "label": "1"
+        "value": "Angular acceleration response (modulus)"
     },
     {
-        "value": "Shock response (modulus)",
+        "label": "2",
         "id": 38,
-        "label": "2"
+        "value": "Shock response (modulus)"
     },
     {
-        "value": "Angular acceleration output (modulus)",
+        "label": "1",
         "id": 39,
-        "label": "1"
+        "value": "Angular acceleration output (modulus)"
     },
     {
-        "value": "Charge sensitivity (modulus or phase)",
+        "label": "1",
         "id": 40,
-        "label": "1"
+        "value": "Charge sensitivity (modulus or phase)"
     },
     {
-        "value": "Voltage sensitivity (modulus or phase)",
+        "label": "3",
         "id": 41,
-        "label": "3"
+        "value": "Voltage sensitivity (modulus or phase)"
     },
     {
-        "value": "Current sensitivity (modulus or phase)",
+        "label": "5",
         "id": 42,
-        "label": "5"
+        "value": "Current sensitivity (modulus or phase)"
     },
     {
-        "value": "Voltage sensitivity (modulus or phase)",
+        "label": "1",
         "id": 43,
-        "label": "1"
+        "value": "Voltage sensitivity (modulus or phase)"
     },
     {
-        "value": "Frequency response (modulus or phase)",
+        "label": "1",
         "id": 44,
-        "label": "1"
+        "value": "Frequency response (modulus or phase)"
     },
     {
-        "value": "Shock response (modulus)",
+        "label": "2",
         "id": 45,
-        "label": "2"
+        "value": "Shock response (modulus)"
     },
     {
-        "value": "Charge sensitivity (modulus or phase)",
+        "label": "1",
         "id": 46,
-        "label": "1"
+        "value": "Charge sensitivity (modulus or phase)"
     },
     {
-        "value": "Shock charge sensitivity (modulus or phase)",
+        "label": "2",
         "id": 47,
-        "label": "2"
+        "value": "Shock charge sensitivity (modulus or phase)"
     },
     {
-        "value": "Voltage sensitivity (modulus or phase)",
+        "label": "3",
         "id": 48,
-        "label": "3"
+        "value": "Voltage sensitivity (modulus or phase)"
     },
     {
-        "value": "Shock voltage sensitivity (modulus or phase)",
+        "label": "4",
         "id": 49,
-        "label": "4"
+        "value": "Shock voltage sensitivity (modulus or phase)"
     },
     {
-        "value": "Charge sensitivity (modulus or phase)",
+        "label": "1",
         "id": 50,
-        "label": "1"
+        "value": "Charge sensitivity (modulus or phase)"
     },
     {
-        "value": "Voltage sensitivity (modulus or phase)",
+        "label": "2",
         "id": 51,
-        "label": "2"
+        "value": "Voltage sensitivity (modulus or phase)"
     },
     {
-        "value": "Current sensitivity (modulus or phase)",
+        "label": "3",
         "id": 52,
-        "label": "3"
+        "value": "Current sensitivity (modulus or phase)"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 53,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 54,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 55,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 56,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 57,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 58,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 59,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 60,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Ultrasonic power",
+        "label": "1",
         "id": 61,
-        "label": "1"
+        "value": "Ultrasonic power"
     },
     {
-        "value": "Directivity",
+        "label": "2",
         "id": 62,
-        "label": "2"
+        "value": "Directivity"
     },
     {
-        "value": "Ultrasonic pressure",
+        "label": "3",
         "id": 63,
-        "label": "3"
+        "value": "Ultrasonic pressure"
     },
     {
-        "value": "Electroacoustic radiation conductance",
+        "label": "1",
         "id": 64,
-        "label": "1"
+        "value": "Electroacoustic radiation conductance"
     },
     {
-        "value": "Directivity",
+        "label": "2",
         "id": 65,
-        "label": "2"
+        "value": "Directivity"
     },
     {
-        "value": "Ultrasonic power",
+        "label": "3",
         "id": 66,
-        "label": "3"
+        "value": "Ultrasonic power"
     },
     {
-        "value": "AC-DC transfer difference at low voltages (<= 0.5 V)",
+        "label": "1",
         "id": 67,
-        "label": "1"
+        "value": "AC-DC transfer difference at low voltages (<= 0.5 V)"
     },
     {
-        "value": "AC-DC transfer difference at medium voltages (0.5 V to 5 V)",
+        "label": "2",
         "id": 68,
-        "label": "2"
+        "value": "AC-DC transfer difference at medium voltages (0.5 V to 5 V)"
     },
     {
-        "value": "AC-DC transfer difference at higher voltages (> 5 V)",
+        "label": "3",
         "id": 69,
-        "label": "3"
+        "value": "AC-DC transfer difference at higher voltages (> 5 V)"
     },
     {
-        "value": "Sources",
+        "label": "1",
         "id": 70,
-        "label": "1"
+        "value": "Sources"
     },
     {
-        "value": "Meters",
+        "label": "2",
         "id": 71,
-        "label": "2"
+        "value": "Meters"
     },
     {
-        "value": "Real component and imaginary component",
+        "label": "1",
         "id": 72,
-        "label": "1"
+        "value": "Real component and imaginary component"
     },
     {
-        "value": "Attenuation and gain",
+        "label": "2",
         "id": 73,
-        "label": "2"
+        "value": "Attenuation and gain"
     },
     {
-        "value": "AC-DC transfer difference",
+        "label": "1",
         "id": 74,
-        "label": "1"
+        "value": "AC-DC transfer difference"
     },
     {
-        "value": "Sources",
+        "label": "1",
         "id": 75,
-        "label": "1"
+        "value": "Sources"
     },
     {
-        "value": "Meters",
+        "label": "2",
         "id": 76,
-        "label": "2"
+        "value": "Meters"
     },
     {
-        "value": "Real component and imaginary component",
+        "label": "1",
         "id": 77,
-        "label": "1"
+        "value": "Real component and imaginary component"
     },
     {
-        "value": "Single phase power at frequencies <= 400 Hz",
+        "label": "1",
         "id": 78,
-        "label": "1"
+        "value": "Single phase power at frequencies <= 400 Hz"
     },
     {
-        "value": "Single phase power at frequencies > 400 Hz",
+        "label": "2",
         "id": 79,
-        "label": "2"
+        "value": "Single phase power at frequencies > 400 Hz"
     },
     {
-        "value": "Three phase",
+        "label": "3",
         "id": 80,
-        "label": "3"
+        "value": "Three phase"
     },
     {
-        "value": "Single values",
+        "label": "1",
         "id": 81,
-        "label": "1"
+        "value": "Single values"
     },
     {
-        "value": "Low values (below or equal to 10 V)",
+        "label": "2",
         "id": 82,
-        "label": "2"
+        "value": "Low values (below or equal to 10 V)"
     },
     {
-        "value": "Intermediate values (from above 10 V up to 1100 V)",
+        "label": "3",
         "id": 83,
-        "label": "3"
+        "value": "Intermediate values (from above 10 V up to 1100 V)"
     },
     {
-        "value": "Noise voltages",
+        "label": "4",
         "id": 84,
-        "label": "4"
+        "value": "Noise voltages"
     },
     {
-        "value": "Very low values (below or equal to 1 mV)",
+        "label": "1",
         "id": 85,
-        "label": "1"
+        "value": "Very low values (below or equal to 1 mV)"
     },
     {
-        "value": "Intermediate values (from above 1 mV up to 1100 V)",
+        "label": "2",
         "id": 86,
-        "label": "2"
+        "value": "Intermediate values (from above 1 mV up to 1100 V)"
     },
     {
-        "value": "Up to 1100 V",
+        "label": "1",
         "id": 87,
-        "label": "1"
+        "value": "Up to 1100 V"
     },
     {
-        "value": "Attenuation",
+        "label": "2",
         "id": 88,
-        "label": "2"
+        "value": "Attenuation"
     },
     {
-        "value": "Low values (below or equal to 1 ohm)",
+        "label": "1",
         "id": 89,
-        "label": "1"
+        "value": "Low values (below or equal to 1 ohm)"
     },
     {
-        "value": "Intermediate values (from above 1 ohm up to 1 megaohm)",
+        "label": "2",
         "id": 90,
-        "label": "2"
+        "value": "Intermediate values (from above 1 ohm up to 1 megaohm)"
     },
     {
-        "value": "High values (above 1 megaohm)",
+        "label": "3",
         "id": 91,
-        "label": "3"
+        "value": "High values (above 1 megaohm)"
     },
     {
-        "value": "Standards for high current",
+        "label": "4",
         "id": 92,
-        "label": "4"
+        "value": "Standards for high current"
     },
     {
-        "value": "Multiple ranges",
+        "label": "5",
         "id": 93,
-        "label": "5"
+        "value": "Multiple ranges"
     },
     {
-        "value": "Temperature, power and pressure coefficients",
+        "label": "6",
         "id": 94,
-        "label": "6"
+        "value": "Temperature, power and pressure coefficients"
     },
     {
-        "value": "Low values (<= 1 ohm)",
+        "label": "1",
         "id": 95,
-        "label": "1"
+        "value": "Low values (<= 1 ohm)"
     },
     {
-        "value": "Intermediate values (from above 1 ohm up to 1 gigaohm)",
+        "label": "2",
         "id": 96,
-        "label": "2"
+        "value": "Intermediate values (from above 1 ohm up to 1 gigaohm)"
     },
     {
-        "value": "High values (above 1 gigaohm)",
+        "label": "3",
         "id": 97,
-        "label": "3"
+        "value": "High values (above 1 gigaohm)"
     },
     {
-        "value": "DC resistance ratios",
+        "label": "1",
         "id": 98,
-        "label": "1"
+        "value": "DC resistance ratios"
     },
     {
-        "value": "Low values (below 0.1 mA)",
+        "label": "1",
         "id": 99,
-        "label": "1"
+        "value": "Low values (below 0.1 mA)"
     },
     {
-        "value": "Intermediate values (from above 0.1 mA to 20 A)",
+        "label": "2",
         "id": 100,
-        "label": "2"
+        "value": "Intermediate values (from above 0.1 mA to 20 A)"
     },
     {
-        "value": "High values (from above 20 A up to 100 A)",
+        "label": "3",
         "id": 101,
-        "label": "3"
+        "value": "High values (from above 20 A up to 100 A)"
     },
     {
-        "value": "Transconductance ratio",
+        "label": "4",
         "id": 102,
-        "label": "4"
+        "value": "Transconductance ratio"
     },
     {
-        "value": "Noise currents",
+        "label": "5",
         "id": 103,
-        "label": "5"
+        "value": "Noise currents"
     },
     {
-        "value": "Low values (below or equal to 0.1 mA)",
+        "label": "1",
         "id": 104,
-        "label": "1"
+        "value": "Low values (below or equal to 0.1 mA)"
     },
     {
-        "value": "Intermediate values (from above 0.1 mA to 20 A)",
+        "label": "2",
         "id": 105,
-        "label": "2"
+        "value": "Intermediate values (from above 0.1 mA to 20 A)"
     },
     {
-        "value": "High values (from above 20 A up to 100 A)",
+        "label": "3",
         "id": 106,
-        "label": "3"
+        "value": "High values (from above 20 A up to 100 A)"
     },
     {
-        "value": "Ratios up to 100 A",
+        "label": "1",
         "id": 107,
-        "label": "1"
+        "value": "Ratios up to 100 A"
     },
     {
-        "value": "Electrostatic field strength",
+        "label": "1",
         "id": 108,
-        "label": "1"
+        "value": "Electrostatic field strength"
     },
     {
-        "value": "Electric field strength",
+        "label": "2",
         "id": 109,
-        "label": "2"
+        "value": "Electric field strength"
     },
     {
-        "value": "Magnetic flux",
+        "label": "1",
         "id": 110,
-        "label": "1"
+        "value": "Magnetic flux"
     },
     {
-        "value": "DC magnetic flux density and applied magnetic field strength",
+        "label": "2",
         "id": 111,
-        "label": "2"
+        "value": "DC magnetic flux density and applied magnetic field strength"
     },
     {
-        "value": "AC magnetic flux density and applied magnetic field strength",
+        "label": "3",
         "id": 112,
-        "label": "3"
+        "value": "AC magnetic flux density and applied magnetic field strength"
     },
     {
-        "value": "DC shielding factor (ratio of DC magnetic flux density)",
+        "label": "4",
         "id": 113,
-        "label": "4"
+        "value": "DC shielding factor (ratio of DC magnetic flux density)"
     },
     {
-        "value": "AC shielding factor (ratio of AC magnetic flux density)",
+        "label": "5",
         "id": 114,
-        "label": "5"
+        "value": "AC shielding factor (ratio of AC magnetic flux density)"
     },
     {
-        "value": "Turn area (ratio of magnetic flux and magnetic flux density)",
+        "label": "6",
         "id": 115,
-        "label": "6"
+        "value": "Turn area (ratio of magnetic flux and magnetic flux density)"
     },
     {
-        "value": "Magnetic flux density or magnetic field strength per unit current",
+        "label": "7",
         "id": 116,
-        "label": "7"
+        "value": "Magnetic flux density or magnetic field strength per unit current"
     },
     {
-        "value": "Magnetic field gradient",
+        "label": "8",
         "id": 117,
-        "label": "8"
+        "value": "Magnetic field gradient"
     },
     {
-        "value": "Electric field strength",
+        "label": "1",
         "id": 118,
-        "label": "1"
+        "value": "Electric field strength"
     },
     {
-        "value": "Magnetic field strength",
+        "label": "2",
         "id": 119,
-        "label": "2"
+        "value": "Magnetic field strength"
     },
     {
-        "value": "Power flux density",
+        "label": "3",
         "id": 120,
-        "label": "3"
+        "value": "Power flux density"
     },
     {
-        "value": "Magnetic flux density",
+        "label": "4",
         "id": 121,
-        "label": "4"
+        "value": "Magnetic flux density"
     },
     {
-        "value": "Magnetic field strength per unit current",
+        "label": "5",
         "id": 122,
-        "label": "5"
+        "value": "Magnetic field strength per unit current"
     },
     {
-        "value": "Turn area (ratio of magnetic flux and magnetic flux density)",
+        "label": "6",
         "id": 123,
-        "label": "6"
+        "value": "Turn area (ratio of magnetic flux and magnetic flux density)"
     },
     {
-        "value": "High voltage sources",
+        "label": "1",
         "id": 124,
-        "label": "1"
+        "value": "High voltage sources"
     },
     {
-        "value": "High voltage meters",
+        "label": "2",
         "id": 125,
-        "label": "2"
+        "value": "High voltage meters"
     },
     {
-        "value": "Ratios",
+        "label": "3",
         "id": 126,
-        "label": "3"
+        "value": "Ratios"
     },
     {
-        "value": "Average value of DC voltage",
+        "label": "4",
         "id": 127,
-        "label": "4"
+        "value": "Average value of DC voltage"
     },
     {
-        "value": "RMS value of DC voltage ripple",
+        "label": "5",
         "id": 128,
-        "label": "5"
+        "value": "RMS value of DC voltage ripple"
     },
     {
-        "value": "Capacitance and dissipation factor",
+        "label": "1",
         "id": 129,
-        "label": "1"
+        "value": "Capacitance and dissipation factor"
     },
     {
-        "value": "Inductance and loss angle",
+        "label": "2",
         "id": 130,
-        "label": "2"
+        "value": "Inductance and loss angle"
     },
     {
-        "value": "Burden: real and imaginary component (real component/imaginary component/modulus/argument)",
+        "label": "3",
         "id": 131,
-        "label": "3"
+        "value": "Burden: real and imaginary component (real component/imaginary component/modulus/argument)"
     },
     {
-        "value": "Resistance",
+        "label": "4",
         "id": 132,
-        "label": "4"
+        "value": "Resistance"
     },
     {
-        "value": "Sources",
+        "label": "1",
         "id": 133,
-        "label": "1"
+        "value": "Sources"
     },
     {
-        "value": "Meters",
+        "label": "2",
         "id": 134,
-        "label": "2"
+        "value": "Meters"
     },
     {
-        "value": "Peak values of high AC voltage",
+        "label": "3",
         "id": 135,
-        "label": "3"
+        "value": "Peak values of high AC voltage"
     },
     {
-        "value": "Voltage transformers: ratio error and phase displacement",
+        "label": "4",
         "id": 136,
-        "label": "4"
+        "value": "Voltage transformers: ratio error and phase displacement"
     },
     {
-        "value": "RMS value for high AC voltage",
+        "label": "5",
         "id": 137,
-        "label": "5"
+        "value": "RMS value for high AC voltage"
     },
     {
-        "value": "Rectified average value of high AC voltage",
+        "label": "6",
         "id": 138,
-        "label": "6"
+        "value": "Rectified average value of high AC voltage"
     },
     {
-        "value": "Parameters for lightning impulse voltage (see list in the bottom of KCDB home page)",
+        "label": "1",
         "id": 139,
-        "label": "1"
+        "value": "Parameters for lightning impulse voltage (see list in the bottom of KCDB home page)"
     },
     {
-        "value": "Parameters for switching impulse voltage (see list in the bottom of KCDB home page)",
+        "label": "3",
         "id": 141,
-        "label": "3"
+        "value": "Parameters for switching impulse voltage (see list in the bottom of KCDB home page)"
     },
     {
-        "value": "Parameters for impulse current (see list in the bottom of KCDB home page)",
+        "label": "5",
         "id": 143,
-        "label": "5"
+        "value": "Parameters for impulse current (see list in the bottom of KCDB home page)"
     },
     {
-        "value": "Parameters for other impulse voltage types (see list in the bottom of KCDB home page)",
+        "label": "9",
         "id": 147,
-        "label": "9"
+        "value": "Parameters for other impulse voltage types (see list in the bottom of KCDB home page)"
     },
     {
-        "value": "Apparent charge",
+        "label": "1",
         "id": 148,
-        "label": "1"
+        "value": "Apparent charge"
     },
     {
-        "value": "Response",
+        "label": "2",
         "id": 149,
-        "label": "2"
+        "value": "Response"
     },
     {
-        "value": "Rise time of partial discharge pulse",
+        "label": "3",
         "id": 150,
-        "label": "3"
+        "value": "Rise time of partial discharge pulse"
     },
     {
-        "value": "Current transformers: ratio error and phase displacement",
+        "label": "3",
         "id": 153,
-        "label": "3"
+        "value": "Current transformers: ratio error and phase displacement"
     },
     {
-        "value": "High AC current RMS value",
+        "label": "5",
         "id": 155,
-        "label": "5"
+        "value": "High AC current RMS value"
     },
     {
-        "value": "Other AC current parameters (see list in the bottom of KCDB home page)",
+        "label": "6",
         "id": 156,
-        "label": "6"
+        "value": "Other AC current parameters (see list in the bottom of KCDB home page)"
     },
     {
-        "value": "High DC current ratio",
+        "label": "3",
         "id": 159,
-        "label": "3"
+        "value": "High DC current ratio"
     },
     {
-        "value": "High DC current average value",
+        "label": "4",
         "id": 160,
-        "label": "4"
+        "value": "High DC current average value"
     },
     {
-        "value": "Real component and imaginary component",
+        "label": "1",
         "id": 161,
-        "label": "1"
+        "value": "Real component and imaginary component"
     },
     {
-        "value": "AC-DC difference",
+        "label": "2",
         "id": 162,
-        "label": "2"
+        "value": "AC-DC difference"
     },
     {
-        "value": "Resistors for high current",
+        "label": "3",
         "id": 163,
-        "label": "3"
+        "value": "Resistors for high current"
     },
     {
-        "value": "Meters",
+        "label": "4",
         "id": 164,
-        "label": "4"
+        "value": "Meters"
     },
     {
-        "value": "AC resistance ratios",
+        "label": "5",
         "id": 165,
-        "label": "5"
+        "value": "AC resistance ratios"
     },
     {
-        "value": "Capacitance and dissipation factor for low loss capacitors",
+        "label": "1",
         "id": 166,
-        "label": "1"
+        "value": "Capacitance and dissipation factor for low loss capacitors"
     },
     {
-        "value": "Capacitance and dissipation factor for dielectric capacitors",
+        "label": "2",
         "id": 167,
-        "label": "2"
+        "value": "Capacitance and dissipation factor for dielectric capacitors"
     },
     {
-        "value": "Capacitance and dissipation factor for transformed capacitors",
+        "label": "3",
         "id": 168,
-        "label": "3"
+        "value": "Capacitance and dissipation factor for transformed capacitors"
     },
     {
-        "value": "Meters",
+        "label": "4",
         "id": 169,
-        "label": "4"
+        "value": "Meters"
     },
     {
-        "value": "Self inductance, low values (below 1 mH)",
+        "label": "1",
         "id": 170,
-        "label": "1"
+        "value": "Self inductance, low values (below 1 mH)"
     },
     {
-        "value": "Self inductance, intermediate values (from 1 mH up to 1 H)",
+        "label": "2",
         "id": 171,
-        "label": "2"
+        "value": "Self inductance, intermediate values (from 1 mH up to 1 H)"
     },
     {
-        "value": "Self inductance, high values (above 1 H)",
+        "label": "3",
         "id": 172,
-        "label": "3"
+        "value": "Self inductance, high values (above 1 H)"
     },
     {
-        "value": "Mutual inductance",
+        "label": "4",
         "id": 173,
-        "label": "4"
+        "value": "Mutual inductance"
     },
     {
-        "value": "Meters",
+        "label": "5",
         "id": 174,
-        "label": "5"
+        "value": "Meters"
     },
     {
-        "value": "Quality factor",
+        "label": "6",
         "id": 175,
-        "label": "6"
+        "value": "Quality factor"
     },
     {
-        "value": "Metallic materials",
+        "label": "1",
         "id": 176,
-        "label": "1"
+        "value": "Metallic materials"
     },
     {
-        "value": "Liquids",
+        "label": "2",
         "id": 177,
-        "label": "2"
+        "value": "Liquids"
     },
     {
-        "value": "Semiconducting and similar materials",
+        "label": "3",
         "id": 178,
-        "label": "3"
+        "value": "Semiconducting and similar materials"
     },
     {
-        "value": "Relative permittivity: real and - or imaginary part",
+        "label": "1",
         "id": 179,
-        "label": "1"
+        "value": "Relative permittivity: real and - or imaginary part"
     },
     {
-        "value": "Dielectric loss tangent",
+        "label": "2",
         "id": 180,
-        "label": "2"
+        "value": "Dielectric loss tangent"
     },
     {
-        "value": "Specific total power loss",
+        "label": "1",
         "id": 181,
-        "label": "1"
+        "value": "Specific total power loss"
     },
     {
-        "value": "Resistivity",
+        "label": "10",
         "id": 182,
-        "label": "10"
+        "value": "Resistivity"
     },
     {
-        "value": "Peak value of DC magnetic polarisation",
+        "label": "2",
         "id": 183,
-        "label": "2"
+        "value": "Peak value of DC magnetic polarisation"
     },
     {
-        "value": "Peak value of AC magnetic polarisation",
+        "label": "3",
         "id": 184,
-        "label": "3"
+        "value": "Peak value of AC magnetic polarisation"
     },
     {
-        "value": "Peak value of magnetic field strength",
+        "label": "4",
         "id": 185,
-        "label": "4"
+        "value": "Peak value of magnetic field strength"
     },
     {
-        "value": "RMS value of magnetic field strength",
+        "label": "5",
         "id": 186,
-        "label": "5"
+        "value": "RMS value of magnetic field strength"
     },
     {
-        "value": "Specific apparent power",
+        "label": "6",
         "id": 187,
-        "label": "6"
+        "value": "Specific apparent power"
     },
     {
-        "value": "Relative peak permeability",
+        "label": "7",
         "id": 188,
-        "label": "7"
+        "value": "Relative peak permeability"
     },
     {
-        "value": "Complex relative permeability",
+        "label": "8",
         "id": 189,
-        "label": "8"
+        "value": "Complex relative permeability"
     },
     {
-        "value": "Density",
+        "label": "9",
         "id": 190,
-        "label": "9"
+        "value": "Density"
     },
     {
-        "value": "Magnetic polarisation",
+        "label": "1",
         "id": 191,
-        "label": "1"
+        "value": "Magnetic polarisation"
     },
     {
-        "value": "Magnetic field strength",
+        "label": "2",
         "id": 192,
-        "label": "2"
+        "value": "Magnetic field strength"
     },
     {
-        "value": "Remanent magnetic flux density",
+        "label": "3",
         "id": 193,
-        "label": "3"
+        "value": "Remanent magnetic flux density"
     },
     {
-        "value": "Coercive magnetic field strength",
+        "label": "4",
         "id": 194,
-        "label": "4"
+        "value": "Coercive magnetic field strength"
     },
     {
-        "value": "Magnetic saturation polarisation",
+        "label": "5",
         "id": 195,
-        "label": "5"
+        "value": "Magnetic saturation polarisation"
     },
     {
-        "value": "Relative permeability",
+        "label": "6",
         "id": 196,
-        "label": "6"
+        "value": "Relative permeability"
     },
     {
-        "value": "DC magnetic susceptibility or relative magnetic permeability",
+        "label": "1",
         "id": 197,
-        "label": "1"
+        "value": "DC magnetic susceptibility or relative magnetic permeability"
     },
     {
-        "value": "Remanent magnetic flux density",
+        "label": "1",
         "id": 198,
-        "label": "1"
+        "value": "Remanent magnetic flux density"
     },
     {
-        "value": "Coercive field strength",
+        "label": "2",
         "id": 199,
-        "label": "2"
+        "value": "Coercive field strength"
     },
     {
-        "value": "Maximum energy product",
+        "label": "3",
         "id": 200,
-        "label": "3"
+        "value": "Maximum energy product"
     },
     {
-        "value": "Magnetic moment",
+        "label": "4",
         "id": 201,
-        "label": "4"
+        "value": "Magnetic moment"
     },
     {
-        "value": "Magnetic flux density",
+        "label": "5",
         "id": 202,
-        "label": "5"
+        "value": "Magnetic flux density"
     },
     {
-        "value": "Magnetic polarisation",
+        "label": "6",
         "id": 203,
-        "label": "6"
+        "value": "Magnetic polarisation"
     },
     {
-        "value": "Relative recoil permeability",
+        "label": "7",
         "id": 204,
-        "label": "7"
+        "value": "Relative recoil permeability"
     },
     {
-        "value": "Signal amplitude of magnetic stripes",
+        "label": "1",
         "id": 205,
-        "label": "1"
+        "value": "Signal amplitude of magnetic stripes"
     },
     {
-        "value": "Surface profile of magnetic stripes",
+        "label": "2",
         "id": 206,
-        "label": "2"
+        "value": "Surface profile of magnetic stripes"
     },
     {
-        "value": "Reference field of diskettes",
+        "label": "3",
         "id": 207,
-        "label": "3"
+        "value": "Reference field of diskettes"
     },
     {
-        "value": "Signal amplitude of diskettes",
+        "label": "4",
         "id": 208,
-        "label": "4"
+        "value": "Signal amplitude of diskettes"
     },
     {
-        "value": "Resolution of diskettes",
+        "label": "5",
         "id": 209,
-        "label": "5"
+        "value": "Resolution of diskettes"
     },
     {
-        "value": "Peak shift of diskettes",
+        "label": "6",
         "id": 210,
-        "label": "6"
+        "value": "Peak shift of diskettes"
     },
     {
-        "value": "Overwrite of diskettes",
+        "label": "7",
         "id": 211,
-        "label": "7"
+        "value": "Overwrite of diskettes"
     },
     {
-        "value": "Video and audio tapes",
+        "label": "8",
         "id": 212,
-        "label": "8"
+        "value": "Video and audio tapes"
     },
     {
-        "value": "Sources",
+        "label": "1",
         "id": 213,
-        "label": "1"
+        "value": "Sources"
     },
     {
-        "value": "Meters",
+        "label": "2",
         "id": 214,
-        "label": "2"
+        "value": "Meters"
     },
     {
-        "value": "Sources",
+        "label": "1",
         "id": 215,
-        "label": "1"
+        "value": "Sources"
     },
     {
-        "value": "Meters",
+        "label": "2",
         "id": 216,
-        "label": "2"
+        "value": "Meters"
     },
     {
-        "value": "Phase shift",
+        "label": "3",
         "id": 217,
-        "label": "3"
+        "value": "Phase shift"
     },
     {
-        "value": "Main frequency harmonics",
+        "label": "1",
         "id": 218,
-        "label": "1"
+        "value": "Main frequency harmonics"
     },
     {
-        "value": "Mains frequency harmonic distorsion",
+        "label": "2",
         "id": 219,
-        "label": "2"
+        "value": "Mains frequency harmonic distorsion"
     },
     {
-        "value": "Mains frequency fluctuating harmonics  (see list in the bottom of KCDB home page)",
+        "label": "4",
         "id": 221,
-        "label": "4"
+        "value": "Mains frequency fluctuating harmonics  (see list in the bottom of KCDB home page)"
     },
     {
-        "value": "Mains frequency voltage fluctuations (see list in the bottom of KCDB home page)",
+        "label": "5",
         "id": 222,
-        "label": "5"
+        "value": "Mains frequency voltage fluctuations (see list in the bottom of KCDB home page)"
     },
     {
-        "value": "Mains frequency interharmonics",
+        "label": "7",
         "id": 224,
-        "label": "7"
+        "value": "Mains frequency interharmonics"
     },
     {
-        "value": "Absolute power in coaxial line",
+        "label": "1",
         "id": 225,
-        "label": "1"
+        "value": "Absolute power in coaxial line"
     },
     {
-        "value": "Absolute power in waveguide",
+        "label": "2",
         "id": 226,
-        "label": "2"
+        "value": "Absolute power in waveguide"
     },
     {
-        "value": "Calibration factor and effective efficiency in coaxial line",
+        "label": "3",
         "id": 227,
-        "label": "3"
+        "value": "Calibration factor and effective efficiency in coaxial line"
     },
     {
-        "value": "Calibration factor and effective efficiency in waveguide",
+        "label": "4",
         "id": 228,
-        "label": "4"
+        "value": "Calibration factor and effective efficiency in waveguide"
     },
     {
-        "value": "Non-CW power (absolute or relative)",
+        "label": "5",
         "id": 229,
-        "label": "5"
+        "value": "Non-CW power (absolute or relative)"
     },
     {
-        "value": "Power measurements in balanced lines",
+        "label": "6",
         "id": 230,
-        "label": "6"
+        "value": "Power measurements in balanced lines"
     },
     {
-        "value": "Reflection coefficient in coaxial line (values in linear terms)",
+        "label": "1",
         "id": 231,
-        "label": "1"
+        "value": "Reflection coefficient in coaxial line (values in linear terms)"
     },
     {
-        "value": "Reflection coefficient in waveguide (values in linear terms)",
+        "label": "2",
         "id": 232,
-        "label": "2"
+        "value": "Reflection coefficient in waveguide (values in linear terms)"
     },
     {
-        "value": "Attenuation in coaxial line (values in dB)",
+        "label": "3",
         "id": 233,
-        "label": "3"
+        "value": "Attenuation in coaxial line (values in dB)"
     },
     {
-        "value": "Attenuation in waveguide (values in dB)",
+        "label": "4",
         "id": 234,
-        "label": "4"
+        "value": "Attenuation in waveguide (values in dB)"
     },
     {
-        "value": "Directivity, effective source match",
+        "label": "5",
         "id": 235,
-        "label": "5"
+        "value": "Directivity, effective source match"
     },
     {
-        "value": "Reflection and attenuation measurements in balanced lines",
+        "label": "6",
         "id": 236,
-        "label": "6"
+        "value": "Reflection and attenuation measurements in balanced lines"
     },
     {
-        "value": "Reflection coefficient in coaxial line (real and imaginary)",
+        "label": "1",
         "id": 237,
-        "label": "1"
+        "value": "Reflection coefficient in coaxial line (real and imaginary)"
     },
     {
-        "value": "Reflection coefficient in waveguide (real and imaginary)",
+        "label": "2",
         "id": 238,
-        "label": "2"
+        "value": "Reflection coefficient in waveguide (real and imaginary)"
     },
     {
-        "value": "Transmission coefficient in coaxial line (real and imaginary)",
+        "label": "3",
         "id": 239,
-        "label": "3"
+        "value": "Transmission coefficient in coaxial line (real and imaginary)"
     },
     {
-        "value": "Transmission coefficient in waveguide (real and imaginary)",
+        "label": "4",
         "id": 240,
-        "label": "4"
+        "value": "Transmission coefficient in waveguide (real and imaginary)"
     },
     {
-        "value": "Directivity, effective source match",
+        "label": "5",
         "id": 241,
-        "label": "5"
+        "value": "Directivity, effective source match"
     },
     {
-        "value": "Reflection coefficient for common mode systems",
+        "label": "6",
         "id": 242,
-        "label": "6"
+        "value": "Reflection coefficient for common mode systems"
     },
     {
-        "value": "Transmission coefficient for common mode systems",
+        "label": "7",
         "id": 243,
-        "label": "7"
+        "value": "Transmission coefficient for common mode systems"
     },
     {
-        "value": "Noise temperature or excess noise ratio in coaxial line",
+        "label": "1",
         "id": 244,
-        "label": "1"
+        "value": "Noise temperature or excess noise ratio in coaxial line"
     },
     {
-        "value": "Noise temperature or excess noise ratio in waveguide",
+        "label": "2",
         "id": 245,
-        "label": "2"
+        "value": "Noise temperature or excess noise ratio in waveguide"
     },
     {
-        "value": "Amplifier noise parameters",
+        "label": "3",
         "id": 246,
-        "label": "3"
+        "value": "Amplifier noise parameters"
     },
     {
-        "value": "Phase noise",
+        "label": "4",
         "id": 247,
-        "label": "4"
+        "value": "Phase noise"
     },
     {
-        "value": "Radio brightness temperature, spectral radiance in free space",
+        "label": "5",
         "id": 248,
-        "label": "5"
+        "value": "Radio brightness temperature, spectral radiance in free space"
     },
     {
-        "value": "Antenna factor",
+        "label": "1",
         "id": 249,
-        "label": "1"
+        "value": "Antenna factor"
     },
     {
-        "value": "Antenna gain",
+        "label": "2",
         "id": 250,
-        "label": "2"
+        "value": "Antenna gain"
     },
     {
-        "value": "Other properties (pattern, beam width, …)",
+        "label": "3",
         "id": 251,
-        "label": "3"
+        "value": "Other properties (pattern, beam width, …)"
     },
     {
-        "value": "Pulse amplitude",
+        "label": "1",
         "id": 252,
-        "label": "1"
+        "value": "Pulse amplitude"
     },
     {
-        "value": "Pulse time parameters",
+        "label": "2",
         "id": 253,
-        "label": "2"
+        "value": "Pulse time parameters"
     },
     {
-        "value": "Modulation, AM and FM",
+        "label": "3",
         "id": 254,
-        "label": "3"
+        "value": "Modulation, AM and FM"
     },
     {
-        "value": "Distorsion and harmonic content",
+        "label": "4",
         "id": 255,
-        "label": "4"
+        "value": "Distorsion and harmonic content"
     },
     {
-        "value": "RF-DC difference",
+        "label": "1",
         "id": 256,
-        "label": "1"
+        "value": "RF-DC difference"
     },
     {
-        "value": "RF voltage sources",
+        "label": "2",
         "id": 257,
-        "label": "2"
+        "value": "RF voltage sources"
     },
     {
-        "value": "RF voltage meters",
+        "label": "3",
         "id": 258,
-        "label": "3"
+        "value": "RF voltage meters"
     },
     {
-        "value": "RF current",
+        "label": "4",
         "id": 259,
-        "label": "4"
+        "value": "RF current"
     },
     {
-        "value": "RF transfer impedance",
+        "label": "5",
         "id": 260,
-        "label": "5"
+        "value": "RF transfer impedance"
     },
     {
-        "value": "RF voltage division factor",
+        "label": "6",
         "id": 261,
-        "label": "6"
+        "value": "RF voltage division factor"
     },
     {
-        "value": "RF coupling factor",
+        "label": "7",
         "id": 262,
-        "label": "7"
+        "value": "RF coupling factor"
     },
     {
-        "value": "Flatness of RF voltage sources",
+        "label": "8",
         "id": 263,
-        "label": "8"
+        "value": "Flatness of RF voltage sources"
     },
     {
-        "value": "Flatness of RF voltage meters",
+        "label": "9",
         "id": 264,
-        "label": "9"
+        "value": "Flatness of RF voltage meters"
     },
     {
-        "value": "Resistance or conductance",
+        "label": "1",
         "id": 265,
-        "label": "1"
+        "value": "Resistance or conductance"
     },
     {
-        "value": "Inductance",
+        "label": "2",
         "id": 266,
-        "label": "2"
+        "value": "Inductance"
     },
     {
-        "value": "Capacitance",
+        "label": "3",
         "id": 267,
-        "label": "3"
+        "value": "Capacitance"
     },
     {
-        "value": "Quality factor",
+        "label": "4",
         "id": 268,
-        "label": "4"
+        "value": "Quality factor"
     },
     {
-        "value": "Mechanical dimensions",
+        "label": "1",
         "id": 269,
-        "label": "1"
+        "value": "Mechanical dimensions"
     },
     {
-        "value": "Electrical parameters",
+        "label": "2",
         "id": 270,
-        "label": "2"
+        "value": "Electrical parameters"
     },
     {
-        "value": "(Laser, length) interferometer (system, optics, refractometer)",
+        "label": "1",
         "id": 271,
-        "label": "1"
+        "value": "(Laser, length) interferometer (system, optics, refractometer)"
     },
     {
-        "value": "EDM instrument",
+        "label": "2",
         "id": 272,
-        "label": "2"
+        "value": "EDM instrument"
     },
     {
-        "value": "One-dimension measuring machine",
+        "label": "3",
         "id": 273,
-        "label": "3"
+        "value": "One-dimension measuring machine"
     },
     {
-        "value": "Height measuring instrument",
+        "label": "4",
         "id": 274,
-        "label": "4"
+        "value": "Height measuring instrument"
     },
     {
-        "value": "One-dimension displacement transducer or actuator (LVDT, PZT, etc.)",
+        "label": "5",
         "id": 275,
-        "label": "5"
+        "value": "One-dimension displacement transducer or actuator (LVDT, PZT, etc.)"
     },
     {
-        "value": "Gauge block comparators",
+        "label": "6",
         "id": 276,
-        "label": "6"
+        "value": "Gauge block comparators"
     },
     {
-        "value": "Dial-indicator tester",
+        "label": "7",
         "id": 277,
-        "label": "7"
+        "value": "Dial-indicator tester"
     },
     {
-        "value": "Gauge block",
+        "label": "1",
         "id": 278,
-        "label": "1"
+        "value": "Gauge block"
     },
     {
-        "value": "Length bar (long gauge block)",
+        "label": "2",
         "id": 279,
-        "label": "2"
+        "value": "Length bar (long gauge block)"
     },
     {
-        "value": "Plane or thread micrometer setting rod",
+        "label": "3",
         "id": 280,
-        "label": "3"
+        "value": "Plane or thread micrometer setting rod"
     },
     {
-        "value": "Step gauge",
+        "label": "4",
         "id": 281,
-        "label": "4"
+        "value": "Step gauge"
     },
     {
-        "value": "Gap gauge",
+        "label": "5",
         "id": 282,
-        "label": "5"
+        "value": "Gap gauge"
     },
     {
-        "value": "Feeler (thickness) gauge",
+        "label": "6",
         "id": 283,
-        "label": "6"
+        "value": "Feeler (thickness) gauge"
     },
     {
-        "value": "Precision line scale",
+        "label": "1",
         "id": 284,
-        "label": "1"
+        "value": "Precision line scale"
     },
     {
-        "value": "Stage micrometer",
+        "label": "2",
         "id": 285,
-        "label": "2"
+        "value": "Stage micrometer"
     },
     {
-        "value": "Grid plate",
+        "label": "3",
         "id": 286,
-        "label": "3"
+        "value": "Grid plate"
     },
     {
-        "value": "One-dimension grating",
+        "label": "4",
         "id": 287,
-        "label": "4"
+        "value": "One-dimension grating"
     },
     {
-        "value": "Two-dimension grating",
+        "label": "5",
         "id": 288,
-        "label": "5"
+        "value": "Two-dimension grating"
     },
     {
-        "value": "Linewidth standard",
+        "label": "6",
         "id": 289,
-        "label": "6"
+        "value": "Linewidth standard"
     },
     {
-        "value": "(Surveyor, engineer, pi) tape, (geodetic) wire",
+        "label": "7",
         "id": 290,
-        "label": "7"
+        "value": "(Surveyor, engineer, pi) tape, (geodetic) wire"
     },
     {
-        "value": "Surveyor levelling rod",
+        "label": "8",
         "id": 291,
-        "label": "8"
+        "value": "Surveyor levelling rod"
     },
     {
-        "value": "Engineer or machinist scale, steel",
+        "label": "9",
         "id": 292,
-        "label": "9"
+        "value": "Engineer or machinist scale, steel"
     },
     {
-        "value": "External cylinder (plug, piston, pin, wire)",
+        "label": "1",
         "id": 293,
-        "label": "1"
+        "value": "External cylinder (plug, piston, pin, wire)"
     },
     {
-        "value": "Internal cylinder (ring)",
+        "label": "2",
         "id": 294,
-        "label": "2"
+        "value": "Internal cylinder (ring)"
     },
     {
-        "value": "Sphere (ball)",
+        "label": "3",
         "id": 295,
-        "label": "3"
+        "value": "Sphere (ball)"
     },
     {
-        "value": "Optical polygon",
+        "label": "1",
         "id": 296,
-        "label": "1"
+        "value": "Optical polygon"
     },
     {
-        "value": "Index table",
+        "label": "2",
         "id": 297,
-        "label": "2"
+        "value": "Index table"
     },
     {
-        "value": "Rotary table, rotary encoder scale",
+        "label": "3",
         "id": 298,
-        "label": "3"
+        "value": "Rotary table, rotary encoder scale"
     },
     {
-        "value": "Sine bar or table",
+        "label": "1",
         "id": 299,
-        "label": "1"
+        "value": "Sine bar or table"
     },
     {
-        "value": "Autocollimator",
+        "label": "1",
         "id": 300,
-        "label": "1"
+        "value": "Autocollimator"
     },
     {
-        "value": "Electronic level",
+        "label": "2",
         "id": 301,
-        "label": "2"
+        "value": "Electronic level"
     },
     {
-        "value": "Clinometer",
+        "label": "3",
         "id": 302,
-        "label": "3"
+        "value": "Clinometer"
     },
     {
-        "value": "Spirit (bubble) level",
+        "label": "4",
         "id": 303,
-        "label": "4"
+        "value": "Spirit (bubble) level"
     },
     {
-        "value": "Theodolite",
+        "label": "5",
         "id": 304,
-        "label": "5"
+        "value": "Theodolite"
     },
     {
-        "value": "(Bevel) protractor",
+        "label": "6",
         "id": 305,
-        "label": "6"
+        "value": "(Bevel) protractor"
     },
     {
-        "value": "Squareness tester",
+        "label": "7",
         "id": 306,
-        "label": "7"
+        "value": "Squareness tester"
     },
     {
-        "value": "Angle block",
+        "label": "1",
         "id": 307,
-        "label": "1"
+        "value": "Angle block"
     },
     {
-        "value": "90° (steel, granite, try) square",
+        "label": "2",
         "id": 308,
-        "label": "2"
+        "value": "90° (steel, granite, try) square"
     },
     {
-        "value": "90° cylinder square",
+        "label": "3",
         "id": 309,
-        "label": "3"
+        "value": "90° cylinder square"
     },
     {
-        "value": "Cone (taper) gauge",
+        "label": "4",
         "id": 310,
-        "label": "4"
+        "value": "Cone (taper) gauge"
     },
     {
-        "value": "Optical square (pentaprism)",
+        "label": "1",
         "id": 311,
-        "label": "1"
+        "value": "Optical square (pentaprism)"
     },
     {
-        "value": "Retroreflection (cube-corner, cat-eye) prism",
+        "label": "2",
         "id": 312,
-        "label": "2"
+        "value": "Retroreflection (cube-corner, cat-eye) prism"
     },
     {
-        "value": "Optical flat",
+        "label": "1",
         "id": 313,
-        "label": "1"
+        "value": "Optical flat"
     },
     {
-        "value": "Optical parallel or wedge",
+        "label": "2",
         "id": 314,
-        "label": "2"
+        "value": "Optical parallel or wedge"
     },
     {
-        "value": "Surface plate",
+        "label": "3",
         "id": 315,
-        "label": "3"
+        "value": "Surface plate"
     },
     {
-        "value": "External cylinder",
+        "label": "1",
         "id": 316,
-        "label": "1"
+        "value": "External cylinder"
     },
     {
-        "value": "Internal cylinder",
+        "label": "2",
         "id": 317,
-        "label": "2"
+        "value": "Internal cylinder"
     },
     {
-        "value": "Sphere (hemisphere)",
+        "label": "3",
         "id": 318,
-        "label": "3"
+        "value": "Sphere (hemisphere)"
     },
     {
-        "value": "Magnification standard (e.g. flick standard)",
+        "label": "4",
         "id": 319,
-        "label": "4"
+        "value": "Magnification standard (e.g. flick standard)"
     },
     {
-        "value": "Straight edge",
+        "label": "1",
         "id": 320,
-        "label": "1"
+        "value": "Straight edge"
     },
     {
-        "value": "Cylindrical straightness standard",
+        "label": "2",
         "id": 321,
-        "label": "2"
+        "value": "Cylindrical straightness standard"
     },
     {
-        "value": "Straightness of guideway",
+        "label": "3",
         "id": 322,
-        "label": "3"
+        "value": "Straightness of guideway"
     },
     {
-        "value": "External cylinder",
+        "label": "1",
         "id": 323,
-        "label": "1"
+        "value": "External cylinder"
     },
     {
-        "value": "Internal cylinder",
+        "label": "2",
         "id": 324,
-        "label": "2"
+        "value": "Internal cylinder"
     },
     {
-        "value": "Lens, radius standards",
+        "label": "1",
         "id": 325,
-        "label": "1"
+        "value": "Lens, radius standards"
     },
     {
-        "value": "(Groove) depth (step height) standard",
+        "label": "1",
         "id": 326,
-        "label": "1"
+        "value": "(Groove) depth (step height) standard"
     },
     {
-        "value": "Tip-condition standard",
+        "label": "2",
         "id": 327,
-        "label": "2"
+        "value": "Tip-condition standard"
     },
     {
-        "value": "Spacing standard",
+        "label": "3",
         "id": 328,
-        "label": "3"
+        "value": "Spacing standard"
     },
     {
-        "value": "Roughness standard",
+        "label": "4",
         "id": 329,
-        "label": "4"
+        "value": "Roughness standard"
     },
     {
-        "value": "Profile coordinate standard",
+        "label": "5",
         "id": 330,
-        "label": "5"
+        "value": "Profile coordinate standard"
     },
     {
-        "value": "Soft gauge standard",
+        "label": "6",
         "id": 331,
-        "label": "6"
+        "value": "Soft gauge standard"
     },
     {
-        "value": "Thread plug, plain",
+        "label": "1",
         "id": 332,
-        "label": "1"
+        "value": "Thread plug, plain"
     },
     {
-        "value": "Thread plug, tapered",
+        "label": "2",
         "id": 333,
-        "label": "2"
+        "value": "Thread plug, tapered"
     },
     {
-        "value": "Thread ring, plain",
+        "label": "3",
         "id": 334,
-        "label": "3"
+        "value": "Thread ring, plain"
     },
     {
-        "value": "Thread ring, tapered",
+        "label": "4",
         "id": 335,
-        "label": "4"
+        "value": "Thread ring, tapered"
     },
     {
-        "value": "Internal API screw thread gauge",
+        "label": "5",
         "id": 336,
-        "label": "5"
+        "value": "Internal API screw thread gauge"
     },
     {
-        "value": "External API screw thread gauge",
+        "label": "6",
         "id": 337,
-        "label": "6"
+        "value": "External API screw thread gauge"
     },
     {
-        "value": "Involute gear",
+        "label": "1",
         "id": 338,
-        "label": "1"
+        "value": "Involute gear"
     },
     {
-        "value": "Bevel gear",
+        "label": "2",
         "id": 339,
-        "label": "2"
+        "value": "Bevel gear"
     },
     {
-        "value": "Gear pitch master",
+        "label": "3",
         "id": 340,
-        "label": "3"
+        "value": "Gear pitch master"
     },
     {
-        "value": "Gear lead master",
+        "label": "4",
         "id": 341,
-        "label": "4"
+        "value": "Gear lead master"
     },
     {
-        "value": "Gear involute master",
+        "label": "5",
         "id": 342,
-        "label": "5"
+        "value": "Gear involute master"
     },
     {
-        "value": "Ball (hole, bore) plate",
+        "label": "1",
         "id": 343,
-        "label": "1"
+        "value": "Ball (hole, bore) plate"
     },
     {
-        "value": "Ball bar",
+        "label": "2",
         "id": 344,
-        "label": "2"
+        "value": "Ball bar"
     },
     {
-        "value": "Large CMM artefact",
+        "label": "3",
         "id": 345,
-        "label": "3"
+        "value": "Large CMM artefact"
     },
     {
-        "value": "Reference software",
+        "label": "4",
         "id": 346,
-        "label": "4"
+        "value": "Reference software"
     },
     {
-        "value": "Test circle for imaging probing systems",
+        "label": "5",
         "id": 347,
-        "label": "5"
+        "value": "Test circle for imaging probing systems"
     },
     {
-        "value": "Measuring projector",
+        "label": "1",
         "id": 348,
-        "label": "1"
+        "value": "Measuring projector"
     },
     {
-        "value": "Measuring microscope",
+        "label": "2",
         "id": 349,
-        "label": "2"
+        "value": "Measuring microscope"
     },
     {
-        "value": "CMM",
+        "label": "3",
         "id": 350,
-        "label": "3"
+        "value": "CMM"
     },
     {
-        "value": "Laser tracking measuring system",
+        "label": "4",
         "id": 351,
-        "label": "4"
+        "value": "Laser tracking measuring system"
     },
     {
-        "value": "Motion (translation, angle) stage",
+        "label": "5",
         "id": 352,
-        "label": "5"
+        "value": "Motion (translation, angle) stage"
     },
     {
-        "value": "Profile instruments",
+        "label": "6",
         "id": 353,
-        "label": "6"
+        "value": "Profile instruments"
     },
     {
-        "value": "(Flatness, wavefront) interferometer",
+        "label": "7",
         "id": 354,
-        "label": "7"
+        "value": "(Flatness, wavefront) interferometer"
     },
     {
-        "value": "Form measuring machine",
+        "label": "8",
         "id": 355,
-        "label": "8"
+        "value": "Form measuring machine"
     },
     {
-        "value": "Hardness indenter (Rockwell, Vickers)",
+        "label": "1",
         "id": 356,
-        "label": "1"
+        "value": "Hardness indenter (Rockwell, Vickers)"
     },
     {
-        "value": "External micrometer",
+        "label": "1",
         "id": 357,
-        "label": "1"
+        "value": "External micrometer"
     },
     {
-        "value": "Micrometer head",
+        "label": "2",
         "id": 358,
-        "label": "2"
+        "value": "Micrometer head"
     },
     {
-        "value": "Depth micrometer",
+        "label": "3",
         "id": 359,
-        "label": "3"
+        "value": "Depth micrometer"
     },
     {
-        "value": "Caliper",
+        "label": "4",
         "id": 360,
-        "label": "4"
+        "value": "Caliper"
     },
     {
-        "value": "Depth gauge",
+        "label": "5",
         "id": 361,
-        "label": "5"
+        "value": "Depth gauge"
     },
     {
-        "value": "Internal two-point (bore) micrometer",
+        "label": "6",
         "id": 362,
-        "label": "6"
+        "value": "Internal two-point (bore) micrometer"
     },
     {
-        "value": "Internal three-point (bore) micrometer",
+        "label": "7",
         "id": 363,
-        "label": "7"
+        "value": "Internal three-point (bore) micrometer"
     },
     {
-        "value": "Dial gauge",
+        "label": "8",
         "id": 364,
-        "label": "8"
+        "value": "Dial gauge"
     },
     {
-        "value": "Snap gauge (internal, external)",
+        "label": "9",
         "id": 365,
-        "label": "9"
+        "value": "Snap gauge (internal, external)"
     },
     {
-        "value": "Piston - cylinder assembly",
+        "label": "1",
         "id": 366,
-        "label": "1"
+        "value": "Piston - cylinder assembly"
     },
     {
-        "value": "Thermal expansion artefact",
+        "label": "1",
         "id": 367,
-        "label": "1"
+        "value": "Thermal expansion artefact"
     },
     {
-        "value": "Geodesic baseline",
+        "label": "1",
         "id": 368,
-        "label": "1"
+        "value": "Geodesic baseline"
     },
     {
-        "value": "Standard particle",
+        "label": "1",
         "id": 369,
-        "label": "1"
+        "value": "Standard particle"
     },
     {
-        "value": "Sieve or mesh opening",
+        "label": "2",
         "id": 370,
-        "label": "2"
+        "value": "Sieve or mesh opening"
     },
     {
-        "value": "Layer thickness standard",
+        "label": "1",
         "id": 371,
-        "label": "1"
+        "value": "Layer thickness standard"
     },
     {
-        "value": "Frequency stabilized laser",
+        "label": "1",
         "id": 374,
-        "label": "1"
+        "value": "Frequency stabilized laser"
     },
     {
-        "value": "Spectral lamp",
+        "label": "1",
         "id": 375,
-        "label": "1"
+        "value": "Spectral lamp"
     },
     {
-        "value": "Density of solid",
+        "label": "1",
         "id": 376,
-        "label": "1"
+        "value": "Density of solid"
     },
     {
-        "value": "Volume of solid",
+        "label": "2",
         "id": 377,
-        "label": "2"
+        "value": "Volume of solid"
     },
     {
-        "value": "Density measuring device",
+        "label": "1",
         "id": 378,
-        "label": "1"
+        "value": "Density measuring device"
     },
     {
-        "value": "Density of liquid",
+        "label": "2",
         "id": 379,
-        "label": "2"
+        "value": "Density of liquid"
     },
     {
-        "value": "Refractive index of liquid",
+        "label": "3",
         "id": 380,
-        "label": "3"
+        "value": "Refractive index of liquid"
     },
     {
-        "value": "Liquid flow",
+        "label": "1",
         "id": 381,
-        "label": "1"
+        "value": "Liquid flow"
     },
     {
-        "value": "Gas flow",
+        "label": "2",
         "id": 382,
-        "label": "2"
+        "value": "Gas flow"
     },
     {
-        "value": "Quantity of fluid",
+        "label": "3",
         "id": 383,
-        "label": "3"
+        "value": "Quantity of fluid"
     },
     {
-        "value": "Flow speed",
+        "label": "4",
         "id": 384,
-        "label": "4"
+        "value": "Flow speed"
     },
     {
-        "value": "Multiphase flow",
+        "label": "5",
         "id": 385,
-        "label": "5"
+        "value": "Multiphase flow"
     },
     {
-        "value": "Heat flow",
+        "label": "6",
         "id": 386,
-        "label": "6"
+        "value": "Heat flow"
     },
     {
-        "value": "Tension",
+        "label": "1",
         "id": 387,
-        "label": "1"
+        "value": "Tension"
     },
     {
-        "value": "Compression",
+        "label": "1",
         "id": 388,
-        "label": "1"
+        "value": "Compression"
     },
     {
-        "value": "Tension and compression",
+        "label": "1",
         "id": 389,
-        "label": "1"
+        "value": "Tension and compression"
     },
     {
-        "value": "Mass standard",
+        "label": "1",
         "id": 390,
-        "label": "1"
+        "value": "Mass standard"
     },
     {
-        "value": "Gas medium",
+        "label": "1",
         "id": 391,
-        "label": "1"
+        "value": "Gas medium"
     },
     {
-        "value": "Liquid medium",
+        "label": "2",
         "id": 392,
-        "label": "2"
+        "value": "Liquid medium"
     },
     {
-        "value": "Gas medium",
+        "label": "1",
         "id": 393,
-        "label": "1"
+        "value": "Gas medium"
     },
     {
-        "value": "Liquid medium",
+        "label": "2",
         "id": 394,
-        "label": "2"
+        "value": "Liquid medium"
     },
     {
-        "value": "Gas medium",
+        "label": "1",
         "id": 395,
-        "label": "1"
+        "value": "Gas medium"
     },
     {
-        "value": "Liquid medium",
+        "label": "2",
         "id": 396,
-        "label": "2"
+        "value": "Liquid medium"
     },
     {
-        "value": "Gas medium",
+        "label": "1",
         "id": 397,
-        "label": "1"
+        "value": "Gas medium"
     },
     {
-        "value": "Liquid medium",
+        "label": "2",
         "id": 398,
-        "label": "2"
+        "value": "Liquid medium"
     },
     {
-        "value": "Torque",
+        "label": "1",
         "id": 399,
-        "label": "1"
+        "value": "Torque"
     },
     {
-        "value": "Certified Newtonian reference liquids",
+        "label": "1",
         "id": 400,
-        "label": "1"
+        "value": "Certified Newtonian reference liquids"
     },
     {
-        "value": "Capillary viscometers",
+        "label": "1",
         "id": 401,
-        "label": "1"
+        "value": "Capillary viscometers"
     },
     {
-        "value": "Viscosity measurement of Newtonian liquids",
+        "label": "1",
         "id": 402,
-        "label": "1"
+        "value": "Viscosity measurement of Newtonian liquids"
     },
     {
-        "value": "Hardness",
+        "label": "1",
         "id": 403,
-        "label": "1"
+        "value": "Hardness"
     },
     {
-        "value": "Gravity",
+        "label": "1",
         "id": 404,
-        "label": "1"
+        "value": "Gravity"
     },
     {
-        "value": "Broad band detector",
+        "label": "1",
         "id": 405,
-        "label": "1"
+        "value": "Broad band detector"
     },
     {
-        "value": "UV radiometer",
+        "label": "0",
         "id": 406,
-        "label": "0"
+        "value": "UV radiometer"
     },
     {
-        "value": "Solar spectroradiometer",
+        "label": "0",
         "id": 407,
-        "label": "0"
+        "value": "Solar spectroradiometer"
     },
     {
-        "value": "Broad band detector",
+        "label": "2",
         "id": 408,
-        "label": "2"
+        "value": "Broad band detector"
     },
     {
-        "value": "Spectroradiometer",
+        "label": "3",
         "id": 409,
-        "label": "3"
+        "value": "Spectroradiometer"
     },
     {
-        "value": "Spectroradiometer",
+        "label": "0",
         "id": 410,
-        "label": "0"
+        "value": "Spectroradiometer"
     },
     {
-        "value": "General detector",
+        "label": "0",
         "id": 411,
-        "label": "0"
+        "value": "General detector"
     },
     {
-        "value": "General detector",
+        "label": "0",
         "id": 412,
-        "label": "0"
+        "value": "General detector"
     },
     {
-        "value": "General detector",
+        "label": "0",
         "id": 413,
-        "label": "0"
+        "value": "General detector"
     },
     {
-        "value": "General detector",
+        "label": "0",
         "id": 414,
-        "label": "0"
+        "value": "General detector"
     },
     {
-        "value": "Broadband detector",
+        "label": "1",
         "id": 415,
-        "label": "1"
+        "value": "Broadband detector"
     },
     {
-        "value": "Broadband detector",
+        "label": "0",
         "id": 416,
-        "label": "0"
+        "value": "Broadband detector"
     },
     {
-        "value": "UV radiometer",
+        "label": "0",
         "id": 417,
-        "label": "0"
+        "value": "UV radiometer"
     },
     {
-        "value": "Tungsten lamp",
+        "label": "1",
         "id": 418,
-        "label": "1"
+        "value": "Tungsten lamp"
     },
     {
-        "value": "Deuterium lamp",
+        "label": "2",
         "id": 419,
-        "label": "2"
+        "value": "Deuterium lamp"
     },
     {
-        "value": "Tungsten lamp",
+        "label": "1",
         "id": 420,
-        "label": "1"
+        "value": "Tungsten lamp"
     },
     {
-        "value": "Deuterium lamp",
+        "label": "2",
         "id": 421,
-        "label": "2"
+        "value": "Deuterium lamp"
     },
     {
-        "value": "General source",
+        "label": "3",
         "id": 422,
-        "label": "3"
+        "value": "General source"
     },
     {
-        "value": "Laser",
+        "label": "1",
         "id": 423,
-        "label": "1"
+        "value": "Laser"
     },
     {
-        "value": "Tungsten lamp",
+        "label": "1",
         "id": 424,
-        "label": "1"
+        "value": "Tungsten lamp"
     },
     {
-        "value": "Deuterium lamp",
+        "label": "2",
         "id": 425,
-        "label": "2"
+        "value": "Deuterium lamp"
     },
     {
-        "value": "General source",
+        "label": "0",
         "id": 426,
-        "label": "0"
+        "value": "General source"
     },
     {
-        "value": "Tungsten lamp",
+        "label": "1",
         "id": 427,
-        "label": "1"
+        "value": "Tungsten lamp"
     },
     {
-        "value": "Tungsten lamp",
+        "label": "0",
         "id": 428,
-        "label": "0"
+        "value": "Tungsten lamp"
     },
     {
-        "value": "Tungsten lamp",
+        "label": "1",
         "id": 429,
-        "label": "1"
+        "value": "Tungsten lamp"
     },
     {
-        "value": "Colour temperature meter",
+        "label": "0",
         "id": 430,
-        "label": "0"
+        "value": "Colour temperature meter"
     },
     {
-        "value": "General source, colour space: x, y",
+        "label": "0",
         "id": 431,
-        "label": "0"
+        "value": "General source, colour space: x, y"
     },
     {
-        "value": "General source, colour space: u, v",
+        "label": "1",
         "id": 432,
-        "label": "1"
+        "value": "General source, colour space: u, v"
     },
     {
-        "value": "General source, colour space: u-prime, v-prime",
+        "label": "2",
         "id": 433,
-        "label": "2"
+        "value": "General source, colour space: u-prime, v-prime"
     },
     {
-        "value": "Display, colour space: L*a*b",
+        "label": "3",
         "id": 434,
-        "label": "3"
+        "value": "Display, colour space: L*a*b"
     },
     {
-        "value": "Colorimeter",
+        "label": "0",
         "id": 435,
-        "label": "0"
+        "value": "Colorimeter"
     },
     {
-        "value": "General source",
+        "label": "0",
         "id": 436,
-        "label": "0"
+        "value": "General source"
     },
     {
-        "value": "Blackbody",
+        "label": "0",
         "id": 437,
-        "label": "0"
+        "value": "Blackbody"
     },
     {
-        "value": "General source",
+        "label": "0",
         "id": 438,
-        "label": "0"
+        "value": "General source"
     },
     {
-        "value": "LED",
+        "label": "1",
         "id": 439,
-        "label": "1"
+        "value": "LED"
     },
     {
-        "value": "Fibre optic power meter",
+        "label": "0",
         "id": 440,
-        "label": "0"
+        "value": "Fibre optic power meter"
     },
     {
-        "value": "Length, optical fibre",
+        "label": "0",
         "id": 441,
-        "label": "0"
+        "value": "Length, optical fibre"
     },
     {
-        "value": "Location offset, OTDR",
+        "label": "1",
         "id": 442,
-        "label": "1"
+        "value": "Location offset, OTDR"
     },
     {
-        "value": "Fibre optic source",
+        "label": "0",
         "id": 445,
-        "label": "0"
+        "value": "Fibre optic source"
     },
     {
-        "value": "Optical spectrum analyser",
+        "label": "1",
         "id": 446,
-        "label": "1"
+        "value": "Optical spectrum analyser"
     },
     {
-        "value": "Wavelength meter",
+        "label": "2",
         "id": 447,
-        "label": "2"
+        "value": "Wavelength meter"
     },
     {
-        "value": "Spectral attenuation, optical fibre",
+        "label": "0",
         "id": 448,
-        "label": "0"
+        "value": "Spectral attenuation, optical fibre"
     },
     {
-        "value": "Loss, optical fibre component",
+        "label": "1",
         "id": 449,
-        "label": "1"
+        "value": "Loss, optical fibre component"
     },
     {
-        "value": "Dispersion, optical fibre",
+        "label": "0",
         "id": 450,
-        "label": "0"
+        "value": "Dispersion, optical fibre"
     },
     {
-        "value": "Zero dispersion wavelength, optical fibre",
+        "label": "1",
         "id": 451,
-        "label": "1"
+        "value": "Zero dispersion wavelength, optical fibre"
     },
     {
-        "value": "Dispersion slope, optical fibre",
+        "label": "2",
         "id": 452,
-        "label": "2"
+        "value": "Dispersion slope, optical fibre"
     },
     {
-        "value": "Spectrally-neutral material",
+        "label": "1",
         "id": 453,
-        "label": "1"
+        "value": "Spectrally-neutral material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 454,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 455,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 456,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 457,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "Fluorescent material",
+        "label": "1",
         "id": 458,
-        "label": "1"
+        "value": "Fluorescent material"
     },
     {
-        "value": "Fluorescent material",
+        "label": "0",
         "id": 459,
-        "label": "0"
+        "value": "Fluorescent material"
     },
     {
-        "value": "Spectrally-selective transmitting material",
+        "label": "0",
         "id": 460,
-        "label": "0"
+        "value": "Spectrally-selective transmitting material"
     },
     {
-        "value": "Spectrally-selective reflecting material",
+        "label": "1",
         "id": 461,
-        "label": "1"
+        "value": "Spectrally-selective reflecting material"
     },
     {
-        "value": "Solid material",
+        "label": "0",
         "id": 462,
-        "label": "0"
+        "value": "Solid material"
     },
     {
-        "value": "Solid material",
+        "label": "0",
         "id": 463,
-        "label": "0"
+        "value": "Solid material"
     },
     {
-        "value": "Liquid material",
+        "label": "1",
         "id": 464,
-        "label": "1"
+        "value": "Liquid material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 465,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "Spectrally-neutral material",
+        "label": "1",
         "id": 466,
-        "label": "1"
+        "value": "Spectrally-neutral material"
     },
     {
-        "value": "Spectrally-neutral material",
+        "label": "1",
         "id": 467,
-        "label": "1"
+        "value": "Spectrally-neutral material"
     },
     {
-        "value": "Spectrally-neutral material",
+        "label": "1",
         "id": 468,
-        "label": "1"
+        "value": "Spectrally-neutral material"
     },
     {
-        "value": "Spectrally-neutral material",
+        "label": "1",
         "id": 469,
-        "label": "1"
+        "value": "Spectrally-neutral material"
     },
     {
-        "value": "Spectrally-neutral material",
+        "label": "1",
         "id": 470,
-        "label": "1"
+        "value": "Spectrally-neutral material"
     },
     {
-        "value": "Spectrally-neutral material",
+        "label": "1",
         "id": 471,
-        "label": "1"
+        "value": "Spectrally-neutral material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 472,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 473,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "Fluorescent material",
+        "label": "1",
         "id": 474,
-        "label": "1"
+        "value": "Fluorescent material"
     },
     {
-        "value": "Diffusely reflecting material",
+        "label": "2",
         "id": 475,
-        "label": "2"
+        "value": "Diffusely reflecting material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 476,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 477,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 478,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "Fluorescent material",
+        "label": "1",
         "id": 479,
-        "label": "1"
+        "value": "Fluorescent material"
     },
     {
-        "value": "Diffusely reflecting material",
+        "label": "2",
         "id": 480,
-        "label": "2"
+        "value": "Diffusely reflecting material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 481,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 482,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 483,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 484,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 485,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "General material",
+        "label": "0",
         "id": 486,
-        "label": "0"
+        "value": "General material"
     },
     {
-        "value": "Tungsten lamp",
+        "label": "1",
         "id": 487,
-        "label": "1"
+        "value": "Tungsten lamp"
     },
     {
-        "value": "Tungsten source",
+        "label": "1",
         "id": 488,
-        "label": "1"
+        "value": "Tungsten source"
     },
     {
-        "value": "Tungsten lamp",
+        "label": "1",
         "id": 489,
-        "label": "1"
+        "value": "Tungsten lamp"
     },
     {
-        "value": "LED",
+        "label": "2",
         "id": 490,
-        "label": "2"
+        "value": "LED"
     },
     {
-        "value": "Tungsten lamp",
+        "label": "1",
         "id": 491,
-        "label": "1"
+        "value": "Tungsten lamp"
     },
     {
-        "value": "Tungsten-based source",
+        "label": "1",
         "id": 492,
-        "label": "1"
+        "value": "Tungsten-based source"
     },
     {
-        "value": "Luminance meter",
+        "label": "0",
         "id": 493,
-        "label": "0"
+        "value": "Luminance meter"
     },
     {
-        "value": "LED",
+        "label": "1",
         "id": 494,
-        "label": "1"
+        "value": "LED"
     },
     {
-        "value": "General source",
+        "label": "0",
         "id": 495,
-        "label": "0"
+        "value": "General source"
     },
     {
-        "value": "Flash photometer",
+        "label": "1",
         "id": 496,
-        "label": "1"
+        "value": "Flash photometer"
     },
     {
-        "value": "Dew-point hygrometers",
+        "label": "1",
         "id": 497,
-        "label": "1"
+        "value": "Dew-point hygrometers"
     },
     {
-        "value": "Psychrometers",
+        "label": "1",
         "id": 498,
-        "label": "1"
+        "value": "Psychrometers"
     },
     {
-        "value": "Relative humidity sensors",
+        "label": "1",
         "id": 499,
-        "label": "1"
+        "value": "Relative humidity sensors"
     },
     {
-        "value": "Other hygrometers",
+        "label": "1",
         "id": 500,
-        "label": "1"
+        "value": "Other hygrometers"
     },
     {
-        "value": "Dew-point generators",
+        "label": "1",
         "id": 501,
-        "label": "1"
+        "value": "Dew-point generators"
     },
     {
-        "value": "Relative humidity generators",
+        "label": "1",
         "id": 502,
-        "label": "1"
+        "value": "Relative humidity generators"
     },
     {
-        "value": "Flow mixing",
+        "label": "1",
         "id": 503,
-        "label": "1"
+        "value": "Flow mixing"
     },
     {
-        "value": "Permeation tube, diffusion tube",
+        "label": "1",
         "id": 504,
-        "label": "1"
+        "value": "Permeation tube, diffusion tube"
     },
     {
-        "value": "Salt solutions (saturated, unsaturated)",
+        "label": "1",
         "id": 505,
-        "label": "1"
+        "value": "Salt solutions (saturated, unsaturated)"
     },
     {
-        "value": "Reference gases",
+        "label": "1",
         "id": 506,
-        "label": "1"
+        "value": "Reference gases"
     },
     {
-        "value": "Cells for contact thermometry",
+        "label": "1",
         "id": 507,
-        "label": "1"
+        "value": "Cells for contact thermometry"
     },
     {
-        "value": "Cells for radiation thermometry",
+        "label": "2",
         "id": 508,
-        "label": "2"
+        "value": "Cells for radiation thermometry"
     },
     {
-        "value": "Apparatus for contact thermometry",
+        "label": "1",
         "id": 509,
-        "label": "1"
+        "value": "Apparatus for contact thermometry"
     },
     {
-        "value": "Apparatus for radiation thermometry",
+        "label": "2",
         "id": 510,
-        "label": "2"
+        "value": "Apparatus for radiation thermometry"
     },
     {
-        "value": "Capsule-type SPRTs",
+        "label": "1",
         "id": 511,
-        "label": "1"
+        "value": "Capsule-type SPRTs"
     },
     {
-        "value": "Long-stem SPRTs including HTSPRTs",
+        "label": "2",
         "id": 512,
-        "label": "2"
+        "value": "Long-stem SPRTs including HTSPRTs"
     },
     {
-        "value": "Standard radiation thermometers",
+        "label": "1",
         "id": 513,
-        "label": "1"
+        "value": "Standard radiation thermometers"
     },
     {
-        "value": "Secondary fixed-points and apparatus for contact thermometry",
+        "label": "1",
         "id": 514,
-        "label": "1"
+        "value": "Secondary fixed-points and apparatus for contact thermometry"
     },
     {
-        "value": "Rhodium-iron resistance thermometers",
+        "label": "1",
         "id": 515,
-        "label": "1"
+        "value": "Rhodium-iron resistance thermometers"
     },
     {
-        "value": "Platinum resistance thermometers (PRTs)",
+        "label": "2",
         "id": 516,
-        "label": "2"
+        "value": "Platinum resistance thermometers (PRTs)"
     },
     {
-        "value": "Thermistors and other resistive thermometers",
+        "label": "3",
         "id": 517,
-        "label": "3"
+        "value": "Thermistors and other resistive thermometers"
     },
     {
-        "value": "Noble-metal thermocouples",
+        "label": "1",
         "id": 518,
-        "label": "1"
+        "value": "Noble-metal thermocouples"
     },
     {
-        "value": "Base-metal thermocouples",
+        "label": "2",
         "id": 519,
-        "label": "2"
+        "value": "Base-metal thermocouples"
     },
     {
-        "value": "Pure-metal thermocouples",
+        "label": "3",
         "id": 520,
-        "label": "3"
+        "value": "Pure-metal thermocouples"
     },
     {
-        "value": "Liquid-in-glass thermometers",
+        "label": "1",
         "id": 521,
-        "label": "1"
+        "value": "Liquid-in-glass thermometers"
     },
     {
-        "value": "Secondary fixed-point blackbody cells and apparatus",
+        "label": "1",
         "id": 522,
-        "label": "1"
+        "value": "Secondary fixed-point blackbody cells and apparatus"
     },
     {
-        "value": "Variable temperature blackbody radiation sources",
+        "label": "2",
         "id": 523,
-        "label": "2"
+        "value": "Variable temperature blackbody radiation sources"
     },
     {
-        "value": "Strip lamps",
+        "label": "3",
         "id": 524,
-        "label": "3"
+        "value": "Strip lamps"
     },
     {
-        "value": "Radiation thermometers and visual optical pyrometers",
+        "label": "4",
         "id": 525,
-        "label": "4"
+        "value": "Radiation thermometers and visual optical pyrometers"
     },
     {
-        "value": "Air temperature sensors",
+        "label": "1",
         "id": 526,
-        "label": "1"
+        "value": "Air temperature sensors"
     },
     {
-        "value": "Other thermometers",
+        "label": "2",
         "id": 527,
-        "label": "2"
+        "value": "Other thermometers"
     },
     {
-        "value": "Temperature sensors with display unit",
+        "label": "1",
         "id": 528,
-        "label": "1"
+        "value": "Temperature sensors with display unit"
     },
     {
-        "value": "Bridge linearity",
+        "label": "1",
         "id": 529,
-        "label": "1"
+        "value": "Bridge linearity"
     },
     {
-        "value": "Compensation wires for cold junction",
+        "label": "2",
         "id": 530,
-        "label": "2"
+        "value": "Compensation wires for cold junction"
     },
     {
-        "value": "Wires for melting-point measurements for thermocouples",
+        "label": "3",
         "id": 531,
-        "label": "3"
+        "value": "Wires for melting-point measurements for thermocouples"
     },
     {
-        "value": "Temperature indicators",
+        "label": "4",
         "id": 532,
-        "label": "4"
+        "value": "Temperature indicators"
     },
     {
-        "value": "Phase-transition temperature of reference materials",
+        "label": "5",
         "id": 533,
-        "label": "5"
+        "value": "Phase-transition temperature of reference materials"
     },
     {
-        "value": "Dry-well block calibrators",
+        "label": "6",
         "id": 534,
-        "label": "6"
+        "value": "Dry-well block calibrators"
     },
     {
-        "value": "Thermal conductivity",
+        "label": "1",
         "id": 535,
-        "label": "1"
+        "value": "Thermal conductivity"
     },
     {
-        "value": "Thermal diffusivity",
+        "label": "2",
         "id": 536,
-        "label": "2"
+        "value": "Thermal diffusivity"
     },
     {
-        "value": "Specific heat capacity",
+        "label": "1",
         "id": 537,
-        "label": "1"
+        "value": "Specific heat capacity"
     },
     {
-        "value": "Heat of fusion",
+        "label": "2",
         "id": 538,
-        "label": "2"
+        "value": "Heat of fusion"
     },
     {
-        "value": "Calorific value",
+        "label": "3",
         "id": 539,
-        "label": "3"
+        "value": "Calorific value"
     },
     {
-        "value": "Spectral emissivity",
+        "label": "1",
         "id": 540,
-        "label": "1"
+        "value": "Spectral emissivity"
     },
     {
-        "value": "Total emissivity",
+        "label": "2",
         "id": 541,
-        "label": "2"
+        "value": "Total emissivity"
     },
     {
-        "value": "Thermal expansion coefficient",
+        "label": "1",
         "id": 542,
-        "label": "1"
+        "value": "Thermal expansion coefficient"
     },
     {
-        "value": "Local frequency standard",
+        "label": "1",
         "id": 543,
-        "label": "1"
+        "value": "Local frequency standard"
     },
     {
-        "value": "Remote frequency standard",
+        "label": "2",
         "id": 544,
-        "label": "2"
+        "value": "Remote frequency standard"
     },
     {
-        "value": "General frequency source",
+        "label": "1",
         "id": 545,
-        "label": "1"
+        "value": "General frequency source"
     },
     {
-        "value": "Frequency counter",
+        "label": "1",
         "id": 546,
-        "label": "1"
+        "value": "Frequency counter"
     },
     {
-        "value": "Frequency meter",
+        "label": "2",
         "id": 547,
-        "label": "2"
+        "value": "Frequency meter"
     },
     {
-        "value": "Period source",
+        "label": "1",
         "id": 548,
-        "label": "1"
+        "value": "Period source"
     },
     {
-        "value": "Rise - fall time source",
+        "label": "1",
         "id": 549,
-        "label": "1"
+        "value": "Rise - fall time source"
     },
     {
-        "value": "Pulse width source",
+        "label": "2",
         "id": 550,
-        "label": "2"
+        "value": "Pulse width source"
     },
     {
-        "value": "Time difference source",
+        "label": "3",
         "id": 551,
-        "label": "3"
+        "value": "Time difference source"
     },
     {
-        "value": "Delay source",
+        "label": "4",
         "id": 552,
-        "label": "4"
+        "value": "Delay source"
     },
     {
-        "value": "Period meter",
+        "label": "1",
         "id": 553,
-        "label": "1"
+        "value": "Period meter"
     },
     {
-        "value": "Rise - fall time meter",
+        "label": "1",
         "id": 554,
-        "label": "1"
+        "value": "Rise - fall time meter"
     },
     {
-        "value": "Pulse width meter",
+        "label": "2",
         "id": 555,
-        "label": "2"
+        "value": "Pulse width meter"
     },
     {
-        "value": "Time difference meter",
+        "label": "3",
         "id": 556,
-        "label": "3"
+        "value": "Time difference meter"
     },
     {
-        "value": "Delay meter",
+        "label": "4",
         "id": 557,
-        "label": "4"
+        "value": "Delay meter"
     },
     {
-        "value": "Local clock vs. UTC(NMI)",
+        "label": "1",
         "id": 558,
-        "label": "1"
+        "value": "Local clock vs. UTC(NMI)"
     },
     {
-        "value": "Local clock vs. UTC",
+        "label": "2",
         "id": 559,
-        "label": "2"
+        "value": "Local clock vs. UTC"
     },
     {
-        "value": "Remote clock vs. UTC(NMI)",
+        "label": "1",
         "id": 560,
-        "label": "1"
+        "value": "Remote clock vs. UTC(NMI)"
     },
     {
-        "value": "Remote clock vs. UTC",
+        "label": "2",
         "id": 561,
-        "label": "2"
+        "value": "Remote clock vs. UTC"
     },
     {
-        "value": "Transmission coefficient (Sij) in planar line systems",
+        "label": "9",
         "id": 1024,
-        "label": "9"
+        "value": "Transmission coefficient (Sij) in planar line systems"
     },
     {
-        "value": "Reflection coefficient (Sii) in planar line systems",
+        "label": "8",
         "id": 1025,
-        "label": "8"
+        "value": "Reflection coefficient (Sii) in planar line systems"
     },
     {
-        "value": "Standard of 1D point-to-point dimensions ",
+        "label": "1",
         "id": 1026,
-        "label": "1"
+        "value": "Standard of 1D point-to-point dimensions "
     },
     {
-        "value": "Encircled flux, fibre optic source or fibre",
+        "label": "0",
         "id": 1027,
-        "label": "0"
+        "value": "Encircled flux, fibre optic source or fibre"
     },
     {
-        "value": "Encircled flux, measuring instrument",
+        "label": "1",
         "id": 1028,
-        "label": "1"
+        "value": "Encircled flux, measuring instrument"
     },
     {
-        "value": "Mode field diameter (MFD), optical fibre",
+        "label": "2",
         "id": 1029,
-        "label": "2"
+        "value": "Mode field diameter (MFD), optical fibre"
     },
     {
-        "value": "Numerical aperture, optical fibre",
+        "label": "3",
         "id": 1030,
-        "label": "3"
+        "value": "Numerical aperture, optical fibre"
     },
     {
-        "value": "Optical fibre",
+        "label": "0",
         "id": 1031,
-        "label": "0"
+        "value": "Optical fibre"
     },
     {
-        "value": "Measuring instrument",
+        "label": "1",
         "id": 1032,
-        "label": "1"
+        "value": "Measuring instrument"
     },
     {
-        "value": "Artefact",
+        "label": "2",
         "id": 1033,
-        "label": "2"
+        "value": "Artefact"
     },
     {
-        "value": "Dispersion, measuring instrument",
+        "label": "3",
         "id": 1034,
-        "label": "3"
+        "value": "Dispersion, measuring instrument"
     },
     {
-        "value": "Zero dispersion wavelength, measuring instrument",
+        "label": "4",
         "id": 1035,
-        "label": "4"
+        "value": "Zero dispersion wavelength, measuring instrument"
     },
     {
-        "value": "Dispersion slope, measuring instrument",
+        "label": "5",
         "id": 1036,
-        "label": "5"
+        "value": "Dispersion slope, measuring instrument"
     },
     {
-        "value": "Distance scale deviation, OTDR",
+        "label": "2",
         "id": 1037,
-        "label": "2"
+        "value": "Distance scale deviation, OTDR"
     },
     {
-        "value": "Wavelength standard",
+        "label": "3",
         "id": 1038,
-        "label": "3"
+        "value": "Wavelength standard"
     },
     {
-        "value": "Fixed-point blackbody cells and apparatus",
+        "label": "1",
         "id": 1039,
-        "label": "1"
+        "value": "Fixed-point blackbody cells and apparatus"
     },
     {
-        "value": "Radiation thermometers",
+        "label": "2",
         "id": 1040,
-        "label": "2"
+        "value": "Radiation thermometers"
     },
     {
-        "value": "Variable temperature blackbody radiation sources",
+        "label": "3",
         "id": 1041,
-        "label": "3"
+        "value": "Variable temperature blackbody radiation sources"
     },
     {
-        "value": "Loss, measuring instrument",
+        "label": "2",
         "id": 1042,
-        "label": "2"
+        "value": "Loss, measuring instrument"
     },
     {
-        "value": "Broadband detector",
+        "label": "1",
         "id": 1043,
-        "label": "1"
+        "value": "Broadband detector"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1044,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1045,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1046,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1047,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1048,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1049,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1050,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1051,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1052,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1053,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1054,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1055,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1056,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1057,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1058,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1059,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1060,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1061,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1062,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1063,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1064,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1065,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1066,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1067,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1068,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1069,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1070,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1071,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1072,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1073,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1074,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1075,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1076,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1077,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1078,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1079,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1080,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1081,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1082,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1083,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1084,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1085,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1086,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Phase",
+        "label": "2",
         "id": 1087,
-        "label": "2"
+        "value": "Phase"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1088,
-        "label": "1"
+        "value": "Modulus"
     },
     {
-        "value": "Modulus",
+        "label": "1",
         "id": 1089,
-        "label": "1"
+        "value": "Modulus"
     }
 ]

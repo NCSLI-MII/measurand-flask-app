@@ -425,7 +425,9 @@ class KcdbCmc(Base):
     __tablename__ = "kcdbcmc"
     id = Column(Integer, primary_key=True)
     kcdbCode = Column(String(50))
-    
+    baseUnit = Column(UnicodeText)
+    uncertaintyBaseUnit = Column(UnicodeText)
+
     area_id = Column(
         Integer, ForeignKey("kcdbarea.id"), nullable=True
     )
@@ -466,6 +468,8 @@ class KcdbCmc(Base):
     )
     instrumentmethod = relationship("KcdbInstrumentMethod")
 
+    parameters: Mapped[list['KcdbParameter']] = relationship(back_populates='kcdbcmc')
+    
     tags = relationship(
         "ClassifierTag", secondary=kcdb_classifier_map, backref="kcdbcmcs"
     )
@@ -480,6 +484,17 @@ class KcdbCmc(Base):
     def __str__(self):
         return f'{self.kcdbCode}'
 
+
+class KcdbParameter(Base):
+    __tablename__ = "kcdbparameter"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(UnicodeText)
+    value = Column(UnicodeText)
+    kcdbcmc = relationship('KcdbCmc', back_populates='parameters')
+    kcdbcmc_id = Column(Integer, ForeignKey('kcdbcmc.id'))
+
+    def __str__(self):
+        return f'name: {self.name} value: {self.value}'
 
 class KcdbInstrument(Base):
     __tablename__ = "kcdbinstrument"
@@ -613,6 +628,11 @@ class QuantityValue(Base):
 # Generate marshmallow schemas
 
 
+class KcdbParameterSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbParameter
+        include_relationships = True
+        load_instance = True
 
 class KcdbInstrumentSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -788,6 +808,7 @@ class KcdbCmcSchema(SQLAlchemyAutoSchema):
     instrument = Nested(KcdbInstrumentSchema)
     instrumentmethod = Nested(KcdbInstrumentMethodSchema)
     quantity = Nested(KcdbQuantitySchema)
+    parameters = Nested(KcdbParameterSchema, many=True)
     class Meta:
         model = KcdbCmc
         include_relationships = True

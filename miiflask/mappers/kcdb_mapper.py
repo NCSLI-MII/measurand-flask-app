@@ -20,6 +20,7 @@ class KcdbMapper:
         # self._path_root = get_project_root()
         self._use_api = parms["use_api"]
         self._updateResources = parms['update_resources']
+        self._use_cmc_api = parms['use_cmc_api']
         self.api_ref = 'https://www.bipm.org/api/kcdb/referenceData'
         self.headers = {'accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -207,14 +208,23 @@ class KcdbMapper:
             self.Session.add(instrument)
             cmc.instrument = instrument
         if instrumentMethod:
-            cmc.instrumentMethod = instrumentMethod
+            cmc.instrumentmethod = instrumentMethod
         else:
             instrumentMethod = model.KcdbInstrumentMethod()
             instrumentMethod.value = obj['instrumentmethod']
             self.Session.add(instrumentMethod)
-            cmc.instrumentMethod = instrumentMethod
+            cmc.instrumentmethod = instrumentMethod
+        for parm in obj['parameters']:
+            parameter = model.KcdbParameter()
+            parameter.name = parm['name']
+            parameter.value = parm['value']
+            self.Session.add(parameter)
+            cmc.parameters.append(parameter)
     
     def _getCmcMetadata(self, cmc, obj):
+        print(f'Linking CMC {cmc.id}, {cmc.kcdbCode} with metadata')
+        print(f'Kcdb cmc object {obj["id"]}, {obj["kcdbCode"]}')
+        print(obj)
         area = (self.Session.query(model.KcdbArea)
                 .filter(model.KcdbArea.label == obj['metrologyAreaLabel'])
                 .first()
@@ -244,12 +254,12 @@ class KcdbMapper:
                     .filter(model.KcdbInstrument.value == obj['instrument'])
                     .first()
                     )
-        
+         
         instrumentMethod = (self.Session.query(model.KcdbInstrumentMethod)
                     .filter(model.KcdbInstrumentMethod.value == obj['instrumentMethod'])
                     .first()
                     )
-
+        print(obj['instrumentMethod'], instrumentMethod)
         if area:
             cmc.area = area
         if branch:
@@ -270,12 +280,20 @@ class KcdbMapper:
             self.Session.add(instrument)
             cmc.instrument = instrument
         if instrumentMethod:
-            cmc.instrumentMethod = instrumentMethod
+            cmc.instrumentmethod = instrumentMethod
         else:
             instrumentMethod = model.KcdbInstrumentMethod()
             instrumentMethod.value = obj['instrumentMethod']
             self.Session.add(instrumentMethod)
-            cmc.instrumentMethod = instrumentMethod
+            cmc.instrumentmethod = instrumentMethod
+        for parm in obj['parameters']:
+            parameter = model.KcdbParameter()
+            parameter.name = parm['parameterName']
+            parameter.value = parm['parameterValue']
+            self.Session.add(parameter)
+            cmc.parameters.append(parameter)
+
+        print(cmc.instrumentmethod) 
     
     def _getPhysicsCmcDataLocal(self):
         with open('../../resources/kcdb/kcdb_cmc.json') as f:
@@ -290,6 +308,8 @@ class KcdbMapper:
                     payload = {
                         'id': obj['id'],
                         'kcdbCode': obj['kcdbCode'],
+                        'baseUnit': obj['baseUnit'],
+                        'uncertaintyBaseUnit': obj['uncertaintyBaseUnit']
                     }
                     cmc = model.KcdbCmcSchema().load(
                         payload, session=self.Session
@@ -328,22 +348,28 @@ class KcdbMapper:
                     break
                 data['page'] = data['page']+1
                 for obj in result['data']:
-                    print(obj)
                     cmc = (
                             self.Session.query(model.KcdbCmc)
                             .filter(model.KcdbCmc.id == int(obj['id']))
                             .first()
                             )
+                    
                     if not cmc:
-                        payload = {
-                            'id': obj['id'],
-                            'kcdbCode': obj['kcdbCode']
-                        }
-                        cmc = self._schemas['cmc'].load(
-                            payload, session=self.Session
-                        )
-                        self.Session.add(cmc)
-                        self._getCmcMetadata(cmc, obj)
+                        try:
+                            payload = {
+                                'id': obj['id'],
+                                'kcdbCode': obj['kcdbCode'],
+                                'baseUnit': obj['cmcBaseUnit']['unit'],
+                                'uncertaintyBaseUnit': obj['cmcUncertaintyBaseUnit']['unit']
+                            }
+                            cmc = self._schemas['cmc'].load(
+                                payload, session=self.Session
+                            )
+                            self.Session.add(cmc)
+                            self._getCmcMetadata(cmc, obj)
+                        except Exception as e:
+                            print(obj)
+                            raise e
 
     def updateLocalResources(self):
         with open('resources/kcdb/kcdb_service_classifications.csv','w', newline='') as fs:
@@ -437,7 +463,6 @@ class KcdbMapper:
                                   model.KcdbInstrumentMethodSchema()
                                   )
         self._transformKcdbServiceClassLocal()
-        self._getPhysicsCmcDataLocal()
     
     def _transformKcdbRefDataLocal(self, out_, type_, schema_):
         with open(f'../../resources/kcdb/kcdb_{out_}.json') as f:
@@ -535,7 +560,13 @@ class KcdbMapper:
     def loadServices(self):
         if self._use_api is False:
             self._getKcdbRefDataLocal()
-            self._getPhysicsCmcDataLocal()
+            if self._use_cmc_api is True:
+                self._getPhysicsCmcData()
+                if self._updateResources is True:
+                    self.dumpKcdbRefData()
+            else:
+                self._getPhysicsCmcDataLocal()
+            
             #with open(self._services_path) as f:
             #    reader = csv.reader(f)
             #    next(reader)
