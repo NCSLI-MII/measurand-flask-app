@@ -19,6 +19,7 @@ from miiflask.flask.model import (
     Measurand,
     Aspect,
     Scale,
+    Parameter
 )
 from miiflask.flask.model import AspectSchema, MeasurandSchema
 
@@ -64,7 +65,7 @@ class KcdbServiceView(MyModelView):
 class CMCView(MyModelView):
     column_display_pk = True
     column_hide_backrefs = False
-    column_searchable_list = ['area.label', 'quantity.value']
+    column_searchable_list = ['area.label', 'quantity.value', 'kcdbCode']
     column_filters = ('area', 'service')
     column_list = ('id',
                    'kcdbCode',
@@ -79,21 +80,21 @@ class CMCView(MyModelView):
                    'instrumentmethod',
                    )
     column_details_list = ('id',
-                   'kcdbCode',
-                   'area',
-                   'branch',
-                   'service',
-                   'subservice',
-                   'individualservice',
-                   'quantity',
-                   'measurands',
-                   'instrument',
-                   'instrumentmethod',
-                   'baseUnit',
-                   'uncertainityBaseUnit',
-                   'parameters',
-                   'comments'
-                   )
+                           'kcdbCode',
+                           'area',
+                           'branch',
+                           'service',
+                           'subservice',
+                           'individualservice',
+                           'quantity',
+                           'measurands',
+                           'instrument',
+                           'instrumentmethod',
+                           'baseUnit',
+                           'uncertainityBaseUnit',
+                           'parameters',
+                           'comments'
+                           )
 
 
 class TaxonView(ModelView):
@@ -129,6 +130,7 @@ class MeasurandView(ModelView):
     column_formatters = {'id': _id_formatter,
                          'taxon': _link_formatter}
     column_list = ("id", "name", "quantitykind", "parameters")
+    inline_models = (Parameter,)
     column_details_list = ("id",
                            "name",
                            "taxon",
