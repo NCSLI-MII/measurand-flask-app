@@ -107,51 +107,50 @@ class Cast(Base):
 
 class System(Base):
     __tablename__ = 'system'
-    id = Column(String(10), primary_key=True)
-    ml_name = Column(String(10))
-    symbol = Column(String(10))
-    n = Column(Integer)
-    basis = Column(String(200))
-    reference = Column(String(50))
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    ml_name: Mapped[str] = mapped_column(String(10))
+    symbol: Mapped[str] = mapped_column(String(10))
+    n: Mapped[Optional[int]] = mapped_column(Integer)
+    basis: Mapped[Optional[str]] = mapped_column(String(200))
+    reference: Mapped[Optional[str]] = mapped_column(String(50))
 
     def __str__(self):
-        return self.symbol
+        return f'{self.symbol}'
 
 
 class Dimension(Base):
     __tablename__ = 'dimension'
-    id = Column(String(10), primary_key=True)
-    formal_system_id = Column('formal_system_id',
-                              ForeignKey('system.id'),
-                              nullable=True)
-    systematic_scale_id = Column('systematic_scale_id',
-                                 ForeignKey('scale.id'),
-                                 nullable=True)
-    exponents = Column(String(40), nullable=True)
-    systematic_scales = relationship("Scale",
-                                     secondary=scaledimension_table,
-                                     back_populates="system_dimensions")
-    formal_system = relationship("System")
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    formal_system_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('system.id'))
+    systematic_scale_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('scale.id'))
+    exponents: Mapped[Optional[str]] = mapped_column(String(40))
+    systematic_scales: Mapped[list['Scale']] = \
+        relationship(secondary=scaledimension_table,
+                     back_populates="system_dimensions")
+    formal_system: Mapped['System'] = relationship()
 
     def __str__(self):
         # SI Brochure dimensions
         # dimQ = T^alphaL^betaM^gammaI^deltaTheta^epsilonN^psiJ^eta
         # m-layer encoding
         # dimQ = M^gammaL^betaT^alphaI^deltaTheta^epsilonN^psiJ^eta
-        # Time Length Mass Current Temperature AmountOfSubstance LuminousIntensity
-        return self.id
+        # Time Length Mass Current Temperature
+        # AmountOfSubstance LuminousIntensity
+        return f'{self.id}'
 
 
 class Transform(Base):
     __tablename__ = "transform"
-    id = Column(String(10), primary_key=True)
-    ml_name = Column(String(50))
-    py_function = Column(UnicodeText)
-    py_names_in_scope = Column(UnicodeText)
-    comments = Column(UnicodeText)
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    ml_name: Mapped[str] = mapped_column(String(50))
+    py_function: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    py_names_in_scope: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    comments: Mapped[Optional[str]] = mapped_column(UnicodeText)
 
     def __str__(self):
-        return self.ml_name
+        return f'{self.ml_name}'
 
 
 # M-Layer Aspect
@@ -159,14 +158,13 @@ class Aspect(Base):
     # Aspect will be referenced by many tables
     # Do not keep relationship to other tables
     __tablename__ = "aspect"
-    id = Column(String(10), primary_key=True)
-    name = Column(String(50))
-    ml_name = Column(String(50))
-    symbol = Column(String(50))
-    reference = Column(String(50))
-    scales = relationship(
-        "Scale", secondary=scaleaspect_table, back_populates="aspects"
-    )
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    name: Mapped[str] = mapped_column(String(50))
+    ml_name: Mapped[str] = mapped_column(String(50))
+    symbol: Mapped[Optional[str]] = mapped_column(String(50))
+    reference: Mapped[Optional[str]] = mapped_column(String(50))
+    scales: Mapped[list['Scale']] = \
+        relationship(secondary=scaleaspect_table, back_populates="aspects")
     # Conversions should be related to the scale,
     # aspect only disambiguates the expression
     # conversions = relationship('Conversion', back_populates='aspect')
@@ -177,13 +175,13 @@ class Aspect(Base):
 
 class Prefix(Base):
     __tablename__ = "prefix"
-    id = Column(String(50), primary_key=True)
-    name = Column(String(100))
-    ml_name = Column(String(100))
-    symbol = Column(String(50))
-    numerator = Column(Float)
-    denominator = Column(Float)
-    reference = Column(String(50))
+    id: Mapped[str] = mapped_column(String(50), primary_key=True)
+    name: Mapped[str] = mapped_column(String(100))
+    ml_name: Mapped[str] = mapped_column(String(100))
+    symbol: Mapped[str] = mapped_column(String(50))
+    numerator: Mapped[float] = mapped_column()
+    denominator: Mapped[float] = mapped_column()
+    reference: Mapped[Optional[str]] = mapped_column(String(50))
 
     def __str__(self):
         return f'{self.name}'
@@ -191,11 +189,11 @@ class Prefix(Base):
 
 class Unit(Base):
     __tablename__ = "unit"
-    id = Column(String(50), primary_key=True)
-    name = Column(String(100))
-    ml_name = Column(String(100))
-    symbol = Column(String(50))
-    reference = Column(String(50))
+    id: Mapped[str] = mapped_column(String(50), primary_key=True)
+    name: Mapped[str] = mapped_column(String(100))
+    ml_name: Mapped[str] = mapped_column(String(100))
+    symbol: Mapped[Optional[str]] = mapped_column(String(50))
+    reference: Mapped[Optional[str]] = mapped_column(String(50))
 
     def __str__(self):
         return f'{self.name}'
@@ -218,43 +216,41 @@ class Node(Base):
 # Self-referencing relation to root_scale only from child using remote_side
 # Establishes many-to-one relation
 # See https://docs.sqlalchemy.org/en/20/orm/self_referential.html
+
+
 class Scale(Base):
     __tablename__ = "scale"
-    id = Column(String(10), primary_key=True)
-    ml_name = Column(String(50))
-    scale_type = Column(String(20))
-    root_scale_id: Mapped[Optional[int]] = mapped_column(ForeignKey('scale.id'),
-                                                         nullable=True)
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    ml_name: Mapped[str] = mapped_column(String(50))
+    scale_type: Mapped[str] = mapped_column(String(20))
+    root_scale_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey('scale.id'))
     root_scale: Mapped['Scale'] = relationship(remote_side=[id])
-    prefix_id = Column(String(50),
-                       ForeignKey("prefix.id"),
-                       nullable=True)  # One-to-one
-    prefix = relationship("Prefix")
-    unit_id = Column(String(50),
-                     ForeignKey("unit.id"),
-                     nullable=True)  # One-to-one
-    unit = relationship("Unit")
-    
-    system_dimensions_id = Column(String(10),
-                                  ForeignKey('dimension.id'),
-                                  nullable=True)
-    system_dimensions = relationship("Dimension",
-                                     secondary=scaledimension_table,
-                                     back_populates="systematic_scales")
-    is_systematic = Column(Boolean)
-    aspects = relationship("Aspect",
-                           secondary=scaleaspect_table,
-                           back_populates="scales")
-    conversions = relationship('Conversion',
-                               primaryjoin="(Scale.id == Conversion.src_scale_id)",
-                               viewonly=True
-                               )
-    casts = relationship('Cast',
-                         primaryjoin="(Scale.id == Cast.src_scale_id)",
-                         viewonly=True
-                        )
-    #src_scales = relationship('Conversion', back_populates='src_scale')
-    #dst_scales = relationship('Conversion', back_populates='dst_scale')
+    prefix_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey("prefix.id"))  # One-to-one
+    prefix: Mapped['Prefix'] = relationship()
+    unit_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey("unit.id"))  # One-to-one
+    unit: Mapped['Unit'] = relationship()
+    system_dimensions_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('dimension.id'))
+    system_dimensions: Mapped[list['Dimension']] = \
+        relationship(secondary=scaledimension_table,
+                     back_populates="systematic_scales")
+    is_systematic: Mapped[Optional[bool]]
+    aspects: Mapped[list['Aspect']] = \
+        relationship(secondary=scaleaspect_table,
+                     back_populates="scales")
+    conversions: Mapped[list['Conversion']] = \
+        relationship(primaryjoin="(Scale.id == Conversion.src_scale_id)",
+                     viewonly=True
+                     )
+    casts: Mapped[list['Cast']] = \
+        relationship(primaryjoin="(Scale.id == Cast.src_scale_id)",
+                     viewonly=True
+                     )
+    # src_scales = relationship('Conversion', back_populates='src_scale')
+    # dst_scales = relationship('Conversion', back_populates='dst_scale')
 
     def __str__(self):
         return f'{self.ml_name}'
