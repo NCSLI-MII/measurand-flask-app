@@ -8,8 +8,6 @@
 """
 
 """
-import csv
-from pathlib import Path
 import requests
 import json
 from miiflask.flask import model
@@ -17,7 +15,6 @@ from miiflask.flask import model
 
 class KcdbMapper:
     def __init__(self, session, parms):
-        # self._path_root = get_project_root()
         self._use_api = parms["use_api"]
         self._updateResources = parms['update_resources']
         self._use_cmc_api = parms['use_cmc_api']
@@ -26,8 +23,6 @@ class KcdbMapper:
         self.headers = {'accept': 'application/json',
                         'Content-Type': 'application/json'
                         }
-        self._services_path = Path(parms["services"]).resolve()
-        self._quantities_path = Path(parms["quantities"]).resolve()
         self._service_classifications = []
         self._quantities = []
         self._schemas = {
@@ -55,14 +50,13 @@ class KcdbMapper:
 
         self._getRefDataQuantities()
 
-        print("Get REference data from KCDB API") 
+        print("Get REference data from KCDB API")
         output = requests.get(f'{self.api_ref}/metrologyArea',
                               headers=self.headers,
                               params={'domainCode': 'PHYSICS'})
-        
+
         result = json.loads(output.content)
         reference_data = {}
-        
         self._service_classifications.append(['Id',
                                               'Area Id',
                                               'Area',
@@ -122,7 +116,6 @@ class KcdbMapper:
                                   subservice['value']
                                   )
                             continue
-                        
                         for idvservice in result_idvservice['referenceData']:
                             id_v = ".".join([area['label'],
                                              branch['label'],
@@ -136,7 +129,6 @@ class KcdbMapper:
                                            service['value'],
                                            subservice['value'],
                                            idvservice['value']]
-                                                                            
                             serviceClass = [id_v,
                                             area['label'],
                                             area['value'],
@@ -151,7 +143,7 @@ class KcdbMapper:
                                                       self._schemas['individualservice']
                                                       )
                             self._transformKcdbServiceClass(serviceClass)
-    
+
     def _getCmcMetadataLocal(self, cmc, obj):
         area = (self.Session.query(model.KcdbArea)
                 .filter(model.KcdbArea.id == obj['area']['id'])
@@ -221,7 +213,7 @@ class KcdbMapper:
             parameter.value = parm['value']
             self.Session.add(parameter)
             cmc.parameters.append(parameter)
-    
+
     def _getCmcMetadata(self, cmc, obj):
         print(f'Linking CMC {cmc.id}, {cmc.kcdbCode} with metadata')
         print(f'Kcdb cmc object {obj["id"]}, {obj["kcdbCode"]}')
@@ -250,16 +242,16 @@ class KcdbMapper:
                     .filter(model.KcdbQuantity.value == obj['quantityValue'])
                     .first()
                     )
-        
+
         instrument = (self.Session.query(model.KcdbInstrument)
-                    .filter(model.KcdbInstrument.value == obj['instrument'])
-                    .first()
-                    )
-         
+                      .filter(model.KcdbInstrument.value == obj['instrument'])
+                      .first()
+                      )
+
         instrumentMethod = (self.Session.query(model.KcdbInstrumentMethod)
-                    .filter(model.KcdbInstrumentMethod.value == obj['instrumentMethod'])
-                    .first()
-                    )
+                            .filter(model.KcdbInstrumentMethod.value == obj['instrumentMethod'])
+                            .first()
+                            )
         print(obj['instrumentMethod'], instrumentMethod)
         if area:
             cmc.area = area
@@ -294,8 +286,8 @@ class KcdbMapper:
             self.Session.add(parameter)
             cmc.parameters.append(parameter)
 
-        print(cmc.instrumentmethod) 
-    
+        print(cmc.instrumentmethod)
+
     def _getPhysicsCmcDataLocal(self):
         with open(f'{self._kcdb_path}/kcdb_cmc.json') as f:
             objs = json.load(f)
@@ -333,7 +325,7 @@ class KcdbMapper:
             "CA",
           ],
         }
-        
+
         for area in self.Session.query(model.KcdbArea).all():
             data['metrologyAreaLabel'] = area.label
             print(f"Request CMC for {area}")
@@ -355,7 +347,7 @@ class KcdbMapper:
                             .filter(model.KcdbCmc.id == int(obj['id']))
                             .first()
                             )
-                    
+
                     if not cmc:
                         try:
                             payload = {
@@ -374,11 +366,6 @@ class KcdbMapper:
                             print(obj)
                             raise e
 
-    def updateLocalResources(self):
-        with open('resources/kcdb/kcdb_service_classifications.csv','w', newline='') as fs:
-            writer = csv.writer(fs)
-            writer.writerows(self._service_classifications)
-   
     def _dumpKcdbRefData(self, out_, type_, schema_):
         with open(f'{self._kcdb_path}/kcdb_{out_}.json', 'w') as fs:
             objs = self.Session.query(type_).all()
@@ -392,7 +379,7 @@ class KcdbMapper:
             result = schema_.dump(objs, many=True)
             # print(result)
             json.dump(result, fs, ensure_ascii=False, indent=4)
-    
+
     def dumpKcdbRefData(self):
         self._dumpKcdbRefData('area',
                               model.KcdbArea,
@@ -466,13 +453,13 @@ class KcdbMapper:
                                         model.KcdbInstrumentMethodSchema()
                                         )
         self._transformKcdbServiceClassLocal()
-    
+
     def _transformKcdbRefDataLocal(self, out_, type_, schema_):
         with open(f'{self._kcdb_path}/kcdb_{out_}.json') as f:
             objs = json.load(f)
             for obj in objs:
                 self._transformKcdbObject(obj, type_, schema_)
-    
+
     def _transformKcdbObject(self, data_, type_, schema_):
         obj = (
                 self.Session.query(type_)
@@ -529,7 +516,7 @@ class KcdbMapper:
                         payload, session=self.Session
                     )
                     self.Session.add(service)
-    
+
     def _transformKcdbServiceClass(self, _data):
         service = (
                    self.Session.query(model.KcdbServiceClass)
@@ -554,8 +541,8 @@ class KcdbMapper:
 
     def loadQuantities(self):
         if self._use_api is False:
-            self._getKcdbRefDataLocal('quantity', 
-                                      model.KcdbQuantity, 
+            self._getKcdbRefDataLocal('quantity',
+                                      model.KcdbQuantity,
                                       model.KcdbQuantitySchema())
         else:
             self.getRefDataQuantities()
@@ -569,20 +556,8 @@ class KcdbMapper:
                     self.dumpKcdbRefData()
             else:
                 self._getPhysicsCmcDataLocal()
-            
-            #with open(self._services_path) as f:
-            #    reader = csv.reader(f)
-            #    next(reader)
-            #    for row in reader:
-            #        self._load_service(row)
         elif self._use_api is True:
             self._getKcdbRefData()
             self._getPhysicsCmcData()
             if self._updateResources is True:
                 self.dumpKcdbRefData()
-
-            #for s in self._service_classifications[1:]:
-            #    self._load_service(s)
-
-
-
