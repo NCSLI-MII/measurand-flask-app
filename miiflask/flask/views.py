@@ -19,6 +19,7 @@ from miiflask.flask.model import (
     Measurand,
     Aspect,
     Scale,
+    Parameter
 )
 from miiflask.flask.model import AspectSchema, MeasurandSchema
 
@@ -50,6 +51,10 @@ def _id_formatter(view, context, model, name):
 
 
 class MyModelView(ModelView):
+    def __init__(self, model, *args, **kwargs):
+        self.form_columns = [c.key for c in model.__table__.columns]
+        super(MyModelView, self).__init__(model, *args, **kwargs)
+
     can_view_details = True
     column_display_pk = True
     column_hide_backrefs = False
@@ -61,10 +66,62 @@ class KcdbServiceView(MyModelView):
     page_size = 100
 
 
-class CMCView(ModelView):
+class CMCView(MyModelView):
     column_display_pk = True
     column_hide_backrefs = False
-    column_list = ("id", "tags")
+    column_searchable_list = ['area.label', 'quantity.value', 'kcdbCode']
+    column_filters = ('area', 'service')
+    column_list = ('id',
+                   'kcdbCode',
+                   'area',
+                   'branch',
+                   'service',
+                   'subservice',
+                   'individualservice',
+                   'quantity',
+                   'measurands',
+                   'instrument',
+                   'instrumentmethod',
+                   )
+    column_details_list = ('id',
+                           'kcdbCode',
+                           'area',
+                           'branch',
+                           'service',
+                           'subservice',
+                           'individualservice',
+                           'quantity',
+                           'measurands',
+                           'instrument',
+                           'instrumentmethod',
+                           'baseUnit',
+                           'uncertainityBaseUnit',
+                           'parameters',
+                           'comments'
+                           )
+
+
+class TaxonView(ModelView):
+    can_export = True
+    column_display_pk = True
+    can_view_details = True
+    column_hide_backrefs = False
+    form_columns = ['id',
+                    'measurands',
+                    'aspect',
+                    'discipline',
+                    'subtaxons',
+                    'supertaxon',
+                    'deprecated',
+                    'name',
+                    'quantitykind',
+                    'processtype'] 
+    column_formatters = {'id': _id_formatter}
+    column_list = ("id", "name", "deprecated") 
+    column_details_list = ("id",
+                           "name",
+                           "deprecated",
+                           )
 
 
 class MeasurandView(ModelView):
@@ -72,10 +129,13 @@ class MeasurandView(ModelView):
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
-    column_formatters = {'id': _id_formatter}
+    column_formatters = {'id': _id_formatter,
+                         'taxon': _link_formatter}
     column_list = ("id", "name", "quantitykind", "parameters")
+    inline_models = (Parameter,)
     column_details_list = ("id",
                            "name",
+                           "taxon",
                            "aspect",
                            "quantitykind",
                            "parameters",
@@ -98,7 +158,7 @@ class DimensionView(MyModelView):
             url = url_for('scale.details_view', id=s.id)
             urls.append('<a href="{}">{}</a>'.format(url, s.id))
         return Markup((',').join(urls))
-    
+
     def _exponents_formatter(view, context, model, name):
         field = getattr(model, name)
         if field is None:
@@ -125,7 +185,7 @@ class DimensionView(MyModelView):
                          "exponents": _exponents_formatter}
 
 
-class ScaleView(MyModelView):
+class ScaleView(ModelView):
 
     def _root_link_formatter(view, context, model, name):
         field = getattr(model, name)
@@ -243,10 +303,10 @@ def initialize():
     parms = {
             "measurands": "../../resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
             "mlayer": "../../resources/m-layer",
-            "quantities": "../../resources/kcdb/kcdb_quantities.csv",
-            "services": "../../resources/kcdb/kcdb_service_classifications.csv",
+            "kcdb": "../../resources/kcdb",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
-            "use_api": True,
+            "use_api": False,
+            "use_cmc_api": False,
             "update_resources": False
         }
 
@@ -260,7 +320,6 @@ def initialize():
     miimapper.loadTaxonomy()
 
     kcdbmapper = KcdbMapper(db.session, parms)
-    kcdbmapper.loadQuantities()
     kcdbmapper.loadServices()
     db.session.commit()
     return redirect(url_for('index'))

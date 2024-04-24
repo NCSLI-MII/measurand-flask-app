@@ -17,20 +17,29 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 # This is vanilla SQLAlchemy declarative base
-# 
+
 from miiflask.flask.db import Base, bind_engine
 
 from miiflask.flask.config import TestingConfig, DevelopmentConfig
 
 from miiflask.flask.model import (
     Measurand,
+    Taxon,
     Aspect,
     Unit,
     Scale,
     Parameter,
     KcdbCmc,
     KcdbQuantity,
+    KcdbServiceClass,
+    KcdbArea,
+    KcdbBranch,
     KcdbService,
+    KcdbSubservice,
+    KcdbIndividualService,
+    KcdbInstrument,
+    KcdbInstrumentMethod,
+    KcdbParameter,
     Domain,
     Conversion,
     Cast,
@@ -41,6 +50,8 @@ from miiflask.flask.model import (
 )
 
 print('Creating app ', __name__)
+
+
 def create_app(config=TestingConfig):
     app = Flask(__name__)
 
@@ -87,6 +98,7 @@ print("Running the App and using views")
 
 from miiflask.flask.views import (
         MeasurandView,
+        TaxonView,
         CMCView,
         MyModelView,
         KcdbServiceView,
@@ -109,8 +121,17 @@ admin.add_view(DimensionView(Dimension, db.session, category="Mlayer"))
 admin.add_view(MyModelView(System, db.session, category="Mlayer"))
 admin.add_view(MyModelView(Parameter, db.session, category="Measurand"))
 admin.add_view(MeasurandView(Measurand, db.session, category="Measurand"))
-admin.add_view(KcdbServiceView(KcdbService, db.session, category="KCDB"))
+admin.add_view(TaxonView(Taxon, db.session, category="Measurand"))
+admin.add_view(KcdbServiceView(KcdbServiceClass, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbQuantity, db.session, category="KCDB"))
+admin.add_view(MyModelView(KcdbArea, db.session, category="KCDB"))
+admin.add_view(MyModelView(KcdbBranch, db.session, category="KCDB"))
+admin.add_view(MyModelView(KcdbService, db.session, category="KCDB"))
+admin.add_view(MyModelView(KcdbSubservice, db.session, category="KCDB"))
+admin.add_view(MyModelView(KcdbIndividualService, db.session, category="KCDB"))
+admin.add_view(MyModelView(KcdbInstrument, db.session, category="KCDB"))
+admin.add_view(MyModelView(KcdbInstrumentMethod, db.session, category="KCDB"))
+admin.add_view(MyModelView(KcdbParameter, db.session, category="KCDB"))
 admin.add_view(CMCView(KcdbCmc, db.session, category="KCDB"))
     
 

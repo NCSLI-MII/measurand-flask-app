@@ -17,11 +17,12 @@ class Config:
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_ADMIN_SWATCH = "cerulean"
+    SECRET_KEY = "secret"
 
 
 class TestingConfig(Config):
     TESTING = True
-    #SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask.db"
+    # SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask.db"
 
 
 class DevelopmentConfig(Config):

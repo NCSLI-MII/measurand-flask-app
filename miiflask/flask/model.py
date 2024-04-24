@@ -18,7 +18,7 @@ from sqlalchemy import (ForeignKey,
                         Text,
                         UnicodeText,
                         Boolean,
-                        Float
+                        Float,
                         )
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
@@ -26,10 +26,18 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow_sqlalchemy.fields import Nested
 
 from typing import Optional
+
+# ##########################################
 # Managing SQLAlchemy model outside of Flask
 # stackoverflow 28789063
 # github/flask-sqlalchemy issue "Manage external declarative bases"
 #
+# Use Declarative mapping styles with type hints
+# https://docs.sqlalchemy.org/en/20/orm/declarative_styles.html
+# Stackoverflow explanation
+# https://stackoverflow.com/questions/76498857/what-is-the-difference-between-mapped-column-and-column-in-sqlalchemy
+#
+##############################################
 # M-Layer Model
 scaleaspect_table = Table(
     "scaleaspect_table",
@@ -169,7 +177,7 @@ class Aspect(Base):
     # conversions = relationship('Conversion', back_populates='aspect')
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Prefix(Base):
@@ -183,7 +191,7 @@ class Prefix(Base):
     reference = Column(String(50))
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Unit(Base):
@@ -195,7 +203,7 @@ class Unit(Base):
     reference = Column(String(50))
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
     def __unicode__(self):
         return self.name
@@ -210,7 +218,11 @@ class Node(Base):
                                                   remote_side=[id])
     parent: Mapped['Node'] = relationship(back_populates='children')
 
-
+# Scale class gives access to all related scale information
+# Composite scales reference a root scale
+# Self-referencing relation to root_scale only from child using remote_side
+# Establishes many-to-one relation
+# See https://docs.sqlalchemy.org/en/20/orm/self_referential.html
 class Scale(Base):
     __tablename__ = "scale"
     id = Column(String(10), primary_key=True)
@@ -250,7 +262,7 @@ class Scale(Base):
     #dst_scales = relationship('Conversion', back_populates='dst_scale')
 
     def __str__(self):
-        return self.ml_name
+        return f'{self.ml_name}'
 
     def __unicode__(self):
         return self.ml_name
@@ -264,69 +276,70 @@ class Scale(Base):
 
 class Measurand(Base):
     __tablename__ = "measurand"
-    id = Column(UnicodeText, primary_key=True, index=True)
-    taxon_id = Column(String(100), ForeignKey("taxon.id"))
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    taxon_id: Mapped[str] = mapped_column(ForeignKey("taxon.id"))
     name = Column(String(50))
     result = Column(String(50))
     quantitykind = Column(String(50))
-    aspect_id = Column(
-        String(50), ForeignKey("aspect.id"), nullable=True
-    )  # One-to-one
-    taxon = relationship("Taxon", back_populates="measurand")
-    aspect = relationship("Aspect")
+    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    # One-to-one
+    taxon: Mapped['Taxon'] = relationship(back_populates='measurands')
+    aspect: Mapped['Aspect'] = relationship()
     definition = Column(UnicodeText)
     # One to many parameters
-    parameters = relationship("Parameter", back_populates="measurand")
+    parameters: Mapped[list['Parameter']] = relationship(back_populates="measurand")
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Parameter(Base):
     # many-to-one
     # Reference a quantity for each parameter
     __tablename__ = "parameter"
-    id = Column(Integer, primary_key=True, index=True)
-    measurand_id = Column(Integer, ForeignKey("measurand.id"))
-    measurand = relationship("Measurand", back_populates="parameters")
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    measurand_id: Mapped[int] = mapped_column(ForeignKey("measurand.id"))
+    measurand: Mapped['Measurand'] = relationship(back_populates="parameters")
     name = Column(String(50))
     quantitykind = Column(String(50))
     definition = Column(UnicodeText)
     optional = Column(Boolean)
-    aspect_id = Column(
-        String(50), ForeignKey("aspect.id"), nullable=True
-    )  # One-to-one
-    aspect = relationship("Aspect")
+
+    # One-to-one
+    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    aspect: Mapped['Aspect'] = relationship()
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Taxon(Base):
     __tablename__ = "taxon"
-    id = Column(String(100), primary_key=True, index=True)
+    # id = Column(UnicodeText, primary_key=True)
+    id: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
+    supertaxon_id: Mapped[Optional[str]] = mapped_column(ForeignKey('taxon.id'))
+    subtaxons: Mapped[list['Taxon']] = relationship(back_populates='supertaxon',
+                                                        remote_side=[id])
+    supertaxon: Mapped['Taxon'] = relationship(back_populates='subtaxons')
     name = Column(
         String(50)
     )  # Name should be constructor from init with Taxon attributes following BNF grammar
     deprecated = Column(Boolean)
     quantitykind = Column(String(50))
-    process = Column(String(10))  # Source | Measure
-    aspect_id = Column(
-        String(50), ForeignKey("aspect.id"), nullable=True
-    )  # One-to-one
-    aspect = relationship("Aspect")
+    processtype = Column(String(10))  # Source | Measure
+    # One-to-one
+    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    aspect: Mapped['Aspect'] = relationship()
     qualifier = Column(String(50))
     # Individual taxon may be used in many measurands
     # With bakc_populates if no id for taxon is given
     # SQLAlchemy will create a new one
-    measurand = relationship("Measurand", back_populates="taxon")
-    discipline_id = Column(
-        Integer, ForeignKey("discipline.id"), nullable=True
-    )
-    discipline = relationship("Discipline", back_populates="taxon")
+    measurands: Mapped['Measurand'] = relationship(back_populates="taxon")
+    discipline_id: Mapped[int] = mapped_column(ForeignKey("discipline.id"), nullable=True)
+    discipline: Mapped['Discipline'] = relationship(back_populates="taxon")
 
     def __str__(self):
-        return self.id
+        return f'{self.id}'
 
 
 # Traditional CC areas and team labels
@@ -343,7 +356,7 @@ class Domain(Base):
     description_fr = Column(Text)
 
     def __str__(self):
-        return self.label
+        return f'{self.label}'
 
 
 
@@ -354,6 +367,9 @@ class Discipline(Base):
     id = Column(Integer, primary_key=True, index=True)
     label = Column(String(50))
     taxon = relationship("Taxon", back_populates="discipline")
+
+    def __str__(self):
+        return f'{self.label}'
 
 
 
@@ -395,7 +411,7 @@ class ClassifierTag(Base):
 kcdb_classifier_map = Table(
     "kcdb_classifier_map",
     Base.metadata,
-    Column("kcdbcmc_id", ForeignKey("kcdbcmc_table.id"), primary_key=True),
+    Column("kcdbcmc_id", ForeignKey("kcdbcmc.id"), primary_key=True),
     Column(
         "classifiertag_id",
         ForeignKey("classifiertag_table.id"),
@@ -406,7 +422,9 @@ kcdb_classifier_map = Table(
 kcdb_measurand_map = Table(
     "kcdb_measurand_map",
     Base.metadata,
-    Column("kcdb_service_id", ForeignKey("kcdbservice.id"), primary_key=True),
+    Column("kcdbcmc_id",
+           ForeignKey("kcdbcmc.id"),
+           primary_key=True),
     Column(
         "measurand_id",
         ForeignKey("measurand.id"),
@@ -416,27 +434,162 @@ kcdb_measurand_map = Table(
 
 # MRA SIM Calibration and Measurement Capabilities entries in the KCDB
 class KcdbCmc(Base):
-    __tablename__ = "kcdbcmc_table"
-    id = Column(String(50), primary_key=True)
+    __tablename__ = "kcdbcmc"
+    id = Column(Integer, primary_key=True)
+    kcdbCode = Column(String(50))
+    baseUnit = Column(UnicodeText)
+    uncertaintyBaseUnit = Column(UnicodeText)
+    comments = Column(UnicodeText)
+
+    area_id = Column(
+        Integer, ForeignKey("kcdbarea.id"), nullable=True
+    )
+    area = relationship("KcdbArea")
+    
+    branch_id = Column(
+        Integer, ForeignKey("kcdbbranch.id"), nullable=True
+    )
+    branch = relationship("KcdbBranch")
+    
+    service_id = Column(
+        Integer, ForeignKey("kcdbservice.id"), nullable=True
+    )
+    service = relationship("KcdbService")
+    
+    subservice_id = Column(
+        Integer, ForeignKey("kcdbsubservice.id"), nullable=True
+    )
+    subservice = relationship("KcdbSubservice")
+
+    individualservice_id = Column(
+        Integer, ForeignKey("kcdbindividualservice.id"), nullable=True
+    )
+    individualservice = relationship("KcdbIndividualService")
+    
+    quantity_id = Column(
+        Integer, ForeignKey("kcdbquantity.id"), nullable=True
+    )
+    quantity = relationship("KcdbQuantity")
+    
+    instrument_id = Column(
+        Integer, ForeignKey("kcdbinstrument.id"), nullable=True
+    )
+    instrument = relationship("KcdbInstrument")
+    
+    instrumentmethod_id = Column(
+        Integer, ForeignKey("kcdbinstrumentmethod.id"), nullable=True
+    )
+    instrumentmethod = relationship("KcdbInstrumentMethod")
+
+    parameters: Mapped[list['KcdbParameter']] = relationship(back_populates='kcdbcmc')
+    
     tags = relationship(
         "ClassifierTag", secondary=kcdb_classifier_map, backref="kcdbcmcs"
+    )
+    
+    measurands = relationship(
+        "Measurand", secondary=kcdb_measurand_map, backref="kcdbcmcs"
     )
     # parents = relationship("Parent", secondary=association_table, back_populates="children")
     # parent_id = Column(String(50), ForeignKey("parent_table.id"))
     # parents = relationship("Parent", back_populates='discipline') # bidirectional relationship
 
     def __str__(self):
-        return self.id
+        return f'{self.kcdbCode}'
 
+
+class KcdbParameter(Base):
+    __tablename__ = "kcdbparameter"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(UnicodeText)
+    value = Column(UnicodeText)
+    kcdbcmc = relationship('KcdbCmc', back_populates='parameters')
+    kcdbcmc_id = Column(Integer, ForeignKey('kcdbcmc.id'))
+
+    def __str__(self):
+        return f'name: {self.name} value: {self.value}'
+
+class KcdbInstrument(Base):
+    __tablename__ = "kcdbinstrument"
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String(200))
+    value = Column(UnicodeText)
+
+    def __str__(self):
+        return self.value
+
+
+class KcdbInstrumentMethod(Base):
+    __tablename__ = "kcdbinstrumentmethod"
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String(200))
+    value = Column(UnicodeText)
+
+    def __str__(self):
+        return self.value
 
 class KcdbQuantity(Base):
     __tablename__ = "kcdbquantity"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(200))
+    id = Column(Integer, primary_key=True)
+    label = Column(String(200))
+    value = Column(UnicodeText)
+
+    def __str__(self):
+        return self.value
 
 
+class KcdbArea(Base):
+    __tablename__ = "kcdbarea"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.label
+
+
+class KcdbBranch(Base):
+    __tablename__ = "kcdbbranch"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.value
+
+    
 class KcdbService(Base):
     __tablename__ = "kcdbservice"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.value
+
+
+class KcdbSubservice(Base):
+    __tablename__ = "kcdbsubservice"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.value
+
+
+class KcdbIndividualService(Base):
+    __tablename__ = "kcdbindividualservice"
+    id = Column(Integer, primary_key=True)
+    label = Column(String(50))
+    value = Column(UnicodeText)
+    
+    def __str__(self):
+        return self.value
+
+
+class KcdbServiceClass(Base):
+    __tablename__ = "kcdbserviceclass"
     id = Column(String(50), primary_key=True)
     area_id = Column(String(10))
     area = Column(String(50))
@@ -445,9 +598,8 @@ class KcdbService(Base):
     service = Column(String(200))
     subservice = Column(String(200))
     individualservice = Column(String(200))
-    measurands = relationship(
-        "Measurand", secondary=kcdb_measurand_map, backref="kcdbservices"
-    )
+
+
 # KCDB quantityValue description
 # Requires mapper from KCDB quantity Value to quantity kind
 class QuantityValue(Base):
@@ -488,11 +640,45 @@ class QuantityValue(Base):
 
 # Generate marshmallow schemas
 
-class KcdbQuantitySchema(SQLAlchemyAutoSchema):
+
+class KcdbParameterSchema(SQLAlchemyAutoSchema):
     class Meta:
-        model = KcdbQuantity
+        model = KcdbParameter
         include_relationships = True
         load_instance = True
+        ordered = True
+
+
+class KcdbInstrumentSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbInstrument
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbInstrumentMethodSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbInstrumentMethod
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbAreaSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbArea
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbBranchSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbBranch
+        include_relationships = True
+        load_instance = True
+        ordered = True
 
 
 class KcdbServiceSchema(SQLAlchemyAutoSchema):
@@ -500,6 +686,39 @@ class KcdbServiceSchema(SQLAlchemyAutoSchema):
         model = KcdbService
         include_relationships = True
         load_instance = True
+        ordered = True
+
+
+class KcdbSubserviceSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbSubservice
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbIndividualServiceSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbIndividualService
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbQuantitySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbQuantity
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbServiceClassSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbServiceClass
+        include_relationships = True
+        load_instance = True
+        ordered = True
 
 
 class PrefixSchema(SQLAlchemyAutoSchema):
@@ -507,6 +726,7 @@ class PrefixSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Prefix
         load_instance = True
+        ordered = True
 
 
 class UnitSchema(SQLAlchemyAutoSchema):
@@ -515,12 +735,14 @@ class UnitSchema(SQLAlchemyAutoSchema):
         model = Unit
         include_relationships = True
         load_instance = True
+        ordered = True
 
 
 class SystemSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = System
         load_instance = True
+        ordered = True
 
 
 class DimensionSchema(SQLAlchemyAutoSchema):
@@ -530,6 +752,7 @@ class DimensionSchema(SQLAlchemyAutoSchema):
         model = Dimension
         include_relationships = True
         load_instance = True
+        ordered = True
 
 
 class ScaleSchema(SQLAlchemyAutoSchema):
@@ -542,6 +765,7 @@ class ScaleSchema(SQLAlchemyAutoSchema):
         model = Scale
         include_relationships = True
         load_instance = True
+        ordered = True
 
 
 class AspectSchema(SQLAlchemyAutoSchema):
@@ -551,6 +775,7 @@ class AspectSchema(SQLAlchemyAutoSchema):
         model = Aspect
         include_relationships = True
         load_instance = True
+        ordered = True
 
 
 class TransformSchema(SQLAlchemyAutoSchema):
@@ -558,6 +783,7 @@ class TransformSchema(SQLAlchemyAutoSchema):
         model = Transform
         include_relationships = True
         load_instance = True
+        ordered = True
 
 
 class ConversionSchema(SQLAlchemyAutoSchema):
@@ -570,8 +796,7 @@ class ConversionSchema(SQLAlchemyAutoSchema):
         model = Conversion
         include_relationships = True
         load_instance = True
-
-
+        ordered = True
 
 
 class ParameterSchema(SQLAlchemyAutoSchema):
@@ -580,6 +805,7 @@ class ParameterSchema(SQLAlchemyAutoSchema):
         model = Parameter
         include_relationships = True
         load_instance = True
+        ordered = True
 
 
 class TaxonSchema(SQLAlchemyAutoSchema):
@@ -587,6 +813,7 @@ class TaxonSchema(SQLAlchemyAutoSchema):
         model = Taxon
         include_relationships = True
         load_instance = True
+        ordered = True
 
 
 class MeasurandSchema(SQLAlchemyAutoSchema):
@@ -597,12 +824,29 @@ class MeasurandSchema(SQLAlchemyAutoSchema):
         model = Measurand
         include_relatiohsips = True
         load_instance = True
-
-
-
+        ordered = True
 
 class DisciplineSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Discipline
         include_relationships = True
         load_instance = True
+        ordered = True
+
+
+class KcdbCmcSchema(SQLAlchemyAutoSchema):
+    measurands = Nested(MeasurandSchema, many=True)
+    area = Nested(KcdbAreaSchema)
+    branch = Nested(KcdbBranchSchema)
+    service = Nested(KcdbServiceSchema)
+    subservice = Nested(KcdbSubserviceSchema)
+    individualservice = Nested(KcdbIndividualServiceSchema)
+    instrument = Nested(KcdbInstrumentSchema)
+    instrumentmethod = Nested(KcdbInstrumentMethodSchema)
+    quantity = Nested(KcdbQuantitySchema)
+    parameters = Nested(KcdbParameterSchema, many=True)
+    class Meta:
+        model = KcdbCmc
+        include_relationships = True
+        load_instance = True
+        ordered = True

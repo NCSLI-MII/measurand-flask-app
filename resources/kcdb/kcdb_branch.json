@@ -1,0 +1,162 @@
+[
+    {
+        "id": 1,
+        "value": "Sound in air",
+        "label": "AUV/A"
+    },
+    {
+        "id": 2,
+        "value": "Vibration",
+        "label": "AUV/V"
+    },
+    {
+        "id": 3,
+        "value": "Sound in water",
+        "label": "AUV/W"
+    },
+    {
+        "id": 4,
+        "value": "AC voltage, current, and power",
+        "label": "EM/AC"
+    },
+    {
+        "id": 5,
+        "value": "DC voltage, current, and resistance",
+        "label": "EM/DC"
+    },
+    {
+        "id": 6,
+        "value": "Electric and magnetic fields",
+        "label": "EM/Field"
+    },
+    {
+        "id": 7,
+        "value": "High voltage and current",
+        "label": "EM/HV"
+    },
+    {
+        "id": 8,
+        "value": "Impedance up to the MHz range",
+        "label": "EM/Imped"
+    },
+    {
+        "id": 9,
+        "value": "Materials",
+        "label": "EM/Mater"
+    },
+    {
+        "id": 10,
+        "value": "Other DC and low frequency measurements",
+        "label": "EM/OtherDC"
+    },
+    {
+        "id": 11,
+        "value": "Radio frequency measurements",
+        "label": "EM/RF"
+    },
+    {
+        "id": 12,
+        "value": "Dimensional metrology",
+        "label": "L/DimMet"
+    },
+    {
+        "id": 13,
+        "value": "Laser frequencies",
+        "label": "L/Laser"
+    },
+    {
+        "id": 14,
+        "value": "Density",
+        "label": "M/Dens"
+    },
+    {
+        "id": 15,
+        "value": "Fluid flow",
+        "label": "M/FF"
+    },
+    {
+        "id": 16,
+        "value": "Force",
+        "label": "M/Force"
+    },
+    {
+        "id": 17,
+        "value": "Mass, mass standards",
+        "label": "M/Mass"
+    },
+    {
+        "id": 18,
+        "value": "Pressure",
+        "label": "M/Pres"
+    },
+    {
+        "id": 19,
+        "value": "Torque",
+        "label": "M/Tor"
+    },
+    {
+        "id": 20,
+        "value": "Properties of detectors and sources",
+        "label": "PR/Detector"
+    },
+    {
+        "id": 21,
+        "value": "Fibre optics",
+        "label": "PR/Fibre"
+    },
+    {
+        "id": 22,
+        "value": "Properties of materials",
+        "label": "PR/Mater"
+    },
+    {
+        "id": 23,
+        "value": "Photometry",
+        "label": "PR/Photo"
+    },
+    {
+        "id": 24,
+        "value": "Humidity",
+        "label": "T/H"
+    },
+    {
+        "id": 25,
+        "value": "Temperature",
+        "label": "T/T"
+    },
+    {
+        "id": 26,
+        "value": "Thermophysical quantities",
+        "label": "T/TQ"
+    },
+    {
+        "id": 27,
+        "value": "Frequency",
+        "label": "TF/F"
+    },
+    {
+        "id": 28,
+        "value": "Time interval",
+        "label": "TF/TI"
+    },
+    {
+        "id": 29,
+        "value": "Time scale difference",
+        "label": "TF/TSD"
+    },
+    {
+        "id": 35,
+        "value": "Viscosity",
+        "label": "M/Vis"
+    },
+    {
+        "id": 36,
+        "value": "Hardness",
+        "label": "M/Har"
+    },
+    {
+        "id": 37,
+        "value": "Gravity",
+        "label": "M/Gra"
+    }
+]
