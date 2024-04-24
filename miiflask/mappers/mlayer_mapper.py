@@ -16,6 +16,7 @@ import uuid
 import requests
 from pathlib import Path
 from miiflask.flask import model
+from sqlalchemy import and_
 
 
 class MlayerMapper:
@@ -395,24 +396,62 @@ class MlayerMapper:
             if response.status_code == 200:
                 for obj in response.json():
                     cnv = self._transformConversion(obj)
-                    self.Session.add(cnv)
+                    if (
+                        self.Session.query(model.Conversion)
+                        .filter(and_(model.Conversion.src_scale_id == cnv.src_scale_id, 
+                                     model.Conversion.dst_scale_id == cnv.dst_scale_id,
+                                     model.Conversion.aspect_id == cnv.aspect_id))
+                        .first()
+                         ) is None:
+                        self.Session.add(cnv)
+                    else:
+                        print(f'Failed to add {cnv.id}, already exists')
             response = requests.get(self._api + "/casts")
             print(response.status_code)
             if response.status_code == 200:
                 for obj in response.json():
                     cast = self._transformCast(obj)
-                    self.Session.add(cast)
+                    if (
+                        self.Session.query(model.Cast)
+                        .filter(and_(model.Cast.src_scale_id == cast.src_scale_id,
+                                     model.Cast.dst_scale_id == cast.dst_scale_id,
+                                     model.Cast.src_aspect_id == cast.src_aspect_id,
+                                     model.Cast.dst_aspect_id == cast.dst_aspect_id))
+                        .first()
+                         ) is None:
+                        self.Session.add(cast)
+                    else:
+                        print(f'Failed to add {cast.id}, already exists')
         else:
             with self._conversions_path.open() as f:
                 data = json.load(f)
                 for obj in data:
                     conversion = self._transformConversion(obj)
-                    self.Session.add(conversion)
+                    if (
+                        self.Session.query(model.Conversion)
+                        .filter(and_(model.Conversion.src_scale_id == conversion.src_scale_id, 
+                                     model.Conversion.dst_scale_id == conversion.dst_scale_id,
+                                     model.Conversion.aspect_id == conversion.aspect_id))
+                        .first()
+                         ) is None:
+                        self.Session.add(conversion)
+                    else:
+                        print(f'Failed to add {conversion.id}, already exists')
             with self._casts_path.open() as f:
                 data = json.load(f)
                 for obj in data:
                     cast = self._transformCast(obj)
-                    self.Session.add(cast)
+                    if (
+                        self.Session.query(model.Cast)
+                        .filter(and_(model.Cast.src_scale_id == cast.src_scale_id,
+                                     model.Cast.dst_scale_id == cast.dst_scale_id,
+                                     model.Cast.src_aspect_id == cast.src_aspect_id,
+                                     model.Cast.dst_aspect_id == cast.dst_aspect_id))
+                        .first()
+                         ) is None:
+                        self.Session.add(cast)
+                    else:
+                        print(f'Failed to add {cast.id}, already exists')
 
 
 if __name__ == "__main__":

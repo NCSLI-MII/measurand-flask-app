@@ -21,6 +21,7 @@ class KcdbMapper:
         self._use_api = parms["use_api"]
         self._updateResources = parms['update_resources']
         self._use_cmc_api = parms['use_cmc_api']
+        self._kcdb_path = parms['kcdb']
         self.api_ref = 'https://www.bipm.org/api/kcdb/referenceData'
         self.headers = {'accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -296,7 +297,7 @@ class KcdbMapper:
         print(cmc.instrumentmethod) 
     
     def _getPhysicsCmcDataLocal(self):
-        with open('../../resources/kcdb/kcdb_cmc.json') as f:
+        with open(f'{self._kcdb_path}/kcdb_cmc.json') as f:
             objs = json.load(f)
             for obj in objs:
                 cmc = (
@@ -379,14 +380,14 @@ class KcdbMapper:
             writer.writerows(self._service_classifications)
    
     def _dumpKcdbRefData(self, out_, type_, schema_):
-        with open(f'../../resources/kcdb/kcdb_{out_}.json', 'w') as fs:
+        with open(f'{self._kcdb_path}/kcdb_{out_}.json', 'w') as fs:
             objs = self.Session.query(type_).all()
             result = schema_.dump(objs, many=True)
             # print(result)
             json.dump(result, fs, ensure_ascii=False, indent=4)
 
     def _dumpKcdbCmcData(self, out_, type_, schema_):
-        with open(f'../../resources/kcdb/kcdb_{out_}.json', 'w') as fs:
+        with open(f'{self._kcdb_path}/kcdb_{out_}.json', 'w') as fs:
             objs = self.Session.query(type_).all()
             result = schema_.dump(objs, many=True)
             # print(result)
@@ -433,41 +434,41 @@ class KcdbMapper:
 
     def _getKcdbRefDataLocal(self):
         self._transformKcdbRefDataLocal('quantity',
-                                  model.KcdbQuantity,
-                                  model.KcdbQuantitySchema()
-                                  )
+                                        model.KcdbQuantity,
+                                        model.KcdbQuantitySchema()
+                                        )
         self._transformKcdbRefDataLocal('area',
-                                  model.KcdbArea,
-                                  model.KcdbAreaSchema()
-                                  )
+                                        model.KcdbArea,
+                                        model.KcdbAreaSchema()
+                                        )
         self._transformKcdbRefDataLocal('branch',
-                                  model.KcdbBranch,
-                                  model.KcdbBranchSchema()
-                                  )
+                                        model.KcdbBranch,
+                                        model.KcdbBranchSchema()
+                                        )
         self._transformKcdbRefDataLocal('service',
-                                  model.KcdbService,
-                                  model.KcdbServiceSchema()
-                                  )
+                                        model.KcdbService,
+                                        model.KcdbServiceSchema()
+                                        )
         self._transformKcdbRefDataLocal('subservice',
-                                  model.KcdbSubservice,
-                                  model.KcdbSubserviceSchema()
-                                  )
+                                        model.KcdbSubservice,
+                                        model.KcdbSubserviceSchema()
+                                        )
         self._transformKcdbRefDataLocal('individualservice',
-                                  model.KcdbIndividualService,
-                                  model.KcdbIndividualServiceSchema()
-                                  )
+                                        model.KcdbIndividualService,
+                                        model.KcdbIndividualServiceSchema()
+                                        )
         self._transformKcdbRefDataLocal('instrument',
-                                  model.KcdbInstrument,
-                                  model.KcdbInstrumentSchema()
-                                  )
+                                        model.KcdbInstrument,
+                                        model.KcdbInstrumentSchema()
+                                        )
         self._transformKcdbRefDataLocal('instrumentmethod',
-                                  model.KcdbInstrumentMethod,
-                                  model.KcdbInstrumentMethodSchema()
-                                  )
+                                        model.KcdbInstrumentMethod,
+                                        model.KcdbInstrumentMethodSchema()
+                                        )
         self._transformKcdbServiceClassLocal()
     
     def _transformKcdbRefDataLocal(self, out_, type_, schema_):
-        with open(f'../../resources/kcdb/kcdb_{out_}.json') as f:
+        with open(f'{self._kcdb_path}/kcdb_{out_}.json') as f:
             objs = json.load(f)
             for obj in objs:
                 self._transformKcdbObject(obj, type_, schema_)
@@ -505,7 +506,7 @@ class KcdbMapper:
             self.Session.add(quantity)
 
     def _transformKcdbServiceClassLocal(self):
-        with open('../../resources/kcdb/kcdb_serviceclass.json') as f:
+        with open(f'{self._kcdb_path}/kcdb_serviceclass.json') as f:
             objs = json.load(f)
             for obj in objs:
                 service = (

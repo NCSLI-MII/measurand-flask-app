@@ -26,10 +26,18 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow_sqlalchemy.fields import Nested
 
 from typing import Optional
+
+# ##########################################
 # Managing SQLAlchemy model outside of Flask
 # stackoverflow 28789063
 # github/flask-sqlalchemy issue "Manage external declarative bases"
 #
+# Use Declarative mapping styles with type hints
+# https://docs.sqlalchemy.org/en/20/orm/declarative_styles.html
+# Stackoverflow explanation
+# https://stackoverflow.com/questions/76498857/what-is-the-difference-between-mapped-column-and-column-in-sqlalchemy
+#
+##############################################
 # M-Layer Model
 scaleaspect_table = Table(
     "scaleaspect_table",
@@ -210,7 +218,11 @@ class Node(Base):
                                                   remote_side=[id])
     parent: Mapped['Node'] = relationship(back_populates='children')
 
-
+# Scale class gives access to all related scale information
+# Composite scales reference a root scale
+# Self-referencing relation to root_scale only from child using remote_side
+# Establishes many-to-one relation
+# See https://docs.sqlalchemy.org/en/20/orm/self_referential.html
 class Scale(Base):
     __tablename__ = "scale"
     id = Column(String(10), primary_key=True)

@@ -301,6 +301,7 @@ def initialize():
     parms = {
             "measurands": "../../resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
             "mlayer": "../../resources/m-layer",
+            "kcdb": "../../resources/kcdb"
             "quantities": "../../resources/kcdb/kcdb_quantities.csv",
             "services": "../../resources/kcdb/kcdb_service_classifications.csv",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
