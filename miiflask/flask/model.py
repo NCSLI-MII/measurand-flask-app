@@ -121,14 +121,19 @@ class System(Base):
 class Dimension(Base):
     __tablename__ = 'dimension'
     id: Mapped[str] = mapped_column(String(10), primary_key=True)
+
     formal_system_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey('system.id'))
+
     systematic_scale_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey('scale.id'))
+
     exponents: Mapped[Optional[str]] = mapped_column(String(40))
+
     systematic_scales: Mapped[list['Scale']] = \
         relationship(secondary=scaledimension_table,
                      back_populates="system_dimensions")
+
     formal_system: Mapped['System'] = relationship()
 
     def __str__(self):
@@ -163,6 +168,7 @@ class Aspect(Base):
     ml_name: Mapped[str] = mapped_column(String(50))
     symbol: Mapped[Optional[str]] = mapped_column(String(50))
     reference: Mapped[Optional[str]] = mapped_column(String(50))
+
     scales: Mapped[list['Scale']] = \
         relationship(secondary=scaleaspect_table, back_populates="aspects")
     # Conversions should be related to the scale,
@@ -221,34 +227,46 @@ class Node(Base):
 class Scale(Base):
     __tablename__ = "scale"
     id: Mapped[str] = mapped_column(String(10), primary_key=True)
+
     ml_name: Mapped[str] = mapped_column(String(50))
+
     scale_type: Mapped[str] = mapped_column(String(20))
+
     root_scale_id: Mapped[Optional[int]] = \
         mapped_column(ForeignKey('scale.id'))
+
     root_scale: Mapped['Scale'] = relationship(remote_side=[id])
+
     prefix_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey("prefix.id"))  # One-to-one
+
     prefix: Mapped['Prefix'] = relationship()
+
     unit_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey("unit.id"))  # One-to-one
+
     unit: Mapped['Unit'] = relationship()
+
     system_dimensions_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey('dimension.id'))
+
     system_dimensions: Mapped[list['Dimension']] = \
         relationship(secondary=scaledimension_table,
                      back_populates="systematic_scales")
+
     is_systematic: Mapped[Optional[bool]]
+
     aspects: Mapped[list['Aspect']] = \
         relationship(secondary=scaleaspect_table,
                      back_populates="scales")
+
     conversions: Mapped[list['Conversion']] = \
         relationship(primaryjoin="(Scale.id == Conversion.src_scale_id)",
-                     viewonly=True
-                     )
+                     viewonly=True)
+
     casts: Mapped[list['Cast']] = \
         relationship(primaryjoin="(Scale.id == Cast.src_scale_id)",
-                     viewonly=True
-                     )
+                     viewonly=True)
     # src_scales = relationship('Conversion', back_populates='src_scale')
     # dst_scales = relationship('Conversion', back_populates='dst_scale')
 
@@ -268,17 +286,23 @@ class Scale(Base):
 class Measurand(Base):
     __tablename__ = "measurand"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
+
     taxon_id: Mapped[str] = mapped_column(ForeignKey("taxon.id"))
-    name = Column(String(50))
-    result = Column(String(50))
-    quantitykind = Column(String(50))
-    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+
+    name: Mapped[str] = mapped_column(String(50))
+
+    result: Mapped[str] = mapped_column(String(50))
+
+    quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
+
+    aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
     # One-to-one
     taxon: Mapped['Taxon'] = relationship(back_populates='measurands')
     aspect: Mapped['Aspect'] = relationship()
-    definition = Column(UnicodeText)
+    definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
     # One to many parameters
-    parameters: Mapped[list['Parameter']] = relationship(back_populates="measurand")
+    parameters: Mapped[list['Parameter']] = \
+        relationship(back_populates="measurand")
 
     def __str__(self):
         return f'{self.name}'
@@ -291,13 +315,14 @@ class Parameter(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     measurand_id: Mapped[int] = mapped_column(ForeignKey("measurand.id"))
     measurand: Mapped['Measurand'] = relationship(back_populates="parameters")
-    name = Column(String(50))
-    quantitykind = Column(String(50))
-    definition = Column(UnicodeText)
-    optional = Column(Boolean)
+    name: Mapped[str] = mapped_column(String(50))
+    quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
+    definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    optional: Mapped[bool] = mapped_column()
 
     # One-to-one
-    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    aspect_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey("aspect.id"))
     aspect: Mapped['Aspect'] = relationship()
 
     def __str__(self):
@@ -308,25 +333,32 @@ class Taxon(Base):
     __tablename__ = "taxon"
     # id = Column(UnicodeText, primary_key=True)
     id: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
-    supertaxon_id: Mapped[Optional[str]] = mapped_column(ForeignKey('taxon.id'))
-    subtaxons: Mapped[list['Taxon']] = relationship(back_populates='supertaxon',
-                                                        remote_side=[id])
+
+    supertaxon_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('taxon.id'))
+
+    subtaxons: Mapped[list['Taxon']] = \
+        relationship(back_populates='supertaxon',
+                     remote_side=[id])
+
     supertaxon: Mapped['Taxon'] = relationship(back_populates='subtaxons')
-    name = Column(
-        String(50)
-    )  # Name should be constructor from init with Taxon attributes following BNF grammar
-    deprecated = Column(Boolean)
-    quantitykind = Column(String(50))
-    processtype = Column(String(10))  # Source | Measure
+    # Name should be constructor from init
+    # Taxon attributes following BNF grammar
+    name: Mapped[str] = mapped_column(String(50))
+    deprecated: Mapped[bool]
+    quantitykind: Mapped[str] = mapped_column(String(50))
+    processtype: Mapped[str] = mapped_column(String(10))  # Source | Measure
     # One-to-one
-    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    aspect_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey("aspect.id"))
     aspect: Mapped['Aspect'] = relationship()
-    qualifier = Column(String(50))
+    qualifier: Mapped[Optional[str]] = mapped_column(String(50))
     # Individual taxon may be used in many measurands
     # With bakc_populates if no id for taxon is given
     # SQLAlchemy will create a new one
     measurands: Mapped['Measurand'] = relationship(back_populates="taxon")
-    discipline_id: Mapped[int] = mapped_column(ForeignKey("discipline.id"), nullable=True)
+    discipline_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("discipline.id"))
     discipline: Mapped['Discipline'] = relationship(back_populates="taxon")
 
     def __str__(self):
