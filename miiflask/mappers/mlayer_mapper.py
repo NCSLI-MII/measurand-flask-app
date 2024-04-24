@@ -104,7 +104,7 @@ class MlayerMapper:
             'numerator': float(obj['numerator'].replace('"', '')),
             'denominator': float(obj['denominator'].replace('"', ''))
         }
-        print(data_)
+        # print(data_)
         prefix = self._schemas["prefix"].load(
             data_, session=self.Session
         )

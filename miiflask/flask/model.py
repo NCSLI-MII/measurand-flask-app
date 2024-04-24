@@ -55,24 +55,24 @@ scaledimension_table = Table(
 
 class Conversion(Base):
     __tablename__ = "conversion"
-    src_scale_id = Column("src_scale_id",
-                          ForeignKey("scale.id"),
-                          primary_key=True)
-    dst_scale_id = Column("dst_scale_id",
-                          ForeignKey("scale.id"),
-                          primary_key=True)
-    aspect_id = Column("aspect_id",
-                       ForeignKey("aspect.id"),
-                       primary_key=True)
-    transform_id = Column("transform_id",
-                          ForeignKey("transform.id"))
-    parameters = Column(UnicodeText)
-    
-    src_scale = relationship('Scale', foreign_keys=[src_scale_id])
-    dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
-    aspect = relationship('Aspect', foreign_keys=[aspect_id])
-    transform = relationship('Transform', foreign_keys=[transform_id])
-    
+    src_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
+                                              primary_key=True)
+    dst_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
+                                              primary_key=True)
+    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
+                                           primary_key=True)
+    transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"))
+    parameters: Mapped[str] = mapped_column(UnicodeText)
+
+    src_scale: Mapped['Scale'] = relationship(foreign_keys=[src_scale_id])
+    dst_scale: Mapped['Scale'] = relationship(foreign_keys=[dst_scale_id])
+    aspect: Mapped['Aspect'] = relationship(foreign_keys=[aspect_id])
+    transform: Mapped['Transform'] = relationship(foreign_keys=[transform_id])
+
+    # Investigate whether to use PrimaryKeyConstraint.
+    # The PrimaryKeyConstraint object provides explicit access to this constraint, 
+    # which includes the option of being configured directly:
+
     def __str__(self):
         return "{}.{}.{}".format(self.src_scale_id,
                                  self.dst_scale_id,
@@ -81,27 +81,22 @@ class Conversion(Base):
 
 class Cast(Base):
     __tablename__ = "cast"
-    src_scale_id = Column("src_scale_id",
-                          ForeignKey("scale.id"),
-                          primary_key=True)
-    src_aspect_id = Column("src_aspect_id",
-                           ForeignKey("aspect.id"),
-                           primary_key=True)
-    dst_scale_id = Column("dst_scale_id",
-                          ForeignKey("scale.id"),
-                          primary_key=True)
-    dst_aspect_id = Column("dst_aspect_id",
-                           ForeignKey("aspect.id"),
-                           primary_key=True)
-    transform_id = Column("transform_id",
-                          ForeignKey("transform.id"))
-    parameters = Column(UnicodeText)
+    src_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
+                                              primary_key=True)
+    dst_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
+                                              primary_key=True)
+    src_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
+                                               primary_key=True)
+    dst_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
+                                               primary_key=True)
+    transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"))
+    parameters: Mapped[str] = mapped_column(UnicodeText)
 
-    src_scale = relationship('Scale', foreign_keys=[src_scale_id])
-    src_aspect = relationship('Aspect', foreign_keys=[src_aspect_id])
-    dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
-    dst_aspect = relationship('Aspect', foreign_keys=[dst_aspect_id])
-    transform = relationship('Transform', foreign_keys=[transform_id])
+    src_scale: Mapped['Scale'] = relationship(foreign_keys=[src_scale_id])
+    dst_scale: Mapped['Scale'] = relationship(foreign_keys=[dst_scale_id])
+    src_aspect: Mapped['Aspect'] = relationship(foreign_keys=[src_aspect_id])
+    dst_aspect: Mapped['Aspect'] = relationship(foreign_keys=[dst_aspect_id])
+    transform: Mapped['Transform'] = relationship(foreign_keys=[transform_id])
 
     def __str__(self):
         return "{}.{}.{}.{}".format(self.src_scale_id,
