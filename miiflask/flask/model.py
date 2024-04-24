@@ -458,61 +458,52 @@ kcdb_measurand_map = Table(
 # MRA SIM Calibration and Measurement Capabilities entries in the KCDB
 class KcdbCmc(Base):
     __tablename__ = "kcdbcmc"
-    id = Column(Integer, primary_key=True)
-    kcdbCode = Column(String(50))
-    baseUnit = Column(UnicodeText)
-    uncertaintyBaseUnit = Column(UnicodeText)
-    comments = Column(UnicodeText)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    kcdbCode: Mapped[str] = mapped_column(String(50))
+    baseUnit: Mapped[str] = mapped_column(UnicodeText)
+    uncertaintyBaseUnit: Mapped[str] = mapped_column(UnicodeText)
+    comments: Mapped[str] = mapped_column(UnicodeText)
 
-    area_id = Column(
-        Integer, ForeignKey("kcdbarea.id"), nullable=True
-    )
-    area = relationship("KcdbArea")
-    
-    branch_id = Column(
-        Integer, ForeignKey("kcdbbranch.id"), nullable=True
-    )
-    branch = relationship("KcdbBranch")
-    
-    service_id = Column(
-        Integer, ForeignKey("kcdbservice.id"), nullable=True
-    )
-    service = relationship("KcdbService")
-    
-    subservice_id = Column(
-        Integer, ForeignKey("kcdbsubservice.id"), nullable=True
-    )
-    subservice = relationship("KcdbSubservice")
+    area_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbarea.id"))
+    area: Mapped['KcdbArea'] = relationship()
 
-    individualservice_id = Column(
-        Integer, ForeignKey("kcdbindividualservice.id"), nullable=True
-    )
-    individualservice = relationship("KcdbIndividualService")
-    
-    quantity_id = Column(
-        Integer, ForeignKey("kcdbquantity.id"), nullable=True
-    )
-    quantity = relationship("KcdbQuantity")
-    
-    instrument_id = Column(
-        Integer, ForeignKey("kcdbinstrument.id"), nullable=True
-    )
-    instrument = relationship("KcdbInstrument")
-    
-    instrumentmethod_id = Column(
-        Integer, ForeignKey("kcdbinstrumentmethod.id"), nullable=True
-    )
-    instrumentmethod = relationship("KcdbInstrumentMethod")
+    branch_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbbranch.id"))
+    branch: Mapped['KcdbBranch'] = relationship()
 
-    parameters: Mapped[list['KcdbParameter']] = relationship(back_populates='kcdbcmc')
-    
-    tags = relationship(
-        "ClassifierTag", secondary=kcdb_classifier_map, backref="kcdbcmcs"
-    )
-    
-    measurands = relationship(
-        "Measurand", secondary=kcdb_measurand_map, backref="kcdbcmcs"
-    )
+    service_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbservice.id"))
+    service: Mapped['KcdbService'] = relationship()
+
+    subservice_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbsubservice.id"))
+    subservice: Mapped['KcdbSubservice'] = relationship()
+
+    individualservice_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbindividualservice.id"))
+    individualservice: Mapped['KcdbIndividualService'] = relationship()
+
+    quantity_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbquantity.id"))
+    quantity: Mapped['KcdbQuantity'] = relationship()
+
+    instrument_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbinstrument.id"))
+    instrument: Mapped["KcdbInstrument"] = relationship()
+
+    instrumentmethod_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbinstrumentmethod.id"))
+    instrumentmethod: Mapped["KcdbInstrumentMethod"] = relationship()
+
+    parameters: Mapped[list['KcdbParameter']] = \
+        relationship(back_populates='kcdbcmc')
+
+    tags: Mapped[list['ClassifierTag']] = \
+        relationship(secondary=kcdb_classifier_map, backref="kcdbcmcs")
+
+    measurands: Mapped[list['Measurand']] = \
+        relationship(secondary=kcdb_measurand_map, backref="kcdbcmcs")
     # parents = relationship("Parent", secondary=association_table, back_populates="children")
     # parent_id = Column(String(50), ForeignKey("parent_table.id"))
     # parents = relationship("Parent", back_populates='discipline') # bidirectional relationship
@@ -532,83 +523,87 @@ class KcdbParameter(Base):
     def __str__(self):
         return f'name: {self.name} value: {self.value}'
 
+
 class KcdbInstrument(Base):
     __tablename__ = "kcdbinstrument"
-    id = Column(Integer, primary_key=True, index=True)
-    label = Column(String(200))
-    value = Column(UnicodeText)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    label: Mapped[Optional[str]] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
 
 class KcdbInstrumentMethod(Base):
     __tablename__ = "kcdbinstrumentmethod"
-    id = Column(Integer, primary_key=True, index=True)
-    label = Column(String(200))
-    value = Column(UnicodeText)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    label: Mapped[Optional[str]] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __str__(self):
-        return self.value
+        return f'{self.value}'
+
 
 class KcdbQuantity(Base):
     __tablename__ = "kcdbquantity"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(200))
-    value = Column(UnicodeText)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[Optional[str]] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
 
 class KcdbArea(Base):
     __tablename__ = "kcdbarea"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.label
+        return f'{self.value}'
 
 
 class KcdbBranch(Base):
     __tablename__ = "kcdbbranch"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
     
 class KcdbService(Base):
     __tablename__ = "kcdbservice"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
 
 class KcdbSubservice(Base):
     __tablename__ = "kcdbsubservice"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
 
 class KcdbIndividualService(Base):
     __tablename__ = "kcdbindividualservice"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.value
+        return f'{self.value}'
+
+# Deprecated
 
 
 class KcdbServiceClass(Base):
