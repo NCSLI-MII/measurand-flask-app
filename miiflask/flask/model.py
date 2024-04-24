@@ -55,24 +55,24 @@ scaledimension_table = Table(
 
 class Conversion(Base):
     __tablename__ = "conversion"
-    src_scale_id = Column("src_scale_id",
-                          ForeignKey("scale.id"),
-                          primary_key=True)
-    dst_scale_id = Column("dst_scale_id",
-                          ForeignKey("scale.id"),
-                          primary_key=True)
-    aspect_id = Column("aspect_id",
-                       ForeignKey("aspect.id"),
-                       primary_key=True)
-    transform_id = Column("transform_id",
-                          ForeignKey("transform.id"))
-    parameters = Column(UnicodeText)
-    
-    src_scale = relationship('Scale', foreign_keys=[src_scale_id])
-    dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
-    aspect = relationship('Aspect', foreign_keys=[aspect_id])
-    transform = relationship('Transform', foreign_keys=[transform_id])
-    
+    src_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
+                                              primary_key=True)
+    dst_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
+                                              primary_key=True)
+    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
+                                           primary_key=True)
+    transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"))
+    parameters: Mapped[str] = mapped_column(UnicodeText)
+
+    src_scale: Mapped['Scale'] = relationship(foreign_keys=[src_scale_id])
+    dst_scale: Mapped['Scale'] = relationship(foreign_keys=[dst_scale_id])
+    aspect: Mapped['Aspect'] = relationship(foreign_keys=[aspect_id])
+    transform: Mapped['Transform'] = relationship(foreign_keys=[transform_id])
+
+    # Investigate whether to use PrimaryKeyConstraint.
+    # The PrimaryKeyConstraint object provides explicit access to this constraint, 
+    # which includes the option of being configured directly:
+
     def __str__(self):
         return "{}.{}.{}".format(self.src_scale_id,
                                  self.dst_scale_id,
@@ -81,27 +81,22 @@ class Conversion(Base):
 
 class Cast(Base):
     __tablename__ = "cast"
-    src_scale_id = Column("src_scale_id",
-                          ForeignKey("scale.id"),
-                          primary_key=True)
-    src_aspect_id = Column("src_aspect_id",
-                           ForeignKey("aspect.id"),
-                           primary_key=True)
-    dst_scale_id = Column("dst_scale_id",
-                          ForeignKey("scale.id"),
-                          primary_key=True)
-    dst_aspect_id = Column("dst_aspect_id",
-                           ForeignKey("aspect.id"),
-                           primary_key=True)
-    transform_id = Column("transform_id",
-                          ForeignKey("transform.id"))
-    parameters = Column(UnicodeText)
+    src_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
+                                              primary_key=True)
+    dst_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
+                                              primary_key=True)
+    src_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
+                                               primary_key=True)
+    dst_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
+                                               primary_key=True)
+    transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"))
+    parameters: Mapped[str] = mapped_column(UnicodeText)
 
-    src_scale = relationship('Scale', foreign_keys=[src_scale_id])
-    src_aspect = relationship('Aspect', foreign_keys=[src_aspect_id])
-    dst_scale = relationship('Scale', foreign_keys=[dst_scale_id])
-    dst_aspect = relationship('Aspect', foreign_keys=[dst_aspect_id])
-    transform = relationship('Transform', foreign_keys=[transform_id])
+    src_scale: Mapped['Scale'] = relationship(foreign_keys=[src_scale_id])
+    dst_scale: Mapped['Scale'] = relationship(foreign_keys=[dst_scale_id])
+    src_aspect: Mapped['Aspect'] = relationship(foreign_keys=[src_aspect_id])
+    dst_aspect: Mapped['Aspect'] = relationship(foreign_keys=[dst_aspect_id])
+    transform: Mapped['Transform'] = relationship(foreign_keys=[transform_id])
 
     def __str__(self):
         return "{}.{}.{}.{}".format(self.src_scale_id,
@@ -112,51 +107,55 @@ class Cast(Base):
 
 class System(Base):
     __tablename__ = 'system'
-    id = Column(String(10), primary_key=True)
-    ml_name = Column(String(10))
-    symbol = Column(String(10))
-    n = Column(Integer)
-    basis = Column(String(200))
-    reference = Column(String(50))
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    ml_name: Mapped[str] = mapped_column(String(10))
+    symbol: Mapped[str] = mapped_column(String(10))
+    n: Mapped[Optional[int]] = mapped_column(Integer)
+    basis: Mapped[Optional[str]] = mapped_column(String(200))
+    reference: Mapped[Optional[str]] = mapped_column(String(50))
 
     def __str__(self):
-        return self.symbol
+        return f'{self.symbol}'
 
 
 class Dimension(Base):
     __tablename__ = 'dimension'
-    id = Column(String(10), primary_key=True)
-    formal_system_id = Column('formal_system_id',
-                              ForeignKey('system.id'),
-                              nullable=True)
-    systematic_scale_id = Column('systematic_scale_id',
-                                 ForeignKey('scale.id'),
-                                 nullable=True)
-    exponents = Column(String(40), nullable=True)
-    systematic_scales = relationship("Scale",
-                                     secondary=scaledimension_table,
-                                     back_populates="system_dimensions")
-    formal_system = relationship("System")
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+
+    formal_system_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('system.id'))
+
+    systematic_scale_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('scale.id'))
+
+    exponents: Mapped[Optional[str]] = mapped_column(String(40))
+
+    systematic_scales: Mapped[list['Scale']] = \
+        relationship(secondary=scaledimension_table,
+                     back_populates="system_dimensions")
+
+    formal_system: Mapped['System'] = relationship()
 
     def __str__(self):
         # SI Brochure dimensions
         # dimQ = T^alphaL^betaM^gammaI^deltaTheta^epsilonN^psiJ^eta
         # m-layer encoding
         # dimQ = M^gammaL^betaT^alphaI^deltaTheta^epsilonN^psiJ^eta
-        # Time Length Mass Current Temperature AmountOfSubstance LuminousIntensity
-        return self.id
+        # Time Length Mass Current Temperature
+        # AmountOfSubstance LuminousIntensity
+        return f'{self.id}'
 
 
 class Transform(Base):
     __tablename__ = "transform"
-    id = Column(String(10), primary_key=True)
-    ml_name = Column(String(50))
-    py_function = Column(UnicodeText)
-    py_names_in_scope = Column(UnicodeText)
-    comments = Column(UnicodeText)
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    ml_name: Mapped[str] = mapped_column(String(50))
+    py_function: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    py_names_in_scope: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    comments: Mapped[Optional[str]] = mapped_column(UnicodeText)
 
     def __str__(self):
-        return self.ml_name
+        return f'{self.ml_name}'
 
 
 # M-Layer Aspect
@@ -164,14 +163,14 @@ class Aspect(Base):
     # Aspect will be referenced by many tables
     # Do not keep relationship to other tables
     __tablename__ = "aspect"
-    id = Column(String(10), primary_key=True)
-    name = Column(String(50))
-    ml_name = Column(String(50))
-    symbol = Column(String(50))
-    reference = Column(String(50))
-    scales = relationship(
-        "Scale", secondary=scaleaspect_table, back_populates="aspects"
-    )
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    name: Mapped[str] = mapped_column(String(50))
+    ml_name: Mapped[str] = mapped_column(String(50))
+    symbol: Mapped[Optional[str]] = mapped_column(String(50))
+    reference: Mapped[Optional[str]] = mapped_column(String(50))
+
+    scales: Mapped[list['Scale']] = \
+        relationship(secondary=scaleaspect_table, back_populates="aspects")
     # Conversions should be related to the scale,
     # aspect only disambiguates the expression
     # conversions = relationship('Conversion', back_populates='aspect')
@@ -182,13 +181,13 @@ class Aspect(Base):
 
 class Prefix(Base):
     __tablename__ = "prefix"
-    id = Column(String(50), primary_key=True)
-    name = Column(String(100))
-    ml_name = Column(String(100))
-    symbol = Column(String(50))
-    numerator = Column(Float)
-    denominator = Column(Float)
-    reference = Column(String(50))
+    id: Mapped[str] = mapped_column(String(50), primary_key=True)
+    name: Mapped[str] = mapped_column(String(100))
+    ml_name: Mapped[str] = mapped_column(String(100))
+    symbol: Mapped[str] = mapped_column(String(50))
+    numerator: Mapped[float] = mapped_column()
+    denominator: Mapped[float] = mapped_column()
+    reference: Mapped[Optional[str]] = mapped_column(String(50))
 
     def __str__(self):
         return f'{self.name}'
@@ -196,11 +195,11 @@ class Prefix(Base):
 
 class Unit(Base):
     __tablename__ = "unit"
-    id = Column(String(50), primary_key=True)
-    name = Column(String(100))
-    ml_name = Column(String(100))
-    symbol = Column(String(50))
-    reference = Column(String(50))
+    id: Mapped[str] = mapped_column(String(50), primary_key=True)
+    name: Mapped[str] = mapped_column(String(100))
+    ml_name: Mapped[str] = mapped_column(String(100))
+    symbol: Mapped[Optional[str]] = mapped_column(String(50))
+    reference: Mapped[Optional[str]] = mapped_column(String(50))
 
     def __str__(self):
         return f'{self.name}'
@@ -223,43 +222,53 @@ class Node(Base):
 # Self-referencing relation to root_scale only from child using remote_side
 # Establishes many-to-one relation
 # See https://docs.sqlalchemy.org/en/20/orm/self_referential.html
+
+
 class Scale(Base):
     __tablename__ = "scale"
-    id = Column(String(10), primary_key=True)
-    ml_name = Column(String(50))
-    scale_type = Column(String(20))
-    root_scale_id: Mapped[Optional[int]] = mapped_column(ForeignKey('scale.id'),
-                                                         nullable=True)
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+
+    ml_name: Mapped[str] = mapped_column(String(50))
+
+    scale_type: Mapped[str] = mapped_column(String(20))
+
+    root_scale_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey('scale.id'))
+
     root_scale: Mapped['Scale'] = relationship(remote_side=[id])
-    prefix_id = Column(String(50),
-                       ForeignKey("prefix.id"),
-                       nullable=True)  # One-to-one
-    prefix = relationship("Prefix")
-    unit_id = Column(String(50),
-                     ForeignKey("unit.id"),
-                     nullable=True)  # One-to-one
-    unit = relationship("Unit")
-    
-    system_dimensions_id = Column(String(10),
-                                  ForeignKey('dimension.id'),
-                                  nullable=True)
-    system_dimensions = relationship("Dimension",
-                                     secondary=scaledimension_table,
-                                     back_populates="systematic_scales")
-    is_systematic = Column(Boolean)
-    aspects = relationship("Aspect",
-                           secondary=scaleaspect_table,
-                           back_populates="scales")
-    conversions = relationship('Conversion',
-                               primaryjoin="(Scale.id == Conversion.src_scale_id)",
-                               viewonly=True
-                               )
-    casts = relationship('Cast',
-                         primaryjoin="(Scale.id == Cast.src_scale_id)",
-                         viewonly=True
-                        )
-    #src_scales = relationship('Conversion', back_populates='src_scale')
-    #dst_scales = relationship('Conversion', back_populates='dst_scale')
+
+    prefix_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey("prefix.id"))  # One-to-one
+
+    prefix: Mapped['Prefix'] = relationship()
+
+    unit_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey("unit.id"))  # One-to-one
+
+    unit: Mapped['Unit'] = relationship()
+
+    system_dimensions_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('dimension.id'))
+
+    system_dimensions: Mapped[list['Dimension']] = \
+        relationship(secondary=scaledimension_table,
+                     back_populates="systematic_scales")
+
+    is_systematic: Mapped[Optional[bool]]
+
+    aspects: Mapped[list['Aspect']] = \
+        relationship(secondary=scaleaspect_table,
+                     back_populates="scales")
+
+    conversions: Mapped[list['Conversion']] = \
+        relationship(primaryjoin="(Scale.id == Conversion.src_scale_id)",
+                     viewonly=True)
+
+    casts: Mapped[list['Cast']] = \
+        relationship(primaryjoin="(Scale.id == Cast.src_scale_id)",
+                     viewonly=True)
+    # src_scales = relationship('Conversion', back_populates='src_scale')
+    # dst_scales = relationship('Conversion', back_populates='dst_scale')
 
     def __str__(self):
         return f'{self.ml_name}'
@@ -277,17 +286,23 @@ class Scale(Base):
 class Measurand(Base):
     __tablename__ = "measurand"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
+
     taxon_id: Mapped[str] = mapped_column(ForeignKey("taxon.id"))
-    name = Column(String(50))
-    result = Column(String(50))
-    quantitykind = Column(String(50))
-    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+
+    name: Mapped[str] = mapped_column(String(50))
+
+    result: Mapped[str] = mapped_column(String(50))
+
+    quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
+
+    aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
     # One-to-one
     taxon: Mapped['Taxon'] = relationship(back_populates='measurands')
     aspect: Mapped['Aspect'] = relationship()
-    definition = Column(UnicodeText)
+    definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
     # One to many parameters
-    parameters: Mapped[list['Parameter']] = relationship(back_populates="measurand")
+    parameters: Mapped[list['Parameter']] = \
+        relationship(back_populates="measurand")
 
     def __str__(self):
         return f'{self.name}'
@@ -300,13 +315,14 @@ class Parameter(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     measurand_id: Mapped[int] = mapped_column(ForeignKey("measurand.id"))
     measurand: Mapped['Measurand'] = relationship(back_populates="parameters")
-    name = Column(String(50))
-    quantitykind = Column(String(50))
-    definition = Column(UnicodeText)
-    optional = Column(Boolean)
+    name: Mapped[str] = mapped_column(String(50))
+    quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
+    definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    optional: Mapped[bool] = mapped_column()
 
     # One-to-one
-    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    aspect_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey("aspect.id"))
     aspect: Mapped['Aspect'] = relationship()
 
     def __str__(self):
@@ -317,25 +333,32 @@ class Taxon(Base):
     __tablename__ = "taxon"
     # id = Column(UnicodeText, primary_key=True)
     id: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
-    supertaxon_id: Mapped[Optional[str]] = mapped_column(ForeignKey('taxon.id'))
-    subtaxons: Mapped[list['Taxon']] = relationship(back_populates='supertaxon',
-                                                        remote_side=[id])
+
+    supertaxon_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('taxon.id'))
+
+    subtaxons: Mapped[list['Taxon']] = \
+        relationship(back_populates='supertaxon',
+                     remote_side=[id])
+
     supertaxon: Mapped['Taxon'] = relationship(back_populates='subtaxons')
-    name = Column(
-        String(50)
-    )  # Name should be constructor from init with Taxon attributes following BNF grammar
-    deprecated = Column(Boolean)
-    quantitykind = Column(String(50))
-    processtype = Column(String(10))  # Source | Measure
+    # Name should be constructor from init
+    # Taxon attributes following BNF grammar
+    name: Mapped[str] = mapped_column(String(50))
+    deprecated: Mapped[bool]
+    quantitykind: Mapped[str] = mapped_column(String(50))
+    processtype: Mapped[str] = mapped_column(String(10))  # Source | Measure
     # One-to-one
-    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"), nullable=True)
+    aspect_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey("aspect.id"))
     aspect: Mapped['Aspect'] = relationship()
-    qualifier = Column(String(50))
+    qualifier: Mapped[Optional[str]] = mapped_column(String(50))
     # Individual taxon may be used in many measurands
     # With bakc_populates if no id for taxon is given
     # SQLAlchemy will create a new one
     measurands: Mapped['Measurand'] = relationship(back_populates="taxon")
-    discipline_id: Mapped[int] = mapped_column(ForeignKey("discipline.id"), nullable=True)
+    discipline_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("discipline.id"))
     discipline: Mapped['Discipline'] = relationship(back_populates="taxon")
 
     def __str__(self):
@@ -435,61 +458,52 @@ kcdb_measurand_map = Table(
 # MRA SIM Calibration and Measurement Capabilities entries in the KCDB
 class KcdbCmc(Base):
     __tablename__ = "kcdbcmc"
-    id = Column(Integer, primary_key=True)
-    kcdbCode = Column(String(50))
-    baseUnit = Column(UnicodeText)
-    uncertaintyBaseUnit = Column(UnicodeText)
-    comments = Column(UnicodeText)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    kcdbCode: Mapped[str] = mapped_column(String(50))
+    baseUnit: Mapped[str] = mapped_column(UnicodeText)
+    uncertaintyBaseUnit: Mapped[str] = mapped_column(UnicodeText)
+    comments: Mapped[str] = mapped_column(UnicodeText)
 
-    area_id = Column(
-        Integer, ForeignKey("kcdbarea.id"), nullable=True
-    )
-    area = relationship("KcdbArea")
-    
-    branch_id = Column(
-        Integer, ForeignKey("kcdbbranch.id"), nullable=True
-    )
-    branch = relationship("KcdbBranch")
-    
-    service_id = Column(
-        Integer, ForeignKey("kcdbservice.id"), nullable=True
-    )
-    service = relationship("KcdbService")
-    
-    subservice_id = Column(
-        Integer, ForeignKey("kcdbsubservice.id"), nullable=True
-    )
-    subservice = relationship("KcdbSubservice")
+    area_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbarea.id"))
+    area: Mapped['KcdbArea'] = relationship()
 
-    individualservice_id = Column(
-        Integer, ForeignKey("kcdbindividualservice.id"), nullable=True
-    )
-    individualservice = relationship("KcdbIndividualService")
-    
-    quantity_id = Column(
-        Integer, ForeignKey("kcdbquantity.id"), nullable=True
-    )
-    quantity = relationship("KcdbQuantity")
-    
-    instrument_id = Column(
-        Integer, ForeignKey("kcdbinstrument.id"), nullable=True
-    )
-    instrument = relationship("KcdbInstrument")
-    
-    instrumentmethod_id = Column(
-        Integer, ForeignKey("kcdbinstrumentmethod.id"), nullable=True
-    )
-    instrumentmethod = relationship("KcdbInstrumentMethod")
+    branch_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbbranch.id"))
+    branch: Mapped['KcdbBranch'] = relationship()
 
-    parameters: Mapped[list['KcdbParameter']] = relationship(back_populates='kcdbcmc')
-    
-    tags = relationship(
-        "ClassifierTag", secondary=kcdb_classifier_map, backref="kcdbcmcs"
-    )
-    
-    measurands = relationship(
-        "Measurand", secondary=kcdb_measurand_map, backref="kcdbcmcs"
-    )
+    service_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbservice.id"))
+    service: Mapped['KcdbService'] = relationship()
+
+    subservice_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbsubservice.id"))
+    subservice: Mapped['KcdbSubservice'] = relationship()
+
+    individualservice_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbindividualservice.id"))
+    individualservice: Mapped['KcdbIndividualService'] = relationship()
+
+    quantity_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbquantity.id"))
+    quantity: Mapped['KcdbQuantity'] = relationship()
+
+    instrument_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbinstrument.id"))
+    instrument: Mapped["KcdbInstrument"] = relationship()
+
+    instrumentmethod_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("kcdbinstrumentmethod.id"))
+    instrumentmethod: Mapped["KcdbInstrumentMethod"] = relationship()
+
+    parameters: Mapped[list['KcdbParameter']] = \
+        relationship(back_populates='kcdbcmc')
+
+    tags: Mapped[list['ClassifierTag']] = \
+        relationship(secondary=kcdb_classifier_map, backref="kcdbcmcs")
+
+    measurands: Mapped[list['Measurand']] = \
+        relationship(secondary=kcdb_measurand_map, backref="kcdbcmcs")
     # parents = relationship("Parent", secondary=association_table, back_populates="children")
     # parent_id = Column(String(50), ForeignKey("parent_table.id"))
     # parents = relationship("Parent", back_populates='discipline') # bidirectional relationship
@@ -509,83 +523,87 @@ class KcdbParameter(Base):
     def __str__(self):
         return f'name: {self.name} value: {self.value}'
 
+
 class KcdbInstrument(Base):
     __tablename__ = "kcdbinstrument"
-    id = Column(Integer, primary_key=True, index=True)
-    label = Column(String(200))
-    value = Column(UnicodeText)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    label: Mapped[Optional[str]] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
 
 class KcdbInstrumentMethod(Base):
     __tablename__ = "kcdbinstrumentmethod"
-    id = Column(Integer, primary_key=True, index=True)
-    label = Column(String(200))
-    value = Column(UnicodeText)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    label: Mapped[Optional[str]] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __str__(self):
-        return self.value
+        return f'{self.value}'
+
 
 class KcdbQuantity(Base):
     __tablename__ = "kcdbquantity"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(200))
-    value = Column(UnicodeText)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[Optional[str]] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
 
 class KcdbArea(Base):
     __tablename__ = "kcdbarea"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.label
+        return f'{self.value}'
 
 
 class KcdbBranch(Base):
     __tablename__ = "kcdbbranch"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
     
 class KcdbService(Base):
     __tablename__ = "kcdbservice"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
 
 class KcdbSubservice(Base):
     __tablename__ = "kcdbsubservice"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
 
 class KcdbIndividualService(Base):
     __tablename__ = "kcdbindividualservice"
-    id = Column(Integer, primary_key=True)
-    label = Column(String(50))
-    value = Column(UnicodeText)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    label: Mapped[str] = mapped_column(String(200))
+    value: Mapped[str] = mapped_column(UnicodeText)
+
     def __str__(self):
-        return self.value
+        return f'{self.value}'
+
+# Deprecated
 
 
 class KcdbServiceClass(Base):
