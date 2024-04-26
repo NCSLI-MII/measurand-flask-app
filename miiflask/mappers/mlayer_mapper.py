@@ -39,7 +39,7 @@ class MlayerMapper:
         self._units = {}
         self._schemas = {
             "aspect": model.AspectSchema(),
-            # "scale": model.ScaleSchema(),
+            "scale": model.ScaleSchema(),
             "unit": model.UnitSchema(),
             "transform": model.TransformSchema(),
             'system': model.SystemSchema(),
@@ -139,20 +139,20 @@ class MlayerMapper:
         )
         if scale:
             return None
-        # data_ = {
-        #    "id": obj['id'],
-        #    "ml_name": obj["ml_name"],
-        #    "unit_id": self._scales[key]["unit_id"],
-        #    "scale_type": self._scales[key]["type"],
-        # }
-        # scale = self._schemas["scale"].load(
-        #     data_, session=self.Session
-        # )
-        scale = model.Scale(id=obj['id'],
-                            ml_name=obj['ml_name'],
-                            scale_type=obj['type'],
-                            is_systematic=obj['is_systematic'],
-                            )
+        data_ = {
+            "id": obj['id'],
+            "ml_name": obj["ml_name"],
+            #"unit_id": self._scales[key]["unit_id"],
+            "scale_type": obj["type"],
+        }
+        scale = self._schemas["scale"].load(
+             data_, session=self.Session
+        )
+        #scale = model.Scale(id=obj['id'],
+        #                    ml_name=obj['ml_name'],
+        #                    scale_type=obj['type'],
+        #                    is_systematic=obj['is_systematic'],
+        #                    )
 
         unit = (
             self.Session.query(model.Unit)
@@ -174,7 +174,7 @@ class MlayerMapper:
             .first()
         )
         if system_dimensions:
-            scale.system_dimensions.append(system_dimensions)
+            scale.system_dimensions = system_dimensions
 
         # TBD
         # Parent scale may not be loaded before derived scale
@@ -190,7 +190,7 @@ class MlayerMapper:
                 self._cache_objs.append(obj)
                 return None
             scale.root_scale = root_scale
-
+        
         # TBD
         # validate self-referential table
         # otherwise, use adjacency table for model
@@ -199,14 +199,15 @@ class MlayerMapper:
             print(obj)
             if scale.prefix:
                 print(scale.prefix.id)
-            for s in scale.system_dimensions:
-                print(s.id)
+                print(scale.system_dimensions.id)
             if scale.root_scale:
                 print(scale.root_scale.id)
         #    if scale.derived_scales:
         #        for s in scale.derived_scales:
         #            print(s.id)
 
+        # print(self._schemas["scale"].dumps(scale)) 
+             
         return scale
 
     def _transformFunction(self, obj):
@@ -353,38 +354,6 @@ class MlayerMapper:
                           transform_id=obj['function_id'],
                           parameters=obj['parameters'])
         return cast
-
-    def _associateScaleDimension(self, obj):
-        dimension = (
-            self.Session.query(model.Dimension)
-            .filter(model.Dimension.id == obj['system_dimensions_id'])
-            .first()
-        )
-        if not dimension:
-            return None
-
-        scale = (
-            self.Session.query(model.Scale)
-            .filter(model.Scale.id == obj['id'])
-            .first()
-        )
-
-        scale.system_dimensions.append(dimension)
-
-    def getScaleDimension(self):
-        if self._doapi is True:
-            response = requests.get(f'{self._api}/scales')
-            print(response.status_code)
-            if response.status_code == 200:
-                for obj in response.json():
-                    if self._associateScaleDimension(obj) is None:
-                        continue
-
-        else:
-            with (self._resourceml / 'scales.json').resolve().open() as f:
-                for obj in json.load(f):
-                    if self._associateScaleDimension(obj) is None:
-                        continue
 
     def getScaleAspectAssociations(self):
         # Obtaining ScaleAspect associations more complicated

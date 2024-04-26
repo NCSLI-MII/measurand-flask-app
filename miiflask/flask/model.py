@@ -45,12 +45,6 @@ scaleaspect_table = Table(
     Column("scale_id", ForeignKey("scale.id"), primary_key=True),
     Column("aspect_id", ForeignKey("aspect.id"), primary_key=True),
 )
-scaledimension_table = Table(
-    "scaledimension_table",
-    Base.metadata,
-    Column("systematic_scale_id", ForeignKey("scale.id"), primary_key=True),
-    Column("dimension_id", ForeignKey("dimension.id"), primary_key=True),
-)
 
 
 class Conversion(Base):
@@ -70,7 +64,8 @@ class Conversion(Base):
     transform: Mapped['Transform'] = relationship(foreign_keys=[transform_id])
 
     # Investigate whether to use PrimaryKeyConstraint.
-    # The PrimaryKeyConstraint object provides explicit access to this constraint, 
+    # The PrimaryKeyConstraint object provides
+    # explicit access to this constraint,
     # which includes the option of being configured directly:
 
     def __str__(self):
@@ -125,14 +120,13 @@ class Dimension(Base):
     formal_system_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey('system.id'))
 
-    systematic_scale_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey('scale.id'))
+    # systematic_scale_id: Mapped[Optional[str]] = \
+    #    mapped_column(ForeignKey('scale.id'))
 
     exponents: Mapped[Optional[str]] = mapped_column(String(40))
 
     systematic_scales: Mapped[list['Scale']] = \
-        relationship(secondary=scaledimension_table,
-                     back_populates="system_dimensions")
+        relationship(back_populates="system_dimensions")
 
     formal_system: Mapped['System'] = relationship()
 
@@ -250,9 +244,8 @@ class Scale(Base):
     system_dimensions_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey('dimension.id'))
 
-    system_dimensions: Mapped[list['Dimension']] = \
-        relationship(secondary=scaledimension_table,
-                     back_populates="systematic_scales")
+    system_dimensions: Mapped['Dimension'] = \
+        relationship(back_populates="systematic_scales")
 
     is_systematic: Mapped[Optional[bool]]
 
@@ -296,7 +289,7 @@ class Measurand(Base):
     quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
 
     aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
-    # One-to-one
+    # One-to-many
     taxon: Mapped['Taxon'] = relationship(back_populates='measurands')
     aspect: Mapped['Aspect'] = relationship()
     definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
@@ -356,7 +349,8 @@ class Taxon(Base):
     # Individual taxon may be used in many measurands
     # With bakc_populates if no id for taxon is given
     # SQLAlchemy will create a new one
-    measurands: Mapped['Measurand'] = relationship(back_populates="taxon")
+    measurands: Mapped[list['Measurand']] = \
+        relationship(back_populates="taxon")
     discipline_id: Mapped[Optional[int]] = \
         mapped_column(ForeignKey("discipline.id"))
     discipline: Mapped['Discipline'] = relationship(back_populates="taxon")
@@ -365,11 +359,9 @@ class Taxon(Base):
         return f'{self.id}'
 
 
-# Traditional CC areas and team labels
-# Domains should be one to many disciplines
-
-
 class Domain(Base):
+    # Traditional CC areas and team labels
+    # Domains should be one to many disciplines
     __tablename__ = "domain"
     id = Column(Integer, primary_key=True, index=True)
     label = Column(String(10))
@@ -382,10 +374,8 @@ class Domain(Base):
         return f'{self.label}'
 
 
-
-
-# Disciplines should be one to many aspects or quantity kinds in taxonomy
 class Discipline(Base):
+    # Disciplines should be one to many aspects or quantity kinds in taxonomy
     __tablename__ = "discipline"
     id = Column(Integer, primary_key=True, index=True)
     label = Column(String(50))
@@ -393,8 +383,6 @@ class Discipline(Base):
 
     def __str__(self):
         return f'{self.label}'
-
-
 
 
 # Parent table represents an NRC service, index is NRC Service Code
@@ -409,8 +397,10 @@ class Discipline(Base):
 # Classification mappings
 # Need a way to store and map existing classifications or "tags"
 # NRC and KCDB describe services and CMCs with various "tags"
-# KCDB classification system differs for the different domains of Physics, Ionising Radiation and Biology/Chemistry
-# NRC has a separate (but similar) way to classify their services which is used on the website to organise human-readable html
+# KCDB classification system differs for the different domains of Physics,
+# Ionising Radiation and Biology/Chemistry
+# NRC has a separate (but similar) way to classify their services
+# which is used on the website to organise human-readable html
 #
 # The measurands impose a structure with a unique and controlled taxon name
 # Use a third normal form with an adjacency table to map services, CMCs and measurands to tags
@@ -774,10 +764,10 @@ class DimensionSchema(SQLAlchemyAutoSchema):
 
 
 class ScaleSchema(SQLAlchemyAutoSchema):
-    unit = Nested(UnitSchema)
+    # unit = Nested(UnitSchema)
     prefix = Nested(PrefixSchema)
     dimension = Nested(DimensionSchema)
-    # root_scale = Nested(ScaleSchema, many=True)
+    # root_scale = Nested(ScaleSchema)
 
     class Meta:
         model = Scale

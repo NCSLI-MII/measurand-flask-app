@@ -43,7 +43,6 @@ class InitializeDbTestCase(unittest.TestCase):
         with Session(self.engine) as session:
             mapper = MlayerMapper(session, parms)
             mapper.getCollections()
-            mapper.getScaleDimension()
             mapper.getScaleAspectAssociations()
 
             miimapper = TaxonomyMapper(session, parms)
