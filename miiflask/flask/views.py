@@ -195,11 +195,12 @@ class ScaleView(ModelView):
         return Markup('<a href="{}">{}</a>'.format(url, field))
 
     def _link_dim_formatter(view, context, model, name):
-        urls = []
-        for s in model.system_dimensions:
-            url = url_for('dimension.details_view', id=s.id)
-            urls.append('<a href="{}">{}</a>'.format(url, s.id))
-        return Markup((',').join(urls))
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        url = url_for('dimension.details_view', id=model.system_dimensions.id)
+        return Markup('<a href="{}">{}</a>'
+                      .format(url, model.system_dimensions.id))
 
     def _cnv_link_formatter(view, context, model, name):
         urls = []
@@ -312,7 +313,6 @@ def initialize():
 
     mapper = MlayerMapper(db.session, parms)
     mapper.getCollections()
-    mapper.getScaleDimension()
     mapper.getScaleAspectAssociations()
 
     miimapper = TaxonomyMapper(db.session, parms)
