@@ -352,7 +352,12 @@ def measurand(measurand_id):
     schema = m_schema.dumps(m, indent=2)
     print(m.id)
     mpprint(schema)
-    return render_template("measurand.html", measurand=m, response=schema)
+    schema_xml = dicttoxml_taxonomy(getTaxonDict(m, m_schema))
+    return render_template("measurand.html",
+                           measurand=m,
+                           response=schema,
+                           response_xml=schema_xml
+                           )
 
 
 @app.route("/aspect/<string:aspect_id>/", methods=["GET", "POST"])

@@ -272,9 +272,24 @@ class Scale(Base):
 
 # MII Taxonomy Model
 # Attempt to model MII Taxon
-# One-to-one NRC Service to Measurand (CMC)
+# Many-to-Many NRC Service to Measurand (CMC)
 # Measurands are unique but the taxon does not ensure uniqueness
 # Measurands may have same taxon but different parameters
+
+
+kcdb_measurand_map = Table(
+    "kcdb_measurand_map",
+    Base.metadata,
+    Column("kcdbcmc_id",
+           ForeignKey("kcdbcmc.id"),
+           primary_key=True),
+    Column(
+        "measurand_id",
+        ForeignKey("measurand.id"),
+        primary_key=True,
+    ),
+)
+
 
 class Measurand(Base):
     __tablename__ = "measurand"
@@ -296,6 +311,9 @@ class Measurand(Base):
     # One to many parameters
     parameters: Mapped[list['Parameter']] = \
         relationship(back_populates="measurand")
+
+    kcdbcmcs: Mapped[list['KcdbCmc']] = \
+        relationship(secondary=kcdb_measurand_map, back_populates="measurands")
 
     def __str__(self):
         return f'{self.name}'
@@ -432,18 +450,6 @@ kcdb_classifier_map = Table(
     ),
 )
 
-kcdb_measurand_map = Table(
-    "kcdb_measurand_map",
-    Base.metadata,
-    Column("kcdbcmc_id",
-           ForeignKey("kcdbcmc.id"),
-           primary_key=True),
-    Column(
-        "measurand_id",
-        ForeignKey("measurand.id"),
-        primary_key=True,
-    ),
-)
 
 # MRA SIM Calibration and Measurement Capabilities entries in the KCDB
 class KcdbCmc(Base):
@@ -493,7 +499,7 @@ class KcdbCmc(Base):
         relationship(secondary=kcdb_classifier_map, backref="kcdbcmcs")
 
     measurands: Mapped[list['Measurand']] = \
-        relationship(secondary=kcdb_measurand_map, backref="kcdbcmcs")
+        relationship(secondary=kcdb_measurand_map, back_populates="kcdbcmcs")
     # parents = relationship("Parent", secondary=association_table, back_populates="children")
     # parent_id = Column(String(50), ForeignKey("parent_table.id"))
     # parents = relationship("Parent", back_populates='discipline') # bidirectional relationship
