@@ -28,6 +28,8 @@ from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
 from miiflask.mappers.kcdb_mapper import KcdbMapper
 from miiflask.flask.model import Scale, Unit
 
+from tests.sqlalchemy_data_model_visualizer import generate_data_model_diagram
+
 class InitializeDbTestCase(unittest.TestCase):
     ident = URIRef("rdflib_test")
     uri = Literal("sqlite://")
@@ -126,7 +128,9 @@ class InitializeDbTestCase(unittest.TestCase):
          graph_test.open(self.uri, create=True)
          #graph_test.parse(data=testrdf,format='n3')
          #print(graph_test.serialize(format='json-ld', indent=4))
-         
+     
+    def test_visual(self):
+        generate_data_model_diagram([Scale, Unit], "model.png")
 
 
 if __name__ == '__main__':
