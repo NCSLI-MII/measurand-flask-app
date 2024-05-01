@@ -32,6 +32,8 @@ from miiflask.mappers.kcdb_mapper import KcdbMapper
 
 from marshmallow import pprint as mpprint
 import json
+import graphviz
+import base64
 
 qk_schema = AspectSchema()
 m_schema = MeasurandSchema()
@@ -365,9 +367,40 @@ def aspect(aspect_id):
     return render_template("aspect.html", aspect=a, response=a_schema)
 
 
+def visualize_scale(scale, add_labels=True, view_diagram=True):
+    dot = graphviz.Digraph(comment='Interactive Data Models', format='svg', 
+                            graph_attr={'bgcolor': '#EEEEEE', 'rankdir': 'TB', 'splines': 'spline'},
+                            node_attr={'shape': 'none', 'fontsize': '12', 'fontname': 'Roboto'},
+                            edge_attr={'fontsize': '10', 'fontname': 'Roboto'})
+    name = scale.ml_name 
+    # Create an HTML-like label for each model as a rich table
+    label = f'''<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
+    </TABLE>
+    '''
+    # Create the node with added hyperlink to detailed documentation
+    dot.node(name, label=name, URL=f"http://{name}_details.html")
+    # Add relationships with tooltips and advanced styling
+    target_name = scale.unit.name 
+    tooltip = f"Relation between {name} and {target_name}"
+    dot.edge(name, target_name, label="has unit" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
+    # Render the graph to a file and open it
+
+    for cnv in scale.conversions:
+        target_name = cnv.dst_scale.ml_name
+        tooltip = f"Relation between {name} and {target_name}"
+        dot.edge(name, target_name, label="converts to" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
+
+    dot.render("test_visual_scale.png", view=view_diagram)     
+    output = dot.pipe(format='png')
+    output = base64.b64encode(output).decode('utf-8')
+    return output
+
 @app.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
 def scale(scale_id):
     print("Get Scale ", scale_id)
     s = Scale.query.get_or_404(scale_id)
     print(s.id)
-    return render_template("scale.html", scale=s)
+    graph = visualize_scale(s)
+    return render_template("scale.html", scale=s, graph=graph)
