@@ -17,9 +17,18 @@ from flask_admin.contrib.sqla import ModelView
 
 from miiflask.flask.model import (
     Measurand,
+    Taxon,
     Aspect,
     Scale,
-    Parameter
+    Unit,
+    Prefix,
+    Dimension,
+    Conversion,
+    Cast,
+    Transform,
+    System,
+    Parameter,
+    KcdbCmc
 )
 from miiflask.flask.model import AspectSchema, MeasurandSchema
 
@@ -29,6 +38,7 @@ from miiflask.mappers.taxonomy_mapper import dicttoxml_taxonomy, getTaxonDict
 from miiflask.mappers.mlayer_mapper import MlayerMapper
 from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
 from miiflask.mappers.kcdb_mapper import KcdbMapper
+from miiflask.utils.model_visualizer import generate_data_model_diagram, visualize_scale 
 
 from marshmallow import pprint as mpprint
 import json
@@ -367,36 +377,6 @@ def aspect(aspect_id):
     return render_template("aspect.html", aspect=a, response=a_schema)
 
 
-def visualize_scale(scale, add_labels=True, view_diagram=True):
-    dot = graphviz.Digraph(comment='Interactive Data Models', format='svg', 
-                            graph_attr={'bgcolor': '#EEEEEE', 'rankdir': 'TB', 'splines': 'spline'},
-                            node_attr={'shape': 'none', 'fontsize': '12', 'fontname': 'Roboto'},
-                            edge_attr={'fontsize': '10', 'fontname': 'Roboto'})
-    name = scale.ml_name 
-    # Create an HTML-like label for each model as a rich table
-    label = f'''<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
-    <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
-    </TABLE>
-    '''
-    # Create the node with added hyperlink to detailed documentation
-    dot.node(name, label=name, URL=f"http://{name}_details.html")
-    # Add relationships with tooltips and advanced styling
-    target_name = scale.unit.name 
-    tooltip = f"Relation between {name} and {target_name}"
-    dot.edge(name, target_name, label="has unit" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
-    # Render the graph to a file and open it
-
-    for cnv in scale.conversions:
-        target_name = cnv.dst_scale.ml_name
-        tooltip = f"Relation between {name} and {target_name}"
-        dot.edge(name, target_name, label="converts to" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
-
-    dot.render("test_visual_scale.png", view=view_diagram)     
-    output = dot.pipe(format='png')
-    output = base64.b64encode(output).decode('utf-8')
-    return output
-
 @app.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
 def scale(scale_id):
     print("Get Scale ", scale_id)
@@ -404,3 +384,43 @@ def scale(scale_id):
     print(s.id)
     graph = visualize_scale(s)
     return render_template("scale.html", scale=s, graph=graph)
+
+
+@app.route("/model/mlayer/scale")
+def modelMlayerScale():
+    models = [Scale, Unit, Prefix, Dimension, System]
+    excludes = ['Aspect', 'Conversion', 'Cast']
+    graph = generate_data_model_diagram(models, excludes)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/mlayer/conversion")
+def modelMlayerConversion():
+    models = [Conversion, Aspect, Scale, Transform]
+    excludes = ['Prefix', 'Unit', 'Dimension', 'Cast']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/mlayer/cast")
+def modelMlayerCast():
+    models = [Cast, Aspect, Scale, Transform]
+    excludes = ['Prefix', 'Unit', 'Dimension', 'Conversion']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/taxonomy/measurand")
+def modelTaxonomyMeasurand():
+    models = [Taxon, Measurand, Parameter, Aspect]
+    excludes = ['Scale', 'KcdbCmc']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/kcdb")
+def modelKcdb():
+    models = [KcdbCmc, Measurand]
+    excludes = ['Taxon', 'Aspect', 'Parameter', 'ClassifierTag']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)
