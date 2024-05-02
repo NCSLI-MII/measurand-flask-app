@@ -382,8 +382,30 @@ def scale(scale_id):
     print("Get Scale ", scale_id)
     s = Scale.query.get_or_404(scale_id)
     print(s.id)
-    graph = visualize_scale(s)
+    graph = visualize_scale(Scale, s)
     return render_template("scale.html", scale=s, graph=graph)
+
+
+@app.route("/model/mii")
+def modelMII():
+    models = [Scale, Aspect, Conversion, Cast, Transform, Measurand, KcdbCmc]
+    excludes = ['Prefix',
+                'Unit',
+                'Dimension',
+                'Taxon',
+                'Parameter',
+                'ClassifierTag',
+                'KcdbArea',
+                'KcdbBranch',
+                'KcdbService',
+                'KcdbSubservice',
+                'KcdbIndividualService',
+                'KcdbQuantity',
+                'KcdbParameter',
+                'KcdbInstrument',
+                'KcdbInstrumentMethod']
+    graph = generate_data_model_diagram(models, excludes,show_attributes=False)
+    return render_template("diagram.html", graph=graph)
 
 
 @app.route("/model/mlayer/scale")

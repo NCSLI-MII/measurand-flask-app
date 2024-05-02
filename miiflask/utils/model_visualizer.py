@@ -22,7 +22,8 @@ import re
 import base64
 Base = declarative_base()
 
-def generate_data_model_diagram(models, excludes=[], add_labels=True, view_diagram=True):
+
+def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_labels=True, view_diagram=True):
     # Initialize graph with more advanced visual settings
     dot = graphviz.Digraph(comment='Interactive Data Models', format='svg', 
                             graph_attr={'bgcolor': '#EEEEEE', 'rankdir': 'TB', 'splines': 'spline'},
@@ -36,38 +37,42 @@ def generate_data_model_diagram(models, excludes=[], add_labels=True, view_diagr
         # Create an HTML-like label for each model as a rich table
         label = f'''<
         <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
-        <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
         '''
+        if show_attributes is True:         
+            label += f'''
+            <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
+            '''
+       
+            for column in insp.columns:
+                constraints = []
+                if column.primary_key:
+                    constraints.append("PK")
+                if column.unique:
+                    constraints.append("Unique")
+                if column.index:
+                    constraints.append("Index")
                 
-        for column in insp.columns:
-            constraints = []
-            if column.primary_key:
-                constraints.append("PK")
-            if column.unique:
-                constraints.append("Unique")
-            if column.index:
-                constraints.append("Index")
-            
-            constraint_str = ','.join(constraints)
-            color = "#BBDEFB"
-            
+                constraint_str = ','.join(constraints)
+                color = "#BBDEFB"
+                
+                label += f'''<TR>
+                             <TD BGCOLOR="{color}">{column.name} ({constraint_str})</TD>
+                             </TR>'''
+        else:
             label += f'''<TR>
-                         <TD BGCOLOR="{color}">{column.name} ({constraint_str})</TD>
-                         </TR>'''
-        
+            <TD WIDTH="100" HEIGHT="50" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
+            '''
+
         label += '</TABLE>>'
         
-        # Create the node with added hyperlink to detailed documentation
         dot.node(name, label=label)
 
         # Add relationships with tooltips and advanced styling
         for rel in insp.relationships:
             target_name = rel.mapper.class_.__name__
-            print(target_name)
             if target_name in excludes:
                 continue
             tooltip = f"Relation between {name} and {target_name}"
-            print(tooltip)
             dot.edge(name, target_name, label=rel.key if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
 
     # Render the graph to a file and open it
@@ -76,13 +81,38 @@ def generate_data_model_diagram(models, excludes=[], add_labels=True, view_diagr
     output = base64.b64encode(output).decode('utf-8')
     return output
 
+def getDescription(cls, obj):
+    print(cls, str(obj))
+    if cls == 'Scale':
+        return f'{obj.scale_type} scale {obj.unit.name}'
+    if cls == 'Conversion':
+        return f'to {obj.dst_scale.scale_type} scale {obj.dst_scale.unit.name}'
+    if cls == 'Aspect':
+        return str(obj)
+    if cls == 'Dimension':
+        dim = ['M', 'L', 'T', 'I', '&#920', 'N', 'J']
+        dimQ = ''.join([m+'<SUP>'+str(n)+'</SUP>' for m, n in zip(dim, obj.exponents)])
+        label = f'''<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+        <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{dimQ}</FONT></TD></TR>
+        </TABLE>
+        '''
+        return obj.exponents
+    else:
+        return str(obj)
+    
 
-def visualize_scale(scale, add_labels=True, view_diagram=True):
+def visualize_scale(model, instance, excludes=[], add_labels=True, view_diagram=True):
     dot = graphviz.Digraph(comment='Interactive Data Models', format='svg', 
                             graph_attr={'bgcolor': '#EEEEEE', 'rankdir': 'TB', 'splines': 'spline'},
-                            node_attr={'shape': 'none', 'fontsize': '12', 'fontname': 'Roboto'},
+                            node_attr={'shape': 'none', 'fontsize': '11', 'fontname': 'Roboto'},
                             edge_attr={'fontsize': '10', 'fontname': 'Roboto'})
-    name = scale.ml_name 
+    
+    insp = inspect(model)
+    inst_insp = inspect(instance)
+    cls_name = insp.class_.__name__
+    
+    name = getDescription(cls_name, instance) 
     # Create an HTML-like label for each model as a rich table
     label = f'''<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
@@ -90,19 +120,45 @@ def visualize_scale(scale, add_labels=True, view_diagram=True):
     </TABLE>
     '''
     # Create the node with added hyperlink to detailed documentation
-    dot.node(name, label=name, URL=f"http://{name}_details.html")
+    dot.node(name, label=name) 
     # Add relationships with tooltips and advanced styling
-    target_name = scale.unit.name 
-    tooltip = f"Relation between {name} and {target_name}"
-    dot.edge(name, target_name, label="has unit" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
+    #target_name = scale.unit.name 
+    #tooltip = f"Relation between {name} and {target_name}"
+    #dot.edge(name, target_name, label="has unit" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
     # Render the graph to a file and open it
 
-    for cnv in scale.conversions:
-        target_name = cnv.dst_scale.ml_name
-        tooltip = f"Relation between {name} and {target_name}"
-        dot.edge(name, target_name, label="converts to" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
+    # Add relationships with tooltips and advanced styling
+    for rel in insp.relationships:
+        
+        obj = getattr(instance, rel.key)
+        if obj is None:
+            continue
+        if isinstance(obj, list):
+            for sub in obj:
+                print(rel.mapper.class_.__name__, sub)
+                descr = getDescription(rel.mapper.class_.__name__, sub)
+                print(descr)
+                target_name = f'{rel.mapper.class_.__name__} {descr}'
+                if target_name in excludes:
+                    continue
+                
+                tooltip = f"Relation between {name} and {target_name}"
+                dot.edge(name, target_name, label=f'has {rel.key}' if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
+        else:
+            descr = getDescription(rel.mapper.class_.__name__, obj)
+            target_name = f'{rel.mapper.class_.__name__} {descr}'
+            if target_name in excludes:
+                continue
+            
+            tooltip = f"Relation between {name} and {target_name}"
+            dot.edge(name, target_name, label=f'has {rel.key}' if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
+    
+    #for cnv in scale.conversions:
+    #    target_name = cnv.dst_scale.ml_name
+    #    tooltip = f"Relation between {name} and {target_name}"
+    #    dot.edge(name, target_name, label="converts to" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
 
-    dot.render("test_visual_scale.png", view=view_diagram)     
+    #dot.render("test_visual_scale.png", view=view_diagram)     
     output = dot.pipe(format='png')
     output = base64.b64encode(output).decode('utf-8')
     return output
