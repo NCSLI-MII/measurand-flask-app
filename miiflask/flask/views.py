@@ -17,9 +17,18 @@ from flask_admin.contrib.sqla import ModelView
 
 from miiflask.flask.model import (
     Measurand,
+    Taxon,
     Aspect,
     Scale,
-    Parameter
+    Unit,
+    Prefix,
+    Dimension,
+    Conversion,
+    Cast,
+    Transform,
+    System,
+    Parameter,
+    KcdbCmc
 )
 from miiflask.flask.model import AspectSchema, MeasurandSchema
 
@@ -29,9 +38,15 @@ from miiflask.mappers.taxonomy_mapper import dicttoxml_taxonomy, getTaxonDict
 from miiflask.mappers.mlayer_mapper import MlayerMapper
 from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
 from miiflask.mappers.kcdb_mapper import KcdbMapper
+from miiflask.utils.model_visualizer import (
+    generate_data_model_diagram,
+    visualize_model_instance
+    )
 
 from marshmallow import pprint as mpprint
 import json
+import graphviz
+import base64
 
 qk_schema = AspectSchema()
 m_schema = MeasurandSchema()
@@ -332,6 +347,17 @@ def taxonomy():
     return render_template("taxonomy.html", measurands=measurands)
 
 
+@app.route("/mlayer/scales/")
+def scales():
+    scales = Scale().query.all()
+    return render_template("scales.html", scales=scales)
+
+
+@app.route("/mlayer/aspects/")
+def aspects():
+    aspects = Aspect().query.all()
+    return render_template("aspects.html", aspects=aspects)
+
 @app.route("/taxonomy/export")
 def taxonomy_export():
     measurand = Measurand()
@@ -347,27 +373,92 @@ def taxonomy_export():
 
 @app.route("/measurand/<string:measurand_id>/", methods=["GET", "POST"])
 def measurand(measurand_id):
-    print("Get Meaurand ", measurand_id)
+    # print("Get Meaurand ", measurand_id)
     m = Measurand.query.get_or_404(measurand_id)
     schema = m_schema.dumps(m, indent=2)
-    print(m.id)
+    # print(m.id)
     mpprint(schema)
-    return render_template("measurand.html", measurand=m, response=schema)
+    graph = visualize_model_instance(Measurand, m)
+    return render_template("measurand.html", measurand=m, response=schema, graph=graph)
 
 
 @app.route("/aspect/<string:aspect_id>/", methods=["GET", "POST"])
 def aspect(aspect_id):
-    print("Get Aspect ", aspect_id)
+    # print("Get Aspect ", aspect_id)
     a = Aspect.query.get_or_404(aspect_id)
     a_schema = qk_schema.dumps(a, indent=2)
-    print(a.id)
+    # print(a.id)
     mpprint(a_schema)
-    return render_template("aspect.html", aspect=a, response=a_schema)
+    graph = visualize_model_instance(Aspect, a)
+    return render_template("aspect.html", aspect=a, response=a_schema, graph=graph)
 
 
 @app.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
 def scale(scale_id):
-    print("Get Scale ", scale_id)
+    # print("Get Scale ", scale_id)
     s = Scale.query.get_or_404(scale_id)
-    print(s.id)
-    return render_template("scale.html", scale=s)
+    # print(s.id)
+    graph = visualize_model_instance(Scale, s)
+    return render_template("scale.html", scale=s, graph=graph)
+
+
+@app.route("/model/mii")
+def modelMII():
+    models = [Scale, Aspect, Conversion, Cast, Transform, Measurand, KcdbCmc]
+    excludes = ['Prefix',
+                'Unit',
+                'Dimension',
+                'Taxon',
+                'Parameter',
+                'ClassifierTag',
+                'KcdbArea',
+                'KcdbBranch',
+                'KcdbService',
+                'KcdbSubservice',
+                'KcdbIndividualService',
+                'KcdbQuantity',
+                'KcdbParameter',
+                'KcdbInstrument',
+                'KcdbInstrumentMethod']
+    graph = generate_data_model_diagram(models, excludes,show_attributes=False)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/mlayer/scale")
+def modelMlayerScale():
+    models = [Scale, Unit, Prefix, Dimension, System]
+    excludes = ['Aspect', 'Conversion', 'Cast']
+    graph = generate_data_model_diagram(models, excludes)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/mlayer/conversion")
+def modelMlayerConversion():
+    models = [Conversion, Aspect, Scale, Transform]
+    excludes = ['Prefix', 'Unit', 'Dimension', 'Cast']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/mlayer/cast")
+def modelMlayerCast():
+    models = [Cast, Aspect, Scale, Transform]
+    excludes = ['Prefix', 'Unit', 'Dimension', 'Conversion']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/taxonomy/measurand")
+def modelTaxonomyMeasurand():
+    models = [Taxon, Measurand, Parameter, Aspect]
+    excludes = ['Scale', 'KcdbCmc']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/kcdb")
+def modelKcdb():
+    models = [KcdbCmc, Measurand]
+    excludes = ['Taxon', 'Aspect', 'Parameter', 'ClassifierTag']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)

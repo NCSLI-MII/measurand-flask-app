@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Measurable Aspects{% endblock %}
+
+{% block content %}
+<h1 class="title">Measurable Aspects</h1>
+<div class="content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Reference</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in aspects %}
+            <tr>
+                <td>{{ a.name }}</td>
+                <td>{{ a.symbol }}</td>
+                <td>{{ a.reference }}</td>
+                <td><a href="{{ url_for('aspect', aspect_id=a.id) }}">Details</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

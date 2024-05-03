@@ -4,9 +4,9 @@
     "usertables":"/tmp/miiflask/tables_",
     "measurands": "resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
     "mlayer": "resources/m-layer",
-    "quantities": "resources/kcdb/kcdb_quantities.csv",
-    "services": "resources/kcdb/kcdb_service_classifications.csv",
+    "kcdb": "resources/kcdb",
     "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
     "use_api": false,
+    "use_cmc_api": false,
     "update_resources": false
 }
