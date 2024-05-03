@@ -38,7 +38,10 @@ from miiflask.mappers.taxonomy_mapper import dicttoxml_taxonomy, getTaxonDict
 from miiflask.mappers.mlayer_mapper import MlayerMapper
 from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
 from miiflask.mappers.kcdb_mapper import KcdbMapper
-from miiflask.utils.model_visualizer import generate_data_model_diagram, visualize_scale 
+from miiflask.utils.model_visualizer import (
+    generate_data_model_diagram,
+    visualize_model_instance
+    )
 
 from marshmallow import pprint as mpprint
 import json
@@ -344,6 +347,17 @@ def taxonomy():
     return render_template("taxonomy.html", measurands=measurands)
 
 
+@app.route("/mlayer/scales/")
+def scales():
+    scales = Scale().query.all()
+    return render_template("scales.html", scales=scales)
+
+
+@app.route("/mlayer/aspects/")
+def aspects():
+    aspects = Aspect().query.all()
+    return render_template("aspects.html", aspects=aspects)
+
 @app.route("/taxonomy/export")
 def taxonomy_export():
     measurand = Measurand()
@@ -359,30 +373,32 @@ def taxonomy_export():
 
 @app.route("/measurand/<string:measurand_id>/", methods=["GET", "POST"])
 def measurand(measurand_id):
-    print("Get Meaurand ", measurand_id)
+    # print("Get Meaurand ", measurand_id)
     m = Measurand.query.get_or_404(measurand_id)
     schema = m_schema.dumps(m, indent=2)
-    print(m.id)
+    # print(m.id)
     mpprint(schema)
-    return render_template("measurand.html", measurand=m, response=schema)
+    graph = visualize_model_instance(Measurand, m)
+    return render_template("measurand.html", measurand=m, response=schema, graph=graph)
 
 
 @app.route("/aspect/<string:aspect_id>/", methods=["GET", "POST"])
 def aspect(aspect_id):
-    print("Get Aspect ", aspect_id)
+    # print("Get Aspect ", aspect_id)
     a = Aspect.query.get_or_404(aspect_id)
     a_schema = qk_schema.dumps(a, indent=2)
-    print(a.id)
+    # print(a.id)
     mpprint(a_schema)
-    return render_template("aspect.html", aspect=a, response=a_schema)
+    graph = visualize_model_instance(Aspect, a)
+    return render_template("aspect.html", aspect=a, response=a_schema, graph=graph)
 
 
 @app.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
 def scale(scale_id):
-    print("Get Scale ", scale_id)
+    # print("Get Scale ", scale_id)
     s = Scale.query.get_or_404(scale_id)
-    print(s.id)
-    graph = visualize_scale(Scale, s)
+    # print(s.id)
+    graph = visualize_model_instance(Scale, s)
     return render_template("scale.html", scale=s, graph=graph)
 
 

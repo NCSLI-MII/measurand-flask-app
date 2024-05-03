@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Measurement Scales{% endblock %}
+
+{% block content %}
+<h1 class="title">Measurement Scales</h1>
+<div class="content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Scale Type</th>
+                <th>Unit</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in scales %}
+            <tr>
+                <td>{{ s.ml_name }}</td>
+                <td>{{ s.scale_type }}</td>
+                <td>{{ s.unit.name }}</td>
+                <td><a href="{{ url_for('scale', scale_id=s.id) }}">Details</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

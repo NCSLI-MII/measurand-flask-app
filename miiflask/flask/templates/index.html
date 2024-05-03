@@ -30,7 +30,10 @@
                     </select>
                 </div>
                 <div>
-                    <h2>Defined Quantity Kinds</h2>
+                    <p>
+                    <a href="mlayer/aspects">Measurable Aspects</a><br />
+                    </p>
+                    <h3>Defined Measurable Aspects</h2>
                     <select multiple="multiple" class="form-control">
                         {% for a in aspects %}
                             <option onClick="window.location = '/aspect/{{ a.id }}'">{{ a.name }}</option>
@@ -38,7 +41,11 @@
                     </select>
                 </div>
                 <div>
-                    <h2>Defined Scales</h2>
+                    <h2>Measurement Scales</h2>
+                    <p>
+                    <a href="mlayer/scales">Measurement Scales</a><br />
+                    </p>
+                    <h3>Defined Scales</h3>
                     <select multiple="multiple" class="form-control">
                         {% for scale in scales %}
                             <option onClick="window.location = '/scale/{{ scale.id }}'">{{ scale.ml_name }}</option>

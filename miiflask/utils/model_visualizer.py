@@ -102,30 +102,19 @@ def getDescription(cls, obj):
         return str(obj)
     
 
-def visualize_scale(model, instance, excludes=[], add_labels=True, view_diagram=True):
+def visualize_model_instance(model, instance, excludes=[], add_labels=True, view_diagram=True):
     dot = graphviz.Digraph(comment='Interactive Data Models', format='svg', 
                             graph_attr={'bgcolor': '#EEEEEE', 'rankdir': 'TB', 'splines': 'spline'},
                             node_attr={'shape': 'none', 'fontsize': '11', 'fontname': 'Roboto'},
                             edge_attr={'fontsize': '10', 'fontname': 'Roboto'})
     
     insp = inspect(model)
-    inst_insp = inspect(instance)
     cls_name = insp.class_.__name__
     
     name = getDescription(cls_name, instance) 
-    # Create an HTML-like label for each model as a rich table
-    label = f'''<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
-    <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
-    </TABLE>
-    '''
+    
     # Create the node with added hyperlink to detailed documentation
     dot.node(name, label=name) 
-    # Add relationships with tooltips and advanced styling
-    #target_name = scale.unit.name 
-    #tooltip = f"Relation between {name} and {target_name}"
-    #dot.edge(name, target_name, label="has unit" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
-    # Render the graph to a file and open it
 
     # Add relationships with tooltips and advanced styling
     for rel in insp.relationships:
@@ -135,9 +124,9 @@ def visualize_scale(model, instance, excludes=[], add_labels=True, view_diagram=
             continue
         if isinstance(obj, list):
             for sub in obj:
-                print(rel.mapper.class_.__name__, sub)
+                # print(rel.mapper.class_.__name__, sub)
                 descr = getDescription(rel.mapper.class_.__name__, sub)
-                print(descr)
+                # print(descr)
                 target_name = f'{rel.mapper.class_.__name__} {descr}'
                 if target_name in excludes:
                     continue
@@ -153,12 +142,6 @@ def visualize_scale(model, instance, excludes=[], add_labels=True, view_diagram=
             tooltip = f"Relation between {name} and {target_name}"
             dot.edge(name, target_name, label=f'has {rel.key}' if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
     
-    #for cnv in scale.conversions:
-    #    target_name = cnv.dst_scale.ml_name
-    #    tooltip = f"Relation between {name} and {target_name}"
-    #    dot.edge(name, target_name, label="converts to" if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
-
-    #dot.render("test_visual_scale.png", view=view_diagram)     
     output = dot.pipe(format='png')
     output = base64.b64encode(output).decode('utf-8')
     return output

@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Definition</th>
                 <th>Details</th>
             </tr>
         </thead>
@@ -16,6 +17,7 @@
             {% for m in measurands %}
             <tr>
                 <td>{{ m.name }}</td>
+                <td>{{ m.definition }}</td>
                 <td><a href="{{ url_for('measurand', measurand_id=m.id) }}">Details</a></td>
             </tr>
             {% endfor %}

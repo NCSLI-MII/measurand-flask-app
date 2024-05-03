@@ -20,6 +20,12 @@ resources
 ```
 conda create -n <environment_name> --file requirements.txt
 ```
+* Run the unit test for loading data locally and creating the database
+* Set the flask environment to test
+```
+export FLASK_ENV=testing
+python -m unittest
+```
 * Update to the latest input data for the taxonomy and mlayer.
 * Run the mappers.
 * Load the data in memory
@@ -30,7 +36,9 @@ python dbinit.py -p builder.json -m
 ```
 /tmp/miiflask/miiflask.db
 ```
+* First set the flask environment to development, then create the database using the script.
 ```
+export FLASK_ENV=development
 python dbinit.py -p builder.json -d
 ```
 * Update database path in flask [config](./miiflask/flask/config.py) if changed in builder.json.
