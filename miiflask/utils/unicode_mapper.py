@@ -1,3 +1,14 @@
+#! /usr/bin/env python3
+# vim:fenc=utf-8
+#
+# Copyright © 2024 Ryan Mackenzie White <ryan.white4@canada.ca>
+#
+# Distributed under terms of the Copyright © Her Majesty the Queen in Right of Canada, as represented by the Minister of Statistics Canada, 2019. license.
+
+"""
+
+"""
+
 greek_alphabet = {
     u'\u0391': 'Alpha',
     u'\u0392': 'Beta',
@@ -47,4 +58,28 @@ greek_alphabet = {
     u'\u03C7': 'chi',
     u'\u03C8': 'psi',
     u'\u03C9': 'omega',
+}
+
+greek_alphabet_unicode = dict((v,k) for k,v in greek_alphabet.items())
+
+superscript_integers_unicode = {
+    '0': u'\u2070',
+    '1': u'\u00B9',
+    '2': u'\u00B2',
+    '3': u'\u00B3',
+    '4': u'\u2074',
+    '5': u'\u2075',
+    '6': u'\u2076',
+    '7': u'\u2077',
+    '8': u'\u2078',
+    '9': u'\u2079',
+    '-1': u'\u207B\u00B9',
+    '-2': u'\u207B\u00B2',
+    '-3': u'\u207B\u00B3',
+    '-4': u'\u207B\u2074',
+    '-5': u'\u207B\u2075',
+    '-6': u'\u207B\u2076',
+    '-7': u'\u207B\u2077',
+    '-8': u'\u207B\u2078',
+    '-9': u'\u207B\u2079',
 }

@@ -21,6 +21,9 @@ import os
 import re
 import base64
 import json
+
+from miiflask.utils.unicode_mapper import greek_alphabet_unicode, superscript_integers_unicode
+
 Base = declarative_base()
 
 
@@ -91,28 +94,8 @@ def getDescription(cls, obj):
     if cls == 'Aspect':
         return str(obj)
     if cls == 'Dimension':
-        superscript = {'0': u'\u2070',
-                       '1': u'\u00B9',
-                       '2': u'\u00B2',
-                       '3': u'\u00B3',
-                       '4': u'\u2074',
-                       '5': u'\u2075',
-                       '6': u'\u2076',
-                       '7': u'\u2077',
-                       '8': u'\u2078',
-                       '9': u'\u2079',
-                       '-1': u'\u207B\u00B9',
-                       '-2': u'\u207B\u00B2',
-                       '-3': u'\u207B\u00B3',
-                       '-4': u'\u207B\u2074',
-                       '-5': u'\u207B\u2075',
-                       '-6': u'\u207B\u2076',
-                       '-7': u'\u207B\u2077',
-                       '-8': u'\u207B\u2078',
-                       '-9': u'\u207B\u2079',
-                       }
-        dim = ['M', 'L', 'T', 'I', u'\u0398', 'N', 'J']
-        dimQ = ''.join([m+superscript[str(n)] for m, n in zip(dim, json.loads(obj.exponents))])
+        dim = ['M', 'L', 'T', 'I', greek_alphabet_unicode['Theta'], 'N', 'J']
+        dimQ = ''.join([m+superscript_integers_unicode[str(n)] for m, n in zip(dim, json.loads(obj.exponents))])
         return dimQ 
     else:
         return str(obj)
