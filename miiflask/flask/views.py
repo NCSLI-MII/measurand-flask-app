@@ -464,8 +464,8 @@ def modelMlayerCast():
 
 @app.route("/model/taxonomy/measurand")
 def modelTaxonomyMeasurand():
-    models = [Taxon, Measurand, Parameter, Aspect]
-    excludes = ['Scale', 'KcdbCmc']
+    models = [Measurand, Taxon, Parameter, Aspect, Scale]
+    excludes = ['KcdbCmc','Discipline', 'Prefix', 'Unit', 'Dimension', 'Conversion', 'Cast']
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)
 
