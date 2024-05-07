@@ -20,6 +20,7 @@ import graphviz
 import os
 import re
 import base64
+import json
 Base = declarative_base()
 
 
@@ -90,14 +91,29 @@ def getDescription(cls, obj):
     if cls == 'Aspect':
         return str(obj)
     if cls == 'Dimension':
-        dim = ['M', 'L', 'T', 'I', '&#920', 'N', 'J']
-        dimQ = ''.join([m+'<SUP>'+str(n)+'</SUP>' for m, n in zip(dim, obj.exponents)])
-        label = f'''<
-        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
-        <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{dimQ}</FONT></TD></TR>
-        </TABLE>
-        '''
-        return obj.exponents
+        superscript = {'0': u'\u2070',
+                       '1': u'\u00B9',
+                       '2': u'\u00B2',
+                       '3': u'\u00B3',
+                       '4': u'\u2074',
+                       '5': u'\u2075',
+                       '6': u'\u2076',
+                       '7': u'\u2077',
+                       '8': u'\u2078',
+                       '9': u'\u2079',
+                       '-1': u'\u207B\u00B9',
+                       '-2': u'\u207B\u00B2',
+                       '-3': u'\u207B\u00B3',
+                       '-4': u'\u207B\u2074',
+                       '-5': u'\u207B\u2075',
+                       '-6': u'\u207B\u2076',
+                       '-7': u'\u207B\u2077',
+                       '-8': u'\u207B\u2078',
+                       '-9': u'\u207B\u2079',
+                       }
+        dim = ['M', 'L', 'T', 'I', u'\u0398', 'N', 'J']
+        dimQ = ''.join([m+superscript[str(n)] for m, n in zip(dim, json.loads(obj.exponents))])
+        return dimQ 
     else:
         return str(obj)
     
