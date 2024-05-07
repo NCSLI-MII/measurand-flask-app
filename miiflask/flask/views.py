@@ -144,18 +144,32 @@ class MeasurandView(ModelView):
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
-    column_formatters = {'id': _id_formatter,
-                         'taxon': _link_formatter}
-    column_list = ("id", "name", "quantitykind", "parameters")
+    column_formatters = {
+            'id': _id_formatter,
+            'taxon': _link_formatter,
+            'aspect': _link_formatter,
+            'scale': _link_formatter
+            }
+    column_list = (
+            "id", 
+            "name",
+            "aspect", 
+            "quantitykind", 
+            "scale", 
+            "parameters"
+            )
     inline_models = (Parameter,)
-    column_details_list = ("id",
-                           "name",
-                           "taxon",
-                           "aspect",
-                           "quantitykind",
-                           "parameters",
-                           "definition"
-                           )
+    column_details_list = (
+           "id",
+           "name",
+           "taxon",
+           "aspect",
+           "scale",
+           "quantitykind",
+           "parameters",
+           "definition",
+           "result"
+           )
 
 
 class DimensionView(MyModelView):
@@ -450,8 +464,8 @@ def modelMlayerCast():
 
 @app.route("/model/taxonomy/measurand")
 def modelTaxonomyMeasurand():
-    models = [Taxon, Measurand, Parameter, Aspect]
-    excludes = ['Scale', 'KcdbCmc']
+    models = [Measurand, Taxon, Parameter, Aspect, Scale]
+    excludes = ['KcdbCmc','Discipline', 'Prefix', 'Unit', 'Dimension', 'Conversion', 'Cast']
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)
 
