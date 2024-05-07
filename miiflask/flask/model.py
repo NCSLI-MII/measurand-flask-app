@@ -284,15 +284,24 @@ class Measurand(Base):
 
     name: Mapped[str] = mapped_column(String(50))
 
+    # Will be deprecated
+    # Result should be replaced by aspect and scale
     result: Mapped[str] = mapped_column(String(50))
 
+    definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    
     quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
 
     aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
+
+    scale_id: Mapped[Optional[str]] = mapped_column(ForeignKey('scale.id'))
+
     # One-to-many
     taxon: Mapped['Taxon'] = relationship(back_populates='measurands')
+    
     aspect: Mapped['Aspect'] = relationship()
-    definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    scale: Mapped['Scale'] = relationship()
+   
     # One to many parameters
     parameters: Mapped[list['Parameter']] = \
         relationship(back_populates="measurand")

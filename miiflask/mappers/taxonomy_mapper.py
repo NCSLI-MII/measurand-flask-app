@@ -272,7 +272,31 @@ class TaxonomyMapper:
                         #    self.Session.add(parm_quantitykind)
                         #    print(parm_qk_data)
                         parameter.quantitykind = parm_qk_data["name"] #parm_quantitykind
+                        # Try and query for aspect given the uom:Quantity
+                        parameter_aspect = (
+                                self.Session.query(model.Aspect)
+                                .filter(model.Aspect.name == parm_qk_data["name"]) #parm_quantitykind
+                                .first()
+                                )
+                        if parameter_aspect:
+                            parameter.aspect = parameter_aspect
                     measurand.parameters.append(parameter)
+        
+        # Try and query for aspect given the uom:Quantity
+        aspect = (
+                self.Session.query(model.Aspect)
+                .filter(model.Aspect.name == measurand.result.lower())
+                .first()
+                )
+        if aspect:
+            measurand.aspect = aspect
+
+            # Try and find a measurement scale
+            for s in aspect.scales:
+                if s.system_dimensions:
+                    if s.system_dimensions.formal_system:
+                        if s.system_dimensions.formal_system.id == "SY1":
+                            measurand.scale = s
 
         return measurand
 
