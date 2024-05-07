@@ -20,6 +20,10 @@ import graphviz
 import os
 import re
 import base64
+import json
+
+from miiflask.utils.unicode_mapper import greek_alphabet_unicode, superscript_integers_unicode
+
 Base = declarative_base()
 
 
@@ -90,14 +94,9 @@ def getDescription(cls, obj):
     if cls == 'Aspect':
         return str(obj)
     if cls == 'Dimension':
-        dim = ['M', 'L', 'T', 'I', '&#920', 'N', 'J']
-        dimQ = ''.join([m+'<SUP>'+str(n)+'</SUP>' for m, n in zip(dim, obj.exponents)])
-        label = f'''<
-        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
-        <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{dimQ}</FONT></TD></TR>
-        </TABLE>
-        '''
-        return obj.exponents
+        dim = ['M', 'L', 'T', 'I', greek_alphabet_unicode['Theta'], 'N', 'J']
+        dimQ = ''.join([m+superscript_integers_unicode[str(n)] for m, n in zip(dim, json.loads(obj.exponents))])
+        return dimQ 
     else:
         return str(obj)
     

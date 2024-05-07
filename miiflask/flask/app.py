@@ -12,8 +12,10 @@
 from os import environ
 
 from flask import Flask
+from flask import url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
+from flask_admin.menu import MenuLink
 from flask_admin.contrib.sqla import ModelView
 
 # This is vanilla SQLAlchemy declarative base
@@ -50,6 +52,11 @@ from miiflask.flask.model import (
 )
 
 print('Creating app ', __name__)
+
+
+class MainIndexLink(MenuLink):
+    def get_url(self):
+        return url_for('index')
 
 
 def create_app(config=TestingConfig):
@@ -134,7 +141,7 @@ admin.add_view(MyModelView(KcdbInstrumentMethod, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbParameter, db.session, category="KCDB"))
 admin.add_view(CMCView(KcdbCmc, db.session, category="KCDB"))
     
-
+admin.add_link(MainIndexLink(name='Homepage'))
 
 
 
