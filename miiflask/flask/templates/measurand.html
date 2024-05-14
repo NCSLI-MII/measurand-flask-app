@@ -1,20 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="title">{% block title %} Measurand {{ measurand.id }} {% endblock %}</h1>
+<h1 class="title">{% block title %} Measurand {{ measurand.name }} {% endblock %}</h1>
     <div class="content">
         <div class="measurand">
+            <a href="{{ url_for('measurand_export', measurand_id=measurand.id) }}">JSON</a></td>
             <b>
-                <p class="measurand">Taxon: {{ measurand.taxon.name }}</p>
+                <p class="measurand">Taxon: {{ measurand.name }}</p>
             </b>
             <b>
                 <p>Parameters</p>
                 {% for p in measurand.parameters %}
-                     <p>{{ p.quantitykind.name }}</p>
+                     <p>{{ p.name }}</p>
                 {% endfor %}
-                </select>
             </b>
-            <pre> {{ response }} </pre>
         </div>
     </div>
     <img src="data:image/png;base64,{{graph|safe}}"/>
