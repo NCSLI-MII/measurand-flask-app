@@ -110,6 +110,7 @@ class TaxonomyMapper:
         self._schemas["aspect"] = model.AspectSchema()
         self._schemas["discipline"] = model.DisciplineSchema()
         self._schemas["measurand"] = model.MeasurandSchema()
+        self._schemas["measurandtaxon"] = model.MeasurandTaxonSchema()
         self._schemas["parameter"] = model.ParameterSchema()
 
         self._mii_taxons_dict = None
@@ -166,6 +167,105 @@ class TaxonomyMapper:
             parts = taxon.name.split('.')
 
             
+    def getMeasurandRelatedObjects(self, taxon, measurand, uom_qk=None):
+        if uom_qk:
+            measurand.quantitykind = uom_qk 
+        
+
+        # TBD need to validate existing parameters of measurand
+        if "mtc:Parameter" in taxon.keys():
+            for parm in taxon["mtc:Parameter"]:
+                
+                parameter = self._schemas["parameter"].load(
+                        {"name": parm["@name"], 
+                         "optional": parm["@optional"]}, 
+                        session=self.Session
+                )
+                if "uom:Quantity" in parm.keys():
+                    parm_qk_data = {"name": parm["uom:Quantity"]["@name"],
+                                    "definition": parm["mtc:Definition"],
+                                    }
+                                    
+                    parameter.quantitykind = parm_qk_data["name"] #parm_quantitykind
+                    # Try and query for aspect given the uom:Quantity
+                    parameter_aspect = (
+                            self.Session.query(model.Aspect)
+                            .filter(model.Aspect.name == parm_qk_data["name"]) #parm_quantitykind
+                            .first()
+                            )
+                    if parameter_aspect:
+                        parameter.aspect = parameter_aspect
+                measurand.parameters.append(parameter)
+        
+        # Try and query for aspect given the result name or uom:Quantity
+        aspect = (
+                self.Session.query(model.Aspect)
+                .filter((model.Aspect.name == taxon["mtc:Result"]["@name"].lower()) | 
+                    (model.Aspect.name == taxon["mtc:Result"]["uom:Quantity"]["@name"].lower()))
+                .first()
+                )
+        if aspect:
+            measurand.aspect = aspect
+            
+            # Try and find a measurement scale
+            if isinstance(measurand, model.Measurand):
+                for s in aspect.scales:
+                    if s.system_dimensions:
+                        if s.system_dimensions.formal_system:
+                            if s.system_dimensions.formal_system.id == "SY1":
+                                measurand.scale = s
+
+
+    def getMeasurandTaxonObject(self, taxon):
+        """
+        Deserialize taxon
+        Load or create from DB
+        """
+        
+        # Measurands can have the same taxon but differ in parameters
+        # Look at rule 10
+        # These are canonical definitions that contain all possible parameters
+
+        discipline_data = {"label": taxon["mtc:Discipline"]["@name"]}
+        
+        # TBD
+        # id and name of taxon should follow
+        # BNF grammar
+        # Flask problems with formatting url with taxon name
+        id_ = taxon["@name"].replace('.', '')
+        taxon_data = {
+            "id": id_,
+            "name": taxon["@name"],
+            "definition": taxon['mtc:Definition'],
+            "processtype": taxon["@name"].split(".")[0],
+            "quantitykind": taxon["mtc:Result"]["uom:Quantity"]["@name"],
+            "deprecated": taxon["@deprecated"]
+        }
+
+        discipline = (
+            self.Session.query(model.Discipline)
+            .filter(model.Discipline.label == discipline_data["label"])
+            .first()
+        )
+        if not discipline:
+            discipline = self._schemas["discipline"].load(
+                discipline_data, session=self.Session
+            )
+            self.Session.add(discipline)
+
+        taxon_ = (
+            self.Session.query(model.MeasurandTaxon)
+            .filter(model.MeasurandTaxon.name == taxon_data["name"])
+            .first()
+        )
+        if not taxon_:
+            taxon_ = self._schemas["measurandtaxon"].load(
+                taxon_data, session=self.Session
+            )
+            taxon_.discipline = discipline
+            # taxon_.quantitykind = quantitykind
+            self.Session.add(taxon_)
+            self.getMeasurandRelatedObjects(taxon, taxon_) 
 
 
     def getMeasurandObject(self, taxon):
@@ -242,67 +342,13 @@ class TaxonomyMapper:
                 measurand_data, session=self.Session
             )
             measurand.taxon = taxon_
-            measurand.quantitykind = taxon_data["quantitykind"]
             self.Session.add(measurand)
-
-            # TBD need to validate existing parameters of measurand
-            if "mtc:Parameter" in taxon.keys():
-                for parm in taxon["mtc:Parameter"]:
-                    parameter = self._schemas["parameter"].load(
-                            {"name": parm["@name"], 
-                             "optional": parm["@optional"]}, 
-                            session=self.Session
-                    )
-                    if "uom:Quantity" in parm.keys():
-                        parm_qk_data = {"name": parm["uom:Quantity"]["@name"],
-                                        "definition": parm["mtc:Definition"],
-                                        }
-                                        
-                        # parm_quantitykind = (
-                        #     self.Session.query(model.QuantityKind)
-                        #     .filter(
-                        #         model.QuantityKind.name == parm_qk_data["name"]
-                        #    )
-                        #    .first()
-                        # )
-                        # if not parm_quantitykind:
-                        #    parm_quantitykind = self._schemas["aspect"].load(
-                        #        parm_qk_data, session=self.Session
-                        #    )
-                        #    self.Session.add(parm_quantitykind)
-                        #    print(parm_qk_data)
-                        parameter.quantitykind = parm_qk_data["name"] #parm_quantitykind
-                        # Try and query for aspect given the uom:Quantity
-                        parameter_aspect = (
-                                self.Session.query(model.Aspect)
-                                .filter(model.Aspect.name == parm_qk_data["name"]) #parm_quantitykind
-                                .first()
-                                )
-                        if parameter_aspect:
-                            parameter.aspect = parameter_aspect
-                    measurand.parameters.append(parameter)
-        
-        # Try and query for aspect given the uom:Quantity
-        aspect = (
-                self.Session.query(model.Aspect)
-                .filter(model.Aspect.name == measurand.result.lower())
-                .first()
-                )
-        if aspect:
-            measurand.aspect = aspect
-
-            # Try and find a measurement scale
-            for s in aspect.scales:
-                if s.system_dimensions:
-                    if s.system_dimensions.formal_system:
-                        if s.system_dimensions.formal_system.id == "SY1":
-                            measurand.scale = s
-
-        return measurand
+            self.getMeasurandRelatedObjects(taxon, measurand, taxon_data["quantitykind"])
 
     def loadTaxonomy(self):
         for taxon in self._mii_taxons_dict:
             self.getMeasurandObject(self._mii_taxons_dict[taxon])
+            self.getMeasurandTaxonObject(self._mii_taxons_dict[taxon])
 
     def extractTaxonomy(self):
         with self._path.open() as f:

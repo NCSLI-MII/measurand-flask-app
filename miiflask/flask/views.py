@@ -18,6 +18,8 @@ from flask_admin.contrib.sqla import ModelView
 from miiflask.flask.model import (
     Measurand,
     Taxon,
+    MeasurandTaxon,
+    Discipline,
     Aspect,
     Scale,
     Unit,
@@ -30,7 +32,7 @@ from miiflask.flask.model import (
     Parameter,
     KcdbCmc
 )
-from miiflask.flask.model import AspectSchema, MeasurandSchema
+from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
@@ -49,7 +51,7 @@ import graphviz
 import base64
 
 qk_schema = AspectSchema()
-m_schema = MeasurandSchema()
+m_schema = MeasurandTaxonSchema()
 
 
 def _link_formatter(view, context, model, name):
@@ -124,7 +126,6 @@ class TaxonView(ModelView):
     form_columns = ['id',
                     'measurands',
                     'aspect',
-                    'discipline',
                     'subtaxons',
                     'supertaxon',
                     'deprecated',
@@ -165,6 +166,33 @@ class MeasurandView(ModelView):
            "taxon",
            "aspect",
            "scale",
+           "quantitykind",
+           "parameters",
+           "definition",
+           "result"
+           )
+
+
+class MeasurandTaxonView(ModelView):
+    can_export = True
+    column_display_pk = True
+    can_view_details = True
+    column_hide_backrefs = False
+    column_formatters = {
+            'id': _id_formatter,
+            'aspect': _link_formatter,
+            }
+    column_list = (
+            "id", 
+            "name",
+            "aspect", 
+            "definition"
+            )
+    inline_models = (Parameter,)
+    column_details_list = (
+           "id",
+           "name",
+           "aspect",
            "quantitykind",
            "parameters",
            "definition",
@@ -316,7 +344,7 @@ class AspectView(MyModelView):
 def index():
     meta = db.session.info
     print(meta)
-    measurands = Measurand.query.all()
+    measurands = MeasurandTaxon.query.all()
     aspects = Aspect.query.all()
     scales = Scale.query.all()
     return render_template(
@@ -356,7 +384,7 @@ def initialize():
 
 @app.route("/taxonomy/")
 def taxonomy():
-    measurand = Measurand()
+    measurand = MeasurandTaxon()
     measurands = measurand.query.all()
     return render_template("taxonomy.html", measurands=measurands)
 
@@ -374,8 +402,8 @@ def aspects():
 
 @app.route("/taxonomy/export")
 def taxonomy_export():
-    measurand = Measurand()
-    measurands = measurand.query.all()
+    measurand = MeasurandTaxon()
+    measurands = measurandTaxon.query.all()
     taxons = []
     for obj in measurands:
         taxons.append(getTaxonDict(obj, m_schema))
@@ -384,16 +412,21 @@ def taxonomy_export():
     response.mimetype = "text/xml"
     return response
 
+@app.route("/measurand/<string:measurand_id>/export", methods=["GET", "POST"])
+def measurand_export(measurand_id):
+    # print("Get Meaurand ", measurand_id)
+    m = MeasurandTaxon.query.get_or_404(measurand_id)
+    schema = m_schema.dumps(m, indent=2)
+    response = app.make_response(schema)
+    response.mimetype = "text/json"
+    return response 
 
 @app.route("/measurand/<string:measurand_id>/", methods=["GET", "POST"])
 def measurand(measurand_id):
     # print("Get Meaurand ", measurand_id)
-    m = Measurand.query.get_or_404(measurand_id)
-    schema = m_schema.dumps(m, indent=2)
-    # print(m.id)
-    mpprint(schema)
-    graph = visualize_model_instance(Measurand, m)
-    return render_template("measurand.html", measurand=m, response=schema, graph=graph)
+    m = MeasurandTaxon.query.get_or_404(measurand_id)
+    graph = visualize_model_instance(MeasurandTaxon, m)
+    return render_template("measurand.html", measurand=m, graph=graph)
 
 
 @app.route("/aspect/<string:aspect_id>/", methods=["GET", "POST"])
@@ -418,13 +451,14 @@ def scale(scale_id):
 
 @app.route("/model/mii")
 def modelMII():
-    models = [Scale, Aspect, Conversion, Cast, Transform, Measurand, KcdbCmc]
+    models = [Scale, Aspect, Conversion, Transform, MeasurandTaxon, Parameter, Discipline, KcdbCmc]
     excludes = ['Prefix',
                 'Unit',
                 'Dimension',
                 'Taxon',
-                'Parameter',
                 'ClassifierTag',
+                'Cast',
+                'Measurand',
                 'KcdbArea',
                 'KcdbBranch',
                 'KcdbService',
@@ -464,15 +498,24 @@ def modelMlayerCast():
 
 @app.route("/model/taxonomy/measurand")
 def modelTaxonomyMeasurand():
-    models = [Measurand, Taxon, Parameter, Aspect, Scale]
-    excludes = ['KcdbCmc','Discipline', 'Prefix', 'Unit', 'Dimension', 'Conversion', 'Cast']
+    models = [MeasurandTaxon, Parameter, Aspect, Discipline, Scale]
+    excludes = ['KcdbCmc','Prefix', 'Unit', 'Dimension', 'Conversion', 'Cast', 'Measurand']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/relations")
+def modelRelations():
+    models = [KcdbCmc, Measurand]
+    excludes = ['Taxon', 'Aspect', 'Parameter', 'ClassifierTag']
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)
 
 
 @app.route("/model/kcdb")
 def modelKcdb():
-    models = [KcdbCmc, Measurand]
-    excludes = ['Taxon', 'Aspect', 'Parameter', 'ClassifierTag']
+    models = [KcdbCmc, MeasurandTaxon]
+    excludes = ['ClassifierTag']
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)
+

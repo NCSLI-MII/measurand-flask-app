@@ -275,6 +275,46 @@ class Scale(Base):
 # One-to-one NRC Service to Measurand (CMC)
 # Measurands are unique but the taxon does not ensure uniqueness
 # Measurands may have same taxon but different parameters
+# To resolve this, the canonical definition is defined
+# in the MeasurandTaxon class
+# User defined instances, Measurands, would inherit from the MeasurandTaxon
+# what is required is to map parameters between the two?
+# For example, when user defines a CMC and selects the MeasurandTaxon to create
+# their Measurand, parameters associated with the MeasurandTaxon are provided
+# User needs to remove those not required, but be able to define new parameters
+# New parameters need to be added (and approved) to the canonical definition
+
+class MeasurandTaxon(Base):
+    __tablename__ = "measurandtaxon"
+    id: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
+    
+    name: Mapped[str] = mapped_column(String(50))
+
+    definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    
+    deprecated: Mapped[bool]  
+    
+    quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
+
+    aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
+
+    aspect: Mapped['Aspect'] = relationship()
+  
+    processtype: Mapped[str] = mapped_column(String(10))  # Source | Measure
+    
+    qualifier: Mapped[Optional[str]] = mapped_column(String(50))
+    
+    discipline_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey("discipline.id"))
+    discipline: Mapped['Discipline'] = relationship(back_populates="measurandtaxon")
+   
+    # One to many parameters
+    parameters: Mapped[list['Parameter']] = \
+        relationship(back_populates="measurandtaxon")
+
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Measurand(Base):
     __tablename__ = "measurand"
@@ -315,8 +355,13 @@ class Parameter(Base):
     # Reference a quantity for each parameter
     __tablename__ = "parameter"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    measurand_id: Mapped[int] = mapped_column(ForeignKey("measurand.id"))
+    
+    measurand_id: Mapped[Optional[int]] = mapped_column(ForeignKey("measurand.id"))
     measurand: Mapped['Measurand'] = relationship(back_populates="parameters")
+    
+    measurandtaxon_id: Mapped[Optional[int]] = mapped_column(ForeignKey("measurandtaxon.id"))
+    measurandtaxon: Mapped['MeasurandTaxon'] = relationship(back_populates="parameters")
+    
     name: Mapped[str] = mapped_column(String(50))
     quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
     definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
@@ -360,9 +405,10 @@ class Taxon(Base):
     # SQLAlchemy will create a new one
     measurands: Mapped[list['Measurand']] = \
         relationship(back_populates="taxon")
-    discipline_id: Mapped[Optional[int]] = \
-        mapped_column(ForeignKey("discipline.id"))
-    discipline: Mapped['Discipline'] = relationship(back_populates="taxon")
+    
+    # discipline_id: Mapped[Optional[int]] = \
+    #    mapped_column(ForeignKey("discipline.id"))
+    # discipline: Mapped['Discipline'] = relationship(back_populates="taxon")
 
     def __str__(self):
         return f'{self.id}'
@@ -388,7 +434,7 @@ class Discipline(Base):
     __tablename__ = "discipline"
     id = Column(Integer, primary_key=True, index=True)
     label = Column(String(50))
-    taxon = relationship("Taxon", back_populates="discipline")
+    measurandtaxon = relationship("MeasurandTaxon", back_populates="discipline")
 
     def __str__(self):
         return f'{self.label}'
@@ -448,8 +494,8 @@ kcdb_measurand_map = Table(
            ForeignKey("kcdbcmc.id"),
            primary_key=True),
     Column(
-        "measurand_id",
-        ForeignKey("measurand.id"),
+        "measurandtaxon_id",
+        ForeignKey("measurandtaxon.id"),
         primary_key=True,
     ),
 )
@@ -501,7 +547,7 @@ class KcdbCmc(Base):
     tags: Mapped[list['ClassifierTag']] = \
         relationship(secondary=kcdb_classifier_map, backref="kcdbcmcs")
 
-    measurands: Mapped[list['Measurand']] = \
+    measurands: Mapped[list['MeasurandTaxon']] = \
         relationship(secondary=kcdb_measurand_map, backref="kcdbcmcs")
     # parents = relationship("Parent", secondary=association_table, back_populates="children")
     # parent_id = Column(String(50), ForeignKey("parent_table.id"))
@@ -825,6 +871,26 @@ class ParameterSchema(SQLAlchemyAutoSchema):
         ordered = True
 
 
+class DisciplineSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Discipline
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
+    
+    class Meta:
+        model = MeasurandTaxon
+        include_relatiohsips = True
+        load_instance = True
+        ordered = True
+    
+    parameters = Nested(ParameterSchema, many=True)
+    aspect = Nested(AspectSchema(only=("name","id",)))
+    discipline = Nested(DisciplineSchema(only=("label",)))
+
 class TaxonSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Taxon
@@ -842,14 +908,6 @@ class MeasurandSchema(SQLAlchemyAutoSchema):
         include_relatiohsips = True
         load_instance = True
         ordered = True
-
-class DisciplineSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Discipline
-        include_relationships = True
-        load_instance = True
-        ordered = True
-
 
 class KcdbCmcSchema(SQLAlchemyAutoSchema):
     measurands = Nested(MeasurandSchema, many=True)
