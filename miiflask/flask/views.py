@@ -451,13 +451,14 @@ def scale(scale_id):
 
 @app.route("/model/mii")
 def modelMII():
-    models = [Scale, Aspect, Conversion, Cast, Transform, Measurand, KcdbCmc]
+    models = [Scale, Aspect, Conversion, Transform, MeasurandTaxon, Parameter, Discipline, KcdbCmc]
     excludes = ['Prefix',
                 'Unit',
                 'Dimension',
                 'Taxon',
-                'Parameter',
                 'ClassifierTag',
+                'Cast',
+                'Measurand',
                 'KcdbArea',
                 'KcdbBranch',
                 'KcdbService',
@@ -503,9 +504,18 @@ def modelTaxonomyMeasurand():
     return render_template("diagram.html", graph=graph)
 
 
-@app.route("/model/kcdb")
-def modelKcdb():
+@app.route("/model/relations")
+def modelRelations():
     models = [KcdbCmc, Measurand]
     excludes = ['Taxon', 'Aspect', 'Parameter', 'ClassifierTag']
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)
+
+
+@app.route("/model/kcdb")
+def modelKcdb():
+    models = [KcdbCmc, MeasurandTaxon]
+    excludes = ['ClassifierTag']
+    graph = generate_data_model_diagram(models, excludes=excludes)
+    return render_template("diagram.html", graph=graph)
+

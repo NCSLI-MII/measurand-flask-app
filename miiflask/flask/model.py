@@ -494,8 +494,8 @@ kcdb_measurand_map = Table(
            ForeignKey("kcdbcmc.id"),
            primary_key=True),
     Column(
-        "measurand_id",
-        ForeignKey("measurand.id"),
+        "measurandtaxon_id",
+        ForeignKey("measurandtaxon.id"),
         primary_key=True,
     ),
 )
@@ -547,7 +547,7 @@ class KcdbCmc(Base):
     tags: Mapped[list['ClassifierTag']] = \
         relationship(secondary=kcdb_classifier_map, backref="kcdbcmcs")
 
-    measurands: Mapped[list['Measurand']] = \
+    measurands: Mapped[list['MeasurandTaxon']] = \
         relationship(secondary=kcdb_measurand_map, backref="kcdbcmcs")
     # parents = relationship("Parent", secondary=association_table, back_populates="children")
     # parent_id = Column(String(50), ForeignKey("parent_table.id"))
