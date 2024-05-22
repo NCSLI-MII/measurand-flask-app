@@ -114,7 +114,8 @@ from miiflask.flask.views import (
         AspectView,
         ScaleView,
         CastConversionView,
-        DimensionView
+        DimensionView,
+        KcdbBranchView
         )
 
 admin = Admin(app, name="qms", template_mode="bootstrap3")
@@ -135,7 +136,7 @@ admin.add_view(MeasurandTaxonView(MeasurandTaxon, db.session, category="Measuran
 admin.add_view(KcdbServiceView(KcdbServiceClass, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbQuantity, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbArea, db.session, category="KCDB"))
-admin.add_view(MyModelView(KcdbBranch, db.session, category="KCDB"))
+admin.add_view(KcdbBranchView(KcdbBranch, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbService, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbSubservice, db.session, category="KCDB"))
 admin.add_view(MyModelView(KcdbIndividualService, db.session, category="KCDB"))

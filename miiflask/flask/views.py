@@ -14,10 +14,11 @@ from flask import (render_template,
                    url_for,
                    Markup)
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.model.filters import BaseFilter
+from flask_admin.babel import gettext
 
 from miiflask.flask.model import (
     Measurand,
-    Taxon,
     MeasurandTaxon,
     Discipline,
     Aspect,
@@ -30,7 +31,8 @@ from miiflask.flask.model import (
     Transform,
     System,
     Parameter,
-    KcdbCmc
+    KcdbCmc,
+    KcdbBranch
 )
 from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema
 
@@ -67,11 +69,56 @@ def _id_formatter(view, context, model, name):
     return Markup(f"<a href={url}>{model.id}</a>") if model.id else u""
 
 
+class MyBaseFilter(BaseFilter):
+    def __init__(self, column, name, options=None, data_type=None):
+        super(MyBaseFilter, self).__init__(name, options, data_type)
+        self.column = column
+
+
+class MyEqualFilter(MyBaseFilter):
+    def apply(self, query, value, alias=None):
+        return query.filter(self.column == value)
+
+    def operation(self):
+        return gettext('equals')
+
+    # Possible to validate input values,
+    # return 'False', filter is ignored
+
+    def validate(self, value):
+        return True
+    
+    # Clean values before accessing data access layer
+
+    def clean(self, value):
+        return value
+
+
+class MyUniqueFilter(MyBaseFilter):
+# TBD
+    def apply(self, query, value, alias=None):
+        return query.with_entities(self.column).distinct()
+
+    def operation(self):
+        return gettext('unique')
+
+    # Possible to validate input values,
+    # return 'False', filter is ignored
+
+    def validate(self, value):
+        return True
+    
+    # Clean values before accessing data access layer
+
+    def clean(self, value):
+        return value
+
+
 class MyModelView(ModelView):
     def __init__(self, model, *args, **kwargs):
         self.form_columns = [c.key for c in model.__table__.columns]
         super(MyModelView, self).__init__(model, *args, **kwargs)
-
+    page_size = 100
     can_view_details = True
     column_display_pk = True
     column_hide_backrefs = False
@@ -83,11 +130,23 @@ class KcdbServiceView(MyModelView):
     page_size = 100
 
 
+class KcdbBranchView(MyModelView):
+    page_size = 100 
+
 class CMCView(MyModelView):
+    page_size = 100
     column_display_pk = True
     column_hide_backrefs = False
-    column_searchable_list = ['area.label', 'quantity.value', 'kcdbCode']
-    column_filters = ('area', 'service')
+    column_searchable_list = ['area.label', 
+                              'quantity.value', 
+                              'kcdbCode']
+    column_filters = ('area.label', 
+                      'branch.value', 
+                      'service.value',
+                      'subservice.value',
+                      'individualservice.value',
+                      MyEqualFilter(KcdbCmc.kcdbCode, 'kcdbCode'))
+
     column_list = ('id',
                    'kcdbCode',
                    'area',
