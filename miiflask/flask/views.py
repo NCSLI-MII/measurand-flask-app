@@ -32,7 +32,8 @@ from miiflask.flask.model import (
     System,
     Parameter,
     KcdbCmc,
-    KcdbBranch
+    KcdbBranch,
+    KcdbParameter
 )
 from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema
 
@@ -134,9 +135,15 @@ class KcdbBranchView(MyModelView):
     page_size = 100 
 
 class CMCView(MyModelView):
+    
+    def _parameter_formatter(view, context, model, name):
+        names = [p.name for p in model.parameters]
+        return Markup((',<br/>').join(names))
+
     page_size = 100
     column_display_pk = True
     column_hide_backrefs = False
+    can_export = True
     column_searchable_list = ['area.label', 
                               'quantity.value', 
                               'kcdbCode']
@@ -146,32 +153,40 @@ class CMCView(MyModelView):
                       'subservice.value',
                       'individualservice.value',
                       MyEqualFilter(KcdbCmc.kcdbCode, 'kcdbCode'))
-
+    column_formatters = {'parameter_names': _parameter_formatter}
+    column_labels = {'parameter_names': 'Parameters'}
     column_list = ('id',
                    'kcdbCode',
+                   'quantity',
+                   'measurands',
                    'area',
                    'branch',
                    'service',
                    'subservice',
                    'individualservice',
-                   'quantity',
-                   'measurands',
                    'instrument',
                    'instrumentmethod',
+                   'baseUnit',
+                   'uncertainityBaseUnit',
+                   'internationalStandard',
+                   'comments',
+                   'parameter_names'
                    )
+
     column_details_list = ('id',
                            'kcdbCode',
+                           'quantity',
+                           'measurands',
                            'area',
                            'branch',
                            'service',
                            'subservice',
                            'individualservice',
-                           'quantity',
-                           'measurands',
                            'instrument',
                            'instrumentmethod',
                            'baseUnit',
                            'uncertainityBaseUnit',
+                           'internationalStandard',
                            'parameters',
                            'comments'
                            )
@@ -237,6 +252,7 @@ class MeasurandTaxonView(ModelView):
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
+    column_searchable_list = ['name']
     column_formatters = {
             'id': _id_formatter,
             'aspect': _link_formatter,
@@ -419,6 +435,7 @@ def initialize():
 
     parms = {
             "measurands": "../../resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
+            #"measurands": "/home/rwhite/Downloads/taxonomy_development_export.xml",
             "mlayer": "../../resources/m-layer",
             "kcdb": "../../resources/kcdb",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
@@ -435,8 +452,9 @@ def initialize():
     miimapper.extractTaxonomy()
     miimapper.loadTaxonomy()
 
-    kcdbmapper = KcdbMapper(db.session, parms)
-    kcdbmapper.loadServices()
+    #kcdbmapper = KcdbMapper(db.session, parms)
+    #kcdbmapper.loadServices()
+    
     db.session.commit()
     return redirect(url_for('index'))
 
@@ -462,7 +480,7 @@ def aspects():
 @app.route("/taxonomy/export")
 def taxonomy_export():
     measurand = MeasurandTaxon()
-    measurands = measurandTaxon.query.all()
+    measurands = MeasurandTaxon.query.all()
     taxons = []
     for obj in measurands:
         taxons.append(getTaxonDict(obj, m_schema))

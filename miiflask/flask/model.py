@@ -507,6 +507,7 @@ class KcdbCmc(Base):
     kcdbCode: Mapped[str] = mapped_column(String(50))
     baseUnit: Mapped[str] = mapped_column(UnicodeText)
     uncertaintyBaseUnit: Mapped[str] = mapped_column(UnicodeText)
+    internationalStandard: Mapped[Optional[str]] = mapped_column(UnicodeText)
     comments: Mapped[str] = mapped_column(UnicodeText)
 
     area_id: Mapped[Optional[int]] = \
@@ -889,6 +890,7 @@ class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
     
     parameters = Nested(ParameterSchema, many=True)
     aspect = Nested(AspectSchema(only=("name","id",)))
+    scale = Nested(ScaleSchema(only=("ml_name", "id",)))
     discipline = Nested(DisciplineSchema(only=("label",)))
 
 class TaxonSchema(SQLAlchemyAutoSchema):

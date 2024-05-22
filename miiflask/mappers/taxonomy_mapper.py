@@ -28,7 +28,8 @@ def dicttoxml_taxonomy(taxons):
 
     return xml
 
-def getTaxonDict(obj, schema):
+def getTaxonDict_deprecated(obj, schema):
+    # Old data model using Measurand and Taxon
     #mpprint(self._schemas["measurand"].dumps(obj, indent=2))
     #data = self._schemas["measurand"].dump(obj)
     data = schema.dump(obj)
@@ -69,6 +70,65 @@ def getTaxonDict(obj, schema):
         "@name": data.pop("result", ""),
         "uom:Quantity": {"@name": data.pop("quantitykind", "")},
     }
+
+    print(data)
+    #print(xmltodict.unparse(taxon))
+    return taxon
+
+
+def getTaxonDict(obj, schema):
+    #mpprint(self._schemas["measurand"].dumps(obj, indent=2))
+    #data = self._schemas["measurand"].dump(obj)
+    data = schema.dump(obj)
+    
+    if "name" not in data.keys():
+        return None
+
+    taxon = {}
+    #taxon["mtc:Taxon"] = {}
+    taxon["@name"] = data.pop("name")
+    taxon["@deprecated"] = data.pop("deprecated")
+    taxon["@replacement"] = ""
+    taxon["mtc:Definition"] = data.pop("definition", "")
+    taxon["mtc:Discipline"] = {
+        "@name": data["discipline"]['label']
+    }
+    taxon["mtc:ExternalReference"] = {
+        "@name": data.pop("exref_name", ""),
+        "mtc:url": data.pop("exref_url", ""),
+    }
+    taxon["mtc:Parameter"] = []
+    if "parameters" in data.keys():
+        for parm in data["parameters"]:
+            if parm["name"] == "id":
+                continue
+            if parm["name"] == "measurand":
+                continue
+            taxon["mtc:Parameter"].append(
+                {
+                    "@name": parm["name"],
+                    "@optional": parm["optional"],
+                    "mtc:Definition": parm["definition"],
+                    "uom:Quantity": {"@name": parm["quantitykind"]}
+                },
+
+            )
+    taxon["mtc:Result"] = {
+        "@name": data.pop("result", ""),
+        "uom:Quantity": {"@name": data.pop("quantitykind", "")},
+    }
+    if 'aspect' in data.keys():
+        if data['aspect']:
+            taxon["mtc:Aspect"] = {
+                    "@name": data['aspect']['name'],
+                    "@id": data['aspect']['id']
+                    }
+    if 'scale' in data.keys(): 
+        if data['scale']:
+            taxon["mtc:Scale"] = {
+                    "@name": data['scale']['ml_name'],
+                    "@id": data['scale']['id']
+                    }
 
     print(data)
     #print(xmltodict.unparse(taxon))
@@ -170,7 +230,9 @@ class TaxonomyMapper:
     def getMeasurandRelatedObjects(self, taxon, measurand, uom_qk=None):
         if uom_qk:
             measurand.quantitykind = uom_qk 
-        
+       
+        #if taxon['@name'] == 'Measure.Voltage.AC':
+        #    print(taxon)
 
         # TBD need to validate existing parameters of measurand
         if "mtc:Parameter" in taxon.keys():
@@ -196,25 +258,42 @@ class TaxonomyMapper:
                     if parameter_aspect:
                         parameter.aspect = parameter_aspect
                 measurand.parameters.append(parameter)
-        
+      
+        if "mtc:Aspect" in taxon.keys():
+            aspect = (
+                    self.Session.query(model.Aspect)
+                    .filter((model.Aspect.id == taxon["mtc:Aspect"]["@id"]))
+                    .first()
+                    )
+            if aspect:
+                measurand.aspect = aspect
         # Try and query for aspect given the result name or uom:Quantity
-        aspect = (
-                self.Session.query(model.Aspect)
-                .filter((model.Aspect.name == taxon["mtc:Result"]["@name"].lower()) | 
-                    (model.Aspect.name == taxon["mtc:Result"]["uom:Quantity"]["@name"].lower()))
-                .first()
-                )
-        if aspect:
-            measurand.aspect = aspect
-            
-            # Try and find a measurement scale
-            if isinstance(measurand, model.Measurand):
-                for s in aspect.scales:
-                    if s.system_dimensions:
-                        if s.system_dimensions.formal_system:
-                            if s.system_dimensions.formal_system.id == "SY1":
-                                measurand.scale = s
+        else:
+            aspect = (
+                    self.Session.query(model.Aspect)
+                    .filter((model.Aspect.name == taxon["mtc:Result"]["@name"].lower()) | 
+                        (model.Aspect.name == taxon["mtc:Result"]["uom:Quantity"]["@name"].lower()))
+                    .first()
+                    )
+            if aspect:
+                measurand.aspect = aspect
+                
+                # Try and find a measurement scale
+                if isinstance(measurand, model.Measurand):
+                    for s in aspect.scales:
+                        if s.system_dimensions:
+                            if s.system_dimensions.formal_system:
+                                if s.system_dimensions.formal_system.id == "SY1":
+                                    measurand.scale = s
 
+        if "mtc:Scale" in taxon.keys():
+            scale = (
+                    self.Session.query(model.Scale)
+                    .filter((model.Scale.id == taxon["mtc:Scale"]["@id"]))
+                    .first()
+                    )
+            if scale:
+                measurand.scale = scale
 
     def getMeasurandTaxonObject(self, taxon):
         """
@@ -362,6 +441,7 @@ class TaxonomyMapper:
         for taxon in mii_dict[self._namespaces["mtc"]][
             self._namespaces["taxon"]
         ]:
+            #print(taxon)
             if taxon["@name"].split(".")[0] == "TestProcess":
                 taxon["@name"] = ".".join(taxon["@name"].split(".")[1:])
             mii_taxons_dict[taxon["@name"]] = {
@@ -380,6 +460,9 @@ class TaxonomyMapper:
                         ]["@name"]
                     },
                 },
+                #"mtc:Aspect": {
+                #    "@name": taxon["aspect"]["@name"]
+                #},
             }
 
             if self._namespaces["parameter"] in taxon.keys():

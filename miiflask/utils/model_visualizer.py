@@ -122,19 +122,20 @@ def visualize_model_instance(model, instance, excludes=[], add_labels=True, view
         if obj is None:
             continue
         if isinstance(obj, list):
+            target_name = f'{rel.mapper.class_.__name__} \n'
             for sub in obj:
                 # print(rel.mapper.class_.__name__, sub)
                 descr = getDescription(rel.mapper.class_.__name__, sub)
                 # print(descr)
-                target_name = f'{rel.mapper.class_.__name__} {descr}'
+                target_name += f'{descr} \n '
                 if target_name in excludes:
                     continue
                 
                 tooltip = f"Relation between {name} and {target_name}"
-                dot.edge(name, target_name, label=f'has {rel.key}' if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
+            dot.edge(name, target_name, label=f'has {rel.key}' if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
         else:
             descr = getDescription(rel.mapper.class_.__name__, obj)
-            target_name = f'{rel.mapper.class_.__name__} {descr}'
+            target_name = f'{rel.mapper.class_.__name__} \n {descr}'
             if target_name in excludes:
                 continue
             
