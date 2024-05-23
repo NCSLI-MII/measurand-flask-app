@@ -35,7 +35,7 @@ from miiflask.flask.model import (
     KcdbBranch,
     KcdbParameter
 )
-from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema
+from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
@@ -55,7 +55,7 @@ import base64
 
 qk_schema = AspectSchema()
 m_schema = MeasurandTaxonSchema()
-
+cmc_schema = KcdbCmcSchema()
 
 def _link_formatter(view, context, model, name):
     field = getattr(model, name)
@@ -68,6 +68,8 @@ def _link_formatter(view, context, model, name):
 def _id_formatter(view, context, model, name):
     url = url_for(f'{model.__tablename__}.details_view', id=model.id)
     return Markup(f"<a href={url}>{model.id}</a>") if model.id else u""
+
+
 
 
 class MyBaseFilter(BaseFilter):
@@ -248,14 +250,26 @@ class MeasurandView(ModelView):
 
 
 class MeasurandTaxonView(ModelView):
+    
+    def _parameter_formatter(view, context, model, name):
+        urls = []
+        for p in model.parameters:
+            url = url_for('parameter.details_view', id=p.id)
+            urls.append('<a href="{}">{}</a>'.format(url, p.name))
+        return Markup((', <br/>').join(urls))
+    
     can_export = True
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
     column_searchable_list = ['name']
+    
+    column_labels = {'parameter_names': 'Parameters'}
     column_formatters = {
             'id': _id_formatter,
             'aspect': _link_formatter,
+            'scale': _link_formatter,
+            'parameter_names': _parameter_formatter,
             }
     column_list = (
             "id", 
@@ -268,8 +282,9 @@ class MeasurandTaxonView(ModelView):
            "id",
            "name",
            "aspect",
+           "scale",
            "quantitykind",
-           "parameters",
+           "parameter_names",
            "definition",
            "result"
            )
@@ -337,26 +352,27 @@ class ScaleView(ModelView):
     def _cnv_link_formatter(view, context, model, name):
         urls = []
         for s in model.conversions:
-            id_ = '{},{},{}'.format(s.src_scale_id,
-                                    s.dst_scale_id,
-                                    s.aspect_id)
+            id_ = '{}: {} &#8594 {}'.format(s.aspect.name,
+                                    s.src_scale.ml_name,
+                                    s.dst_scale.ml_name)
             url = url_for('conversion.details_view', id=id_)
             urls.append('<a href="{}">{}</a>'.format(url,
                                                      id_.replace(',', '.')))
-        return Markup((',').join(urls))
+        return Markup((', <br/>').join(urls))
 
     def _cast_link_formatter(view, context, model, name):
         urls = []
         for s in model.casts:
-            id_ = '{},{},{},{}'.format(s.src_scale_id,
-                                       s.src_aspect_id,
-                                       s.dst_scale_id,
-                                       s.dst_aspect_id)
+            id_ = '{}: {} &#8594 {}: {}'.format(s.src_aspect.name,
+                                       s.src_scale.ml_name,
+                                       s.dst_aspect.name,
+                                       s.dst_scale.ml_name)
             url = url_for('cast.details_view', id=id_)
             urls.append('<a href="{}">{}</a>'.format(url,
                                                      id_.replace(',', '.')))
-        return Markup((',').join(urls))
-
+        return Markup((', <br/>').join(urls))
+    
+    column_searchable_list = ['ml_name']
     can_export = True
     column_display_pk = True
     can_view_details = True
@@ -396,7 +412,7 @@ class AspectView(MyModelView):
             urls.append('<a href="{}">{}</a>'.format(url, s.id))
 
         return Markup((',').join(urls))
-
+    column_searchable_list = ['name']
     can_export = True
     column_display_pk = True
     can_view_details = True
@@ -441,7 +457,9 @@ def initialize():
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
             "use_api": False,
             "use_cmc_api": False,
-            "update_resources": False
+            "update_resources": False,
+            "kcdb_cmc_data": "kcdb_cmc_physics.json",
+            "kcdb_cmc_api_country": ["CA"],
         }
 
     mapper = MlayerMapper(db.session, parms)
@@ -466,6 +484,21 @@ def taxonomy():
     return render_template("taxonomy.html", measurands=measurands)
 
 
+@app.route("/kcdbcmcs/")
+def kcdbcmcs():
+    cmc = KcdbCmc()
+    cmcs = cmc.query.all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+@app.route("/kcdbcmc/<string:kcdbcmc_id>/export/json", methods=["GET", "POST"])
+def kcdbcmc_export_json(kcdbcmc_id):
+    # print("Get Meaurand ", measurand_id)
+    cmc = KcdbCmc.query.get_or_404(kcdbcmc_id)
+    schema = cmc_schema.dumps(cmc, indent=2)
+    response = app.make_response(schema)
+    response.mimetype = "text/json"
+    return response 
+
 @app.route("/mlayer/scales/")
 def scales():
     scales = Scale().query.all()
@@ -489,8 +522,18 @@ def taxonomy_export():
     response.mimetype = "text/xml"
     return response
 
-@app.route("/measurand/<string:measurand_id>/export", methods=["GET", "POST"])
-def measurand_export(measurand_id):
+@app.route("/measurand/<string:measurand_id>/export/xml", methods=["GET", "POST"])
+def measurand_export_xml(measurand_id):
+    # print("Get Meaurand ", measurand_id)
+    m = MeasurandTaxon.query.get_or_404(measurand_id)
+    taxons = [getTaxonDict(m, m_schema)]
+    xml = dicttoxml_taxonomy(taxons)
+    response = app.make_response(xml)
+    response.mimetype = "text/xml"
+    return response 
+
+@app.route("/measurand/<string:measurand_id>/export/json", methods=["GET", "POST"])
+def measurand_export_json(measurand_id):
     # print("Get Meaurand ", measurand_id)
     m = MeasurandTaxon.query.get_or_404(measurand_id)
     schema = m_schema.dumps(m, indent=2)

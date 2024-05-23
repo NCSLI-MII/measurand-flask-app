@@ -4,7 +4,8 @@
 <h1 class="title">{% block title %} Measurand {{ measurand.name }} {% endblock %}</h1>
     <div class="content">
         <div class="measurand">
-            <a href="{{ url_for('measurand_export', measurand_id=measurand.id) }}">JSON</a></td>
+            <a href="{{ url_for('measurand_export_xml', measurand_id=measurand.id) }}">XML</a></td>
+            <a href="{{ url_for('measurand_export_json', measurand_id=measurand.id) }}">JSON</a></td>
             <b>
                 <p class="measurand">Taxon: {{ measurand.name }}</p>
             </b>

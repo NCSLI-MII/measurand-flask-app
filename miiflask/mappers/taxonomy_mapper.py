@@ -28,6 +28,7 @@ def dicttoxml_taxonomy(taxons):
 
     return xml
 
+
 def getTaxonDict_deprecated(obj, schema):
     # Old data model using Measurand and Taxon
     #mpprint(self._schemas["measurand"].dumps(obj, indent=2))
@@ -74,7 +75,6 @@ def getTaxonDict_deprecated(obj, schema):
     print(data)
     #print(xmltodict.unparse(taxon))
     return taxon
-
 
 def getTaxonDict(obj, schema):
     #mpprint(self._schemas["measurand"].dumps(obj, indent=2))
@@ -133,6 +133,7 @@ def getTaxonDict(obj, schema):
     print(data)
     #print(xmltodict.unparse(taxon))
     return taxon
+
 
 class TaxonomyMapper:
     """
@@ -279,7 +280,7 @@ class TaxonomyMapper:
                 measurand.aspect = aspect
                 
                 # Try and find a measurement scale
-                if isinstance(measurand, model.Measurand):
+                if isinstance(measurand, model.MeasurandTaxon):
                     for s in aspect.scales:
                         if s.system_dimensions:
                             if s.system_dimensions.formal_system:

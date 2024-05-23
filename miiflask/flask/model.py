@@ -300,6 +300,10 @@ class MeasurandTaxon(Base):
 
     aspect: Mapped['Aspect'] = relationship()
   
+    scale_id: Mapped[Optional[str]] = mapped_column(ForeignKey("scale.id"))
+
+    scale: Mapped['Scale'] = relationship()
+    
     processtype: Mapped[str] = mapped_column(String(10))  # Source | Measure
     
     qualifier: Mapped[Optional[str]] = mapped_column(String(50))
@@ -870,7 +874,7 @@ class ParameterSchema(SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
         ordered = True
-
+    aspect = Nested(AspectSchema(only=("name","id",)))
 
 class DisciplineSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -912,7 +916,7 @@ class MeasurandSchema(SQLAlchemyAutoSchema):
         ordered = True
 
 class KcdbCmcSchema(SQLAlchemyAutoSchema):
-    measurands = Nested(MeasurandSchema, many=True)
+    measurands = Nested(MeasurandSchema, many=True, only=('name',),)
     area = Nested(KcdbAreaSchema)
     branch = Nested(KcdbBranchSchema)
     service = Nested(KcdbServiceSchema)

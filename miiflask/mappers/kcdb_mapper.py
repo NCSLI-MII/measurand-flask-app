@@ -19,6 +19,8 @@ class KcdbMapper:
         self._updateResources = parms['update_resources']
         self._use_cmc_api = parms['use_cmc_api']
         self._kcdb_path = parms['kcdb']
+        self._kcdb_cmc_data = parms['kcdb_cmc_data']
+        self._kcdb_cmc_api_countries = parms['kcdb_cmc_api_countries']
         self.api_ref = 'https://www.bipm.org/api/kcdb/referenceData'
         self.headers = {'accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -317,7 +319,7 @@ class KcdbMapper:
         print(cmc.instrumentmethod)
 
     def _getPhysicsCmcDataLocal(self):
-        with open(f'{self._kcdb_path}/kcdb_cmc.json') as f:
+        with open(f'{self._kcdb_path}/{self._kcdb_cmc_data}') as f:
             objs = json.load(f)
             for obj in objs:
                 cmc = (
@@ -354,6 +356,7 @@ class KcdbMapper:
           "pageSize": 20,
           "metrologyAreaLabel": None,
           "showTable": False,
+          "countries": self._kcdb_cmc_api_countries,
         }
 
         for area in self.Session.query(model.KcdbArea).all():
