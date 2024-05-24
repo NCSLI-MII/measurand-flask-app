@@ -868,13 +868,14 @@ class ConversionSchema(SQLAlchemyAutoSchema):
 
 
 class ParameterSchema(SQLAlchemyAutoSchema):
-    
+
     class Meta:
         model = Parameter
         include_relationships = True
         load_instance = True
         ordered = True
-    aspect = Nested(AspectSchema(only=("name","id",)))
+    aspect = Nested(AspectSchema(only=("name", "id",)))
+
 
 class DisciplineSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -885,17 +886,18 @@ class DisciplineSchema(SQLAlchemyAutoSchema):
 
 
 class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
-    
+
     class Meta:
         model = MeasurandTaxon
         include_relatiohsips = True
         load_instance = True
         ordered = True
-    
+
     parameters = Nested(ParameterSchema, many=True)
-    aspect = Nested(AspectSchema(only=("name","id",)))
+    aspect = Nested(AspectSchema(only=("name", "id",)))
     scale = Nested(ScaleSchema(only=("ml_name", "id",)))
     discipline = Nested(DisciplineSchema(only=("label",)))
+
 
 class TaxonSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -908,12 +910,13 @@ class TaxonSchema(SQLAlchemyAutoSchema):
 class MeasurandSchema(SQLAlchemyAutoSchema):
     parameters = Nested(ParameterSchema, many=True)
     taxon = Nested(TaxonSchema)
-    
+
     class Meta:
         model = Measurand
         include_relatiohsips = True
         load_instance = True
         ordered = True
+
 
 class KcdbCmcSchema(SQLAlchemyAutoSchema):
     measurands = Nested(MeasurandSchema, many=True, only=('name',),)
@@ -926,6 +929,7 @@ class KcdbCmcSchema(SQLAlchemyAutoSchema):
     instrumentmethod = Nested(KcdbInstrumentMethodSchema)
     quantity = Nested(KcdbQuantitySchema)
     parameters = Nested(KcdbParameterSchema, many=True)
+
     class Meta:
         model = KcdbCmc
         include_relationships = True

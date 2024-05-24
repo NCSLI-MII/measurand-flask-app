@@ -492,6 +492,17 @@ def kcdbcmcs():
     return render_template("kcdbcmcs.html", cmcs=cmcs)
 
 
+@app.route("/kcdbcmcs/export/json")
+def kcdbcmcs_export_json():
+    cmc = KcdbCmc()
+    cmcs = cmc.query.all()
+    schema = cmc_schema.dumps(cmcs, many=True, indent=4)
+    response = app.make_response(schema)
+    response.headers["Content-Disposition"] = "attachment; filename=export_cmcs.json"
+    response.headers["Content-type"] = "text/json"
+    return response 
+
+
 @app.route("/kcdbcmcs/auv/")
 def kcdbcmcs_auv():
     cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'AUV')).all()
@@ -554,17 +565,19 @@ def aspects():
     aspects = Aspect().query.all()
     return render_template("aspects.html", aspects=aspects)
 
+
 @app.route("/taxonomy/export")
 def taxonomy_export():
-    measurand = MeasurandTaxon()
     measurands = MeasurandTaxon.query.all()
     taxons = []
     for obj in measurands:
         taxons.append(getTaxonDict(obj, m_schema))
     xml = dicttoxml_taxonomy(taxons)
     response = app.make_response(xml)
-    response.mimetype = "text/xml"
+    response.headers["Content-Disposition"] = "attachment; filename=export_taxonomy.xml"
+    response.headers["Content-type"] = "text/xml"
     return response
+
 
 @app.route("/measurand/<string:measurand_id>/export/xml", methods=["GET", "POST"])
 def measurand_export_xml(measurand_id):
@@ -575,6 +588,7 @@ def measurand_export_xml(measurand_id):
     response = app.make_response(xml)
     response.mimetype = "text/xml"
     return response 
+
 
 @app.route("/measurand/<string:measurand_id>/export/json", methods=["GET", "POST"])
 def measurand_export_json(measurand_id):

@@ -130,7 +130,7 @@ def getTaxonDict(obj, schema):
                     "@id": data['scale']['id']
                     }
 
-    print(data)
+    #print(data)
     #print(xmltodict.unparse(taxon))
     return taxon
 
