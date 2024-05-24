@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h1 class="title">Measurement Information</h1>
-                <div class="content">
-                    <ul class="list-group">
-                        <li class="list-group-item"><a href="model/mii">Measurement Information Model</a></li>
-                        <li class="list-group-item"><a href="model/kcdb">KCDB Data Model</a></li>
-                        <li class="list-group-item"><a href="model/taxonomy/measurand">Measurand Data Model</a></li>
-                        <li class="list-group-item"><a href="model/mlayer/scale">Mlayer Scale Data Model</a></li>
-                        <li class="list-group-item"><a href="model/mlayer/conversion">Mlayer Conversion Data Model</a></li>
-                        <li class="list-group-item"><a href="model/mlayer/cast">Mlayer Cast Data Model</a></li>
+                <div class="dropdown">
+                    <button class ="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Data Models
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="model/mii">Measurement Information Model</a></li>
+                        <li><a class="dropdown-item" href="model/kcdb">KCDB Data Model</a></li>
+                        <li><a class="dropdown-item" href="model/taxonomy/measurand">Measurand Data Model</a></li>
+                        <li><a class="dropdown-item" href="model/mlayer/scale">Mlayer Scale Data Model</a></li>
+                        <li><a class="dropdown-item" href="model/mlayer/conversion">Mlayer Conversion Data Model</a></li>
+                        <li><a class="dropdown-item" href="model/mlayer/cast">Mlayer Cast Data Model</a></li>
                     </ul>
                 </div>
             </div>

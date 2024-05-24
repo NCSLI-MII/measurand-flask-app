@@ -33,7 +33,8 @@ from miiflask.flask.model import (
     Parameter,
     KcdbCmc,
     KcdbBranch,
-    KcdbParameter
+    KcdbParameter,
+    KcdbArea
 )
 from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema
 
@@ -489,6 +490,49 @@ def kcdbcmcs():
     cmc = KcdbCmc()
     cmcs = cmc.query.all()
     return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/auv/")
+def kcdbcmcs_auv():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'AUV')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/em/")
+def kcdbcmcs_em():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'EM')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/l/")
+def kcdbcmcs_l():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'L')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/m/")
+def kcdbcmcs_m():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'M')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/pr/")
+def kcdbcmcs_pr():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'PR')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/t/")
+def kcdbcmcs_t():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'T')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/tf/")
+def kcdbcmcs_tf():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'TF')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
 
 @app.route("/kcdbcmc/<string:kcdbcmc_id>/export/json", methods=["GET", "POST"])
 def kcdbcmc_export_json(kcdbcmc_id):
