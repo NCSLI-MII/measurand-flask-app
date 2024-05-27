@@ -451,16 +451,16 @@ def index():
 def initialize():
 
     parms = {
-            "measurands": "../../resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
-            #"measurands": "/home/rwhite/Downloads/taxonomy_development_export.xml",
+            #"measurands": "../../resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
+            "measurands": "/home/rwhite/Downloads/taxonomy_development_export.xml",
             "mlayer": "../../resources/m-layer",
             "kcdb": "../../resources/kcdb",
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
             "use_api": False,
             "use_cmc_api": False,
             "update_resources": False,
-            "kcdb_cmc_data": "kcdb_cmc_physics.json",
-            "kcdb_cmc_api_country": ["CA"],
+            "kcdb_cmc_data": "kcdb_cmc_test.json",
+            "kcdb_cmc_api_countries": ["CA"],
         }
 
     mapper = MlayerMapper(db.session, parms)
@@ -471,8 +471,8 @@ def initialize():
     miimapper.extractTaxonomy()
     miimapper.loadTaxonomy()
 
-    #kcdbmapper = KcdbMapper(db.session, parms)
-    #kcdbmapper.loadServices()
+    kcdbmapper = KcdbMapper(db.session, parms)
+    kcdbmapper.loadServices()
     
     db.session.commit()
     return redirect(url_for('index'))

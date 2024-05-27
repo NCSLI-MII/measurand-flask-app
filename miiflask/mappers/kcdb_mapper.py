@@ -202,6 +202,17 @@ class KcdbMapper:
                                 )
         else:
             instrumentMethod = None
+        
+        # Linking measurands only possible with local metadata
+
+        if obj['measurands']:
+            for m in obj['measurands']:
+                measurand = (self.Session.query(model.MeasurandTaxon).
+                             filter(model.MeasurandTaxon.name == m['name']).
+                             first()
+                             )
+                if measurand:
+                    cmc.measurands.append(measurand)
 
         if area:
             cmc.area = area
