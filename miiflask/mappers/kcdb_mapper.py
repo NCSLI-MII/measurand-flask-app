@@ -344,8 +344,8 @@ class KcdbMapper:
                         'kcdbCode': obj['kcdbCode'],
                         'baseUnit': obj['baseUnit'],
                         'uncertaintyBaseUnit': obj['uncertaintyBaseUnit'],
-                        'internationalStandard': obj['internationalStandard'],
-                        'comments': obj['comments'],
+                        'internationalStandard': obj.get('internationalStandard', None),
+                        'comments': obj.get('comments', None),
                     }
                     cmc = model.KcdbCmcSchema().load(
                         payload, session=self.Session

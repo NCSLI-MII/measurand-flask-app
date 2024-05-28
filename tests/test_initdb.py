@@ -35,6 +35,8 @@ class InitializeDbTestCase(unittest.TestCase):
                 "measurands": "resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
                 "mlayer": "resources/m-layer",
                 "kcdb": "resources/kcdb",
+                "kcdb_cmc_data": "kcdb_cmc_canada.json",
+                "kcdb_cmc_api_countries": ["CA"],
                 "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
                 "use_api": False,
                 "use_cmc_api": False,
