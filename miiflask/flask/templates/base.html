@@ -67,13 +67,31 @@
             margin-left: 50px;
             text-decoration: none;
         }
+
+        .navbar {
+            margin-left: 50px;
+            margin-right: 200px;
+        }
+
     </style>
 </head>
 
 {% block navbar %}
     <div class="navbar nav-fixed-top">
-    <a href="{{ url_for('index') }}">Homepage</a>
-    <a href="{{ url_for('admin.index') }}">Administer</a>
+        <a href="{{ url_for('index') }}">Homepage</a>
+        <a href="{{ url_for('admin.index') }}">Administer</a>
+    
+        <div class="btn-group">
+            <button class ="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Links
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="https://api.mlayer.org">Mlayer API</a></li>
+                <li><a class="dropdown-item" href="https://github.com/NCSLI-MII/measurand-taxonomy">MII Measurand Taxonomy Repository</a></li>
+                <li><a class="dropdown-item" href="https://si-digital-framework.org">BIPM SI Digital Framework</a></li> 
+            </ul>
+        </div>
+
     </div>
 {% endblock %}
 
@@ -85,10 +103,11 @@
     <div class="content">
         {% block content %} {% endblock %}
     </div>
-     <div id="footer">
+    <div id="footer">
         {% block footer %}
             This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
         {% endblock %}
      </div>
 </body>
+ 
 </html>
