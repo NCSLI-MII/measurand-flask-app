@@ -11,13 +11,23 @@
 """
 from flask import (render_template,
                    redirect,
+                   request,
                    url_for,
+                   flash,
                    Markup)
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.model.filters import BaseFilter
+from flask_admin.babel import gettext
+
+from flask_admin.actions import action
+from flask_admin import Admin, expose
+from flask_admin.helpers import get_redirect_target
+
+from wtforms import HiddenField, StringField, Form
+from wtforms.validators import InputRequired
 
 from miiflask.flask.model import (
     Measurand,
-    Taxon,
     MeasurandTaxon,
     Discipline,
     Aspect,
@@ -30,9 +40,12 @@ from miiflask.flask.model import (
     Transform,
     System,
     Parameter,
-    KcdbCmc
+    KcdbCmc,
+    KcdbBranch,
+    KcdbParameter,
+    KcdbArea
 )
-from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema
+from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
@@ -52,7 +65,7 @@ import base64
 
 qk_schema = AspectSchema()
 m_schema = MeasurandTaxonSchema()
-
+cmc_schema = KcdbCmcSchema()
 
 def _link_formatter(view, context, model, name):
     field = getattr(model, name)
@@ -67,11 +80,58 @@ def _id_formatter(view, context, model, name):
     return Markup(f"<a href={url}>{model.id}</a>") if model.id else u""
 
 
+
+
+class MyBaseFilter(BaseFilter):
+    def __init__(self, column, name, options=None, data_type=None):
+        super(MyBaseFilter, self).__init__(name, options, data_type)
+        self.column = column
+
+
+class MyEqualFilter(MyBaseFilter):
+    def apply(self, query, value, alias=None):
+        return query.filter(self.column == value)
+
+    def operation(self):
+        return gettext('equals')
+
+    # Possible to validate input values,
+    # return 'False', filter is ignored
+
+    def validate(self, value):
+        return True
+    
+    # Clean values before accessing data access layer
+
+    def clean(self, value):
+        return value
+
+
+class MyUniqueFilter(MyBaseFilter):
+# TBD
+    def apply(self, query, value, alias=None):
+        return query.with_entities(self.column).distinct()
+
+    def operation(self):
+        return gettext('unique')
+
+    # Possible to validate input values,
+    # return 'False', filter is ignored
+
+    def validate(self, value):
+        return True
+    
+    # Clean values before accessing data access layer
+
+    def clean(self, value):
+        return value
+
+
 class MyModelView(ModelView):
     def __init__(self, model, *args, **kwargs):
         self.form_columns = [c.key for c in model.__table__.columns]
         super(MyModelView, self).__init__(model, *args, **kwargs)
-
+    page_size = 100
     can_view_details = True
     column_display_pk = True
     column_hide_backrefs = False
@@ -83,36 +143,116 @@ class KcdbServiceView(MyModelView):
     page_size = 100
 
 
+class KcdbBranchView(MyModelView):
+    page_size = 100 
+
+class ChangeForm(Form):
+    ids = HiddenField()
+    measurand = StringField(validators=[InputRequired()])
+
 class CMCView(MyModelView):
+    list_template = 'custom_list.html' 
+    def _parameter_formatter(view, context, model, name):
+        names = [p.name for p in model.parameters]
+        return Markup((',<br/>').join(names))
+    
+    # Custom action to link CMCs to measurand
+    # See Flask-admin actions
+    # See example github.com/pjcunningham/flask-admin-modal
+
+    @action('change_measurand', 'Measurand')
+    def action_change_measurand(self, ids):
+        url = get_redirect_target() or self.get_url('.index_view')
+        return redirect(url, code=307)
+    
+    @expose('/', methods=['POST'])
+    def index(self):
+        if request.method == 'POST':
+            url = get_redirect_target() or self.get_url('.index_view')
+            ids = request.form.getlist('rowid')
+            joined_ids = ','.join(ids)
+            change_form = ChangeForm()
+            change_form.ids.data = joined_ids
+            self._template_args['url'] = url
+            self._template_args['change_form'] = change_form
+            self._template_args['change_modal'] = True
+            return self.index_view()
+
+    @expose('/update/', methods=['POST'])
+    def update_view(self):
+        if request.method == 'POST':
+            url = get_redirect_target() or self.get_url('.index_view')
+            change_form = ChangeForm(request.form)
+            if change_form.validate():
+                ids = change_form.ids.data.split(',')
+                measurand = change_form.measurand.data
+                #_update_mappings = [{'id': rowid, 'measurand_id': measurand} for rowid in ids]
+                query = KcdbCmc.query.filter(KcdbCmc.id.in_(ids))
+                m_query = MeasurandTaxon.query.filter(MeasurandTaxon.id == measurand).first()
+                if m_query is None:
+                    flash(f"Set measurand for {len(ids)} record{'s' if len(ids) > 1 else ''} to {measurand} failed. Cannot query {measurand}", category='info')
+                    return redirect(url)
+                for cmc in query.all():
+                    cmc.measurands.append(m_query)
+
+                #db.session.bulk_update_mappings(KcdbCmc, _update_mappings)
+                db.session.commit()
+                flash(f"Set measurand for {len(ids)} record{'s' if len(ids) > 1 else ''} to {measurand}.", category='info')
+                return redirect(url)
+            else:
+                self._template_args['url'] = url
+                self._template_args['change_form'] = change_form
+                self._template_args['change_modal'] = True
+                return self.index_view()
+
+                
+    page_size = 100
     column_display_pk = True
     column_hide_backrefs = False
-    column_searchable_list = ['area.label', 'quantity.value', 'kcdbCode']
-    column_filters = ('area', 'service')
+    can_export = True
+    column_searchable_list = ['area.label', 
+                              'quantity.value', 
+                              'kcdbCode']
+    column_filters = ('area.label', 
+                      'branch.value', 
+                      'service.value',
+                      'subservice.value',
+                      'individualservice.value',
+                      MyEqualFilter(KcdbCmc.kcdbCode, 'kcdbCode'))
+    column_formatters = {'parameter_names': _parameter_formatter}
+    column_labels = {'parameter_names': 'Parameters'}
     column_list = ('id',
                    'kcdbCode',
+                   'quantity',
+                   'measurands',
                    'area',
                    'branch',
                    'service',
                    'subservice',
                    'individualservice',
-                   'quantity',
-                   'measurands',
                    'instrument',
                    'instrumentmethod',
+                   'baseUnit',
+                   'uncertainityBaseUnit',
+                   'internationalStandard',
+                   'comments',
+                   'parameter_names'
                    )
+
     column_details_list = ('id',
                            'kcdbCode',
+                           'quantity',
+                           'measurands',
                            'area',
                            'branch',
                            'service',
                            'subservice',
                            'individualservice',
-                           'quantity',
-                           'measurands',
                            'instrument',
                            'instrumentmethod',
                            'baseUnit',
                            'uncertainityBaseUnit',
+                           'internationalStandard',
                            'parameters',
                            'comments'
                            )
@@ -174,13 +314,26 @@ class MeasurandView(ModelView):
 
 
 class MeasurandTaxonView(ModelView):
+    
+    def _parameter_formatter(view, context, model, name):
+        urls = []
+        for p in model.parameters:
+            url = url_for('parameter.details_view', id=p.id)
+            urls.append('<a href="{}">{}</a>'.format(url, p.name))
+        return Markup((', <br/>').join(urls))
+    
     can_export = True
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
+    column_searchable_list = ['name']
+    
+    column_labels = {'parameter_names': 'Parameters'}
     column_formatters = {
             'id': _id_formatter,
             'aspect': _link_formatter,
+            'scale': _link_formatter,
+            'parameter_names': _parameter_formatter,
             }
     column_list = (
             "id", 
@@ -193,8 +346,9 @@ class MeasurandTaxonView(ModelView):
            "id",
            "name",
            "aspect",
+           "scale",
            "quantitykind",
-           "parameters",
+           "parameter_names",
            "definition",
            "result"
            )
@@ -262,26 +416,27 @@ class ScaleView(ModelView):
     def _cnv_link_formatter(view, context, model, name):
         urls = []
         for s in model.conversions:
-            id_ = '{},{},{}'.format(s.src_scale_id,
-                                    s.dst_scale_id,
-                                    s.aspect_id)
+            id_ = '{}: {} &#8594 {}'.format(s.aspect.name,
+                                    s.src_scale.ml_name,
+                                    s.dst_scale.ml_name)
             url = url_for('conversion.details_view', id=id_)
             urls.append('<a href="{}">{}</a>'.format(url,
                                                      id_.replace(',', '.')))
-        return Markup((',').join(urls))
+        return Markup((', <br/>').join(urls))
 
     def _cast_link_formatter(view, context, model, name):
         urls = []
         for s in model.casts:
-            id_ = '{},{},{},{}'.format(s.src_scale_id,
-                                       s.src_aspect_id,
-                                       s.dst_scale_id,
-                                       s.dst_aspect_id)
+            id_ = '{}: {} &#8594 {}: {}'.format(s.src_aspect.name,
+                                       s.src_scale.ml_name,
+                                       s.dst_aspect.name,
+                                       s.dst_scale.ml_name)
             url = url_for('cast.details_view', id=id_)
             urls.append('<a href="{}">{}</a>'.format(url,
                                                      id_.replace(',', '.')))
-        return Markup((',').join(urls))
-
+        return Markup((', <br/>').join(urls))
+    
+    column_searchable_list = ['ml_name']
     can_export = True
     column_display_pk = True
     can_view_details = True
@@ -321,7 +476,7 @@ class AspectView(MyModelView):
             urls.append('<a href="{}">{}</a>'.format(url, s.id))
 
         return Markup((',').join(urls))
-
+    column_searchable_list = ['name']
     can_export = True
     column_display_pk = True
     can_view_details = True
@@ -365,7 +520,9 @@ def initialize():
             "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
             "use_api": False,
             "use_cmc_api": False,
-            "update_resources": False
+            "update_resources": False,
+            "kcdb_cmc_data": "kcdb_cmc_physics.json",
+            "kcdb_cmc_api_countries": ["CA"],
         }
 
     mapper = MlayerMapper(db.session, parms)
@@ -378,6 +535,7 @@ def initialize():
 
     kcdbmapper = KcdbMapper(db.session, parms)
     kcdbmapper.loadServices()
+    
     db.session.commit()
     return redirect(url_for('index'))
 
@@ -388,6 +546,75 @@ def taxonomy():
     measurands = measurand.query.all()
     return render_template("taxonomy.html", measurands=measurands)
 
+
+@app.route("/kcdbcmcs/")
+def kcdbcmcs():
+    cmc = KcdbCmc()
+    cmcs = cmc.query.all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/export/json")
+def kcdbcmcs_export_json():
+    cmc = KcdbCmc()
+    cmcs = cmc.query.all()
+    schema = cmc_schema.dumps(cmcs, many=True, indent=4)
+    response = app.make_response(schema)
+    response.headers["Content-Disposition"] = "attachment; filename=export_cmcs.json"
+    response.headers["Content-type"] = "text/json"
+    return response 
+
+
+@app.route("/kcdbcmcs/auv/")
+def kcdbcmcs_auv():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'AUV')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/em/")
+def kcdbcmcs_em():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'EM')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/l/")
+def kcdbcmcs_l():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'L')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/m/")
+def kcdbcmcs_m():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'M')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/pr/")
+def kcdbcmcs_pr():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'PR')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/t/")
+def kcdbcmcs_t():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'T')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmcs/tf/")
+def kcdbcmcs_tf():
+    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'TF')).all()
+    return render_template("kcdbcmcs.html", cmcs=cmcs)
+
+
+@app.route("/kcdbcmc/<string:kcdbcmc_id>/export/json", methods=["GET", "POST"])
+def kcdbcmc_export_json(kcdbcmc_id):
+    # print("Get Meaurand ", measurand_id)
+    cmc = KcdbCmc.query.get_or_404(kcdbcmc_id)
+    schema = cmc_schema.dumps(cmc, indent=2)
+    response = app.make_response(schema)
+    response.mimetype = "text/json"
+    return response 
 
 @app.route("/mlayer/scales/")
 def scales():
@@ -400,20 +627,33 @@ def aspects():
     aspects = Aspect().query.all()
     return render_template("aspects.html", aspects=aspects)
 
+
 @app.route("/taxonomy/export")
 def taxonomy_export():
-    measurand = MeasurandTaxon()
-    measurands = measurandTaxon.query.all()
+    measurands = MeasurandTaxon.query.all()
     taxons = []
     for obj in measurands:
         taxons.append(getTaxonDict(obj, m_schema))
     xml = dicttoxml_taxonomy(taxons)
     response = app.make_response(xml)
-    response.mimetype = "text/xml"
+    response.headers["Content-Disposition"] = "attachment; filename=export_taxonomy.xml"
+    response.headers["Content-type"] = "text/xml"
     return response
 
-@app.route("/measurand/<string:measurand_id>/export", methods=["GET", "POST"])
-def measurand_export(measurand_id):
+
+@app.route("/measurand/<string:measurand_id>/export/xml", methods=["GET", "POST"])
+def measurand_export_xml(measurand_id):
+    # print("Get Meaurand ", measurand_id)
+    m = MeasurandTaxon.query.get_or_404(measurand_id)
+    taxons = [getTaxonDict(m, m_schema)]
+    xml = dicttoxml_taxonomy(taxons)
+    response = app.make_response(xml)
+    response.mimetype = "text/xml"
+    return response 
+
+
+@app.route("/measurand/<string:measurand_id>/export/json", methods=["GET", "POST"])
+def measurand_export_json(measurand_id):
     # print("Get Meaurand ", measurand_id)
     m = MeasurandTaxon.query.get_or_404(measurand_id)
     schema = m_schema.dumps(m, indent=2)

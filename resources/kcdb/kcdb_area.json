@@ -1,37 +1,37 @@
 [
     {
         "id": 1,
-        "value": "Acoustics, Ultrasound, Vibration",
-        "label": "AUV"
+        "label": "AUV",
+        "value": "Acoustics, Ultrasound, Vibration"
     },
     {
         "id": 2,
-        "value": "Electricity and Magnetism",
-        "label": "EM"
+        "label": "EM",
+        "value": "Electricity and Magnetism"
     },
     {
         "id": 3,
-        "value": "Length",
-        "label": "L"
+        "label": "L",
+        "value": "Length"
     },
     {
         "id": 4,
-        "value": "Mass and related quantities",
-        "label": "M"
+        "label": "M",
+        "value": "Mass and related quantities"
     },
     {
         "id": 5,
-        "value": "Photometry and Radiometry",
-        "label": "PR"
+        "label": "PR",
+        "value": "Photometry and Radiometry"
     },
     {
         "id": 6,
-        "value": "Thermometry",
-        "label": "T"
+        "label": "T",
+        "value": "Thermometry"
     },
     {
         "id": 7,
-        "value": "Time and Frequency",
-        "label": "TF"
+        "label": "TF",
+        "value": "Time and Frequency"
     }
 ]

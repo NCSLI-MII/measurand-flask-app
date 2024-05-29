@@ -300,6 +300,10 @@ class MeasurandTaxon(Base):
 
     aspect: Mapped['Aspect'] = relationship()
   
+    scale_id: Mapped[Optional[str]] = mapped_column(ForeignKey("scale.id"))
+
+    scale: Mapped['Scale'] = relationship()
+    
     processtype: Mapped[str] = mapped_column(String(10))  # Source | Measure
     
     qualifier: Mapped[Optional[str]] = mapped_column(String(50))
@@ -507,6 +511,7 @@ class KcdbCmc(Base):
     kcdbCode: Mapped[str] = mapped_column(String(50))
     baseUnit: Mapped[str] = mapped_column(UnicodeText)
     uncertaintyBaseUnit: Mapped[str] = mapped_column(UnicodeText)
+    internationalStandard: Mapped[Optional[str]] = mapped_column(UnicodeText)
     comments: Mapped[str] = mapped_column(UnicodeText)
 
     area_id: Mapped[Optional[int]] = \
@@ -863,12 +868,13 @@ class ConversionSchema(SQLAlchemyAutoSchema):
 
 
 class ParameterSchema(SQLAlchemyAutoSchema):
-    
+
     class Meta:
         model = Parameter
         include_relationships = True
         load_instance = True
         ordered = True
+    aspect = Nested(AspectSchema(only=("name", "id",)))
 
 
 class DisciplineSchema(SQLAlchemyAutoSchema):
@@ -880,16 +886,18 @@ class DisciplineSchema(SQLAlchemyAutoSchema):
 
 
 class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
-    
+
     class Meta:
         model = MeasurandTaxon
         include_relatiohsips = True
         load_instance = True
         ordered = True
-    
+
     parameters = Nested(ParameterSchema, many=True)
-    aspect = Nested(AspectSchema(only=("name","id",)))
+    aspect = Nested(AspectSchema(only=("name", "id",)))
+    scale = Nested(ScaleSchema(only=("ml_name", "id",)))
     discipline = Nested(DisciplineSchema(only=("label",)))
+
 
 class TaxonSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -902,15 +910,16 @@ class TaxonSchema(SQLAlchemyAutoSchema):
 class MeasurandSchema(SQLAlchemyAutoSchema):
     parameters = Nested(ParameterSchema, many=True)
     taxon = Nested(TaxonSchema)
-    
+
     class Meta:
         model = Measurand
         include_relatiohsips = True
         load_instance = True
         ordered = True
 
+
 class KcdbCmcSchema(SQLAlchemyAutoSchema):
-    measurands = Nested(MeasurandSchema, many=True)
+    measurands = Nested(MeasurandSchema, many=True, only=('name',),)
     area = Nested(KcdbAreaSchema)
     branch = Nested(KcdbBranchSchema)
     service = Nested(KcdbServiceSchema)
@@ -920,6 +929,7 @@ class KcdbCmcSchema(SQLAlchemyAutoSchema):
     instrumentmethod = Nested(KcdbInstrumentMethodSchema)
     quantity = Nested(KcdbQuantitySchema)
     parameters = Nested(KcdbParameterSchema, many=True)
+
     class Meta:
         model = KcdbCmc
         include_relationships = True

@@ -19,6 +19,8 @@ class KcdbMapper:
         self._updateResources = parms['update_resources']
         self._use_cmc_api = parms['use_cmc_api']
         self._kcdb_path = parms['kcdb']
+        self._kcdb_cmc_data = parms['kcdb_cmc_data']
+        self._kcdb_cmc_api_countries = parms['kcdb_cmc_api_countries']
         self.api_ref = 'https://www.bipm.org/api/kcdb/referenceData'
         self.headers = {'accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -153,26 +155,46 @@ class KcdbMapper:
                   .filter(model.KcdbBranch.id == obj['branch']['id'])
                   .first()
                   )
-        service = (self.Session.query(model.KcdbService)
-                   .filter(model.KcdbService.id == obj['service']['id'])
-                   .first()
-                   )
-        subservice = (self.Session.query(model.KcdbSubservice)
-                      .filter(model.KcdbSubservice.id == obj['subservice']['id'])
-                      .first()
+        if obj['service']:
+            service = (self.Session.query(model.KcdbService)
+                       .filter(model.KcdbService.id == obj['service']['id'])
+                       .first()
                       )
-        individualservice = (self.Session.query(model.KcdbIndividualService)
-                             .filter(model.KcdbIndividualService.id == obj['individualservice']['id'])
-                             .first()
-                             )
-        quantity = (self.Session.query(model.KcdbQuantity)
-                    .filter(model.KcdbQuantity.id == obj['quantity']['id'])
-                    .first()
-                    )
-        instrument = (self.Session.query(model.KcdbInstrument)
-                      .filter(model.KcdbInstrument.id == obj['instrument']['id'])
-                      .first()
-                      )
+        else:
+            service = None
+
+        if obj['subservice']:
+            subservice = (self.Session.query(model.KcdbSubservice)
+                          .filter(model.KcdbSubservice.id == obj['subservice']['id'])
+                          .first()
+                         )
+        else:
+            subservice = None
+        
+        if obj['individualservice']:
+
+            individualservice = (self.Session.query(model.KcdbIndividualService)
+                                 .filter(model.KcdbIndividualService.id == obj['individualservice']['id'])
+                                 .first()
+                                )
+        else:
+            individualservice = None
+        
+        if obj['quantity']:
+            quantity = (self.Session.query(model.KcdbQuantity)
+                        .filter(model.KcdbQuantity.id == obj['quantity']['id'])
+                        .first()
+                       )
+        else:
+            quantity = None
+
+        if obj['instrument']:
+            instrument = (self.Session.query(model.KcdbInstrument)
+                          .filter(model.KcdbInstrument.id == obj['instrument']['id'])
+                          .first()
+                         )
+        else:
+            instrument = None
         if obj['instrumentmethod']:
             instrumentMethod = (self.Session.query(model.KcdbInstrumentMethod)
                                 .filter(model.KcdbInstrumentMethod.id == obj['instrumentmethod']['id'])
@@ -180,6 +202,17 @@ class KcdbMapper:
                                 )
         else:
             instrumentMethod = None
+        
+        # Linking measurands only possible with local metadata
+
+        if obj['measurands']:
+            for m in obj['measurands']:
+                measurand = (self.Session.query(model.MeasurandTaxon).
+                             filter(model.MeasurandTaxon.name == m['name']).
+                             first()
+                             )
+                if measurand:
+                    cmc.measurands.append(measurand)
 
         if area:
             cmc.area = area
@@ -196,17 +229,19 @@ class KcdbMapper:
         if instrument:
             cmc.instrument = instrument
         else:
-            instrument = model.KcdbInstrument()
-            instrument.value = obj['instrument']
-            self.Session.add(instrument)
-            cmc.instrument = instrument
+            if obj['instrument']:
+                instrument = model.KcdbInstrument()
+                instrument.value = obj['instrument']
+                self.Session.add(instrument)
+                cmc.instrument = instrument
         if instrumentMethod:
             cmc.instrumentmethod = instrumentMethod
         else:
-            instrumentMethod = model.KcdbInstrumentMethod()
-            instrumentMethod.value = obj['instrumentmethod']
-            self.Session.add(instrumentMethod)
-            cmc.instrumentmethod = instrumentMethod
+            if obj['instrumentmethod']:
+                instrumentMethod = model.KcdbInstrumentMethod()
+                instrumentMethod.value = obj['instrumentmethod']
+                self.Session.add(instrumentMethod)
+                cmc.instrumentmethod = instrumentMethod
         for parm in obj['parameters']:
             parameter = model.KcdbParameter()
             parameter.name = parm['name']
@@ -242,17 +277,21 @@ class KcdbMapper:
                     .filter(model.KcdbQuantity.value == obj['quantityValue'])
                     .first()
                     )
-
-        instrument = (self.Session.query(model.KcdbInstrument)
-                      .filter(model.KcdbInstrument.value == obj['instrument'])
-                      .first()
-                      )
-
-        instrumentMethod = (self.Session.query(model.KcdbInstrumentMethod)
-                            .filter(model.KcdbInstrumentMethod.value == obj['instrumentMethod'])
-                            .first()
-                            )
-        print(obj['instrumentMethod'], instrumentMethod)
+        if obj['instrument']:
+            instrument = (self.Session.query(model.KcdbInstrument)
+                          .filter(model.KcdbInstrument.value == obj['instrument'])
+                          .first()
+                          )
+        else:
+            instrument = None
+        if obj['instrumentMethod']:
+            instrumentMethod = (self.Session.query(model.KcdbInstrumentMethod)
+                                .filter(model.KcdbInstrumentMethod.value == obj['instrumentMethod'])
+                                .first()
+                                )
+        else:
+            instrumentMethod = None
+        
         if area:
             cmc.area = area
         if branch:
@@ -268,17 +307,19 @@ class KcdbMapper:
         if instrument:
             cmc.instrument = instrument
         else:
-            instrument = model.KcdbInstrument()
-            instrument.value = obj['instrument']
-            self.Session.add(instrument)
-            cmc.instrument = instrument
+            if obj['instrument']:
+                instrument = model.KcdbInstrument()
+                instrument.value = obj['instrument']
+                self.Session.add(instrument)
+                cmc.instrument = instrument
         if instrumentMethod:
             cmc.instrumentmethod = instrumentMethod
         else:
-            instrumentMethod = model.KcdbInstrumentMethod()
-            instrumentMethod.value = obj['instrumentMethod']
-            self.Session.add(instrumentMethod)
-            cmc.instrumentmethod = instrumentMethod
+            if obj['instrumentMethod']:
+                instrumentMethod = model.KcdbInstrumentMethod()
+                instrumentMethod.value = obj['instrumentMethod']
+                self.Session.add(instrumentMethod)
+                cmc.instrumentmethod = instrumentMethod
         for parm in obj['parameters']:
             parameter = model.KcdbParameter()
             parameter.name = parm['parameterName']
@@ -289,7 +330,7 @@ class KcdbMapper:
         print(cmc.instrumentmethod)
 
     def _getPhysicsCmcDataLocal(self):
-        with open(f'{self._kcdb_path}/kcdb_cmc.json') as f:
+        with open(f'{self._kcdb_path}/{self._kcdb_cmc_data}') as f:
             objs = json.load(f)
             for obj in objs:
                 cmc = (
@@ -303,13 +344,18 @@ class KcdbMapper:
                         'kcdbCode': obj['kcdbCode'],
                         'baseUnit': obj['baseUnit'],
                         'uncertaintyBaseUnit': obj['uncertaintyBaseUnit'],
-                        'comments': obj['comments']
+                        'internationalStandard': obj.get('internationalStandard', None),
+                        'comments': obj.get('comments', None),
                     }
                     cmc = model.KcdbCmcSchema().load(
                         payload, session=self.Session
                     )
                     self.Session.add(cmc)
-                    self._getCmcMetadataLocal(cmc, obj)
+                    try:
+                        self._getCmcMetadataLocal(cmc, obj)
+                    except Exception as e:
+                        print(obj)
+                        raise
 
     def _getPhysicsCmcData(self):
         api_ref = 'https://www.bipm.org/api/kcdb/cmc/searchData/physics'
@@ -321,9 +367,7 @@ class KcdbMapper:
           "pageSize": 20,
           "metrologyAreaLabel": None,
           "showTable": False,
-          "countries": [
-            "CA",
-          ],
+          "countries": self._kcdb_cmc_api_countries,
         }
 
         for area in self.Session.query(model.KcdbArea).all():
@@ -355,6 +399,7 @@ class KcdbMapper:
                                 'kcdbCode': obj['kcdbCode'],
                                 'baseUnit': obj['cmcBaseUnit']['unit'],
                                 'uncertaintyBaseUnit': obj['cmcUncertaintyBaseUnit']['unit'],
+                                'internationalStandard': obj['internationalStandard'],
                                 'comments': obj['comments']
                             }
                             cmc = self._schemas['cmc'].load(

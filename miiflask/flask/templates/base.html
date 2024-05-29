@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %} - Measurement Information  </title> 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    -->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    -->
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <style>
+<!--
         .title {
             margin: 5px;
-        }
+        } 
+-->
 
         .content {
             margin: 5px;
@@ -59,17 +67,47 @@
             margin-left: 50px;
             text-decoration: none;
         }
+
+        .navbar {
+            margin-left: 50px;
+            margin-right: 200px;
+        }
+
     </style>
 </head>
-<body>
-    <nav>
-        <a href="{{ url_for('index') }}">Measurement Information Demo</a>
-        <a href="#">About</a>
+
+{% block navbar %}
+    <div class="navbar nav-fixed-top">
+        <a href="{{ url_for('index') }}">Homepage</a>
         <a href="{{ url_for('admin.index') }}">Administer</a>
+    
+        <div class="btn-group">
+            <button class ="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Links
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="https://api.mlayer.org">Mlayer API</a></li>
+                <li><a class="dropdown-item" href="https://github.com/NCSLI-MII/measurand-taxonomy">MII Measurand Taxonomy Repository</a></li>
+                <li><a class="dropdown-item" href="https://si-digital-framework.org">BIPM SI Digital Framework</a></li> 
+            </ul>
+        </div>
+
+    </div>
+{% endblock %}
+
+<body>
+    <nav> 
+        <a href="{{ url_for('index') }}"> Measurand Information Exchange </a>
     </nav>
     <hr>
     <div class="content">
         {% block content %} {% endblock %}
     </div>
+    <div id="footer">
+        {% block footer %}
+            This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+        {% endblock %}
+     </div>
 </body>
+ 
 </html>

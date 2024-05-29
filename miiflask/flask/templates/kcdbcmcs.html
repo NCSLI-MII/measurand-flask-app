@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}CMCs{% endblock %}
+
+{% block content %}
+<h1 class="title">CMCs {{cmcs|length}}</h1>
+<div class="content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Kcdb Identifier</th>
+                <th>Measurands</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in cmcs %}
+            <tr>
+                <td><a href="https://si-digital-framework.org/kcdb-cmc/{{ c.kcdbCode }}">{{ c.kcdbCode }}</a></td>
+                <td>
+                    {% for m in c.measurands %}
+                    <a href="{{ url_for('measurand', measurand_id=m.id) }}">{{ m.name }}</a><br />
+                    {% endfor %}
+                </td>
+                <td><a href="{{ url_for('kcdbcmc_export_json', kcdbcmc_id=c.id) }}">Details</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

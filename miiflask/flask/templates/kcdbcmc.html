@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="title">{% block title %} Measurand {{ measurand.name }} {% endblock %}</h1>
+    <div class="content">
+        <div class="measurand">
+            <a href="{{ url_for('measurand_export_xml', measurand_id=measurand.id) }}">XML</a></td>
+            <a href="{{ url_for('measurand_export_json', measurand_id=measurand.id) }}">JSON</a></td>
+            <b>
+                <p class="measurand">Taxon: {{ measurand.name }}</p>
+            </b>
+            <b>
+                <p>Parameters</p>
+                {% for p in measurand.parameters %}
+                     <p>{{ p.name }}</p>
+                {% endfor %}
+            </b>
+        </div>
+    </div>
+    <img src="data:image/png;base64,{{graph|safe}}"/>
+{% endblock %} 
+
