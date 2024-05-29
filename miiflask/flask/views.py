@@ -11,11 +11,20 @@
 """
 from flask import (render_template,
                    redirect,
+                   request,
                    url_for,
+                   flash,
                    Markup)
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.model.filters import BaseFilter
 from flask_admin.babel import gettext
+
+from flask_admin.actions import action
+from flask_admin import Admin, expose
+from flask_admin.helpers import get_redirect_target
+
+from wtforms import HiddenField, StringField, Form
+from wtforms.validators import InputRequired
 
 from miiflask.flask.model import (
     Measurand,
@@ -137,12 +146,66 @@ class KcdbServiceView(MyModelView):
 class KcdbBranchView(MyModelView):
     page_size = 100 
 
+class ChangeForm(Form):
+    ids = HiddenField()
+    measurand = StringField(validators=[InputRequired()])
+
 class CMCView(MyModelView):
-    
+    list_template = 'custom_list.html' 
     def _parameter_formatter(view, context, model, name):
         names = [p.name for p in model.parameters]
         return Markup((',<br/>').join(names))
+    
+    # Custom action to link CMCs to measurand
+    # See Flask-admin actions
+    # See example github.com/pjcunningham/flask-admin-modal
 
+    @action('change_measurand', 'Measurand')
+    def action_change_measurand(self, ids):
+        url = get_redirect_target() or self.get_url('.index_view')
+        return redirect(url, code=307)
+    
+    @expose('/', methods=['POST'])
+    def index(self):
+        if request.method == 'POST':
+            url = get_redirect_target() or self.get_url('.index_view')
+            ids = request.form.getlist('rowid')
+            joined_ids = ','.join(ids)
+            change_form = ChangeForm()
+            change_form.ids.data = joined_ids
+            self._template_args['url'] = url
+            self._template_args['change_form'] = change_form
+            self._template_args['change_modal'] = True
+            return self.index_view()
+
+    @expose('/update/', methods=['POST'])
+    def update_view(self):
+        if request.method == 'POST':
+            url = get_redirect_target() or self.get_url('.index_view')
+            change_form = ChangeForm(request.form)
+            if change_form.validate():
+                ids = change_form.ids.data.split(',')
+                measurand = change_form.measurand.data
+                #_update_mappings = [{'id': rowid, 'measurand_id': measurand} for rowid in ids]
+                query = KcdbCmc.query.filter(KcdbCmc.id.in_(ids))
+                m_query = MeasurandTaxon.query.filter(MeasurandTaxon.id == measurand).first()
+                if m_query is None:
+                    flash(f"Set measurand for {len(ids)} record{'s' if len(ids) > 1 else ''} to {measurand} failed. Cannot query {measurand}", category='info')
+                    return redirect(url)
+                for cmc in query.all():
+                    cmc.measurands.append(m_query)
+
+                #db.session.bulk_update_mappings(KcdbCmc, _update_mappings)
+                db.session.commit()
+                flash(f"Set measurand for {len(ids)} record{'s' if len(ids) > 1 else ''} to {measurand}.", category='info')
+                return redirect(url)
+            else:
+                self._template_args['url'] = url
+                self._template_args['change_form'] = change_form
+                self._template_args['change_modal'] = True
+                return self.index_view()
+
+                
     page_size = 100
     column_display_pk = True
     column_hide_backrefs = False
