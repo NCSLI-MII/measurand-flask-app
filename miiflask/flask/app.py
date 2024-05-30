@@ -22,7 +22,11 @@ from flask_admin.contrib.sqla import ModelView
 
 from miiflask.flask.db import Base, bind_engine
 
-from miiflask.flask.config import TestingConfig, DevelopmentConfig
+from miiflask.flask.config import (
+        TestingConfig, 
+        DevelopmentConfig,
+        ProductionConfig
+        )
 
 from miiflask.flask.model import (
     Measurand,
@@ -86,6 +90,8 @@ if(env == 'testing'):
     app = create_app()
 elif(env=='development'):
     app = create_app(DevelopmentConfig)
+elif(env == 'production'):
+    app = create_app(ProductionConfig)
 else:
     print("App not configured")
 

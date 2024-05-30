@@ -48,7 +48,9 @@ use_api=true
 ```
 
 ### Running the flask application
-Two modes have configurations for running the flask application. Before running the application export the Flask environment.
+Three modes have configurations for running the flask application. Before running the application export the Flask environment.
+
+#### Testing and Development
 * Testing configuration runs an in-memory database that requires extracting and loading the data each time. 
 
 ```
@@ -68,6 +70,14 @@ flask run
 * Go to the localhost on browser http://127.0.0.1/5000
 * The administration view can be found at http://127.0.0.1/5000/admin
 * For in-memory, you'll need to load some data. Go to http://127.0.0.1/5000/initialize
+
+#### Production
+This mode is in progress for running a production service with nginx and gunicorn. As above, initialize the database with dbinit.py.The default port for gunicorn is 8000.
+```
+export FLASK_ENV=production
+gunicorn -w 1 'miiflask.flask.app:app'
+```
+* Got to the localhost on browser http://127.0.0.1/8000
 
 Below was a diagram of the database schema implemented as a flask [model](./miiflask/flask/model.py).
 
