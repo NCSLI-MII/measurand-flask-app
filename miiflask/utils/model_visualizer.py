@@ -122,6 +122,8 @@ def visualize_model_instance(model, instance, excludes=[], add_labels=True, view
         if obj is None:
             continue
         if isinstance(obj, list):
+            if len(obj) == 0:
+                continue
             target_name = f'{rel.mapper.class_.__name__} \n'
             if rel.mapper.class_.__name__ == 'KcdbCmc':
                 descr = getDescription(rel.mapper.class_.__name__, obj[0])

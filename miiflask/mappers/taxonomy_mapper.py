@@ -231,12 +231,16 @@ class TaxonomyMapper:
     def getMeasurandRelatedObjects(self, taxon, measurand, uom_qk=None):
         if uom_qk:
             measurand.quantitykind = uom_qk 
-       
-        #if taxon['@name'] == 'Measure.Voltage.AC':
-        #    print(taxon)
-
+        
+        # Remove first required parameter which represents the quantity kind or aspect
+        # validate against the aspect
+        primary_parameter = None
         # TBD need to validate existing parameters of measurand
         if "mtc:Parameter" in taxon.keys():
+            if len(taxon["mtc:Parameter"])>0:
+                if (taxon["mtc:Result"]["uom:Quantity"]["@name"] != "ratio"):
+                    primary_parameter = taxon["mtc:Parameter"].pop(0)
+                   
             for parm in taxon["mtc:Parameter"]:
                 
                 parameter = self._schemas["parameter"].load(
@@ -268,7 +272,7 @@ class TaxonomyMapper:
                     )
             if aspect:
                 measurand.aspect = aspect
-        # Try and query for aspect given the result name or uom:Quantity
+            
         else:
             aspect = (
                     self.Session.query(model.Aspect)
@@ -278,6 +282,62 @@ class TaxonomyMapper:
                     )
             if aspect:
                 measurand.aspect = aspect
+            # Query aspect given the 1st parameter
+            elif primary_parameter:
+                name_ = None
+                if isinstance(primary_parameter, dict):
+                    if "uom:Quantity" in primary_parameter.keys():
+                        name_ = primary_parameter["uom:Quantity"]["@name"].lower()
+                    else:
+                        name_ = primary_parameter["@name"].lower()
+                else:
+                    name_ = primary_parameter
+                if (name_ == "volts" or name_ == "voltage"):
+                    name_ = "electric potential difference"
+                aspect = (
+                    self.Session.query(model.Aspect)
+                    .filter((model.Aspect.name == name_))
+                    .first()
+                    )
+                if not aspect:
+                    aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter((model.Aspect.name.like(f'%{name_}')))
+                        .first()
+                        )
+                if aspect:
+                    measurand.aspect = aspect
+                    print(f"Found corresponding aspect {aspect.name} for {measurand.name} and parameter {name_}")
+                else:
+                    # Could not match primary parameter to an aspect
+                    # Add to list of measurand parameters
+                    print(f"Cannot match {measurand.name} parameter {name_}")
+                    parameter = self._schemas["parameter"].load(
+                            {"name": primary_parameter["@name"], 
+                             "optional": primary_parameter["@optional"]}, 
+                            session=self.Session
+                    )
+                    if "uom:Quantity" in primary_parameter.keys():
+                        parm_qk_data = {"name": primary_parameter["uom:Quantity"]["@name"],
+                                        "definition": primary_parameter["mtc:Definition"],
+                                        }
+                                        
+                        parameter.quantitykind = parm_qk_data["name"] #parm_quantitykind
+                        # Try and query for aspect given the uom:Quantity
+                        parameter_aspect = (
+                                self.Session.query(model.Aspect)
+                                .filter(model.Aspect.name == parm_qk_data["name"]) #parm_quantitykind
+                                .first()
+                                )
+                        if parameter_aspect:
+                            parameter.aspect = parameter_aspect
+                    measurand.parameters.append(parameter)
+
+
+                
+
+
+        # Try and query for aspect given the result name or uom:Quantity
 
     def getMeasurandTaxonObject(self, taxon):
         """
@@ -410,7 +470,7 @@ class TaxonomyMapper:
 
     def loadTaxonomy(self):
         for taxon in self._mii_taxons_dict:
-            self.getMeasurandObject(self._mii_taxons_dict[taxon])
+            #self.getMeasurandObject(self._mii_taxons_dict[taxon])
             self.getMeasurandTaxonObject(self._mii_taxons_dict[taxon])
 
     def extractTaxonomy(self):

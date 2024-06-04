@@ -520,7 +520,7 @@ def initialize():
             "use_api": False,
             "use_cmc_api": False,
             "update_resources": False,
-            "kcdb_cmc_data": "kcdb_cmc_physics.json",
+            "kcdb_cmc_data": "kcdb_cmc_canada.json",
             "kcdb_cmc_api_countries": ["CA"],
         }
 
@@ -737,7 +737,7 @@ def modelMlayerCast():
 
 @app.route("/model/taxonomy/measurand")
 def modelTaxonomyMeasurand():
-    models = [MeasurandTaxon, Parameter, Aspect, Discipline, Scale]
+    models = [MeasurandTaxon, Parameter, Aspect, Discipline]
     excludes = ['KcdbCmc','Prefix', 'Unit', 'Dimension', 'Conversion', 'Cast', 'Measurand']
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)
