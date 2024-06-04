@@ -320,7 +320,7 @@ class Measurand(Base):
     __tablename__ = "measurand"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
 
-    taxon_id: Mapped[str] = mapped_column(ForeignKey("taxon.id"))
+    taxon_id: Mapped[str] = mapped_column(ForeignKey("measurandtaxon.id"))
 
     name: Mapped[str] = mapped_column(String(50))
 
@@ -334,13 +334,10 @@ class Measurand(Base):
 
     aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
 
-    scale_id: Mapped[Optional[str]] = mapped_column(ForeignKey('scale.id'))
-
-    # One-to-many
-    taxon: Mapped['Taxon'] = relationship(back_populates='measurands')
+    # Reference only to canonical definition
+    taxon: Mapped['MeasurandTaxon'] = relationship()
     
     aspect: Mapped['Aspect'] = relationship()
-    scale: Mapped['Scale'] = relationship()
    
     # One to many parameters
     parameters: Mapped[list['Parameter']] = \
@@ -378,6 +375,10 @@ class Parameter(Base):
 
 class Taxon(Base):
     __tablename__ = "taxon"
+    # deprecated class
+    # MeasurandTaxon is the canonical defintion
+    # Measurand (should) default to the attributes defined in its parent MeasurandTaxon
+
     # id = Column(UnicodeText, primary_key=True)
     id: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
 
@@ -400,11 +401,6 @@ class Taxon(Base):
         mapped_column(ForeignKey("aspect.id"))
     aspect: Mapped['Aspect'] = relationship()
     qualifier: Mapped[Optional[str]] = mapped_column(String(50))
-    # Individual taxon may be used in many measurands
-    # With bakc_populates if no id for taxon is given
-    # SQLAlchemy will create a new one
-    measurands: Mapped[list['Measurand']] = \
-        relationship(back_populates="taxon")
     
     # discipline_id: Mapped[Optional[int]] = \
     #    mapped_column(ForeignKey("discipline.id"))
