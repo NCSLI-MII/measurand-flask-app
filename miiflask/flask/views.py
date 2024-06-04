@@ -233,7 +233,7 @@ class CMCView(MyModelView):
                    'instrument',
                    'instrumentmethod',
                    'baseUnit',
-                   'uncertainityBaseUnit',
+                   'uncertaintyBaseUnit',
                    'internationalStandard',
                    'comments',
                    'parameter_names'
@@ -251,7 +251,7 @@ class CMCView(MyModelView):
                            'instrument',
                            'instrumentmethod',
                            'baseUnit',
-                           'uncertainityBaseUnit',
+                           'uncertaintyBaseUnit',
                            'internationalStandard',
                            'parameters',
                            'comments'
@@ -346,12 +346,11 @@ class MeasurandTaxonView(ModelView):
            "id",
            "name",
            "aspect",
-           "scale",
+           "definition",
            "quantitykind",
            "parameter_names",
-           "definition",
-           "result"
            )
+    form_excluded_columns = ('quantitykind',)
 
 
 class DimensionView(MyModelView):

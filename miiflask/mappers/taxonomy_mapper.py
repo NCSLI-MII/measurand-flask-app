@@ -278,23 +278,6 @@ class TaxonomyMapper:
                     )
             if aspect:
                 measurand.aspect = aspect
-                
-                # Try and find a measurement scale
-                if isinstance(measurand, model.MeasurandTaxon):
-                    for s in aspect.scales:
-                        if s.system_dimensions:
-                            if s.system_dimensions.formal_system:
-                                if s.system_dimensions.formal_system.id == "SY1":
-                                    measurand.scale = s
-
-        if "mtc:Scale" in taxon.keys():
-            scale = (
-                    self.Session.query(model.Scale)
-                    .filter((model.Scale.id == taxon["mtc:Scale"]["@id"]))
-                    .first()
-                    )
-            if scale:
-                measurand.scale = scale
 
     def getMeasurandTaxonObject(self, taxon):
         """

@@ -299,10 +299,6 @@ class MeasurandTaxon(Base):
     aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
 
     aspect: Mapped['Aspect'] = relationship()
-  
-    scale_id: Mapped[Optional[str]] = mapped_column(ForeignKey("scale.id"))
-
-    scale: Mapped['Scale'] = relationship()
     
     processtype: Mapped[str] = mapped_column(String(10))  # Source | Measure
     
