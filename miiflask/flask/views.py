@@ -9,6 +9,9 @@
 """
 
 """
+import logging
+
+from sqlalchemy.orm.base import instance_state
 from flask import (render_template,
                    redirect,
                    request,
@@ -62,6 +65,8 @@ from marshmallow import pprint as mpprint
 import json
 import graphviz
 import base64
+
+log = logging.getLogger("flask-admin.sqla")
 
 qk_schema = AspectSchema()
 m_schema = MeasurandTaxonSchema()
@@ -233,7 +238,7 @@ class CMCView(MyModelView):
                    'instrument',
                    'instrumentmethod',
                    'baseUnit',
-                   'uncertainityBaseUnit',
+                   'uncertaintyBaseUnit',
                    'internationalStandard',
                    'comments',
                    'parameter_names'
@@ -251,7 +256,7 @@ class CMCView(MyModelView):
                            'instrument',
                            'instrumentmethod',
                            'baseUnit',
-                           'uncertainityBaseUnit',
+                           'uncertaintyBaseUnit',
                            'internationalStandard',
                            'parameters',
                            'comments'
@@ -281,6 +286,61 @@ class TaxonView(ModelView):
 
 
 class MeasurandView(ModelView):
+    
+    def on_model_change(self, form, model, is_created):
+        "Custom model change" 
+        pass
+        
+    def create_model(self, form):
+        """
+            Create model from form.
+
+            :param form:
+                Form instance
+        """
+        try:
+            model = self._manager.new_instance()
+            # TODO: We need a better way to create model instances and stay compatible with
+            # SQLAlchemy __init__() behavior
+            state = instance_state(model)
+            self._manager.dispatch.init(state, [], {})
+            
+            form.populate_obj(model)
+            self.session.add(model)
+            self._on_model_change(form, model, True)
+            self.session.commit()
+        except Exception as ex:
+            if not self.handle_view_exception(ex):
+                flash(gettext('Failed to create record. %(error)s', error=str(ex)), 'error')
+                log.exception('Failed to create record.')
+
+            self.session.rollback()
+
+            return False
+        else:
+            self.after_model_change(form, model, True)
+
+        return model
+    
+    def update_model(self, form, model):
+        try:
+            form.populate_obj(model)
+            
+            # At this point model has form values
+            self._on_model_change(form, model, False)
+            # or try to modify here
+            self.session.commit()
+
+        except Exception as ex:
+            if not self.handle_view_exception(ex):
+                flash(gettext('Failed to update record. %(error)s', error=str(ex)), 'error')
+                log.exception('Failed to update record')
+            self.session.rollback()
+
+            return False
+        else:
+            # model committed to database
+            self.after_model_change(form, model, False)
     can_export = True
     column_display_pk = True
     can_view_details = True
@@ -296,7 +356,6 @@ class MeasurandView(ModelView):
             "name",
             "aspect", 
             "quantitykind", 
-            "scale", 
             "parameters"
             )
     inline_models = (Parameter,)
@@ -305,12 +364,40 @@ class MeasurandView(ModelView):
            "name",
            "taxon",
            "aspect",
-           "scale",
            "quantitykind",
            "parameters",
            "definition",
            "result"
            )
+
+
+class ParameterView(ModelView):
+    can_export = True
+    column_display_pk = True
+    can_view_details = True
+    column_hide_backrefs = False
+    column_searchable_list = ['name']
+    
+    column_formatters = {
+            'id': _id_formatter,
+            'aspect': _link_formatter,
+            }
+    column_list = (
+            "id", 
+            "name",
+            "measurandtaxon",
+            "aspect", 
+            "definition"
+            )
+    column_details_list = (
+           "id",
+           "name",
+           "aspect",
+           "measurandtaxon",
+           "definition",
+           "quantitykind",
+           )
+    form_excluded_columns = ('quantitykind',)
 
 
 class MeasurandTaxonView(ModelView):
@@ -321,7 +408,7 @@ class MeasurandTaxonView(ModelView):
             url = url_for('parameter.details_view', id=p.id)
             urls.append('<a href="{}">{}</a>'.format(url, p.name))
         return Markup((', <br/>').join(urls))
-    
+   
     can_export = True
     column_display_pk = True
     can_view_details = True
@@ -346,12 +433,11 @@ class MeasurandTaxonView(ModelView):
            "id",
            "name",
            "aspect",
-           "scale",
+           "definition",
            "quantitykind",
            "parameter_names",
-           "definition",
-           "result"
            )
+    form_excluded_columns = ('quantitykind',)
 
 
 class DimensionView(MyModelView):
@@ -521,7 +607,7 @@ def initialize():
             "use_api": False,
             "use_cmc_api": False,
             "update_resources": False,
-            "kcdb_cmc_data": "kcdb_cmc_physics.json",
+            "kcdb_cmc_data": "kcdb_cmc_canada.json",
             "kcdb_cmc_api_countries": ["CA"],
         }
 
@@ -738,7 +824,7 @@ def modelMlayerCast():
 
 @app.route("/model/taxonomy/measurand")
 def modelTaxonomyMeasurand():
-    models = [MeasurandTaxon, Parameter, Aspect, Discipline, Scale]
+    models = [MeasurandTaxon, Parameter, Aspect, Discipline]
     excludes = ['KcdbCmc','Prefix', 'Unit', 'Dimension', 'Conversion', 'Cast', 'Measurand']
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)
