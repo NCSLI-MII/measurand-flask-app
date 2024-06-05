@@ -371,6 +371,35 @@ class MeasurandView(ModelView):
            )
 
 
+class ParameterView(ModelView):
+    can_export = True
+    column_display_pk = True
+    can_view_details = True
+    column_hide_backrefs = False
+    column_searchable_list = ['name']
+    
+    column_formatters = {
+            'id': _id_formatter,
+            'aspect': _link_formatter,
+            }
+    column_list = (
+            "id", 
+            "name",
+            "measurandtaxon",
+            "aspect", 
+            "definition"
+            )
+    column_details_list = (
+           "id",
+           "name",
+           "aspect",
+           "measurandtaxon",
+           "definition",
+           "quantitykind",
+           )
+    form_excluded_columns = ('quantitykind',)
+
+
 class MeasurandTaxonView(ModelView):
     
     def _parameter_formatter(view, context, model, name):

@@ -113,6 +113,7 @@ from miiflask.flask.views import (
         MeasurandView,
         TaxonView,
         MeasurandTaxonView,
+        ParameterView,
         CMCView,
         MyModelView,
         KcdbServiceView,
@@ -134,7 +135,7 @@ admin.add_view(CastConversionView(Cast, db.session, category="Mlayer"))
 admin.add_view(MyModelView(Transform, db.session, category="Mlayer"))
 admin.add_view(DimensionView(Dimension, db.session, category="Mlayer"))
 admin.add_view(MyModelView(System, db.session, category="Mlayer"))
-admin.add_view(MyModelView(Parameter, db.session, category="Measurand"))
+admin.add_view(ParameterView(Parameter, db.session, category="Measurand"))
 admin.add_view(MeasurandView(Measurand, db.session, category="Measurand"))
 admin.add_view(MeasurandTaxonView(MeasurandTaxon, db.session, category="Measurand"))
 admin.add_view(KcdbServiceView(KcdbServiceClass, db.session, category="KCDB"))
