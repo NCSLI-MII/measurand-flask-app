@@ -438,6 +438,15 @@ class MeasurandTaxonView(ModelView):
            "parameter_names",
            )
     form_excluded_columns = ('quantitykind',)
+    form_columns = ['id',
+                    'name',
+                    'aspect',
+                    'deprecated',
+                    'definition',
+                    'processtype',
+                    'qualifier',
+                    'kcdbcmcs',
+                    'parameters'] 
 
 
 class DimensionView(MyModelView):
