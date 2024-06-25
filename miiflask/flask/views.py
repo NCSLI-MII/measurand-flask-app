@@ -728,7 +728,11 @@ def taxonomy_export():
     measurands = MeasurandTaxon.query.all()
     taxons = []
     for obj in measurands:
-        taxons.append(getTaxonDict(obj, m_schema))
+        try:
+            taxons.append(getTaxonDict(obj, m_schema))
+        except Exception as e:
+            print(obj)
+            raise e
     xml = dicttoxml_taxonomy(taxons)
     response = app.make_response(xml)
     response.headers["Content-Disposition"] = "attachment; filename=export_taxonomy.xml"
