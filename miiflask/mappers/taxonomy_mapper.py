@@ -90,9 +90,15 @@ def getTaxonDict(obj, schema):
     taxon["@deprecated"] = data.pop("deprecated")
     taxon["@replacement"] = ""
     taxon["mtc:Definition"] = data.pop("definition", "")
-    taxon["mtc:Discipline"] = {
-        "@name": data["discipline"]['label']
-    }
+    if data['discipline']:
+        taxon["mtc:Discipline"] = {
+            "@name": data["discipline"]['label']
+        }
+    else:
+        taxon["mtc:Discipline"] = {
+            "@name": "" 
+        }
+
     taxon["mtc:ExternalReference"] = {
         "@name": data.pop("exref_name", ""),
         "mtc:url": data.pop("exref_url", ""),
@@ -104,19 +110,32 @@ def getTaxonDict(obj, schema):
                 continue
             if parm["name"] == "measurand":
                 continue
-            taxon["mtc:Parameter"].append(
-                {
-                    "@name": parm["name"],
-                    "@optional": parm["optional"],
-                    "mtc:Definition": parm["definition"],
-                    "uom:Quantity": {"@name": parm["quantitykind"]},
-                    "mtc:Aspect":{
-                            "@name": parm['aspect']['name'],
-                            "@id": parm['aspect']['id']
-                            }
-                },
-
-            )
+            if parm['aspect']:
+                taxon["mtc:Parameter"].append(
+                    {
+                        "@name": parm["name"],
+                        "@optional": parm["optional"],
+                        "mtc:Definition": parm["definition"],
+                        "uom:Quantity": {"@name": parm["quantitykind"]},
+                        "mtc:Aspect":{
+                                "@name": parm['aspect']['name'],
+                                "@id": parm['aspect']['id']
+                                }
+                    },
+                    )
+            else:
+                taxon["mtc:Parameter"].append(
+                    {
+                        "@name": parm["name"],
+                        "@optional": parm["optional"],
+                        "mtc:Definition": parm["definition"],
+                        "uom:Quantity": {"@name": parm["quantitykind"]},
+                        "mtc:Aspect":{
+                                "@name": "", 
+                                "@id": "" 
+                                }
+                    },
+                )
     taxon["mtc:Result"] = {
         "@name": data.pop("result", ""),
         "uom:Quantity": {"@name": data.pop("quantitykind", "")},
