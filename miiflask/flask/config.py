@@ -32,5 +32,5 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     PRODUCTION = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask_demo.db"
 
