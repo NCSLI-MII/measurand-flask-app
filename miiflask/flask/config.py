@@ -30,7 +30,11 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask.db"
 
 
+class DemoConfig(Config):
+    PRODUCTION = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask_workshop_2024_demo.db"
+
 class ProductionConfig(Config):
     PRODUCTION = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask_demo.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask.db"
 
