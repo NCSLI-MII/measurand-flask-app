@@ -25,6 +25,7 @@ from miiflask.flask.db import Base, bind_engine
 from miiflask.flask.config import (
         TestingConfig, 
         DevelopmentConfig,
+        DemoConfig,
         ProductionConfig
         )
 
@@ -89,6 +90,8 @@ if(env == 'testing'):
     app = create_app()
 elif(env=='development'):
     app = create_app(DevelopmentConfig)
+elif(env=='demo'):
+    app = create_app(DemoConfig)
 elif(env == 'production'):
     app = create_app(ProductionConfig)
 else:

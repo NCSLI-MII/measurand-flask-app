@@ -161,6 +161,12 @@ class CMCView(MyModelView):
         names = [p.name for p in model.parameters]
         return Markup((',<br/>').join(names))
     
+    def _measurand_formatter(view, context, model, name):
+        urls = []
+        for p in model.measurands:
+            url = url_for('measurandtaxon.details_view', id=p.id)
+            urls.append('<a href="{}">{}</a>'.format(url, p.name))
+        return Markup((', <br/>').join(urls))
     # Custom action to link CMCs to measurand
     # See Flask-admin actions
     # See example github.com/pjcunningham/flask-admin-modal
@@ -224,7 +230,8 @@ class CMCView(MyModelView):
                       'subservice.value',
                       'individualservice.value',
                       MyEqualFilter(KcdbCmc.kcdbCode, 'kcdbCode'))
-    column_formatters = {'parameter_names': _parameter_formatter}
+    column_formatters = {'parameter_names': _parameter_formatter,
+            'measurands': _measurand_formatter}
     column_labels = {'parameter_names': 'Parameters'}
     column_list = ('id',
                    'kcdbCode',

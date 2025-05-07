@@ -81,6 +81,17 @@ gunicorn -w 1 'miiflask.flask.app:app'
 
 Below was a diagram of the database schema implemented as a flask [model](./miiflask/flask/model.py).
 
+#### Workshop Demonstration
+This mode runs a production server and initializes the database with references of measurand taxons from KCDB CMC identifiers.
+
+```
+export FLASK_ENV=demo
+dbinit.py -p builder_workshop_2024.json -d 
+gunicorn -w 1 'miiflask.flask.app:app'
+```
+* Go to localhost on browser http://127.0.0.1/8000
+* The database is configured to reside in `/tmp/miiflask/miiflask_workshop_2024_demo.db`
+
 ![Schema](./taxonomyschema.png)
 
 ## Copyright and License
