@@ -32,7 +32,7 @@ class InitializeDbTestCase(unittest.TestCase):
 
     def test_initdb(self):
         parms = {
-                "measurands": "resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
+                "measurands": "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/MeasurandTaxonomyCatalog.xml",
                 "mlayer": "resources/m-layer",
                 "kcdb": "resources/kcdb",
                 "kcdb_cmc_data": "kcdb_cmc_canada.json",

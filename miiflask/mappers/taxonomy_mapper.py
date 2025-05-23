@@ -10,6 +10,7 @@
 
 """
 from pathlib import Path
+import urllib
 import xmltodict, xmlschema
 from marshmallow import pprint as mpprint
 from miiflask.flask import model
@@ -19,8 +20,8 @@ import pandas as pd
 def dicttoxml_taxonomy(taxons):
     taxonomy = {
         "mtc:Taxonomy": {
-            "@xmlns:uom": "https://cls-schemas.s3.us-west-1.amazonaws.com/UOM_Database",
-            "@xmlns:mtc": "https://cls-schemas.s3.us-west-1.amazonaws.com/MetrologyTaxonomyCatalog",
+            "@xmlns:uom": "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/UOM_Database",
+            "@xmlns:mtc": "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/MeasurandTaxonomyCatalog",
             "mtc:Taxon": taxons
         
         }
@@ -172,11 +173,13 @@ class TaxonomyMapper:
     """
 
     def __init__(self, session, parms):
-        self._path = Path(parms["measurands"]).resolve()
-        self._schema_taxonomy = "https://cls-schemas.s3.us-west-1.amazonaws.com/MetrologyTaxonomyCatalog"
-        self._schema_taxonomy_dev = Path(parms["taxonomy_schema"]).resolve()
+        if 'resources' in parms['measurands']:
+            self._path = Path(parms["measurands"]).resolve()
+        self._path = parms['measurands']
+        self._schema_taxonomy = "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/MeasurandTaxonomyCatalog"
+        self._taxonomy_xml = Path(parms["taxonomy_xml"]).resolve()
         self._schema_uom = (
-            "https://cls-schemas.s3.us-west-1.amazonaws.com/UOM_Database"
+            "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/UOM_Database"
         )
 
         self._namespaces = {
@@ -315,25 +318,12 @@ class TaxonomyMapper:
    
 
     def _preprocessTaxon(self, taxon):
-        if taxon["mtc:Result"]["uom:Quantity"]["@name"].lower() == "voltage":
-             taxon["mtc:Result"]["uom:Quantity"]["@name"] = "electric potential difference"
         if "mtc:Parameter" in taxon.keys():
-            parm = taxon["mtc:Parameter"][0] if taxon["mtc:Parameter"] else None
-            if parm:
-                if "uom:Quantity" in parm.keys():
-                    if parm["uom:Quantity"]["@name"].lower() == "voltage":
-                        taxon["mtc:Parameter"][0]["uom:Quantity"]["@name"]= "electric potential difference"
-                    name_ = parm["uom:Quantity"]["@name"].lower()
-                else:
-                    name_ = parm["@name"].lower()
-                
-                if name_ == taxon["mtc:Result"]["uom:Quantity"]["@name"].lower():
-                    taxon["mtc:Parameter"].pop(0)
+            # Conform to XML Schema Name
             for i, parm in enumerate(taxon["mtc:Parameter"]):
-                if "uom:Quantity" in parm.keys():
-                    if parm["uom:Quantity"]["@name"].lower() == "voltage":
-                        taxon["mtc:Parameter"][i]["uom:Quantity"]["@name"]= "electric potential difference"
-
+                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].rstrip()
+                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(" ","_")
+            
         return taxon
 
     def getMeasurandTaxonObject(self, taxon):
@@ -393,14 +383,20 @@ class TaxonomyMapper:
             self.getMeasurandTaxonObject(self._mii_taxons_dict[taxon])
 
     def extractTaxonomy(self):
-        with self._path.open() as f:
-            mii_dict = xmltodict.parse(
-                f.read(), process_namespaces=True, namespaces=self._namespaces
-            )
+        if 'resources' in self._path:
+            with self._path.open() as f:
+                mii_dict = xmltodict.parse(
+                    f.read(), process_namespaces=True, namespaces=self._namespaces
+                )
+        else:
+            webf = urllib.request.urlopen(self._path)
+            mii_dict = xmltodict.parse(webf.read(), process_namespaces=True, namespaces=self._namespaces)
+
 
         mii_taxons_dict = {}
         mii_taxons_flat = []
         # Populate QuantityKind Table
+        print(mii_dict.keys())
         for taxon in mii_dict[self._namespaces["mtc"]][
             self._namespaces["taxon"]
         ]:
@@ -423,9 +419,6 @@ class TaxonomyMapper:
                         ]["@name"]
                     },
                 },
-                #"mtc:Aspect": {
-                #    "@name": taxon["aspect"]["@name"]
-                #},
             }
 
             if self._namespaces["parameter"] in taxon.keys():
@@ -504,8 +497,8 @@ class TaxonomyMapper:
     def _dicttoxml_taxonomy(self, taxons):
         taxonomy = {
             "mtc:Taxonomy": {
-                "@xmlns:uom": "https://cls-schemas.s3.us-west-1.amazonaws.com/UOM_Database",
-                "@xmlns:mtc": "https://cls-schemas.s3.us-west-1.amazonaws.com/MetrologyTaxonomyCatalog",
+                "@xmlns:uom": "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/UOM_Database",
+                "@xmlns:mtc": "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/MeasurandTaxonomyCatalog",
                 "mtc:Taxon": taxons
             
             }
@@ -523,59 +516,13 @@ class TaxonomyMapper:
             return None
 
         taxon = {}
-        #taxon["mtc:Taxon"] = {}
+        
         taxon["@name"] = data.pop("name")
         taxon["@deprecated"] = data.pop("deprecated")
+        taxon["@deprecated"] = "true" if taxon["@deprecated"] is True else "false" 
         taxon["@replacement"] = ""
-        taxon["mtc:Definition"] = data.pop("definition", "")
-        if data['discipline']:
-            taxon["mtc:Discipline"] = {
-                "@name": data["discipline"]['label']
-            }
-        else:
-            taxon["mtc:Discipline"] = {
-                "@name": "" 
-            }
-
-        taxon["mtc:ExternalReference"] = {
-            "@name": data.pop("exref_name", ""),
-            "mtc:url": data.pop("exref_url", ""),
-        }
-        taxon["mtc:Parameter"] = []
-        if "parameters" in data.keys():
-            for parm in data["parameters"]:
-                if parm["name"] == "id":
-                    continue
-                if parm["name"] == "measurand":
-                    continue
-                if parm['aspect']:
-                    taxon["mtc:Parameter"].append(
-                        {
-                            "@name": parm["name"],
-                            "@optional": parm["optional"],
-                            "mtc:Definition": parm["definition"],
-                            "uom:Quantity": {"@name": parm["quantitykind"]},
-                            "mtc:mLayer":{
-                                    "@aspect": parm['aspect']['name'],
-                                    "@id": parm['aspect']['id']
-                                    }
-                        },
-                        )
-                else:
-                    taxon["mtc:Parameter"].append(
-                        {
-                            "@name": parm["name"],
-                            "@optional": parm["optional"],
-                            "mtc:Definition": parm["definition"],
-                            "uom:Quantity": {"@name": parm["quantitykind"]},
-                            "mtc:mLayer":{
-                                    "@aspect": "", 
-                                    "@id": "" 
-                                    }
-                        },
-                    )
+        taxon["mtc:ExternalReferences"] = []
         taxon["mtc:Result"] = {
-            "@name": data.pop("result", ""),
             "uom:Quantity": {"@name": data.pop("quantitykind", "")},
         }
         if 'aspect' in data.keys():
@@ -591,24 +538,61 @@ class TaxonomyMapper:
                         "@id": data['scale']['id']
                         }
 
-        #print(data)
-        #print(xmltodict.unparse(taxon))
+        taxon["mtc:Parameter"] = []
+        if "parameters" in data.keys():
+            for parm in data["parameters"]:
+                if parm["name"] == "id":
+                    continue
+                if parm["name"] == "measurand":
+                    continue
+                if parm['aspect']:
+                    taxon["mtc:Parameter"].append(
+                        {
+                            "@name": parm["name"],
+                            "@optional": "true" if parm["optional"] is True else "false",
+                            "mtc:Definition": parm["definition"],
+                            "uom:Quantity": {"@name": parm["quantitykind"]},
+                            "mtc:mLayer":{
+                                    "@aspect": parm['aspect']['name'],
+                                    "@id": parm['aspect']['id']
+                                    }
+                        },
+                        )
+                else:
+                    taxon["mtc:Parameter"].append(
+                        {
+                            "@name": parm["name"],
+                            "@optional": "true" if parm["optional"] is True else "false",
+                            "mtc:Definition": parm["definition"],
+                        },
+                    )
+
+        
+        if data['discipline']:
+            taxon["mtc:Discipline"] = {
+                "@name": data["discipline"]['label']
+            }
+        else:
+            taxon["mtc:Discipline"] = {
+                "@name": "" 
+            }
+        taxon["mtc:Definition"] = data.pop("definition", "")
         return taxon
     
     def _get_validation_errors(self, xml_file):
-        with self._schema_taxonomy_dev.open() as xsd_file:
-            try:
-                schema = xmlschema.XMLSchema(xsd_file)
-            except Exception as e:
-                print(e)
-                raise e
-            validation_error_iterator = schema.iter_errors(xml_file)
-            errors = list()
-            for idx, validation_error in enumerate(validation_error_iterator, start=1):
-                err = validation_error.__str__()
-                print(f'sourceline: {validation_error.sourceline}; path: {validation_error.path} | reason: {validation_error.reason} | message: {validation_error.message}')
-                errors.append(err)
-            return errors
+        try:
+            schema = xmlschema.XMLSchema(self._schema_taxonomy+'.xsd')
+        except Exception as e:
+            print(e)
+            raise e
+        schema.validate(xml_file)
+        validation_error_iterator = schema.iter_errors(xml_file)
+        errors = list()
+        for idx, validation_error in enumerate(validation_error_iterator, start=1):
+            err = validation_error.__str__()
+            print(f'sourceline: {validation_error.sourceline}; path: {validation_error.path} | reason: {validation_error.reason} | message: {validation_error.message}')
+            errors.append(err)
+        return errors
         
     def toXml(self):
         measurands = self.Session.query(model.MeasurandTaxon).all()
@@ -620,4 +604,7 @@ class TaxonomyMapper:
                 print(obj)
                 raise e
         xml = self._dicttoxml_taxonomy(taxons)
-        self._get_validation_errors(xml)
+        print(f"Write temp taxonomy file at {self._taxonomy_xml}")
+        with open(self._taxonomy_xml, "w") as f:
+            f.write(xml)
+        self._get_validation_errors(self._taxonomy_xml)

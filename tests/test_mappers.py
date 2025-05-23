@@ -10,7 +10,8 @@
 
 """
 import unittest
-
+from pathlib import Path
+import tempfile
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
@@ -21,18 +22,20 @@ from miiflask.mappers.kcdb_mapper import KcdbMapper
 
 
 class InitializeMapperTestCase(unittest.TestCase):
-
+    
     def setUp(self):
         self.engine = create_engine("sqlite://")
         bind_engine(self.engine)
-
+        self._tempdir = tempfile.mkdtemp()
+    
     def tearDown(self):
         pass
 
     def test_initdb(self):
+
         parms = {
-                "measurands": "resources/measurand-taxonomy/MeasurandTaxonomyCatalog_workshop_2024_demo.xml",
-                "taxonomy_schema": "resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xsd",
+                "measurands": "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/MeasurandTaxonomyCatalog.xml",
+                "taxonomy_xml":self._tempdir+"/taxonomy.xml",
                 "mlayer": "resources/m-layer",
                 "kcdb": "resources/kcdb",
                 "kcdb_cmc_data": "kcdb_cmc_canada.json",

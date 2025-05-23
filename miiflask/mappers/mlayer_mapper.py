@@ -74,7 +74,10 @@ class MlayerMapper:
         )
         if aspect:
             return None
-
+        if obj["name"] == "electric potential difference":
+            obj["name"] = "voltage"
+        # Conform with XML Schema Name
+        obj['name'] = obj['name'].replace(" ", "_")
         data_ = {
             "id": obj['id'],
             "name": obj["name"],
