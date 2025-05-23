@@ -177,7 +177,11 @@ class TaxonomyMapper:
             self._path = Path(parms["measurands"]).resolve()
         self._path = parms['measurands']
         self._schema_taxonomy = "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/MeasurandTaxonomyCatalog"
-        self._taxonomy_xml = Path(parms["taxonomy_xml"]).resolve()
+        if "taxonomy_xml" in parms.keys():
+            self._taxonomy_xml = Path(parms["taxonomy_xml"]).resolve()
+        else:
+            self._taxonomy_xml = None
+
         self._schema_uom = (
             "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/UOM_Database"
         )
