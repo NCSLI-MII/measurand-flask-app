@@ -498,6 +498,7 @@ class TaxonomyMapper:
                     name = k
                 tmpdf.to_excel(writer, sheet_name=name, index=False)
 
+    @classmethod
     def _dicttoxml_taxonomy(self, taxons):
         taxonomy = {
             "mtc:Taxonomy": {
@@ -510,7 +511,8 @@ class TaxonomyMapper:
         xml = xmltodict.unparse(taxonomy, pretty=True)
 
         return xml
-
+    
+    @classmethod
     def _getTaxonDict(self, obj, schema):
         #mpprint(self._schemas["measurand"].dumps(obj, indent=2))
         #data = self._schemas["measurand"].dump(obj)
