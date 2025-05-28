@@ -52,7 +52,8 @@ from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSche
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
-from miiflask.mappers.taxonomy_mapper import dicttoxml_taxonomy, getTaxonDict
+#from miiflask.mappers.taxonomy_mapper import dicttoxml_taxonomy, getTaxonDict
+from miiflask.mappers.taxonomy_mapper import TaxonomyMapper 
 from miiflask.mappers.mlayer_mapper import MlayerMapper
 from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
 from miiflask.mappers.kcdb_mapper import KcdbMapper
@@ -736,11 +737,11 @@ def taxonomy_export():
     taxons = []
     for obj in measurands:
         try:
-            taxons.append(getTaxonDict(obj, m_schema))
+            taxons.append(TaxonomyMapper._getTaxonDict(obj, m_schema))
         except Exception as e:
             print(obj)
             raise e
-    xml = dicttoxml_taxonomy(taxons)
+    xml = TaxonomyMapper._dicttoxml_taxonomy(taxons)
     response = app.make_response(xml)
     response.headers["Content-Disposition"] = "attachment; filename=export_taxonomy.xml"
     response.headers["Content-type"] = "text/xml"
@@ -751,8 +752,8 @@ def taxonomy_export():
 def measurand_export_xml(measurand_id):
     # print("Get Meaurand ", measurand_id)
     m = MeasurandTaxon.query.get_or_404(measurand_id)
-    taxons = [getTaxonDict(m, m_schema)]
-    xml = dicttoxml_taxonomy(taxons)
+    taxons = [TaxonomyMapper._getTaxonDict(m, m_schema)]
+    xml = TaxonomyMapper._dicttoxml_taxonomy(taxons)
     response = app.make_response(xml)
     response.mimetype = "text/xml"
     return response 

@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
 #
-# Copyright © 2024 Ryan Mackenzie White <ryan.white@nrc-cnrc.gc.ca>
+# Copyright © 2025 Ryan Mackenzie White <ryan.white@nrc-cnrc.gc.ca>
 #
 # Distributed under terms of the Copyright © 2022 National Research Council Canada. license.
 
 """
 
 """
-
 import unittest
-
+from pathlib import Path
+import tempfile
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
@@ -21,18 +21,21 @@ from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
 from miiflask.mappers.kcdb_mapper import KcdbMapper
 
 
-class InitializeDbTestCase(unittest.TestCase):
-
+class InitializeMapperTestCase(unittest.TestCase):
+    
     def setUp(self):
         self.engine = create_engine("sqlite://")
         bind_engine(self.engine)
-
+        self._tempdir = tempfile.mkdtemp()
+    
     def tearDown(self):
         pass
 
     def test_initdb(self):
+
         parms = {
                 "measurands": "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/MeasurandTaxonomyCatalog.xml",
+                "taxonomy_xml":self._tempdir+"/taxonomy.xml",
                 "mlayer": "resources/m-layer",
                 "kcdb": "resources/kcdb",
                 "kcdb_cmc_data": "kcdb_cmc_canada.json",
@@ -51,8 +54,10 @@ class InitializeDbTestCase(unittest.TestCase):
             miimapper.extractTaxonomy()
             miimapper.loadTaxonomy()
 
-            kcdbmapper = KcdbMapper(session, parms)
-            kcdbmapper.loadServices()
+            #kcdbmapper = KcdbMapper(session, parms)
+            #kcdbmapper.loadServices()
+
+            xml = miimapper.toXml()
 
 
 if __name__ == '__main__':
