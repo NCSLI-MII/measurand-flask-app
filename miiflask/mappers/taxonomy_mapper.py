@@ -12,6 +12,7 @@
 from pathlib import Path
 import urllib
 import re
+import string
 import xmltodict, xmlschema
 from marshmallow import pprint as mpprint
 from miiflask.flask import model
@@ -273,12 +274,17 @@ class TaxonomyMapper:
                 obj.aspect = aspect
             else:
                 name_ = obj.quantitykind.lower()
+                if name_ == "ratio":
+                    aspect = None
                 #print(f"Cannot match {obj.name} try like {name_}")
-                aspect = (
-                        self.Session.query(model.Aspect)
-                        .filter((model.Aspect.name.like(f'%{name_}%')))
-                        .first()
-                        )
+                else:
+                    aspect = (
+                            self.Session.query(model.Aspect)
+                            .filter((model.Aspect.name.like(f'%{name_}%')))
+                            .first()
+                            )
+                # Ratio quantity ignored
+                # Needs to further specified for relating to an aspect
                 if aspect:
                     obj.aspect = aspect
                     #print(f"Found corresponding aspect {aspect.name} for {obj.name} with quantitykind {name_}")
@@ -335,17 +341,20 @@ class TaxonomyMapper:
             # Conform to UOM Name conventions
             # Quantity names must start with a lower case letter, contain only lower case letters, hyphens (-) or colons (:)
             for i, parm in enumerate(taxon["mtc:Parameter"]):
-                # Remove existing underscore
-                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].replace("_","")
-                # Change Captitalization to space
-                #taxon["mtc:Parameter"][i]["@name"] = re.sub(r"(?<=\w)([A-Z])", r"-\1", taxon["mtc:Parameter"][i]["@name"])
-                taxon["mtc:Parameter"][i]["@name"] = re.sub(r"([a-z])(?=[A-Z])|[A-Z](?=[A-Z][a-z])", r"\1 ", taxon["mtc:Parameter"][i]["@name"])
                 # Remove trailing whitespace
                 taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].rstrip()
+                # Replace underscore with -
+                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].replace("_",".")
+                # Capitalize each word
+                taxon["mtc:Parameter"][i]["@name"] = re.sub(r'\b[a-z]',lambda m: m.group().upper(),taxon["mtc:Parameter"][i]["@name"])
+                # Remove whitespace
+                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].replace(" ", "")
+                # Change Captitalization to space
+                # taxon["mtc:Parameter"][i]["@name"] = re.sub(r"([a-z])(?=[A-Z])|[A-Z](?=[A-Z][a-z])", r"\1 ", taxon["mtc:Parameter"][i]["@name"])
                 # Drop to lower, change whitespace to -
-                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(" ","-")
+                # taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(" ","-")
                 # change . to -
-                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(".","-")
+                # taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(".","-")
             
         return taxon
 
@@ -574,27 +583,20 @@ class TaxonomyMapper:
                     continue
                 if parm["name"] == "measurand":
                     continue
+                dict_ = {"@name": parm["name"],
+                        "@optional": "true" if parm["optional"] is True else "false",
+                        "mtc:Definition": parm["definition"],
+                        }
+                if parm['quantitykind']:
+                    dict_["uom:Quantity"] = {"@name": parm["quantitykind"]},
                 if parm['aspect']:
-                    taxon["mtc:Parameter"].append(
-                        {
-                            "@name": parm["name"],
-                            "@optional": "true" if parm["optional"] is True else "false",
-                            "mtc:Definition": parm["definition"],
-                            "uom:Quantity": {"@name": parm["quantitykind"]},
-                            "mtc:mLayer":{
-                                    "@aspect": parm['aspect']['name'],
-                                    "@id": parm['aspect']['id']
-                                    }
-                        },
-                        )
-                else:
-                    taxon["mtc:Parameter"].append(
-                        {
-                            "@name": parm["name"],
-                            "@optional": "true" if parm["optional"] is True else "false",
-                            "mtc:Definition": parm["definition"],
-                        },
-                    )
+                        dict_["mtc:mLayer"] = {
+                                "@aspect": parm['aspect']['name'],
+                                "@id": parm['aspect']['id']
+                                }
+                
+                taxon["mtc:Parameter"].append(dict_)
+                    
 
         
         if data['discipline']:
