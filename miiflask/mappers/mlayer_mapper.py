@@ -77,6 +77,8 @@ class MlayerMapper:
         if obj["name"] == "electric potential difference":
             obj["name"] = "voltage"
         # Conform with XML Schema Name
+        # Conform to UOM Name conventions
+        # Quantity names must start with a lower case letter, contain only lower case letters, hyphens (-) or colons (:)
         obj['name'] = obj['name'].replace(" ", "_")
         data_ = {
             "id": obj['id'],

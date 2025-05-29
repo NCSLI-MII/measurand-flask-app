@@ -11,6 +11,7 @@
 """
 from pathlib import Path
 import urllib
+import re
 import xmltodict, xmlschema
 from marshmallow import pprint as mpprint
 from miiflask.flask import model
@@ -249,9 +250,15 @@ class TaxonomyMapper:
         # pprint(xmltodict.unparse(taxon))
         return taxon["mtc:Taxon"]
 
-    
+    #def _transformQuantityName(self, obj):
+
     def _associateAspect(self, obj):
         if obj.quantitykind:
+            # Conform to UOM:Quantity name conventions for matching
+            # Leave mtc:Parameter in place 
+            # name_ = obj.quantitykind 
+            # name_ = name_.rstrip()
+            # name_ - name_.lower().replace(" ", "-")
             try:
                 aspect = (
                         self.Session.query(model.Aspect)
@@ -260,7 +267,7 @@ class TaxonomyMapper:
                         )
             except Exception as ex:
                 print(ex)
-                print(obj.name, obj.quantitykind)
+                print(f"Object name:{obj.name}, Object QuantityKind:{obj.quantitykind}, Transformed QuantityKind Name:{name_}")
                 aspect = None
             if aspect:
                 obj.aspect = aspect
@@ -281,11 +288,12 @@ class TaxonomyMapper:
         if uom_qk:
             measurand.quantitykind = uom_qk 
         
-        # Remove first required parameter which represents the quantity kind or aspect
+        # First required parameter which represents the quantity kind or aspect
         # validate against the aspect
         primary_parameter = None
         # TBD need to validate existing parameters of measurand
         if "mtc:Parameter" in taxon.keys():
+            # The following removes the first parameter that is generally the result
             #if len(taxon["mtc:Parameter"])>0:
             #    if (taxon["mtc:Result"]["uom:Quantity"]["@name"] != "ratio"):
             #        primary_parameter = taxon["mtc:Parameter"].pop(0)
@@ -324,9 +332,17 @@ class TaxonomyMapper:
     def _preprocessTaxon(self, taxon):
         if "mtc:Parameter" in taxon.keys():
             # Conform to XML Schema Name
+            # Conform to UOM Name conventions
+            # Quantity names must start with a lower case letter, contain only lower case letters, hyphens (-) or colons (:)
             for i, parm in enumerate(taxon["mtc:Parameter"]):
+                # Remove existing underscore
+                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].replace("_","")
+                # Change Captitalization to dash
+                taxon["mtc:Parameter"][i]["@name"] = re.sub(r"(?<=\w)([A-Z])", r"-\1", taxon["mtc:Parameter"][i]["@name"])
+                # Remove trailing whitespace
                 taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].rstrip()
-                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(" ","_")
+                # Drop to lower, change whitespace to -
+                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(" ","-")
             
         return taxon
 
@@ -347,7 +363,11 @@ class TaxonomyMapper:
         # BNF grammar
         # Flask problems with formatting url with taxon name
         id_ = taxon["@name"].replace('.', '')
+        # -----------------------------------
+        # Following updates Parameter names to conform to UOM:Quantity Name
+        # Quantity names must start with a lower case letter, contain only lower case letters, hyphens (-) or colons (:)
         taxon = self._preprocessTaxon(taxon)
+        # ------------------------------------
         taxon_data = {
             "id": id_,
             "name": taxon["@name"],
