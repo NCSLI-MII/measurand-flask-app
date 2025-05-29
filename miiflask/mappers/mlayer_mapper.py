@@ -79,7 +79,7 @@ class MlayerMapper:
         # Conform with XML Schema Name
         # Conform to UOM Name conventions
         # Quantity names must start with a lower case letter, contain only lower case letters, hyphens (-) or colons (:)
-        obj['name'] = obj['name'].replace(" ", "_")
+        obj['name'] = obj['name'].replace(" ", "-")
         data_ = {
             "id": obj['id'],
             "name": obj["name"],

@@ -337,12 +337,15 @@ class TaxonomyMapper:
             for i, parm in enumerate(taxon["mtc:Parameter"]):
                 # Remove existing underscore
                 taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].replace("_","")
-                # Change Captitalization to dash
-                taxon["mtc:Parameter"][i]["@name"] = re.sub(r"(?<=\w)([A-Z])", r"-\1", taxon["mtc:Parameter"][i]["@name"])
+                # Change Captitalization to space
+                #taxon["mtc:Parameter"][i]["@name"] = re.sub(r"(?<=\w)([A-Z])", r"-\1", taxon["mtc:Parameter"][i]["@name"])
+                taxon["mtc:Parameter"][i]["@name"] = re.sub(r"([a-z])(?=[A-Z])|[A-Z](?=[A-Z][a-z])", r"\1 ", taxon["mtc:Parameter"][i]["@name"])
                 # Remove trailing whitespace
                 taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].rstrip()
                 # Drop to lower, change whitespace to -
                 taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(" ","-")
+                # change . to -
+                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(".","-")
             
         return taxon
 
