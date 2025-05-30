@@ -866,7 +866,7 @@ class ParameterSchema(SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
         ordered = True
-    aspect = Nested(AspectSchema(only=("name", "id",)))
+    aspect = Nested(AspectSchema(only=("name", "ml_name", "id",)))
 
 
 class DisciplineSchema(SQLAlchemyAutoSchema):
@@ -886,7 +886,7 @@ class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
         ordered = True
 
     parameters = Nested(ParameterSchema, many=True)
-    aspect = Nested(AspectSchema(only=("name", "id",)))
+    aspect = Nested(AspectSchema(only=("name", "ml_name", "id",)))
     scale = Nested(ScaleSchema(only=("ml_name", "id",)))
     discipline = Nested(DisciplineSchema(only=("label",)))
 

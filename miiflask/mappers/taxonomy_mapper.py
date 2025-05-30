@@ -549,7 +549,6 @@ class TaxonomyMapper:
         #mpprint(self._schemas["measurand"].dumps(obj, indent=2))
         #data = self._schemas["measurand"].dump(obj)
         data = schema.dump(obj)
-        
         if "name" not in data.keys():
             return None
 
@@ -566,7 +565,7 @@ class TaxonomyMapper:
         if 'aspect' in data.keys():
             if data['aspect']:
                 taxon["mtc:Result"]["mtc:mLayer"] = {
-                        "@aspect": data['aspect']['name'],
+                        "@aspect": data['aspect']['ml_name'],
                         "@id": data['aspect']['id']
                         }
         if 'scale' in data.keys(): 
@@ -591,7 +590,7 @@ class TaxonomyMapper:
                     dict_["uom:Quantity"] = {"@name": parm["quantitykind"]},
                 if parm['aspect']:
                         dict_["mtc:mLayer"] = {
-                                "@aspect": parm['aspect']['name'],
+                                "@aspect": parm['aspect']['ml_name'],
                                 "@id": parm['aspect']['id']
                                 }
                 
