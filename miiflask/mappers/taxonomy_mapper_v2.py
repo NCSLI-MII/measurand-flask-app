@@ -387,7 +387,8 @@ class TaxonomyMapper:
             "definition": taxon['mtc:Definition'],
             "processtype": taxon["@name"].split(".")[0],
             "quantitykind": taxon["mtc:Result"]["uom:Quantity"]["@name"].lower(),
-            "deprecated": taxon["@deprecated"]
+            "deprecated": taxon["@deprecated"],
+            "result": taxon["mtc:Result"]["@name"]
         }
 
         discipline = (
@@ -560,7 +561,7 @@ class TaxonomyMapper:
         taxon["@deprecated"] = "true" if taxon["@deprecated"] is True else "false" 
         taxon["@replacement"] = ""
         taxon["mtc:ExternalReferences"] = []
-        taxon["mtc:Result"] = {
+        taxon["mtc:Result"] = {"@name": data.pop("result",""),
             "uom:Quantity": {"@name": data.pop("quantitykind", "")},
         }
         if 'aspect' in data.keys():

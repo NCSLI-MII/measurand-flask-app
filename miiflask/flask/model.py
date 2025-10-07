@@ -304,6 +304,8 @@ class MeasurandTaxon(Base):
     
     qualifier: Mapped[Optional[str]] = mapped_column(String(50))
     
+    result: Mapped[str] = mapped_column(String(50))
+
     discipline_id: Mapped[Optional[int]] = \
         mapped_column(ForeignKey("discipline.id"))
     discipline: Mapped['Discipline'] = relationship(back_populates="measurandtaxon")
