@@ -32,6 +32,7 @@ def main(parms):
         miimapper = TaxonomyMapper(session, parms)
         miimapper.extractTaxonomy()
         miimapper.loadTaxonomy()
+        miimapper.roundtrip()
 
         kcdbmapper = KcdbMapper(session, parms)
         kcdbmapper.loadServices()

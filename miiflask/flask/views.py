@@ -30,6 +30,7 @@ from wtforms import HiddenField, StringField, Form
 from wtforms.validators import InputRequired
 
 from miiflask.flask.model import (
+    Administrative,
     Measurand,
     MeasurandTaxon,
     Discipline,
@@ -735,6 +736,7 @@ def aspects():
 @app.route("/taxonomy/export")
 def taxonomy_export():
     measurands = MeasurandTaxon.query.all()
+    c = Administrative.query.first()
     taxons = []
     for obj in measurands:
         try:

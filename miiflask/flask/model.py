@@ -38,6 +38,15 @@ from typing import Optional
 # https://stackoverflow.com/questions/76498857/what-is-the-difference-between-mapped-column-and-column-in-sqlalchemy
 #
 ##############################################
+# Administrative Model
+# Contains general details of the application and data model
+# License, comments, etc..
+
+class Administrative(Base):
+    __tablename__ = "administrative"
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    mii_comment: Mapped[Optional[str]] = mapped_column(UnicodeText)
+
 # M-Layer Model
 scaleaspect_table = Table(
     "scaleaspect_table",

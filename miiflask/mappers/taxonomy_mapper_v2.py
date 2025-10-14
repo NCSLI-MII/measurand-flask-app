@@ -10,6 +10,7 @@
 
 """
 from pathlib import Path
+from unittest import TestCase
 import urllib
 import re
 import string
@@ -200,6 +201,7 @@ class TaxonomyMapper:
             "definition": f"{self._schema_taxonomy}:Definition",
             "result": f"{self._schema_taxonomy}:Result",
             "parameter": f"{self._schema_taxonomy}:Parameter",
+            "mlayer": f"{self._schema_taxonomy}:mLayer",
         }
         self._schemas = {}
         self._schemas["taxon"] = model.TaxonSchema()
@@ -211,6 +213,7 @@ class TaxonomyMapper:
 
         self._mii_taxons_dict = None
         self._mii_taxons_list = None
+        self._mii_comment = None
         self.Session = session
 
     def xml_template(self, **kwargs):
@@ -315,25 +318,24 @@ class TaxonomyMapper:
                 )
                 if "uom:Quantity" in parm.keys():
                     parameter.quantitykind = parm["uom:Quantity"]["@name"]
-                    try:
-                        self._associateAspect(parameter)
-                    except Exception as ex:
-                        parameter.aspect = None
+                if "mtc:mLayer" in parm.keys():
+                    aspect = (
+                            self.Session.query(model.Aspect)
+                            .filter((model.Aspect.id == parm["mtc:mLayer"]["@id"]))
+                            .first()
+                            )
+                    if aspect:
+                        parameter.aspect = aspect
                 measurand.parameters.append(parameter)
       
-        if "mtc:Aspect" in taxon.keys():
+        if "mtc:mLayer" in taxon["mtc:Result"].keys():
             aspect = (
                     self.Session.query(model.Aspect)
-                    .filter((model.Aspect.id == taxon["mtc:Aspect"]["@id"]))
+                    .filter((model.Aspect.id == taxon["mtc:Result"]["mtc:mLayer"]["@id"]))
                     .first()
                     )
             if aspect:
                 measurand.aspect = aspect
-        else:
-            try:
-                self._associateAspect(measurand)
-            except Exception as ex:
-                measurand.aspect = None
    
 
     def _preprocessTaxon(self, taxon):
@@ -379,7 +381,8 @@ class TaxonomyMapper:
         # -----------------------------------
         # Following updates Parameter names to conform to UOM:Quantity Name
         # Quantity names must start with a lower case letter, contain only lower case letters, hyphens (-) or colons (:)
-        taxon = self._preprocessTaxon(taxon)
+        # Should no longer be required, all formatting issues resolved
+        # taxon = self._preprocessTaxon(taxon)
         # ------------------------------------
         taxon_data = {
             "id": id_,
@@ -415,8 +418,51 @@ class TaxonomyMapper:
             # taxon_.quantitykind = quantitykind
             self.Session.add(taxon_)
             self.getMeasurandRelatedObjects(taxon, taxon_) 
+    
+    def roundtrip(self):
+        # Compare taxonomy dictionary after ETL
+        if isinstance(self._path, Path):
+            with self._path.open() as f:
+                mii_dict = xmltodict.parse(
+                    f.read() 
+                )
+        else:
+            webf = urllib.request.urlopen(self._path)
+            mii_dict = xmltodict.parse(webf.read())
+
+        #print(mii_dict['mtc:Taxonomy']['mtc:Taxon'][0])
+        validation_errors = 0
+        for taxon in mii_dict['mtc:Taxonomy']['mtc:Taxon']:
+            obj = (
+                self.Session.query(model.MeasurandTaxon)
+                .filter(model.MeasurandTaxon.name == taxon["@name"])
+                .first()
+            )
+            if obj:
+                dict_ = self._getTaxonDict(obj, self._schemas["measurandtaxon"])
+            case = TestCase()
+            case.maxDiff = None
+            try:
+                case.assertDictEqual(dict(taxon), dict_)
+            except Exception as e:
+                print("Expected from source")
+                print(dict(taxon))
+                print("================")
+                print("Serialized from DB")
+                print(dict_)
+                print("================")
+                print(e)
+                validation_errors += 1
+
+        print("Total validation errors: ", validation_errors)
+
+
+
+
+
 
     def loadTaxonomy(self):
+        admin = model.Administrative(mii_comment=self._mii_comment)
         for taxon in self._mii_taxons_dict:
             self.getMeasurandTaxonObject(self._mii_taxons_dict[taxon])
 
@@ -424,17 +470,19 @@ class TaxonomyMapper:
         if isinstance(self._path, Path):
             with self._path.open() as f:
                 mii_dict = xmltodict.parse(
-                    f.read(), process_namespaces=True, namespaces=self._namespaces
+                    f.read(), process_namespaces=True, process_comments=True,namespaces=self._namespaces
                 )
         else:
             webf = urllib.request.urlopen(self._path)
-            mii_dict = xmltodict.parse(webf.read(), process_namespaces=True, namespaces=self._namespaces)
+            mii_dict = xmltodict.parse(webf.read(), process_namespaces=True, process_comments=True, namespaces=self._namespaces)
 
 
         mii_taxons_dict = {}
         mii_taxons_flat = []
         # Populate QuantityKind Table
         print(mii_dict.keys())
+        print(mii_dict['#comment'])
+        self._mii_comment = mii_dict['#comment']
         for taxon in mii_dict[self._namespaces["mtc"]][
             self._namespaces["taxon"]
         ]:
@@ -456,8 +504,17 @@ class TaxonomyMapper:
                             self._namespaces["quantity"]
                         ]["@name"]
                     },
-                },
+                }
             }
+            if self._namespaces["mlayer"] in taxon[self._namespaces["result"]].keys():
+                mii_taxons_dict[taxon["@name"]]["mtc:Result"]["mtc:mLayer"] = { 
+                            "@aspect": taxon[self._namespaces["result"]][
+                                self._namespaces["mlayer"]
+                            ]["@aspect"],
+                            "@id": taxon[self._namespaces["result"]][
+                                self._namespaces["mlayer"]
+                            ]["@id"]
+                        }
 
             if self._namespaces["parameter"] in taxon.keys():
                 mii_taxons_dict[taxon["@name"]]["mtc:Parameter"] = []
@@ -473,6 +530,16 @@ class TaxonomyMapper:
                         },
                         "mtc:Definition": parm[self._namespaces["definition"]],
                     }
+                    if self._namespaces["mlayer"] in parm.keys():
+                        _dict["mtc:mLayer"] = { 
+                                    "@aspect": parm[self._namespaces["mlayer"]][
+                                        "@aspect"
+                                    ],
+                                    "@id": parm[self._namespaces["mlayer"]][
+                                        "@id"
+                                    ],
+                                }
+
                     mii_taxons_dict[taxon["@name"]]["mtc:Parameter"].append(
                         _dict
                     )
@@ -493,13 +560,22 @@ class TaxonomyMapper:
                                     self._namespaces["definition"]
                                 ],
                             }
+                            if self._namespaces["mlayer"] in parm.keys():
+                                _dict["mtc:mLayer"] = { 
+                                            "@aspect": parm[self._namespaces["mlayer"]][
+                                                "@aspect"
+                                            ],
+                                            "@id": parm[self._namespaces["mlayer"]][
+                                                "@id"
+                                            ],
+                                        }
                         else:
                             _dict = {
                                 "@name": parm["@name"],
                                 "@optional": parm["@optional"],
                                 "mtc:Definition": parm[
                                     self._namespaces["definition"]
-                                ],
+                                ]
                             }
                         mii_taxons_dict[taxon["@name"]][
                             "mtc:Parameter"
@@ -560,9 +636,9 @@ class TaxonomyMapper:
         taxon["@deprecated"] = data.pop("deprecated")
         taxon["@deprecated"] = "true" if taxon["@deprecated"] is True else "false" 
         taxon["@replacement"] = ""
-        taxon["mtc:ExternalReferences"] = []
+        # taxon["mtc:ExternalReferences"] = []
         taxon["mtc:Result"] = {"@name": data.pop("result",""),
-            "uom:Quantity": {"@name": data.pop("quantitykind", "")},
+            "uom:Quantity": {"@name": data.pop("quantitykind", "")}
         }
         if 'aspect' in data.keys():
             if data['aspect']:
@@ -580,6 +656,7 @@ class TaxonomyMapper:
         taxon["mtc:Parameter"] = []
         if "parameters" in data.keys():
             for parm in data["parameters"]:
+                dict_ = {}
                 if parm["name"] == "id":
                     continue
                 if parm["name"] == "measurand":
@@ -589,7 +666,7 @@ class TaxonomyMapper:
                         "mtc:Definition": parm["definition"],
                         }
                 if parm['quantitykind']:
-                    dict_["uom:Quantity"] = {"@name": parm["quantitykind"]},
+                    dict_["uom:Quantity"] = {"@name": parm["quantitykind"]}
                 if parm['aspect']:
                         dict_["mtc:mLayer"] = {
                                 "@aspect": parm['aspect']['ml_name'],
@@ -597,6 +674,9 @@ class TaxonomyMapper:
                                 }
                 
                 taxon["mtc:Parameter"].append(dict_)
+            if len(taxon["mtc:Parameter"]) == 1:
+                taxon["mtc:Parameter"] = taxon["mtc:Parameter"][0]
+
                     
 
         
@@ -628,6 +708,7 @@ class TaxonomyMapper:
         
     def toXml(self):
         measurands = self.Session.query(model.MeasurandTaxon).all()
+        admin = self.Session.query(model.Administrative).first()
         taxons = []
         for obj in measurands:
             try:
@@ -635,7 +716,7 @@ class TaxonomyMapper:
             except Exception as e:
                 print(obj)
                 raise e
-        xml = self._dicttoxml_taxonomy(taxons)
+        xml = self._dicttoxml_taxonomy(taxons, admin.mii_comment)
         print(f"Write temp taxonomy file at {self._taxonomy_xml}")
         with open(self._taxonomy_xml, "w") as f:
             f.write(xml)
