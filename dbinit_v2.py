@@ -30,7 +30,8 @@ def main(parms):
         mapper.getScaleAspectAssociations()
 
         miimapper = TaxonomyMapper(session, parms)
-        miimapper.extractTaxonomy()
+        #miimapper.extractTaxonomy()
+        miimapper.extractTaxonomy_v2()
         miimapper.loadTaxonomy()
         miimapper.roundtrip()
 

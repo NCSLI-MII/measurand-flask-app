@@ -44,6 +44,7 @@ from miiflask.flask.model import (
     Transform,
     System,
     Parameter,
+    Reference,
     KcdbCmc,
     KcdbBranch,
     KcdbParameter,
@@ -375,7 +376,7 @@ class MeasurandView(ModelView):
            "quantitykind",
            "parameters",
            "definition",
-           "result"
+           "result",
            )
 
 
@@ -436,7 +437,7 @@ class MeasurandTaxonView(ModelView):
             "aspect", 
             "definition"
             )
-    inline_models = (Parameter,)
+    inline_models = (Parameter, Reference)
     column_details_list = (
            "id",
            "name",
@@ -456,7 +457,8 @@ class MeasurandTaxonView(ModelView):
                     'processtype',
                     'qualifier',
                     'kcdbcmcs',
-                    'parameters'] 
+                    'parameters',
+                    'external_references'] 
 
 
 class DimensionView(MyModelView):

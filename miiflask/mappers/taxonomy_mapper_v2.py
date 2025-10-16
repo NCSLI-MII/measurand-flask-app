@@ -210,8 +210,9 @@ class TaxonomyMapper:
         self._schemas["measurand"] = model.MeasurandSchema()
         self._schemas["measurandtaxon"] = model.MeasurandTaxonSchema()
         self._schemas["parameter"] = model.ParameterSchema()
+        self._schemas["reference"] = model.ReferenceSchema()
 
-        self._mii_taxons_dict = None
+        self._mii_taxons_dict = {}
         self._mii_taxons_list = None
         self._mii_comment = None
         self.Session = session
@@ -254,8 +255,6 @@ class TaxonomyMapper:
 
         # pprint(xmltodict.unparse(taxon))
         return taxon["mtc:Taxon"]
-
-    #def _transformQuantityName(self, obj):
 
     def _associateAspect(self, obj):
         if obj.quantitykind:
@@ -308,8 +307,9 @@ class TaxonomyMapper:
             #    if (taxon["mtc:Result"]["uom:Quantity"]["@name"] != "ratio"):
             #        primary_parameter = taxon["mtc:Parameter"].pop(0)
                    
+            if not isinstance(taxon["mtc:Parameter"], list): 
+                taxon["mtc:Parameter"] = [taxon["mtc:Parameter"]]
             for parm in taxon["mtc:Parameter"]:
-                
                 parameter = self._schemas["parameter"].load(
                         {"name": parm["@name"], 
                          "optional": parm["@optional"],
@@ -336,30 +336,30 @@ class TaxonomyMapper:
                     )
             if aspect:
                 measurand.aspect = aspect
-   
-
-    def _preprocessTaxon(self, taxon):
-        if "mtc:Parameter" in taxon.keys():
-            # Conform to XML Schema Name
-            # Conform to UOM Name conventions
-            # Quantity names must start with a lower case letter, contain only lower case letters, hyphens (-) or colons (:)
-            for i, parm in enumerate(taxon["mtc:Parameter"]):
-                # Remove trailing whitespace
-                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].rstrip()
-                # Replace underscore with -
-                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].replace("_",".")
-                # Capitalize each word
-                taxon["mtc:Parameter"][i]["@name"] = re.sub(r'\b[a-z]',lambda m: m.group().upper(),taxon["mtc:Parameter"][i]["@name"])
-                # Remove whitespace
-                taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].replace(" ", "")
-                # Change Captitalization to space
-                # taxon["mtc:Parameter"][i]["@name"] = re.sub(r"([a-z])(?=[A-Z])|[A-Z](?=[A-Z][a-z])", r"\1 ", taxon["mtc:Parameter"][i]["@name"])
-                # Drop to lower, change whitespace to -
-                # taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(" ","-")
-                # change . to -
-                # taxon["mtc:Parameter"][i]["@name"] = taxon["mtc:Parameter"][i]["@name"].lower().replace(".","-")
-            
-        return taxon
+        if "mtc:ExternalReferences" in taxon.keys():
+            if not isinstance(taxon["mtc:ExternalReferences"], list): 
+                taxon["mtc:ExternalReferences"] = [taxon["mtc:ExternalReferences"]]
+            print(taxon["mtc:ExternalReferences"])
+            for _ in taxon["mtc:ExternalReferences"]:
+                ref = _["mtc:Reference"]
+                print(ref)
+                if "mtc:CategoryTag" in ref.keys():
+                    reference = self._schemas["reference"].load(
+                        {"category_name": ref["mtc:CategoryTag"]["mtc:name"],
+                        "category_value": ref["mtc:CategoryTag"]["mtc:value"],
+                        "reference_name": ref["mtc:ReferenceUrl"]["mtc:name"],
+                        "reference_url": ref["mtc:ReferenceUrl"]["mtc:url"]},
+                        session=self.Session
+                        )
+                else:
+                    reference = self._schemas["reference"].load(
+                        {"category_name": None, 
+                        "category_value": None, 
+                        "reference_name": ref["mtc:ReferenceUrl"]["mtc:name"],
+                        "reference_url": ref["mtc:ReferenceUrl"]["mtc:url"]},
+                        session=self.Session
+                        )
+                measurand.external_references.append(reference)
 
     def getMeasurandTaxonObject(self, taxon):
         """
@@ -370,7 +370,7 @@ class TaxonomyMapper:
         # Measurands can have the same taxon but differ in parameters
         # Look at rule 10
         # These are canonical definitions that contain all possible parameters
-
+        print(taxon)
         discipline_data = {"label": taxon["mtc:Discipline"]["@name"]}
         
         # TBD
@@ -456,157 +456,23 @@ class TaxonomyMapper:
 
         print("Total validation errors: ", validation_errors)
 
-
-
-
-
-
     def loadTaxonomy(self):
         admin = model.Administrative(mii_comment=self._mii_comment)
         for taxon in self._mii_taxons_dict:
             self.getMeasurandTaxonObject(self._mii_taxons_dict[taxon])
 
-    def extractTaxonomy(self):
+    def extractTaxonomy_v2(self):
         if isinstance(self._path, Path):
             with self._path.open() as f:
-                mii_dict = xmltodict.parse(
-                    f.read(), process_namespaces=True, process_comments=True,namespaces=self._namespaces
-                )
+                mii_dict = xmltodict.parse(f.read(), process_comments=True)
         else:
-            webf = urllib.request.urlopen(self._path)
-            mii_dict = xmltodict.parse(webf.read(), process_namespaces=True, process_comments=True, namespaces=self._namespaces)
-
-
-        mii_taxons_dict = {}
-        mii_taxons_flat = []
-        # Populate QuantityKind Table
-        print(mii_dict.keys())
-        print(mii_dict['#comment'])
+            webf = urllib.request.urlopen(self._path, process_comments=True)
+            mii_dict = xmltodict.parse(webf.read())
+        
         self._mii_comment = mii_dict['#comment']
-        for taxon in mii_dict[self._namespaces["mtc"]][
-            self._namespaces["taxon"]
-        ]:
-            #print(taxon)
-            if taxon["@name"].split(".")[0] == "TestProcess":
-                taxon["@name"] = ".".join(taxon["@name"].split(".")[1:])
-            mii_taxons_dict[taxon["@name"]] = {
-                "@name": taxon["@name"],
-                "@deprecated": taxon["@deprecated"],
-                "@replacement": taxon["@replacement"],
-                "mtc:Definition": taxon[self._namespaces["definition"]],
-                "mtc:Discipline": {
-                    "@name": taxon[self._namespaces["discipline"]]["@name"]
-                },
-                "mtc:Result": {
-                    "@name": taxon[self._namespaces["result"]]["@name"],
-                    "uom:Quantity": {
-                        "@name": taxon[self._namespaces["result"]][
-                            self._namespaces["quantity"]
-                        ]["@name"]
-                    },
-                }
-            }
-            if self._namespaces["mlayer"] in taxon[self._namespaces["result"]].keys():
-                mii_taxons_dict[taxon["@name"]]["mtc:Result"]["mtc:mLayer"] = { 
-                            "@aspect": taxon[self._namespaces["result"]][
-                                self._namespaces["mlayer"]
-                            ]["@aspect"],
-                            "@id": taxon[self._namespaces["result"]][
-                                self._namespaces["mlayer"]
-                            ]["@id"]
-                        }
+        for taxon in mii_dict["mtc:Taxonomy"]["mtc:Taxon"]:
+            self._mii_taxons_dict[taxon["@name"]] = taxon
 
-            if self._namespaces["parameter"] in taxon.keys():
-                mii_taxons_dict[taxon["@name"]]["mtc:Parameter"] = []
-                if type(taxon[self._namespaces["parameter"]]) is dict:
-                    parm = taxon[self._namespaces["parameter"]]
-                    _dict = {
-                        "@name": parm["@name"],
-                        "@optional": parm["@optional"],
-                        "uom:Quantity": {
-                            "@name": parm[self._namespaces["quantity"]][
-                                "@name"
-                            ],
-                        },
-                        "mtc:Definition": parm[self._namespaces["definition"]],
-                    }
-                    if self._namespaces["mlayer"] in parm.keys():
-                        _dict["mtc:mLayer"] = { 
-                                    "@aspect": parm[self._namespaces["mlayer"]][
-                                        "@aspect"
-                                    ],
-                                    "@id": parm[self._namespaces["mlayer"]][
-                                        "@id"
-                                    ],
-                                }
-
-                    mii_taxons_dict[taxon["@name"]]["mtc:Parameter"].append(
-                        _dict
-                    )
-                else:
-                    for parm in taxon[self._namespaces["parameter"]]:
-                        _dict = {}
-                        # print(parm.keys())
-                        if self._namespaces["quantity"] in parm.keys():
-                            _dict = {
-                                "@name": parm["@name"],
-                                "@optional": parm["@optional"],
-                                "uom:Quantity": {
-                                    "@name": parm[
-                                        self._namespaces["quantity"]
-                                    ]["@name"]
-                                },
-                                "mtc:Definition": parm[
-                                    self._namespaces["definition"]
-                                ],
-                            }
-                            if self._namespaces["mlayer"] in parm.keys():
-                                _dict["mtc:mLayer"] = { 
-                                            "@aspect": parm[self._namespaces["mlayer"]][
-                                                "@aspect"
-                                            ],
-                                            "@id": parm[self._namespaces["mlayer"]][
-                                                "@id"
-                                            ],
-                                        }
-                        else:
-                            _dict = {
-                                "@name": parm["@name"],
-                                "@optional": parm["@optional"],
-                                "mtc:Definition": parm[
-                                    self._namespaces["definition"]
-                                ]
-                            }
-                        mii_taxons_dict[taxon["@name"]][
-                            "mtc:Parameter"
-                        ].append(_dict)
-            mii_taxons_flat.append(mii_taxons_dict[taxon["@name"]])
-
-        self._mii_taxons_dict = mii_taxons_dict
-        self._mii_taxons_list = mii_taxons_flat
-
-    def flattenTaxonomy(self):
-        # DEPRECATED
-        # Set tables path if needed
-        rows = list()
-        for taxon in self._mii_taxons_dict:
-            row = [self._mii_taxons_dict[taxon]["@name"]]
-            row.append(self._mii_taxons_dict[taxon]["mtc:Discipline"]["@name"])
-            parms = list()
-            if "mtc:Parameter" in self._mii_taxons_dict[taxon].keys():
-                for parm in self._mii_taxons_dict[taxon]["mtc:Parameter"]:
-                    parms.append(parm["@name"])
-            row.append("[" + ",".join(str(x) for x in parms) + "]")
-            rows.append(row)
-        df = pd.DataFrame(rows)
-        df.columns = ["Taxon", "Discipline", "Quantities"]
-        with pd.ExcelWriter(self._tables) as writer:
-            for k, tmpdf in df.groupby("Discipline"):
-                if k == "Acoustics, ultrasound and vibration":
-                    name = "AUV"
-                else:
-                    name = k
-                tmpdf.to_excel(writer, sheet_name=name, index=False)
 
     @classmethod
     def _dicttoxml_taxonomy(self, taxons):
@@ -636,7 +502,6 @@ class TaxonomyMapper:
         taxon["@deprecated"] = data.pop("deprecated")
         taxon["@deprecated"] = "true" if taxon["@deprecated"] is True else "false" 
         taxon["@replacement"] = ""
-        # taxon["mtc:ExternalReferences"] = []
         taxon["mtc:Result"] = {"@name": data.pop("result",""),
             "uom:Quantity": {"@name": data.pop("quantitykind", "")}
         }
@@ -653,32 +518,49 @@ class TaxonomyMapper:
                         "@id": data['scale']['id']
                         }
 
-        taxon["mtc:Parameter"] = []
+        
         if "parameters" in data.keys():
-            for parm in data["parameters"]:
-                dict_ = {}
-                if parm["name"] == "id":
-                    continue
-                if parm["name"] == "measurand":
-                    continue
-                dict_ = {"@name": parm["name"],
-                        "@optional": "true" if parm["optional"] is True else "false",
-                        "mtc:Definition": parm["definition"],
-                        }
-                if parm['quantitykind']:
-                    dict_["uom:Quantity"] = {"@name": parm["quantitykind"]}
-                if parm['aspect']:
-                        dict_["mtc:mLayer"] = {
-                                "@aspect": parm['aspect']['ml_name'],
-                                "@id": parm['aspect']['id']
-                                }
-                
-                taxon["mtc:Parameter"].append(dict_)
-            if len(taxon["mtc:Parameter"]) == 1:
-                taxon["mtc:Parameter"] = taxon["mtc:Parameter"][0]
-
+            if len(data["parameters"]) > 0:
+                taxon["mtc:Parameter"] = []
+                for parm in data["parameters"]:
+                    dict_ = {}
+                    if parm["name"] == "id":
+                        continue
+                    if parm["name"] == "measurand":
+                        continue
+                    dict_ = {"@name": parm["name"],
+                            "@optional": "true" if parm["optional"] is True else "false",
+                            "mtc:Definition": parm["definition"],
+                            }
+                    if parm['quantitykind']:
+                        dict_["uom:Quantity"] = {"@name": parm["quantitykind"]}
+                    if parm['aspect']:
+                            dict_["mtc:mLayer"] = {
+                                    "@aspect": parm['aspect']['ml_name'],
+                                    "@id": parm['aspect']['id']
+                                    }
                     
-
+                    taxon["mtc:Parameter"].append(dict_)
+                if len(taxon["mtc:Parameter"]) == 1:
+                    taxon["mtc:Parameter"] = taxon["mtc:Parameter"][0]
+        if "external_references" in data.keys():
+            if len(data["external_references"]) > 0:
+                taxon["mtc:ExternalReferences"] = []
+                for ref in data["external_references"]:
+                    dict_ = {}
+                    dict_["mtc:Reference"] = {
+                            "mtc:CategoryTag": {
+                                "mtc:name": ref["category_name"],
+                                "mtc:value": ref["category_value"]
+                                },
+                            "mtc:ReferenceUrl": {
+                                "mtc:name": ref["reference_name"],
+                                "mtc:url": ref["reference_url"]
+                                }
+                            }
+                    taxon["mtc:ExternalReferences"].append(dict_)
+                if len(taxon["mtc:ExternalReferences"]) == 1:
+                    taxon["mtc:ExternalReferences"] = taxon["mtc:ExternalReferences"][0] 
         
         if data['discipline']:
             taxon["mtc:Discipline"] = {

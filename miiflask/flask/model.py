@@ -322,6 +322,10 @@ class MeasurandTaxon(Base):
     # One to many parameters
     parameters: Mapped[list['Parameter']] = \
         relationship(back_populates="measurandtaxon")
+    
+    # One to many parameters
+    external_references: Mapped[list['Reference']] = \
+        relationship(back_populates="measurandtaxon")
 
     def __str__(self):
         return f'{self.name}'
@@ -382,6 +386,17 @@ class Parameter(Base):
 
     def __str__(self):
         return f'{self.name}'
+
+
+class Reference(Base):
+    __tablename__ = "reference"
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    category_name = mapped_column(String(50))
+    category_value = mapped_column(String(50))
+    reference_name = mapped_column(String(50))
+    reference_url = mapped_column(String(100))
+    measurandtaxon_id: Mapped[Optional[int]] = mapped_column(ForeignKey("measurandtaxon.id"))
+    measurandtaxon: Mapped['MeasurandTaxon'] = relationship(back_populates="external_references")
 
 
 class Taxon(Base):
@@ -870,6 +885,15 @@ class ConversionSchema(SQLAlchemyAutoSchema):
         ordered = True
 
 
+class ReferenceSchema(SQLAlchemyAutoSchema):
+
+    class Meta:
+        model = Reference
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
 class ParameterSchema(SQLAlchemyAutoSchema):
 
     class Meta:
@@ -897,6 +921,7 @@ class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
         ordered = True
 
     parameters = Nested(ParameterSchema, many=True)
+    external_references = Nested(ReferenceSchema, many=True)
     aspect = Nested(AspectSchema(only=("name", "ml_name", "id",)))
     scale = Nested(ScaleSchema(only=("ml_name", "id",)))
     discipline = Nested(DisciplineSchema(only=("label",)))
