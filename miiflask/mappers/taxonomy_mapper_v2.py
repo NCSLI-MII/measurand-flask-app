@@ -300,6 +300,10 @@ class TaxonomyMapper:
         # First required parameter which represents the quantity kind or aspect
         # validate against the aspect
         primary_parameter = None
+        measurand_aspect = None
+        aspect = None
+        result_aspect = None
+        parameter = None
         # TBD need to validate existing parameters of measurand
         if "mtc:Parameter" in taxon.keys():
             # The following removes the first parameter that is generally the result
@@ -309,6 +313,13 @@ class TaxonomyMapper:
                    
             if not isinstance(taxon["mtc:Parameter"], list): 
                 taxon["mtc:Parameter"] = [taxon["mtc:Parameter"]]
+            
+            if "mtc:mLayer" in taxon["mtc:Parameter"][0].keys():
+                measurand_aspect = (
+                        self.Session.query(model.Aspect)
+                        .filter((model.Aspect.id == taxon["mtc:Parameter"][0]["mtc:mLayer"]["@id"]))
+                        .first()
+                        )
             for parm in taxon["mtc:Parameter"]:
                 parameter = self._schemas["parameter"].load(
                         {"name": parm["@name"], 
@@ -327,6 +338,8 @@ class TaxonomyMapper:
                     if aspect:
                         parameter.aspect = aspect
                 measurand.parameters.append(parameter)
+                parameter = None
+                aspect = None
       
         if "mtc:mLayer" in taxon["mtc:Result"].keys():
             aspect = (
@@ -336,6 +349,25 @@ class TaxonomyMapper:
                     )
             if aspect:
                 measurand.aspect = aspect
+            aspect = None
+            result_aspect = (
+                    self.Session.query(model.Aspect)
+                    .filter((model.Aspect.id == taxon["mtc:Result"]["mtc:mLayer"]["@id"]))
+                    .first()
+                    )
+            if result_aspect:
+                measurand.result_aspect = result_aspect
+            result_aspect = None
+
+        if measurand_aspect and measurand.aspect:
+            if(measurand_aspect.id != measurand.aspect.id):
+                print("Invalid match for measurand aspect")
+                print(taxon)
+                print(measurand_aspect.id, measurand_aspect.ml_name)
+                print(measurand.aspect.id, measurand.aspect.ml_name)
+                print(taxon["mtc:Result"]["mtc:mLayer"]["@id"])
+                print(taxon["mtc:Parameter"][0]["mtc:mLayer"]["@id"])
+
         if "mtc:ExternalReferences" in taxon.keys():
             if not isinstance(taxon["mtc:ExternalReferences"], list): 
                 taxon["mtc:ExternalReferences"] = [taxon["mtc:ExternalReferences"]]
@@ -370,7 +402,7 @@ class TaxonomyMapper:
         # Measurands can have the same taxon but differ in parameters
         # Look at rule 10
         # These are canonical definitions that contain all possible parameters
-        print(taxon)
+        #print(taxon)
         discipline_data = {"label": taxon["mtc:Discipline"]["@name"]}
         
         # TBD
@@ -390,6 +422,7 @@ class TaxonomyMapper:
             "definition": taxon['mtc:Definition'],
             "processtype": taxon["@name"].split(".")[0],
             "quantitykind": taxon["mtc:Result"]["uom:Quantity"]["@name"].lower(),
+            "result_quantity": taxon["mtc:Result"]["uom:Quantity"]["@name"].lower(),
             "deprecated": taxon["@deprecated"],
             "result": taxon["mtc:Result"]["@name"]
         }

@@ -307,13 +307,19 @@ class MeasurandTaxon(Base):
 
     aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
 
-    aspect: Mapped['Aspect'] = relationship()
+    aspect: Mapped['Aspect'] = relationship(foreign_keys=[aspect_id]) #, primaryjoin=aspect_id == Aspect.id)
     
     processtype: Mapped[str] = mapped_column(String(10))  # Source | Measure
     
     qualifier: Mapped[Optional[str]] = mapped_column(String(50))
     
     result: Mapped[str] = mapped_column(String(50))
+    
+    result_quantity: Mapped[Optional[str]] = mapped_column(String(50))
+
+    result_aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
+
+    result_aspect: Mapped['Aspect'] = relationship(foreign_keys=[result_aspect_id]) #, primaryjoin=result_aspect_id == Aspect.id)
 
     discipline_id: Mapped[Optional[int]] = \
         mapped_column(ForeignKey("discipline.id"))
