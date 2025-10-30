@@ -321,12 +321,29 @@ class TaxonomyMapper:
                         .first()
                         )
             for parm in taxon["mtc:Parameter"]:
-                parameter = self._schemas["parameter"].load(
-                        {"name": parm["@name"], 
-                         "optional": parm["@optional"],
-                         "definition": parm["mtc:Definition"]}, 
-                        session=self.Session
-                )
+                try:
+                    parameter = self._schemas["parameter"].load(
+                            {"name": parm["@name"], 
+                             "optional": parm["@optional"],
+                             "definition": parm["mtc:Definition"]}, 
+                            session=self.Session
+                    )
+                except KeyError as k:
+                    print(f"{taxon['@name']} Parameter {parm['@name']} missing key {k}")
+                    if k.args[0] == '@name':
+                        raise KeyError
+                    elif k.args[0] == '@optional':
+                        raise KeyError
+                    elif k.args[0] == 'mtc:Definition':
+                        parameter = self._schemas["parameter"].load(
+                                {"name": parm["@name"], 
+                                 "optional": parm["@optional"],
+                                 "definition": None}, 
+                                session=self.Session
+                        )
+                    else:
+                        raise KeyError
+
                 if "uom:Quantity" in parm.keys():
                     parameter.quantitykind = parm["uom:Quantity"]["@name"]
                 if "mtc:mLayer" in parm.keys():
@@ -492,7 +509,12 @@ class TaxonomyMapper:
     def loadTaxonomy(self):
         admin = model.Administrative(mii_comment=self._mii_comment)
         for taxon in self._mii_taxons_dict:
-            self.getMeasurandTaxonObject(self._mii_taxons_dict[taxon])
+            try:
+                self.getMeasurandTaxonObject(self._mii_taxons_dict[taxon])
+            except KeyError as k:
+                print(f'{taxon} missing key {k.args[0]}')
+            except Exception as e:
+                raise e
 
     def extractTaxonomy_v2(self):
         if isinstance(self._path, Path):
