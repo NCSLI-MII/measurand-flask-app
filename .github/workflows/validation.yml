@@ -8,8 +8,10 @@ jobs:
   validate-taxonomy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
       - uses: action/checkout@v5
-
+      
+      - name: Checkout taxonomy
       - uses: actions/checkout@v5
         with: 
           repository: NCSLI-MII/measurand-taxonomy
