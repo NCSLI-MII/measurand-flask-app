@@ -9,10 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-      - uses: actions/checkout@v5
+        uses: actions/checkout@v5
+
       
       - name: Checkout taxonomy
-      - uses: actions/checkout@v5
+        uses: actions/checkout@v5
         with: 
           repository: NCSLI-MII/measurand-taxonomy
           path: resources
@@ -21,9 +22,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      
       - name: list resources
         run: |
           ls resources
+      
       - name: DB Init
         id: dbinit
         run: |
