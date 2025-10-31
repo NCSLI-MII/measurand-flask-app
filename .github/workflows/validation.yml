@@ -49,6 +49,7 @@ jobs:
         run: |
           conda info
           conda list
+          conda env list
             
       - name: list resources
         run: |
