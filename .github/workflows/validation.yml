@@ -62,6 +62,10 @@ jobs:
       - name: DB Init
         id: dbinit
         run: |
+          eval "$(mamba shell hook --shell bash)"
+          mamba env list
+          mamba activate measurand-flask-app
+          mamba list
           python scripts/dbinit_validate.py -p config/builder_validate.json -m
 
 
