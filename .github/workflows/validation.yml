@@ -18,17 +18,23 @@ jobs:
           repository: NCSLI-MII/measurand-taxonomy
           path: resources
       
-      - name: Install build dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-dev build-essential
+            #- name: Install build dependencies
+            #run: |
+            #sudo apt-get update
+            #sudo apt-get install -y python3-dev build-essential
 
-      - name: Install dependencies
-        run: |
-          python -m ensurepip --upgrade
-          python -m pip install --upgrade setuptools
-          pip install -r requirements_pip.txt
+            #- name: Install dependencies
+            #run: |
+            #python -m ensurepip --upgrade
+            #python -m pip install --upgrade setuptools
+            #pip install -r requirements_pip.txt
+      - name: Setup python
+        uses: actions/setup-python@v6
+        with: python-version: '3.x'
       
+      - name: Install dependencies
+        run: pip install -r requirements_pip.txt
+
       - name: list resources
         run: |
           ls resources
