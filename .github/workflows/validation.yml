@@ -41,7 +41,7 @@ jobs:
       - name: Conda
         uses: conda-incubator/setup-miniconda@v3
         with:
-          activate-enviroment: measurand-flask-app
+          activate-environment: measurand-flask-app
           environment-file: environment.yml
           miniforge-version: "latest"
           auto-activate-base: true
