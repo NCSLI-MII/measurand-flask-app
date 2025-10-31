@@ -47,6 +47,7 @@ jobs:
           auto-activate: false
       - name: Conda environments
         run: |
+          conda init
           conda info
           conda list
           conda env list
