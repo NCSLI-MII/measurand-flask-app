@@ -43,8 +43,9 @@ jobs:
         with:
           activate-enviroment: measurand-flask-app
           environment-file: environment.yml
-          miniforge-version: latest
-          auto-activate: false
+          miniforge-version: "latest"
+          auto-activate-base: true
+
       - name: Conda environments
         run: |
           conda init
