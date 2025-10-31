@@ -6,7 +6,7 @@ blinker==1.6.2
 cattrs==23.1.2
 certifi==2022.5.18.1
 charset-normalizer==2.0.12
-click==8.0.3
+click>=8.0.0
 dominate==2.6.0
 elementpath==5.0.0
 et-xmlfile==1.1.0
