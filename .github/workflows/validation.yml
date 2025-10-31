@@ -39,7 +39,6 @@ jobs:
             # pip install -r requirements_pip.txt
 
       - name: Conda
-        uses: actions/checkout@v5
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-enviroment: measurand-flask-app
