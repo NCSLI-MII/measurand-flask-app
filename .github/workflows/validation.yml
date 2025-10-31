@@ -50,7 +50,7 @@ jobs:
         run: |
           conda init
           conda info
-          conda list
+          eval "$(mamba shell hook --shell bash)"
           mamba env list
           mamba activate measurand-flask-app
           mamba list
