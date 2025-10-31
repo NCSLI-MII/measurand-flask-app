@@ -51,9 +51,9 @@ jobs:
           conda init
           conda info
           conda list
-          conda env list
-          conda activate test
-          conda list
+          mamba env list
+          mamba activate measurand-flask-app
+          mamba list
             
       - name: list resources
         run: |
