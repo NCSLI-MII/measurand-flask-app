@@ -45,6 +45,7 @@ jobs:
           environment-file: environment.yml
           miniforge-version: latest
           auto-activate: false
+      - name: Conda environments
         run: |
           conda info
           conda list
