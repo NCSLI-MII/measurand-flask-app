@@ -69,6 +69,7 @@ jobs:
           mamba env list
           mamba activate measurand-flask-app
           mamba list
+          which python
           python scripts/dbinit_validate.py -p config/builder_validate.json -m
 
 
