@@ -50,6 +50,8 @@ jobs:
           conda info
           conda list
           conda env list
+          conda activate test
+          conda list
             
       - name: list resources
         run: |
