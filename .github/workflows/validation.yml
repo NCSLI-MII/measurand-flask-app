@@ -44,7 +44,10 @@ jobs:
           activate-enviroment: measurand-flask-app
           environment-file: environment.yml
           miniforge-version: latest
-          auto-activate: true
+          auto-activate: false
+        run: |
+          conda info
+          conda list
             
       - name: list resources
         run: |
