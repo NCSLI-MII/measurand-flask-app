@@ -17,26 +17,6 @@ jobs:
         with: 
           repository: NCSLI-MII/measurand-taxonomy
           path: repo 
-      
-            #- name: Install build dependencies
-            #run: |
-            #sudo apt-get update
-            #sudo apt-get install -y python3-dev build-essential
-
-            #- name: Install dependencies
-            #run: |
-            #python -m ensurepip --upgrade
-            #python -m pip install --upgrade setuptools
-            #pip install -r requirements_pip.txt
-            # - name: Setup python
-            # uses: actions/setup-python@v6
-            # with: 
-            # python-version: '3.10'
-      
-            # - name: Install dependencies
-            #run: |
-            #pip install --upgrade pip
-            # pip install -r requirements_pip.txt
 
       - name: Conda
         uses: conda-incubator/setup-miniconda@v3
@@ -59,7 +39,7 @@ jobs:
         run: |
           pwd
           ls
-          ls resources
+          ls repo
           
       
       - name: Validate taxonomy and mlayer
