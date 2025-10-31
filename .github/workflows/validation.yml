@@ -28,16 +28,24 @@ jobs:
             #python -m ensurepip --upgrade
             #python -m pip install --upgrade setuptools
             #pip install -r requirements_pip.txt
-      - name: Setup python
-        uses: actions/setup-python@v6
-        with: 
-          python-version: '3.10'
+            # - name: Setup python
+            # uses: actions/setup-python@v6
+            # with: 
+            # python-version: '3.10'
       
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements_pip.txt
+            # - name: Install dependencies
+            #run: |
+            #pip install --upgrade pip
+            # pip install -r requirements_pip.txt
 
+      - name: Conda
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-enviroment: measurand-flask-app
+          environment-file: environment.yml
+          miniforge-version: latest
+          auto-activate: true
+            
       - name: list resources
         run: |
           ls resources
