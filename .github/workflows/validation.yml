@@ -1,0 +1,58 @@
+name: validation
+on: 
+  pull_request:
+    branchs: [main]
+  workflow_dispatch:
+
+jobs:
+  validate-taxonomy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      
+      - name: Checkout taxonomy
+        uses: actions/checkout@v5
+        with: 
+          repository: NCSLI-MII/measurand-taxonomy
+          path: resources/repo 
+
+      - name: Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: measurand-flask-app
+          environment-file: environment.yml
+          miniforge-version: "latest"
+          auto-activate-base: true
+
+      - name: Conda environments
+        run: |
+          conda init
+          conda info
+          eval "$(mamba shell hook --shell bash)"
+          mamba env list
+          mamba activate measurand-flask-app
+          mamba list
+            
+      - name: list resources
+        run: |
+          pwd
+          ls
+          ls resources
+          ls resources/repo
+          
+      
+      - name: Validate taxonomy and mlayer
+        id: validate
+        run: |
+          eval "$(mamba shell hook --shell bash)"
+          mamba env list
+          mamba activate measurand-flask-app
+          mamba list
+          which python
+          python -m unittest tests/test_validate.py 
+
+
+   
+

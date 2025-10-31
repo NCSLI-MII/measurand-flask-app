@@ -30,6 +30,7 @@ from wtforms import HiddenField, StringField, Form
 from wtforms.validators import InputRequired
 
 from miiflask.flask.model import (
+    Administrative,
     Measurand,
     MeasurandTaxon,
     Discipline,
@@ -43,6 +44,7 @@ from miiflask.flask.model import (
     Transform,
     System,
     Parameter,
+    Reference,
     KcdbCmc,
     KcdbBranch,
     KcdbParameter,
@@ -53,9 +55,8 @@ from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSche
 from miiflask.flask.app import app
 from miiflask.flask.app import db
 #from miiflask.mappers.taxonomy_mapper import dicttoxml_taxonomy, getTaxonDict
-from miiflask.mappers.taxonomy_mapper import TaxonomyMapper 
 from miiflask.mappers.mlayer_mapper import MlayerMapper
-from miiflask.mappers.taxonomy_mapper import TaxonomyMapper
+from miiflask.mappers.taxonomy_mapper_v2 import TaxonomyMapper
 from miiflask.mappers.kcdb_mapper import KcdbMapper
 from miiflask.utils.model_visualizer import (
     generate_data_model_diagram,
@@ -375,7 +376,7 @@ class MeasurandView(ModelView):
            "quantitykind",
            "parameters",
            "definition",
-           "result"
+           "result",
            )
 
 
@@ -436,11 +437,12 @@ class MeasurandTaxonView(ModelView):
             "aspect", 
             "definition"
             )
-    inline_models = (Parameter,)
+    inline_models = (Parameter, Reference)
     column_details_list = (
            "id",
            "name",
            "aspect",
+           "result",
            "definition",
            "quantitykind",
            "parameter_names",
@@ -449,12 +451,14 @@ class MeasurandTaxonView(ModelView):
     form_columns = ['id',
                     'name',
                     'aspect',
+                    'result',
                     'deprecated',
                     'definition',
                     'processtype',
                     'qualifier',
                     'kcdbcmcs',
-                    'parameters'] 
+                    'parameters',
+                    'external_references'] 
 
 
 class DimensionView(MyModelView):
@@ -734,6 +738,7 @@ def aspects():
 @app.route("/taxonomy/export")
 def taxonomy_export():
     measurands = MeasurandTaxon.query.all()
+    c = Administrative.query.first()
     taxons = []
     for obj in measurands:
         try:
