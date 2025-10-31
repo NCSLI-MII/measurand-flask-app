@@ -57,7 +57,10 @@ jobs:
             
       - name: list resources
         run: |
+          pwd
+          ls
           ls resources
+          
       
       - name: DB Init
         id: dbinit
