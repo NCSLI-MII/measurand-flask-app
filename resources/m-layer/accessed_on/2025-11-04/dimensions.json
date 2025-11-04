@@ -1,0 +1,842 @@
+[
+  {
+    "id": "DI1",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1",
+    "exponents": "[0,1,0,0,0,0,0]"
+  },
+  {
+    "id": "DI10",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC45",
+    "exponents": "[1,1,-2,0,0,0,0]"
+  },
+  {
+    "id": "DI100",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1287",
+    "exponents": "[1,0,-2]"
+  },
+  {
+    "id": "DI101",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1297",
+    "exponents": "[1,0,-2]"
+  },
+  {
+    "id": "DI102",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1300",
+    "exponents": "[3/2,1/2,-1]"
+  },
+  {
+    "id": "DI103",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1302",
+    "exponents": "[-1/2,1/2,-1]"
+  },
+  {
+    "id": "DI104",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1306",
+    "exponents": "[1,0,-2]"
+  },
+  {
+    "id": "DI105",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1279",
+    "exponents": "[1,1,-2]"
+  },
+  {
+    "id": "DI106",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1277",
+    "exponents": "[2,1,-2]"
+  },
+  {
+    "id": "DI107",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1312",
+    "exponents": "[5/2,1/2,-1]"
+  },
+  {
+    "id": "DI108",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1281",
+    "exponents": "[3/2,1/2,-2]"
+  },
+  {
+    "id": "DI109",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1292",
+    "exponents": "[1/2,1/2,-1]"
+  },
+  {
+    "id": "DI11",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC46",
+    "exponents": "[-1,1,-2,0,0,0,0]"
+  },
+  {
+    "id": "DI110",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1314",
+    "exponents": "[5/2,1/2,-1]"
+  },
+  {
+    "id": "DI111",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1280",
+    "exponents": "[3/2,1/2,-1]"
+  },
+  {
+    "id": "DI112",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1288",
+    "exponents": "[-1,0,1]"
+  },
+  {
+    "id": "DI113",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1290",
+    "exponents": "[1,0,-1]"
+  },
+  {
+    "id": "DI114",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1252",
+    "exponents": "[0,0,-1]"
+  },
+  {
+    "id": "DI115",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1286",
+    "exponents": "[-1,0,2]"
+  },
+  {
+    "id": "DI116",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1316",
+    "exponents": "[-1,1,-1]"
+  },
+  {
+    "id": "DI117",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1317",
+    "exponents": "[2,0,-1]"
+  },
+  {
+    "id": "DI118",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1315",
+    "exponents": "[-1,1,-2]"
+  },
+  {
+    "id": "DI119",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1295",
+    "exponents": "[2,1,-3]"
+  },
+  {
+    "id": "DI12",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC47",
+    "exponents": "[2,1,-2,0,0,0,0]"
+  },
+  {
+    "id": "DI120",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1255",
+    "exponents": "[3/2,1/2,-2]"
+  },
+  {
+    "id": "DI121",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1254",
+    "exponents": "[3/2,1/2,-1]"
+  },
+  {
+    "id": "DI122",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1318",
+    "exponents": "[0,1,-3]"
+  },
+  {
+    "id": "DI123",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1258",
+    "exponents": "[-1,0,2]"
+  },
+  {
+    "id": "DI124",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1261",
+    "exponents": "[-1,0,1]"
+  },
+  {
+    "id": "DI125",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1263",
+    "exponents": "[1,0,-1]"
+  },
+  {
+    "id": "DI126",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1265",
+    "exponents": "[1/2,1/2,-1]"
+  },
+  {
+    "id": "DI127",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1268",
+    "exponents": "[-1/2,1/2,-1]"
+  },
+  {
+    "id": "DI128",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1273",
+    "exponents": "[2,1,-2]"
+  },
+  {
+    "id": "DI129",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1275",
+    "exponents": "[1,1,-2]"
+  },
+  {
+    "id": "DI13",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC48",
+    "exponents": "[2,1,-3,0,0,0,0]"
+  },
+  {
+    "id": "DI130",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1338",
+    "exponents": "[-3/2,1/2,0]"
+  },
+  {
+    "id": "DI131",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1327",
+    "exponents": "[-1,1,-1]"
+  },
+  {
+    "id": "DI132",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1329",
+    "exponents": "[2,0,-1]"
+  },
+  {
+    "id": "DI133",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1332",
+    "exponents": "[-1,0,0]"
+  },
+  {
+    "id": "DI134",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1334",
+    "exponents": "[2,1,-3]"
+  },
+  {
+    "id": "DI135",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1364",
+    "exponents": "[-1,1,-1]"
+  },
+  {
+    "id": "DI136",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1366",
+    "exponents": "[2,0,-1]"
+  },
+  {
+    "id": "DI137",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1368",
+    "exponents": "[-1,0,0]"
+  },
+  {
+    "id": "DI138",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1349",
+    "exponents": "[-1,1,-2]"
+  },
+  {
+    "id": "DI139",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1350",
+    "exponents": "[-1,1,-2]"
+  },
+  {
+    "id": "DI14",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC49",
+    "exponents": "[0,0,1,1,0,0,0]"
+  },
+  {
+    "id": "DI140",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1257",
+    "exponents": "[1,0,1,1,0,0,0]"
+  },
+  {
+    "id": "DI15",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC50",
+    "exponents": "[2,1,-3,-1,0,0,0]"
+  },
+  {
+    "id": "DI16",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC51",
+    "exponents": "[-2,-1,4,2,0,0,0]"
+  },
+  {
+    "id": "DI17",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC52",
+    "exponents": "[2,1,-3,-2,0,0,0]"
+  },
+  {
+    "id": "DI18",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC53",
+    "exponents": "[-2,-1,3,2,0,0 0]"
+  },
+  {
+    "id": "DI19",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC54",
+    "exponents": "[2,1,-2,-1,0,0,0]"
+  },
+  {
+    "id": "DI2",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC2",
+    "exponents": "[1,0,0,0,0,0,0]"
+  },
+  {
+    "id": "DI20",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC55",
+    "exponents": "[0,1,-2,-1,0,0,0]"
+  },
+  {
+    "id": "DI21",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC56",
+    "exponents": "[2,1,-2,-2,0,0,0]"
+  },
+  {
+    "id": "DI22",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC57",
+    "exponents": "[-2,0,0,0,0,0,1]"
+  },
+  {
+    "id": "DI23",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC58",
+    "exponents": "[2,0,-2,0,0,0,0]"
+  },
+  {
+    "id": "DI24",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC59",
+    "exponents": "[0,0,-1,0,0,1,0]"
+  },
+  {
+    "id": "DI25",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC775",
+    "exponents": "[2,0,0,0,0,0,0]"
+  },
+  {
+    "id": "DI26",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC776",
+    "exponents": "[3,0,0,0,0,0,0]"
+  },
+  {
+    "id": "DI27",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC801",
+    "exponents": "[1,0,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI28",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC802",
+    "exponents": "[1,0,-2,0,0,0,0]"
+  },
+  {
+    "id": "DI29",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC803",
+    "exponents": "[3,0,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI3",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC3",
+    "exponents": "[0,0,1,0,0,0,0]"
+  },
+  {
+    "id": "DI30",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC827",
+    "exponents": "[-2,0,0,0,0,0,0]"
+  },
+  {
+    "id": "DI31",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC828",
+    "exponents": "[1,1,0,0,0,0,0]"
+  },
+  {
+    "id": "DI32",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC829",
+    "exponents": "[-3,1,0,0,0,0,0]"
+  },
+  {
+    "id": "DI33",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC842",
+    "exponents": "[1,1,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI34",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC843",
+    "exponents": "[2,1,0,0,0,0,0]"
+  },
+  {
+    "id": "DI35",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC862",
+    "exponents": "[-1,1,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI36",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC864",
+    "exponents": "[2,0,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI37",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC902",
+    "exponents": "[0,0,0,0,-1,0,0]"
+  },
+  {
+    "id": "DI38",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC906",
+    "exponents": "[1,1,-3,0,-1,0,0]"
+  },
+  {
+    "id": "DI39",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC907",
+    "exponents": "[0,1,-3,0,-1,0,0]"
+  },
+  {
+    "id": "DI4",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC4",
+    "exponents": "[0,0,0,1,0,0,0]"
+  },
+  {
+    "id": "DI40",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC908",
+    "exponents": "[2,1,-2,0,-1,0,0]"
+  },
+  {
+    "id": "DI41",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC911",
+    "exponents": "[2,0,-2,0,-1,0,0]"
+  },
+  {
+    "id": "DI42",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1333",
+    "exponents": "[2,1,-3]"
+  },
+  {
+    "id": "DI43",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC914",
+    "exponents": "[-1,0,0,1,0,0,0]"
+  },
+  {
+    "id": "DI44",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC916",
+    "exponents": "[3,1,-3,-2,0,0,0]"
+  },
+  {
+    "id": "DI45",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC918",
+    "exponents": "[-3,-1,3,2,0,0,0]"
+  },
+  {
+    "id": "DI46",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1169",
+    "exponents": "[0,-1,3,0,1,0,0]"
+  },
+  {
+    "id": "DI47",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC920",
+    "exponents": "[0,-1,1,1,0,0,0]"
+  },
+  {
+    "id": "DI48",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1172",
+    "exponents": "[-2,-1,3,0,1,0,0]"
+  },
+  {
+    "id": "DI49",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1174",
+    "exponents": "[-1,-1,3,0,1,0,0]"
+  },
+  {
+    "id": "DI5",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC5",
+    "exponents": "[0,0,0,0,1,0,0]"
+  },
+  {
+    "id": "DI50",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1176",
+    "exponents": "[-1,1,0,0,0,0,0]"
+  },
+  {
+    "id": "DI51",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1178",
+    "exponents": "[4,0,0,0,0,0,0]"
+  },
+  {
+    "id": "DI52",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1179",
+    "exponents": "[1,-1,2,0,0,0,0]"
+  },
+  {
+    "id": "DI53",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1189",
+    "exponents": "[-1,0,1,0,0,0,0]"
+  },
+  {
+    "id": "DI54",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1195",
+    "exponents": "[-2,0,2,0,0,0,0]"
+  },
+  {
+    "id": "DI55",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1197",
+    "exponents": "[0,1,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI56",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1198",
+    "exponents": "[1,-1,1,0,0,0,0]"
+  },
+  {
+    "id": "DI57",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1339",
+    "exponents": "[0,1,-3]"
+  },
+  {
+    "id": "DI58",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1340",
+    "exponents": "[0,1,-3]"
+  },
+  {
+    "id": "DI59",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1341",
+    "exponents": "[-3,1,0]"
+  },
+  {
+    "id": "DI6",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC6",
+    "exponents": "[0,0,0,0,0,1,0]"
+  },
+  {
+    "id": "DI60",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1142",
+    "exponents": "[0,1,-2,0,0,0,0]"
+  },
+  {
+    "id": "DI61",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1202",
+    "exponents": "[0,1,-3,0,0,0,0]"
+  },
+  {
+    "id": "DI62",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1342",
+    "exponents": "[-3,1,0]"
+  },
+  {
+    "id": "DI63",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1213",
+    "exponents": "[-1,0,0,0,0,0,0]"
+  },
+  {
+    "id": "DI64",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1215",
+    "exponents": "[-2,1,0,0,0,0,0]"
+  },
+  {
+    "id": "DI65",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1205",
+    "exponents": "[-2,0,0,1,0,0,0]"
+  },
+  {
+    "id": "DI66",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1206",
+    "exponents": "[0,0,-2,0,0,0,0]"
+  },
+  {
+    "id": "DI67",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1207",
+    "exponents": "[1,1,-3,-1,0,0,0]"
+  },
+  {
+    "id": "DI68",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1208",
+    "exponents": "[-2,0,1,1,0,0,0]"
+  },
+  {
+    "id": "DI69",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1209",
+    "exponents": "[1,1,-2,-2,0,0,0]"
+  },
+  {
+    "id": "DI7",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC7",
+    "exponents": "[0,0,0,0,0,0,1]"
+  },
+  {
+    "id": "DI70",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1210",
+    "exponents": "[2,1,-2,0,0,0,-1]"
+  },
+  {
+    "id": "DI71",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1211",
+    "exponents": "[2,0,-3,0,0,0,0]"
+  },
+  {
+    "id": "DI72",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1212",
+    "exponents": "[-1,0,-1,0,0,0,1]"
+  },
+  {
+    "id": "DI73",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1216",
+    "exponents": "[-2,0,1,0,0,1,0]"
+  },
+  {
+    "id": "DI74",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1223",
+    "exponents": "[-3,0,1,1,0,0,0]"
+  },
+  {
+    "id": "DI75",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1225",
+    "exponents": "[-3,-1,4,2,0,0,0]"
+  },
+  {
+    "id": "DI76",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1228",
+    "exponents": "[2,1,-2,0,-1,0,-1]"
+  },
+  {
+    "id": "DI77",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1232",
+    "exponents": "[-3,0,-1,0,0,0,1]"
+  },
+  {
+    "id": "DI78",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1235",
+    "exponents": "[3,-1,0,0,0,0,0]"
+  },
+  {
+    "id": "DI79",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC1236",
+    "exponents": "[-3,0,0,0,0,0,1]"
+  },
+  {
+    "id": "DI8",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC8",
+    "exponents": "[0,0,0,0,0,0,0]"
+  },
+  {
+    "id": "DI80",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1241",
+    "exponents": "[0,1,0]"
+  },
+  {
+    "id": "DI81",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1242",
+    "exponents": "[1,0,0]"
+  },
+  {
+    "id": "DI82",
+    "formal_system_id": "SY6",
+    "systematic_scale_id": "SC1240",
+    "exponents": "[0,0,1]"
+  },
+  {
+    "id": "DI83",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1244",
+    "exponents": "[0,1,0]"
+  },
+  {
+    "id": "DI84",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1246",
+    "exponents": "[1,0,0]"
+  },
+  {
+    "id": "DI85",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1247",
+    "exponents": "[0,0,1]"
+  },
+  {
+    "id": "DI86",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1248",
+    "exponents": "[0,1,0]"
+  },
+  {
+    "id": "DI87",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1250",
+    "exponents": "[1,0,0]"
+  },
+  {
+    "id": "DI88",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1251",
+    "exponents": "[0,0,1]"
+  },
+  {
+    "id": "DI89",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1310",
+    "exponents": "[1,1,-2]"
+  },
+  {
+    "id": "DI9",
+    "formal_system_id": "SY1",
+    "systematic_scale_id": "SC44",
+    "exponents": "[0,0,-1,0,0,0,0]"
+  },
+  {
+    "id": "DI90",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1308",
+    "exponents": "[2,1,-2]"
+  },
+  {
+    "id": "DI91",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1293",
+    "exponents": "[-3,1,0]"
+  },
+  {
+    "id": "DI92",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1276",
+    "exponents": "[1/2,1/2,-1]"
+  },
+  {
+    "id": "DI93",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1298",
+    "exponents": "[3/2,1/2,-2]"
+  },
+  {
+    "id": "DI94",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1320",
+    "exponents": "[-1,0,0]"
+  },
+  {
+    "id": "DI95",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1282",
+    "exponents": "[1/2,1/2,0]"
+  },
+  {
+    "id": "DI96",
+    "formal_system_id": "SY8",
+    "systematic_scale_id": "SC1336",
+    "exponents": "[1/2,1/2,0]"
+  },
+  {
+    "id": "DI97",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1284",
+    "exponents": "[-1,0,2]"
+  },
+  {
+    "id": "DI98",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1291",
+    "exponents": "[1,0,-1]"
+  },
+  {
+    "id": "DI99",
+    "formal_system_id": "SY7",
+    "systematic_scale_id": "SC1296",
+    "exponents": "[-1,0,1]"
+  }
+]

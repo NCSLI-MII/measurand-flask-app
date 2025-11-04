@@ -112,11 +112,11 @@ class Cast(Base):
 class System(Base):
     __tablename__ = 'system'
     id: Mapped[str] = mapped_column(String(10), primary_key=True)
-    ml_name: Mapped[str] = mapped_column(String(10))
+    ml_name: Mapped[str] = mapped_column(String(50))
     symbol: Mapped[str] = mapped_column(String(10))
     n: Mapped[Optional[int]] = mapped_column(Integer)
     basis: Mapped[Optional[str]] = mapped_column(String(200))
-    reference: Mapped[Optional[str]] = mapped_column(String(50))
+    reference: Mapped[Optional[str]] = mapped_column(String(200))
 
     def __str__(self):
         return f'{self.symbol}'
@@ -170,7 +170,7 @@ class Aspect(Base):
     name: Mapped[str] = mapped_column(String(50))
     ml_name: Mapped[str] = mapped_column(String(50))
     symbol: Mapped[Optional[str]] = mapped_column(String(50))
-    reference: Mapped[Optional[str]] = mapped_column(String(50))
+    reference: Mapped[Optional[str]] = mapped_column(String(200))
 
     scales: Mapped[list['Scale']] = \
         relationship(secondary=scaleaspect_table, back_populates="aspects")
@@ -190,7 +190,7 @@ class Prefix(Base):
     symbol: Mapped[str] = mapped_column(String(50))
     numerator: Mapped[float] = mapped_column()
     denominator: Mapped[float] = mapped_column()
-    reference: Mapped[Optional[str]] = mapped_column(String(50))
+    reference: Mapped[Optional[str]] = mapped_column(String(200))
 
     def __str__(self):
         return f'{self.name}'
@@ -202,7 +202,7 @@ class Unit(Base):
     name: Mapped[str] = mapped_column(String(100))
     ml_name: Mapped[str] = mapped_column(String(100))
     symbol: Mapped[Optional[str]] = mapped_column(String(50))
-    reference: Mapped[Optional[str]] = mapped_column(String(50))
+    reference: Mapped[Optional[str]] = mapped_column(String(200))
 
     def __str__(self):
         return f'{self.name}'
