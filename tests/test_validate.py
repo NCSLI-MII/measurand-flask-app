@@ -35,7 +35,7 @@ class ValidateDbTestCase(unittest.TestCase):
             "database":"/tmp/miiflask/miiflask.db",
             "usertables":"/tmp/miiflask/tables_",
             "measurands": "resources/repo/MeasurandTaxonomyCatalog.xml",
-            "mlayer": "resources/m-layer",
+            "mlayer": "resources/repo/m-layer",
             "kcdb": "resources/kcdb",
             "kcdb_cmc_data": "kcdb_cmc_physics.json",
             "kcdb_cmc_api_countries": ["CA"],
