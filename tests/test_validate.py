@@ -31,10 +31,10 @@ class ValidateDbTestCase(unittest.TestCase):
 
     def test_validate(self):
         parms = {
-            "path":"/tmp/miiflask",
-            "database":"/tmp/miiflask/miiflask.db",
-            "usertables":"/tmp/miiflask/tables_",
-            "measurands": "resources/repo/MeasurandTaxonomyCatalog.xml",
+            "path": "/tmp/miiflask",
+            "database": "/tmp/miiflask/miiflask.db",
+            "usertables": "/tmp/miiflask/tables_",
+            "measurands": "resources/repo/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
             "mlayer": "resources/repo/m-layer",
             "kcdb": "resources/kcdb",
             "kcdb_cmc_data": "kcdb_cmc_physics.json",
