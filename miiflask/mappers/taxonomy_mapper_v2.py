@@ -162,6 +162,13 @@ def getTaxonDict(obj, schema):
     #print(xmltodict.unparse(taxon))
     return taxon
 
+class ValidationError(Exception):
+    
+    def __init__(self, message="Validation error", value=None):
+        self.message = message
+        self.value = value
+        super().__init__(self.message)
+
 
 class TaxonomyMapper:
     """
@@ -505,6 +512,8 @@ class TaxonomyMapper:
                 validation_errors += 1
 
         print("Total validation errors: ", validation_errors)
+        if(validation_errors > 0):
+            raise(ValidationError)
 
     def loadTaxonomy(self):
         admin = model.Administrative(mii_comment=self._mii_comment)
