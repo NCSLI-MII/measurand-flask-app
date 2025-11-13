@@ -52,6 +52,7 @@ class ValidateDbTestCase(unittest.TestCase):
             miimapper = TaxonomyMapper(session, parms)
             miimapper.extractTaxonomy_v2()
             miimapper.loadTaxonomy()
+            miimapper.roundtrip()
 
 
 if __name__ == '__main__':
