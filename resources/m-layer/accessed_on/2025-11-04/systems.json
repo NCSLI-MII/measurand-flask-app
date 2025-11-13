@@ -1,0 +1,42 @@
+[
+  {
+    "id": "SY1",
+    "ml_name": "si",
+    "symbol": "SI",
+    "n": 7,
+    "basis": "(AS3,SC2), (AS2,SC1), (AS4,SC3), (AS5,SC4), (AS6,SC5), (AS7,SC6), (AS8, SC7)",
+    "reference": "https://www.bipm.org/en/publications/si-brochure/"
+  },
+  {
+    "id": "SY5",
+    "ml_name": "inch-pound",
+    "symbol": "ip",
+    "n": null,
+    "basis": null,
+    "reference": "https://www.nist.gov/pml/special-publication-811/special-publication-811-extended-contents"
+  },
+  {
+    "id": "SY6",
+    "ml_name": "cgs-gaussian",
+    "symbol": "ga",
+    "n": null,
+    "basis": "(AS3,SC1242), (AS2,SC1241), (AS4,SC1240)",
+    "reference": "https://doi.org/10.6028/NBS.MONO.56"
+  },
+  {
+    "id": "SY7",
+    "ml_name": "cgs-emu",
+    "symbol": "em",
+    "n": null,
+    "basis": "(AS3,SC1246), (AS2,SC1244), (AS4,SC1247)",
+    "reference": "https://doi.org/10.6028/NBS.MONO.56"
+  },
+  {
+    "id": "SY8",
+    "ml_name": "cgs-esu",
+    "symbol": "es",
+    "n": null,
+    "basis": "(AS3,SC1250), (AS2,SC1248), (AS4,SC1251)",
+    "reference": "https://doi.org/10.6028/NBS.MONO.56"
+  }
+]

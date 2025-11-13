@@ -1,0 +1,58 @@
+[
+  {
+    "id": "FN1",
+    "ml_name": "ra_direct",
+    "py_function": "lambda x: x",
+    "py_names_in_scope": "{}",
+    "comments": null
+  },
+  {
+    "id": "FN2",
+    "ml_name": "ra_conversion",
+    "py_function": "lambda x: a*x",
+    "py_names_in_scope": "{'a'}",
+    "comments": null
+  },
+  {
+    "id": "FN3",
+    "ml_name": "in_conversion",
+    "py_function": "lambda x: a*x + b",
+    "py_names_in_scope": "{'a', 'b'}",
+    "comments": null
+  },
+  {
+    "id": "FN4",
+    "ml_name": "bi_conversion",
+    "py_function": "lambda x: z + y_ub if ( z := math.fmod(a*x - y_lb, y_ub - y_lb) ) < 0 else z + y_lb ",
+    "py_names_in_scope": "{'a', 'y_lb', 'y_ub'}",
+    "comments": "fmod(x, y) is equal to x - n*y, for some integer n, such that the result has the same sign as x and magnitude less than the range abs(y). "
+  },
+  {
+    "id": "FN5",
+    "ml_name": "cct_its90_abs_K_to_K",
+    "py_function": null,
+    "py_names_in_scope": null,
+    "comments": "Placeholder for CCT advice"
+  },
+  {
+    "id": "FN6",
+    "ml_name": "cct_its90_abs_C_to_C",
+    "py_function": null,
+    "py_names_in_scope": null,
+    "comments": "Placeholder for CCT advice"
+  },
+  {
+    "id": "FN7",
+    "ml_name": "cct_its90_dif_C_to_C",
+    "py_function": null,
+    "py_names_in_scope": null,
+    "comments": "Placeholder for CCT advice"
+  },
+  {
+    "id": "FN8",
+    "ml_name": "cct_its90_dif_K_to_K",
+    "py_function": null,
+    "py_names_in_scope": null,
+    "comments": "Placeholder for CCT advice"
+  }
+]

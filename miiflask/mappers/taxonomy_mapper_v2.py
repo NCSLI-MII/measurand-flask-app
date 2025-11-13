@@ -93,7 +93,7 @@ def getTaxonDict(obj, schema):
     #taxon["mtc:Taxon"] = {}
     taxon["@name"] = data.pop("name")
     taxon["@deprecated"] = data.pop("deprecated")
-    taxon["@replacement"] = ""
+    taxon["@replacement"] = data.pop("replacement")
     taxon["mtc:Definition"] = data.pop("definition", "")
     if data['discipline']:
         taxon["mtc:Discipline"] = {
@@ -161,6 +161,13 @@ def getTaxonDict(obj, schema):
     #print(data)
     #print(xmltodict.unparse(taxon))
     return taxon
+
+class ValidationError(Exception):
+    
+    def __init__(self, message="Validation error", value=None):
+        self.message = message
+        self.value = value
+        super().__init__(self.message)
 
 
 class TaxonomyMapper:
@@ -441,6 +448,7 @@ class TaxonomyMapper:
             "quantitykind": taxon["mtc:Result"]["uom:Quantity"]["@name"].lower(),
             "result_quantity": taxon["mtc:Result"]["uom:Quantity"]["@name"].lower(),
             "deprecated": taxon["@deprecated"],
+            "replacement": taxon["@replacement"],
             "result": taxon["mtc:Result"]["@name"]
         }
 
@@ -505,6 +513,8 @@ class TaxonomyMapper:
                 validation_errors += 1
 
         print("Total validation errors: ", validation_errors)
+        if(validation_errors > 0):
+            raise(ValidationError)
 
     def loadTaxonomy(self):
         admin = model.Administrative(mii_comment=self._mii_comment)
@@ -556,7 +566,7 @@ class TaxonomyMapper:
         taxon["@name"] = data.pop("name")
         taxon["@deprecated"] = data.pop("deprecated")
         taxon["@deprecated"] = "true" if taxon["@deprecated"] is True else "false" 
-        taxon["@replacement"] = ""
+        taxon["@replacement"] = data.pop("replacement")
         taxon["mtc:Result"] = {"@name": data.pop("result",""),
             "uom:Quantity": {"@name": data.pop("quantitykind", "")}
         }

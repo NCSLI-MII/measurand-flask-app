@@ -1,0 +1,11 @@
+[
+  {
+    "type": "bounded_interval"
+  },
+  {
+    "type": "interval"
+  },
+  {
+    "type": "ratio"
+  }
+]

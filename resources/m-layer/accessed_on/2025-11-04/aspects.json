@@ -1,0 +1,1206 @@
+[
+  {
+    "id": "AS1",
+    "ml_name": "as_null",
+    "name": "null",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS10",
+    "ml_name": "as_plane_angle",
+    "name": "plane angle",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ANGP"
+  },
+  {
+    "id": "AS100",
+    "ml_name": "as_period",
+    "name": "period",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.P04493"
+  },
+  {
+    "id": "AS101",
+    "ml_name": "as_thermodynamic_temperature",
+    "name": "thermodynamic temperature",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/TEMT"
+  },
+  {
+    "id": "AS102",
+    "ml_name": "as_thermodynamic_temperature_difference",
+    "name": "thermodynamic temperature difference",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS103",
+    "ml_name": "as_energy_flux_density",
+    "name": "energy flux density",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.E02106"
+  },
+  {
+    "id": "AS104",
+    "ml_name": "as_ITS90",
+    "name": "ITS90",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS105",
+    "ml_name": "as_ITS90_difference",
+    "name": "ITS90 difference",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS106",
+    "ml_name": "as_mass_concentration",
+    "name": "mass concentration",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MACO"
+  },
+  {
+    "id": "AS107",
+    "ml_name": "as_dynamic_viscosity",
+    "name": "dynamic viscosity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/DYVI"
+  },
+  {
+    "id": "AS108",
+    "ml_name": "as_thermal_conductivity",
+    "name": "thermal conductivity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/TCON"
+  },
+  {
+    "id": "AS109",
+    "ml_name": "as_luminance",
+    "name": "luminance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/LUMA"
+  },
+  {
+    "id": "AS11",
+    "ml_name": "as_solid_angle",
+    "name": "solid angle",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ANGS"
+  },
+  {
+    "id": "AS110",
+    "ml_name": "as_relative_humidity",
+    "name": "relative humidity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/RHUM"
+  },
+  {
+    "id": "AS111",
+    "ml_name": "as_radiant_exitance",
+    "name": "radiant exitance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/EXIT"
+  },
+  {
+    "id": "AS112",
+    "ml_name": "as_fluence",
+    "name": "fluence",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/FLUE"
+  },
+  {
+    "id": "AS113",
+    "ml_name": "as_fluence_rate",
+    "name": "fluence rate",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/FLUR"
+  },
+  {
+    "id": "AS114",
+    "ml_name": "as_amount_of_substance_ratio",
+    "name": "amount of substance ratio ",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS115",
+    "ml_name": "as_kerma_rate",
+    "name": "kerma rate",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/KRMR"
+  },
+  {
+    "id": "AS116",
+    "ml_name": "as_magnetic_polarization",
+    "name": "magnetic polarization",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MGPO"
+  },
+  {
+    "id": "AS117",
+    "ml_name": "as_magnetic_susceptibility",
+    "name": "magnetic susceptibility",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MGSU"
+  },
+  {
+    "id": "AS118",
+    "ml_name": "as_emittance",
+    "name": "emittance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/OPEM"
+  },
+  {
+    "id": "AS119",
+    "ml_name": "as_PLTS_2000_temperature",
+    "name": "PLTS-2000 temperature",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/PLTS"
+  },
+  {
+    "id": "AS12",
+    "ml_name": "as_frequency",
+    "name": "frequency",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/FREQ"
+  },
+  {
+    "id": "AS120",
+    "ml_name": "as_quality_factor",
+    "name": "quality factor",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/QFAC"
+  },
+  {
+    "id": "AS121",
+    "ml_name": "as_refractive_index",
+    "name": "refractive index",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/REFI"
+  },
+  {
+    "id": "AS122",
+    "ml_name": "as_relative_permittivity",
+    "name": "relative permittivity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/RELP"
+  },
+  {
+    "id": "AS123",
+    "ml_name": "as_relative_permeability",
+    "name": "relative permeability",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/REPE"
+  },
+  {
+    "id": "AS124",
+    "ml_name": "as_thermal_expansion_coefficient_linear",
+    "name": "thermal expansion coefficient linear",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/TEXL"
+  },
+  {
+    "id": "AS125",
+    "ml_name": "as_loss_attenuation",
+    "name": "loss attenuation",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/LOSS"
+  },
+  {
+    "id": "AS126",
+    "ml_name": "as_sound_intensity",
+    "name": "sound intensity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/SOIN"
+  },
+  {
+    "id": "AS127",
+    "ml_name": "as_second_moment_of_area",
+    "name": "second moment of area",
+    "symbol": null,
+    "reference": "NIST SP-811"
+  },
+  {
+    "id": "AS128",
+    "ml_name": "as_volumetric_heat_density",
+    "name": "heat density",
+    "symbol": null,
+    "reference": "NIST SP-811"
+  },
+  {
+    "id": "AS129",
+    "ml_name": "as_fuel_consumption",
+    "name": "fuel consumption",
+    "symbol": null,
+    "reference": "NIST SP-811"
+  },
+  {
+    "id": "AS13",
+    "ml_name": "as_force",
+    "name": "force",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/FORC"
+  },
+  {
+    "id": "AS130",
+    "ml_name": "as_heat_flow_rate",
+    "name": "heat flow rate",
+    "symbol": null,
+    "reference": "NIST SP-811"
+  },
+  {
+    "id": "AS131",
+    "ml_name": "as_thermal_insulance",
+    "name": "thermal insulance",
+    "symbol": null,
+    "reference": "NIST SP-811"
+  },
+  {
+    "id": "AS132",
+    "ml_name": "as_thermal_resistivity",
+    "name": "thermal resistivity",
+    "symbol": null,
+    "reference": "NIST SP-811"
+  },
+  {
+    "id": "AS133",
+    "ml_name": "as_linear_mass_density",
+    "name": "linear density",
+    "symbol": null,
+    "reference": "NIST SP-811"
+  },
+  {
+    "id": "AS134",
+    "ml_name": "as_mass_flow_rate",
+    "name": "mass flow rate",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.M03720"
+  },
+  {
+    "id": "AS135",
+    "ml_name": "as_mass_fraction",
+    "name": "mass fraction",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.M03722"
+  },
+  {
+    "id": "AS136",
+    "ml_name": "as_volume_fraction",
+    "name": "volume fraction",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.M03722"
+  },
+  {
+    "id": "AS137",
+    "ml_name": "as_amount_of_substance_fraction",
+    "name": "amount of substance fraction",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.A00299"
+  },
+  {
+    "id": "AS138",
+    "ml_name": "as_volume_concentration",
+    "name": "volume concentration",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.C01222"
+  },
+  {
+    "id": "AS139",
+    "ml_name": "as_molality",
+    "name": "amount of substance solute per mass of solvent",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.M03970"
+  },
+  {
+    "id": "AS14",
+    "ml_name": "as_pressure",
+    "name": "pressure",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/PRES"
+  },
+  {
+    "id": "AS142",
+    "ml_name": "as_volume_content",
+    "name": "volume content",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.V06641"
+  },
+  {
+    "id": "AS143",
+    "ml_name": "as_amount_of_substance_content",
+    "name": "amount of substance content per mass of system",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.S06073"
+  },
+  {
+    "id": "AS144",
+    "ml_name": "as_relative_mass_density",
+    "name": "relative mass density",
+    "symbol": null,
+    "reference": "ISO 80000-4"
+  },
+  {
+    "id": "AS145",
+    "ml_name": "as_angular_momentum",
+    "name": "angular momentum",
+    "symbol": null,
+    "reference": "ISO 80000-4"
+  },
+  {
+    "id": "AS146",
+    "ml_name": "as_strain",
+    "name": "strain",
+    "symbol": null,
+    "reference": "ISO 80000-4"
+  },
+  {
+    "id": "AS147",
+    "ml_name": "as_efficiency",
+    "name": "efficiency",
+    "symbol": null,
+    "reference": "ISO 80000-4"
+  },
+  {
+    "id": "AS148",
+    "ml_name": "as_thermal_resistance",
+    "name": "thermal resistance",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.T06308"
+  },
+  {
+    "id": "AS149",
+    "ml_name": "as_thermal_conductance",
+    "name": "thermal conductance",
+    "symbol": null,
+    "reference": "ISO 80000-5"
+  },
+  {
+    "id": "AS15",
+    "ml_name": "as_stress",
+    "name": "stress",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/STRE"
+  },
+  {
+    "id": "AS150",
+    "ml_name": "as_ratio_mass",
+    "name": "ratio mass",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS151",
+    "ml_name": "as_ratio_pressure",
+    "name": "ratio pressure",
+    "symbol": "",
+    "reference": null
+  },
+  {
+    "id": "AS152",
+    "ml_name": "as_dew_point",
+    "name": "dew point",
+    "symbol": null,
+    "reference": "ISO 80000-5"
+  },
+  {
+    "id": "AS153",
+    "ml_name": "as_ratio_frequency",
+    "name": "ratio frequency",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS154",
+    "ml_name": "as_log_ratio_frequency",
+    "name": "log ratio frequency ",
+    "symbol": null,
+    "reference": "ISO 80000-6"
+  },
+  {
+    "id": "AS155",
+    "ml_name": "as_level_power",
+    "name": "level power",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS156",
+    "ml_name": "as_level_pressure",
+    "name": "level pressure",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS157",
+    "ml_name": "as_radiant_flux_density",
+    "name": "radiant flux density",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.08280"
+  },
+  {
+    "id": "AS158",
+    "ml_name": "as_electric_dipole_moment",
+    "name": "electric dipole moment",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.E01929"
+  },
+  {
+    "id": "AS159",
+    "ml_name": "as_fluidity",
+    "name": "fluidity",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.F02450"
+  },
+  {
+    "id": "AS16",
+    "ml_name": "as_energy",
+    "name": "energy",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ENGY"
+  },
+  {
+    "id": "AS160",
+    "ml_name": "as_reciprocal_specific_energy",
+    "name": "reciprocal specific energy",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS161",
+    "ml_name": "as_water_vapour_permeability",
+    "name": "water vapour permeability",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS162",
+    "ml_name": "as_surface_heat_energy_density",
+    "name": "surface heat energy density",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS163",
+    "ml_name": "as_kinematic_diffusivity",
+    "name": "kinematic diffusivity",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS164",
+    "ml_name": "as_moment_of_force_per_length",
+    "name": "moment of force per length",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS165",
+    "ml_name": "as_resistivity",
+    "name": "resistivity",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS166",
+    "ml_name": "as_thermal_impedance",
+    "name": "thermal impedance",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS167",
+    "ml_name": "as_power_density",
+    "name": "power density",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS168",
+    "ml_name": "as_reciprocal_length",
+    "name": "reciprocal length",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS169",
+    "ml_name": "as_magnetomotive_force",
+    "name": "magnetomotive force",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS17",
+    "ml_name": "as_work",
+    "name": "work",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/WORK"
+  },
+  {
+    "id": "AS170",
+    "ml_name": "as_linear_mass_flow_rate",
+    "name": "linear mass flow rate",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS171",
+    "ml_name": "as_water_vapour_permeance",
+    "name": "water vapour permeance",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS172",
+    "ml_name": "as_linear_force_density",
+    "name": "linear force density",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS173",
+    "ml_name": "as_thrust_to_mass_ratio",
+    "name": "thrust to mass ratio",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS174",
+    "ml_name": "as_surface_energy_density",
+    "name": "surface energy density",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS175",
+    "ml_name": "as_heat_transfer_coefficient",
+    "name": "heat transfer coefficient",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS176",
+    "ml_name": "as_electromotiveforce",
+    "name": "electromotive force",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.E01974"
+  },
+  {
+    "id": "AS18",
+    "ml_name": "as_amount_of_heat",
+    "name": "amount of heat",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/HEQT"
+  },
+  {
+    "id": "AS19",
+    "ml_name": "as_power",
+    "name": "power",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/POWR"
+  },
+  {
+    "id": "AS2",
+    "ml_name": "as_mass",
+    "name": "mass",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MASS"
+  },
+  {
+    "id": "AS20",
+    "ml_name": "as_radiant_flux",
+    "name": "radiant flux",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/RAFL"
+  },
+  {
+    "id": "AS21",
+    "ml_name": "as_electric_charge",
+    "name": "electric charge",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELCH"
+  },
+  {
+    "id": "AS22",
+    "ml_name": "as_electric_potential_difference",
+    "name": "electric potential",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELPD"
+  },
+  {
+    "id": "AS23",
+    "ml_name": "as_electric_capacitance",
+    "name": "capacitance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELCA"
+  },
+  {
+    "id": "AS24",
+    "ml_name": "as_electric_resistance",
+    "name": "electric resistance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELRE"
+  },
+  {
+    "id": "AS25",
+    "ml_name": "as_electric_conductance",
+    "name": "electric conductance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELCO"
+  },
+  {
+    "id": "AS26",
+    "ml_name": "as_magnetic_flux",
+    "name": "magnetic flux",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MGFL"
+  },
+  {
+    "id": "AS27",
+    "ml_name": "as_magnetic_flux_density",
+    "name": "magnetic flux density",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MGFD"
+  },
+  {
+    "id": "AS28",
+    "ml_name": "as_inductance",
+    "name": "inductance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELIN"
+  },
+  {
+    "id": "AS29",
+    "ml_name": "as_luminous_flux",
+    "name": "luminous flux",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/LUFL"
+  },
+  {
+    "id": "AS3",
+    "ml_name": "as_length",
+    "name": "length",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/LENG"
+  },
+  {
+    "id": "AS30",
+    "ml_name": "as_illuminance",
+    "name": "illuminance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ILLU"
+  },
+  {
+    "id": "AS31",
+    "ml_name": "as_activity_{radionuclide}",
+    "name": "activity  (of radionuclide)",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ARRN"
+  },
+  {
+    "id": "AS32",
+    "ml_name": "as_kerma",
+    "name": "kerma",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/KRMA"
+  },
+  {
+    "id": "AS33",
+    "ml_name": "as_absorbed_dose_{radiation}",
+    "name": "absorbed dose",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ABDO"
+  },
+  {
+    "id": "AS34",
+    "ml_name": "as_dose_equivalent",
+    "name": "dose equivalent",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/DOEQ"
+  },
+  {
+    "id": "AS35",
+    "ml_name": "as_catalytic_activity",
+    "name": "catalytic activity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/CATA"
+  },
+  {
+    "id": "AS36",
+    "ml_name": "as_area",
+    "name": "area",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/AREA"
+  },
+  {
+    "id": "AS37",
+    "ml_name": "as_volume",
+    "name": "volume",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/VOLU"
+  },
+  {
+    "id": "AS38",
+    "ml_name": "as_speed",
+    "name": "speed",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/VELO"
+  },
+  {
+    "id": "AS39",
+    "ml_name": "as_acceleration",
+    "name": "acceleration",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ACCE"
+  },
+  {
+    "id": "AS4",
+    "ml_name": "as_time",
+    "name": "time",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/TIME"
+  },
+  {
+    "id": "AS40",
+    "ml_name": "as_wavenumber",
+    "name": "wavenumber",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/WANU"
+  },
+  {
+    "id": "AS41",
+    "ml_name": "as_volumetric_mass_density",
+    "name": "volumetric mass density",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/DENS"
+  },
+  {
+    "id": "AS42",
+    "ml_name": "as_surface_mass_density",
+    "name": "surface mass density",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/SUDE"
+  },
+  {
+    "id": "AS43",
+    "ml_name": "as_specific_volume",
+    "name": "specific volume",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/SPVO"
+  },
+  {
+    "id": "AS44",
+    "ml_name": "as_current_density",
+    "name": "current density",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/CUDE"
+  },
+  {
+    "id": "AS45",
+    "ml_name": "as_magenetic_field_strength",
+    "name": "magenetic field strength",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MAFD"
+  },
+  {
+    "id": "AS46",
+    "ml_name": "as_amount_of_substance_concentration",
+    "name": "amount of substance concentration",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/AMSC"
+  },
+  {
+    "id": "AS48",
+    "ml_name": "as_luminous_exposure",
+    "name": "luminous_exposure",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/LUXP"
+  },
+  {
+    "id": "AS49",
+    "ml_name": "as_acoustic_impedance",
+    "name": "acoustic impedance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ACIM"
+  },
+  {
+    "id": "AS5",
+    "ml_name": "as_electric_current",
+    "name": "electric current",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELCU"
+  },
+  {
+    "id": "AS50",
+    "ml_name": "as_moment_of_force",
+    "name": "moment of force",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/TORQ"
+  },
+  {
+    "id": "AS51",
+    "ml_name": "as_surface_tension",
+    "name": "surface tension",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/SUTE"
+  },
+  {
+    "id": "AS52",
+    "ml_name": "as_angular_velocity",
+    "name": "angular velocity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/VELA"
+  },
+  {
+    "id": "AS53",
+    "ml_name": "as_angular_frequency",
+    "name": "angular frequency",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ANGF"
+  },
+  {
+    "id": "AS54",
+    "ml_name": "as_angular_acceleration",
+    "name": "angular acceleration",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ACCA"
+  },
+  {
+    "id": "AS55",
+    "ml_name": "as_heat_flux_density",
+    "name": "heat flux density",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/HEFD"
+  },
+  {
+    "id": "AS56",
+    "ml_name": "as_irradiance",
+    "name": "irradiance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/IRRA"
+  },
+  {
+    "id": "AS57",
+    "ml_name": "as_action",
+    "name": "action",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ACTI"
+  },
+  {
+    "id": "AS58",
+    "ml_name": "as_entropy",
+    "name": "entropy",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ENTR"
+  },
+  {
+    "id": "AS59",
+    "ml_name": "as_specific_heat_capacity",
+    "name": "specific heat capacity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/SHEC"
+  },
+  {
+    "id": "AS60",
+    "ml_name": "as_specific_entropy",
+    "name": "specific entropy",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/SENT"
+  },
+  {
+    "id": "AS61",
+    "ml_name": "as_specific_energy",
+    "name": "specific energy",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/SENG"
+  },
+  {
+    "id": "AS62",
+    "ml_name": "as_anisotropy",
+    "name": "anisotropy",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ANIS"
+  },
+  {
+    "id": "AS63",
+    "ml_name": "as_energy_density",
+    "name": "energy density",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ENGD"
+  },
+  {
+    "id": "AS64",
+    "ml_name": "as_electric_field_strength",
+    "name": "electric field strength",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELFS"
+  },
+  {
+    "id": "AS65",
+    "ml_name": "as_electric_charge_density",
+    "name": "electric charge density",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELCD"
+  },
+  {
+    "id": "AS66",
+    "ml_name": "as_surface_charge_density",
+    "name": "surface charge density",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/SUCD"
+  },
+  {
+    "id": "AS67",
+    "ml_name": "as_electric_flux_density",
+    "name": "electric flux density",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELFD"
+  },
+  {
+    "id": "AS68",
+    "ml_name": "as_electric_displacement",
+    "name": "electric displacement",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ELDS"
+  },
+  {
+    "id": "AS69",
+    "ml_name": "as_permittivity",
+    "name": "permittivity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/PRMI"
+  },
+  {
+    "id": "AS7",
+    "ml_name": "as_amount_of_substance",
+    "name": "amount of substance",
+    "symbol": "n",
+    "reference": "https://si-digital-framework.org/quantities/AMSU"
+  },
+  {
+    "id": "AS70",
+    "ml_name": "as_permeability",
+    "name": "permeability",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/PRME"
+  },
+  {
+    "id": "AS71",
+    "ml_name": "as_molar_energy",
+    "name": "molar energy",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MOEG"
+  },
+  {
+    "id": "AS72",
+    "ml_name": "as_molar_entropy",
+    "name": "molar entropy",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MOEN"
+  },
+  {
+    "id": "AS73",
+    "ml_name": "as_molar_heat_capacity",
+    "name": "molar heat capacity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MOHC"
+  },
+  {
+    "id": "AS74",
+    "ml_name": "as_exposure",
+    "name": "exposure",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS75",
+    "ml_name": "as_absorbed_dose_rate_{radiation}",
+    "name": "absorbed dose rate",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/ABDR"
+  },
+  {
+    "id": "AS76",
+    "ml_name": "as_radiant_intensity",
+    "name": "radiant intensity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/RAIN"
+  },
+  {
+    "id": "AS77",
+    "ml_name": "as_radiance",
+    "name": "radiance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/RADI"
+  },
+  {
+    "id": "AS78",
+    "ml_name": "as_catalytic_activity_concentration",
+    "name": "catalytic activity concentration",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/CTAC"
+  },
+  {
+    "id": "AS79",
+    "ml_name": "as_volumetric_flow_rate",
+    "name": "volumetric flow rate",
+    "symbol": null,
+    "reference": "NIST Special Publication 1038"
+  },
+  {
+    "id": "AS8",
+    "ml_name": "as_luminous_intensity",
+    "name": "luminous intensity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/LUIN"
+  },
+  {
+    "id": "AS80",
+    "ml_name": "as_fuel_efficiency",
+    "name": "fuel efficiency",
+    "symbol": null,
+    "reference": "NIST Special Publication 1038"
+  },
+  {
+    "id": "AS81",
+    "ml_name": "as_moment_of_mass",
+    "name": "moment of mass",
+    "symbol": null,
+    "reference": "NIST Special Publication 1038"
+  },
+  {
+    "id": "AS82",
+    "ml_name": "as_momentum",
+    "name": "momentum",
+    "symbol": null,
+    "reference": "NIST Special Publication 1038"
+  },
+  {
+    "id": "AS83",
+    "ml_name": "as_moment_of_inertia",
+    "name": "moment of inertia",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.M04006"
+  },
+  {
+    "id": "AS84",
+    "ml_name": "as_kinematic_viscosity",
+    "name": "kinematic viscosity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/KIVI"
+  },
+  {
+    "id": "AS85",
+    "ml_name": "as_linear_expansion_coefficient",
+    "name": "linear expansion coefficient",
+    "symbol": null,
+    "reference": "NIST Special Publication 1038"
+  },
+  {
+    "id": "AS86",
+    "ml_name": "as_coefficient_of_heat_transfer",
+    "name": "coefficient of heat transfer",
+    "symbol": null,
+    "reference": "NIST Special Publication 1038"
+  },
+  {
+    "id": "AS87",
+    "ml_name": "as_heat_capacity",
+    "name": "heat capacity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/HECA"
+  },
+  {
+    "id": "AS88",
+    "ml_name": "as_specific_internal_energy",
+    "name": "specific internal energy",
+    "symbol": null,
+    "reference": "NIST Special Publication 1038"
+  },
+  {
+    "id": "AS89",
+    "ml_name": "as_magnetic_field_strength",
+    "name": "magnetic field strength",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/MAFD"
+  },
+  {
+    "id": "AS9",
+    "ml_name": "as_si_dimensionless",
+    "name": "si dimensionless",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS90",
+    "ml_name": "as_electric_resistivity",
+    "name": "resistivity",
+    "symbol": null,
+    "reference": "NIST Special Publication 1038"
+  },
+  {
+    "id": "AS91",
+    "ml_name": "as_electric_conductivity",
+    "name": "conductivity",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.C01245"
+  },
+  {
+    "id": "AS92",
+    "ml_name": "as_wavelength",
+    "name": "wavelength",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.W06659"
+  },
+  {
+    "id": "AS93",
+    "ml_name": "as_luminous_exitance",
+    "name": "luminous exitance",
+    "symbol": null,
+    "reference": "NIST Special Publication 1038"
+  },
+  {
+    "id": "AS94",
+    "ml_name": "as_emissivity",
+    "name": "emissivity",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/EMIS"
+  },
+  {
+    "id": "AS95",
+    "ml_name": "as_photon_energy",
+    "name": "photon energy",
+    "symbol": null,
+    "reference": null
+  },
+  {
+    "id": "AS96",
+    "ml_name": "as_transmittance",
+    "name": "transmittance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/OPTR"
+  },
+  {
+    "id": "AS97",
+    "ml_name": "as_absorbance",
+    "name": "absorbance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/OPAB"
+  },
+  {
+    "id": "AS98",
+    "ml_name": "as_optical_density",
+    "name": "optical density",
+    "symbol": null,
+    "reference": "https://doi.org/10.1351/goldbook.A00028"
+  },
+  {
+    "id": "AS99",
+    "ml_name": "as_reflectance",
+    "name": "reflectance",
+    "symbol": null,
+    "reference": "https://si-digital-framework.org/quantities/OPRE"
+  }
+]

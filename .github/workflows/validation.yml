@@ -11,13 +11,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      
+      - name: Create directories
+        run: |
+          mkdir -p resources/repo/measurand-taxonomy
+          mkdir -p resources/repo/m-layer
       - name: Checkout taxonomy
         uses: actions/checkout@v5
         with: 
           repository: NCSLI-MII/measurand-taxonomy
-          path: resources/repo 
+          path: resources/repo/measurand-taxonomy 
 
+      - name: Checkout mlayer
+        uses: actions/checkout@v5
+        with: 
+          repository: NCSLI-MII/m-layer
+          path: resources/repo/m-layer 
+      
       - name: Conda
         uses: conda-incubator/setup-miniconda@v3
         with:
@@ -38,9 +47,14 @@ jobs:
       - name: list resources
         run: |
           pwd
-          ls
+          echo "Resources"
           ls resources
+          echo "Repo"
           ls resources/repo
+          echo "Taxonomy"
+          ls resources/repo/measurand-taxonomy
+          echo "Mlayer"
+          ls resources/repo/m-layer
           
       
       - name: Validate taxonomy and mlayer
