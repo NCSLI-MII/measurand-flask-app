@@ -47,10 +47,13 @@ jobs:
       - name: list resources
         run: |
           pwd
-          ls
+          echo "Resources"
           ls resources
+          echo "Repo"
           ls resources/repo
+          echo "Taxonomy"
           ls resources/repo/measurand-taxonomy
+          echo "Mlayer"
           ls resources/repo/m-layer
           
       
