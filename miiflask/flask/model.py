@@ -301,7 +301,9 @@ class MeasurandTaxon(Base):
 
     definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
     
-    deprecated: Mapped[bool]  
+    deprecated: Mapped[bool] 
+
+    replacement: Mapped[str] = mapped_column(String(50))
     
     quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
 
