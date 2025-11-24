@@ -303,7 +303,7 @@ class MeasurandTaxon(Base):
     
     deprecated: Mapped[bool] 
 
-    replacement: Mapped[str] = mapped_column(String(50))
+    replacement: Mapped[str] = mapped_column(String(50), nullable=False, default='')
     
     quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
 
@@ -311,9 +311,9 @@ class MeasurandTaxon(Base):
 
     aspect: Mapped['Aspect'] = relationship(foreign_keys=[aspect_id]) #, primaryjoin=aspect_id == Aspect.id)
     
-    processtype: Mapped[str] = mapped_column(String(10))  # Source | Measure
+    processtype: Mapped[str] = mapped_column(String(10), nullable=False, default='')  # Source | Measure
     
-    qualifier: Mapped[Optional[str]] = mapped_column(String(50))
+    qualifier: Mapped[Optional[str]] = mapped_column(String(50), nullable=False, default='')
     
     result: Mapped[str] = mapped_column(String(50))
     

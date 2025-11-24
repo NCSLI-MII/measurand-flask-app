@@ -453,6 +453,7 @@ class MeasurandTaxonView(ModelView):
                     'aspect',
                     'result',
                     'deprecated',
+                    'replacement',
                     'definition',
                     'processtype',
                     'qualifier',
