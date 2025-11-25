@@ -34,4 +34,4 @@ mkdir -p $DIR_PATH/resources/repo
 git clone --depth=1 https://github.com/NCSLI-MII/measurand-taxonomy.git $DIR_PATH/resources/repo/measurand-taxonomy
 git clone --depth=1 https://github.com/NCSLI-MII/m-layer.git $DIR_PATH/resources/repo/m-layer
 python dbinit_test.py -d -p "$DIR_PATH" 
-gunicorn -w 1 'miiflask.flask.app:app'
+# gunicorn -w 1 'miiflask.flask.app:app'
