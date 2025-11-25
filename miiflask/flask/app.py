@@ -93,7 +93,7 @@ if __name__ == "miiflask.flask.app":
     env = 'production'
     print('ENVIRONMENT: ', env)
     if(env == 'testing'):
-        app = create_app()
+        app = create_app(TestingConfig)
     elif(env=='development'):
         app = create_app(DevelopmentConfig)
     elif(env=='demo'):
