@@ -67,20 +67,58 @@ class MainIndexLink(MenuLink):
 
 def create_app(config):
     app = Flask(__name__)
+
+# TBD
+# Configure with environment variables
+# FLASK_APP = app
+# FLASK_ENV = testing
+# FLASK_ENV = development
     app.config.from_object(config)
 
     return app
 
-if __name__ == "miiflask.flask.app":
 
-    app = create_app(ProductionConfig)
+# Difference between flask sqlalchemy declarative base and vanilla sqlalchemcy
+# Ability to use query.Model
+# Stackoverflow 22698478 
+
+# The following model_class is customizing the flask db.Model
+# Which is there to include the metadata object in flask.db
+# Flask is just used to connect to db, not create db
+
+# env = environ['FLASK_ENV']
+
+
+if __name__ == "miiflask.flask.app":
+    env = 'production'
+    print('ENVIRONMENT: ', env)
+    if(env == 'testing'):
+        app = create_app(TestingConfig)
+    elif(env=='development'):
+        app = create_app(DevelopmentConfig)
+    elif(env=='demo'):
+        app = create_app(DemoConfig)
+    elif(env == 'production'):
+        app = create_app(ProductionConfig)
+    else:
+        print("App not configured")
+
+        
+    print('Testing ', app.config.get('TESTING'))
+    print('DEBUG ', app.config.get('DEBUG'))
+    print('URI ', app.config.get('SQLALCHEMY_DATABASE_URI')) 
+    if app.config.get('TESTING') is True: 
+        print("TESTING: create db for in-memory")
+        db = SQLAlchemy(app, model_class=Base)
+        with app.app_context():
+            db.create_all() 
+    else:    
+        db = SQLAlchemy(app, model_class=Base)
 
     print("Running the App and using views")
 
     with app.app_context():
-        db = SQLAlchemy(app, model_class=Base)
-        
-        # App needs to be configured before importing views
+    # App needs to be configured before importing views
 
         from miiflask.flask.views import (
                 MeasurandView,
