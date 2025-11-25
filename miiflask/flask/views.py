@@ -390,7 +390,15 @@ class ParameterView(ModelView):
     column_formatters = {
             'id': _id_formatter,
             'aspect': _link_formatter,
+            'measurandtaxon': _link_formatter,
             }
+    
+    column_labels = {
+            'aspect': 'Parameter aspect',
+            'quantitykind': 'UOM Quantity',
+            'measurandtaxon': 'Corresponding taxon'
+            }
+
     column_list = (
             "id", 
             "name",
@@ -398,6 +406,7 @@ class ParameterView(ModelView):
             "aspect", 
             "definition"
             )
+
     column_details_list = (
            "id",
            "name",
@@ -406,7 +415,7 @@ class ParameterView(ModelView):
            "definition",
            "quantitykind",
            )
-    form_excluded_columns = ('quantitykind',)
+    form_excluded_columns = ('quantitykind','measurandtaxon','measurand')
 
 
 class MeasurandTaxonView(ModelView):
@@ -424,7 +433,13 @@ class MeasurandTaxonView(ModelView):
     column_hide_backrefs = False
     column_searchable_list = ['name']
     
-    column_labels = {'parameter_names': 'Parameters'}
+    column_labels = {
+            'parameter_names': 'Parameters',
+            'result': 'Result name',
+            'aspect': 'Result aspect',
+            'quantitykind': 'UOM Quantity'
+            }
+    
     column_formatters = {
             'id': _id_formatter,
             'aspect': _link_formatter,
@@ -437,7 +452,7 @@ class MeasurandTaxonView(ModelView):
             "aspect", 
             "definition"
             )
-    inline_models = (Parameter, Reference)
+    inline_models = [(Parameter, dict(form_excluded_columns=['quantitykind','measurandtaxon','measurand'])), Reference]
     column_details_list = (
            "id",
            "name",
@@ -447,16 +462,17 @@ class MeasurandTaxonView(ModelView):
            "quantitykind",
            "parameter_names",
            )
-    form_excluded_columns = ('quantitykind',)
     form_columns = ['id',
                     'name',
-                    'aspect',
                     'result',
+                    'aspect',
+                    'quantitykind',
                     'deprecated',
+                    'replacement',
                     'definition',
-                    'processtype',
-                    'qualifier',
-                    'kcdbcmcs',
+                    #'processtype',
+                    #'qualifier',
+                    #'kcdbcmcs',
                     'parameters',
                     'external_references'] 
 
