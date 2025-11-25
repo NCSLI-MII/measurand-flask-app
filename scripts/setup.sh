@@ -19,13 +19,19 @@ echo $DIR_PATH
 # Check if path exists
 if [ ! -d "$DIR_PATH" ]; then
     mkdir "$DIR_PATH"
+else
+    echo "Directory $DIR_PATH exists, clean-up"
+    rm -rf "$DIR_PATH"
+    mkdir "$DIR_PATH"
 fi
 
 echo "Setting up running directory"
 
+
 ls -l "$DIR_PATH"
 mkdir -p $DIR_PATH/resources/repo
+
 git clone --depth=1 https://github.com/NCSLI-MII/measurand-taxonomy.git $DIR_PATH/resources/repo/measurand-taxonomy
 git clone --depth=1 https://github.com/NCSLI-MII/m-layer.git $DIR_PATH/resources/repo/m-layer
-python dbinit_test.py -d -p "/tmp/miiflask" 
-#gunicorn -w 1 'miiflask.flask.app:app'
+python dbinit_test.py -d -p "$DIR_PATH" 
+gunicorn -w 1 'miiflask.flask.app:app'

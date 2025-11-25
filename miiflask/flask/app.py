@@ -10,6 +10,7 @@
 
 """
 from os import environ
+import argparse
 
 from flask import Flask
 from flask import url_for
@@ -55,7 +56,7 @@ from miiflask.flask.model import (
     System,
     Prefix
 )
-
+app = None
 print('Creating app ', __name__)
 
 
@@ -64,7 +65,7 @@ class MainIndexLink(MenuLink):
         return url_for('index')
 
 
-def create_app(config=TestingConfig):
+def create_app(config):
     app = Flask(__name__)
 
 # TBD
@@ -72,9 +73,10 @@ def create_app(config=TestingConfig):
 # FLASK_APP = app
 # FLASK_ENV = testing
 # FLASK_ENV = development
-
     app.config.from_object(config)
+
     return app
+
 
 # Difference between flask sqlalchemy declarative base and vanilla sqlalchemcy
 # Ability to use query.Model
@@ -84,76 +86,82 @@ def create_app(config=TestingConfig):
 # Which is there to include the metadata object in flask.db
 # Flask is just used to connect to db, not create db
 
-env = environ['FLASK_ENV']
-print('ENVIRONMENT: ', env)
-if(env == 'testing'):
-    app = create_app()
-elif(env=='development'):
-    app = create_app(DevelopmentConfig)
-elif(env=='demo'):
-    app = create_app(DemoConfig)
-elif(env == 'production'):
-    app = create_app(ProductionConfig)
-else:
-    print("App not configured")
+# env = environ['FLASK_ENV']
 
-print('Testing ', app.config.get('TESTING'))
-print('DEBUG ', app.config.get('DEBUG'))
-print('URI ', app.config.get('SQLALCHEMY_DATABASE_URI')) 
-if app.config.get('TESTING') is True: 
-    print("TESTING: create db for in-memory")
-    db = SQLAlchemy(app, model_class=Base)
+
+if __name__ == "miiflask.flask.app":
+    env = 'production'
+    print('ENVIRONMENT: ', env)
+    if(env == 'testing'):
+        app = create_app()
+    elif(env=='development'):
+        app = create_app(DevelopmentConfig)
+    elif(env=='demo'):
+        app = create_app(DemoConfig)
+    elif(env == 'production'):
+        app = create_app(ProductionConfig)
+    else:
+        print("App not configured")
+
+        
+    print('Testing ', app.config.get('TESTING'))
+    print('DEBUG ', app.config.get('DEBUG'))
+    print('URI ', app.config.get('SQLALCHEMY_DATABASE_URI')) 
+    if app.config.get('TESTING') is True: 
+        print("TESTING: create db for in-memory")
+        db = SQLAlchemy(app, model_class=Base)
+        with app.app_context():
+            db.create_all() 
+    else:    
+        db = SQLAlchemy(app, model_class=Base)
+
+    print("Running the App and using views")
+
     with app.app_context():
-        db.create_all() 
-else:    
-    db = SQLAlchemy(app, model_class=Base)
+    # App needs to be configured before importing views
 
-print("Running the App and using views")
+        from miiflask.flask.views import (
+                MeasurandView,
+                TaxonView,
+                MeasurandTaxonView,
+                ParameterView,
+                CMCView,
+                MyModelView,
+                KcdbServiceView,
+                AspectView,
+                ScaleView,
+                CastConversionView,
+                DimensionView,
+                KcdbBranchView
+                )
 
-# App needs to be configured before importing views
-
-from miiflask.flask.views import (
-        MeasurandView,
-        TaxonView,
-        MeasurandTaxonView,
-        ParameterView,
-        CMCView,
-        MyModelView,
-        KcdbServiceView,
-        AspectView,
-        ScaleView,
-        CastConversionView,
-        DimensionView,
-        KcdbBranchView
-        )
-
-admin = Admin(app, name="qms", template_mode="bootstrap3")
-admin.add_view(ModelView(Domain, db.session))
-admin.add_view(AspectView(Aspect, db.session, category="Mlayer"))
-admin.add_view(ScaleView(Scale, db.session, category="Mlayer"))
-admin.add_view(MyModelView(Unit, db.session, category="Mlayer"))
-admin.add_view(MyModelView(Prefix, db.session, category="Mlayer"))
-admin.add_view(CastConversionView(Conversion, db.session, category="Mlayer"))
-admin.add_view(CastConversionView(Cast, db.session, category="Mlayer"))
-admin.add_view(MyModelView(Transform, db.session, category="Mlayer"))
-admin.add_view(DimensionView(Dimension, db.session, category="Mlayer"))
-admin.add_view(MyModelView(System, db.session, category="Mlayer"))
-admin.add_view(ParameterView(Parameter, db.session, category="Measurand"))
-# admin.add_view(MeasurandView(Measurand, db.session, category="Measurand"))
-admin.add_view(MeasurandTaxonView(MeasurandTaxon, db.session, category="Measurand"))
-admin.add_view(KcdbServiceView(KcdbServiceClass, db.session, category="KCDB"))
-admin.add_view(MyModelView(KcdbQuantity, db.session, category="KCDB"))
-admin.add_view(MyModelView(KcdbArea, db.session, category="KCDB"))
-admin.add_view(KcdbBranchView(KcdbBranch, db.session, category="KCDB"))
-admin.add_view(MyModelView(KcdbService, db.session, category="KCDB"))
-admin.add_view(MyModelView(KcdbSubservice, db.session, category="KCDB"))
-admin.add_view(MyModelView(KcdbIndividualService, db.session, category="KCDB"))
-admin.add_view(MyModelView(KcdbInstrument, db.session, category="KCDB"))
-admin.add_view(MyModelView(KcdbInstrumentMethod, db.session, category="KCDB"))
-admin.add_view(MyModelView(KcdbParameter, db.session, category="KCDB"))
-admin.add_view(CMCView(KcdbCmc, db.session, category="KCDB"))
-    
-admin.add_link(MainIndexLink(name='Homepage'))
+        admin = Admin(app, name="qms", template_mode="bootstrap3")
+        admin.add_view(ModelView(Domain, db.session))
+        admin.add_view(AspectView(Aspect, db.session, category="Mlayer"))
+        admin.add_view(ScaleView(Scale, db.session, category="Mlayer"))
+        admin.add_view(MyModelView(Unit, db.session, category="Mlayer"))
+        admin.add_view(MyModelView(Prefix, db.session, category="Mlayer"))
+        admin.add_view(CastConversionView(Conversion, db.session, category="Mlayer"))
+        admin.add_view(CastConversionView(Cast, db.session, category="Mlayer"))
+        admin.add_view(MyModelView(Transform, db.session, category="Mlayer"))
+        admin.add_view(DimensionView(Dimension, db.session, category="Mlayer"))
+        admin.add_view(MyModelView(System, db.session, category="Mlayer"))
+        admin.add_view(ParameterView(Parameter, db.session, category="Measurand"))
+        # admin.add_view(MeasurandView(Measurand, db.session, category="Measurand"))
+        admin.add_view(MeasurandTaxonView(MeasurandTaxon, db.session, category="Measurand"))
+        admin.add_view(KcdbServiceView(KcdbServiceClass, db.session, category="KCDB"))
+        admin.add_view(MyModelView(KcdbQuantity, db.session, category="KCDB"))
+        admin.add_view(MyModelView(KcdbArea, db.session, category="KCDB"))
+        admin.add_view(KcdbBranchView(KcdbBranch, db.session, category="KCDB"))
+        admin.add_view(MyModelView(KcdbService, db.session, category="KCDB"))
+        admin.add_view(MyModelView(KcdbSubservice, db.session, category="KCDB"))
+        admin.add_view(MyModelView(KcdbIndividualService, db.session, category="KCDB"))
+        admin.add_view(MyModelView(KcdbInstrument, db.session, category="KCDB"))
+        admin.add_view(MyModelView(KcdbInstrumentMethod, db.session, category="KCDB"))
+        admin.add_view(MyModelView(KcdbParameter, db.session, category="KCDB"))
+        admin.add_view(CMCView(KcdbCmc, db.session, category="KCDB"))
+            
+        admin.add_link(MainIndexLink(name='Homepage'))
 
 
 
