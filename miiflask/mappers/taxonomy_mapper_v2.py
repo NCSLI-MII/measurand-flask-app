@@ -550,11 +550,14 @@ class TaxonomyMapper:
             }
         }
         xml = xmltodict.unparse(taxonomy, pretty=True)
-
         return xml
     
     @classmethod
     def _getTaxonDict(self, obj, schema):
+        # The dictionary is used to serialize to XML using xmltodict
+        # The order of the dictionary elements must conform to the schema
+        # 
+
         #mpprint(self._schemas["measurand"].dumps(obj, indent=2))
         #data = self._schemas["measurand"].dump(obj)
         data = schema.dump(obj)
@@ -567,15 +570,45 @@ class TaxonomyMapper:
         taxon["@deprecated"] = data.pop("deprecated")
         taxon["@deprecated"] = "true" if taxon["@deprecated"] is True else "false" 
         taxon["@replacement"] = data.pop("replacement")
-        taxon["mtc:Result"] = {"@name": data.pop("result",""),
-            "uom:Quantity": {"@name": data.pop("quantitykind", "")}
-        }
+        
+        # Include external references if available
+        if "external_references" in data.keys():
+            if len(data["external_references"]) > 0:
+                taxon["mtc:ExternalReferences"] = []
+                for ref in data["external_references"]:
+                    dict_ = {}
+                    dict_["mtc:Reference"] = {
+                            "mtc:CategoryTag": {
+                                "mtc:name": ref["category_name"],
+                                "mtc:value": ref["category_value"]
+                                },
+                            "mtc:ReferenceUrl": {
+                                "mtc:name": ref["reference_name"],
+                                "mtc:url": ref["reference_url"]
+                                }
+                            }
+                    taxon["mtc:ExternalReferences"].append(dict_)
+                if len(taxon["mtc:ExternalReferences"]) == 1:
+                    taxon["mtc:ExternalReferences"] = taxon["mtc:ExternalReferences"][0] 
+        
+        # Include the result
+        taxon["mtc:Result"] = {"@name": data.pop("result","")}
+       
+        # Add uom:Quantity to Result if exists
+        if 'quantitykind' in data.keys():
+            if data['quantitykind']:
+                taxon["mtc:Result"]["uom:Quantity"] = {
+                        "@name": data['quantitykind']
+                        }
+        
+        # Add aspect to Result         
         if 'aspect' in data.keys():
             if data['aspect']:
                 taxon["mtc:Result"]["mtc:mLayer"] = {
                         "@aspect": data['aspect']['ml_name'],
                         "@id": data['aspect']['id']
                         }
+
         if 'scale' in data.keys(): 
             if data['scale']:
                 taxon["mtc:Scale"] = {
@@ -583,7 +616,7 @@ class TaxonomyMapper:
                         "@id": data['scale']['id']
                         }
 
-        
+        # Add parameters to taxon
         if "parameters" in data.keys():
             if len(data["parameters"]) > 0:
                 taxon["mtc:Parameter"] = []
@@ -608,25 +641,8 @@ class TaxonomyMapper:
                     taxon["mtc:Parameter"].append(dict_)
                 if len(taxon["mtc:Parameter"]) == 1:
                     taxon["mtc:Parameter"] = taxon["mtc:Parameter"][0]
-        if "external_references" in data.keys():
-            if len(data["external_references"]) > 0:
-                taxon["mtc:ExternalReferences"] = []
-                for ref in data["external_references"]:
-                    dict_ = {}
-                    dict_["mtc:Reference"] = {
-                            "mtc:CategoryTag": {
-                                "mtc:name": ref["category_name"],
-                                "mtc:value": ref["category_value"]
-                                },
-                            "mtc:ReferenceUrl": {
-                                "mtc:name": ref["reference_name"],
-                                "mtc:url": ref["reference_url"]
-                                }
-                            }
-                    taxon["mtc:ExternalReferences"].append(dict_)
-                if len(taxon["mtc:ExternalReferences"]) == 1:
-                    taxon["mtc:ExternalReferences"] = taxon["mtc:ExternalReferences"][0] 
         
+        # Add disciple to taxon
         if data['discipline']:
             taxon["mtc:Discipline"] = {
                 "@name": data["discipline"]['label']
@@ -635,6 +651,8 @@ class TaxonomyMapper:
             taxon["mtc:Discipline"] = {
                 "@name": "" 
             }
+
+        # Add definition
         taxon["mtc:Definition"] = data.pop("definition", "")
         return taxon
     
