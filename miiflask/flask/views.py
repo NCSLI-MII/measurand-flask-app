@@ -775,7 +775,8 @@ def measurand_export_xml(measurand_id):
     m = MeasurandTaxon.query.get_or_404(measurand_id)
     taxons = [TaxonomyMapper._getTaxonDict(m, m_schema)]
     xml = TaxonomyMapper._dicttoxml_taxonomy(taxons)
-    content = f'attachment; filename= {m.id}.xml'
+    filename = m.id.replace('.','_')
+    content = f'attachment; filename= {filename}.xml'
     response = app.make_response(xml)
     response.headers["Content-Disposition"] = content 
     response.headers["Content-type"] = "text/xml"
