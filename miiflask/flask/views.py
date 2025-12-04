@@ -773,8 +773,8 @@ def taxonomy_export():
 def measurand_export_xml(measurand_id):
     # print("Get Meaurand ", measurand_id)
     m = MeasurandTaxon.query.get_or_404(measurand_id)
-    taxons = [TaxonomyMapper._getTaxonDict(m, m_schema)]
-    xml = TaxonomyMapper._dicttoxml_taxonomy(taxons)
+    taxon = TaxonomyMapper._getTaxonDict(m, m_schema)
+    xml = TaxonomyMapper._dicttoxml_taxon(taxon)
     filename = m.id.replace('.','_')
     content = f'attachment; filename= {filename}.xml'
     response = app.make_response(xml)
