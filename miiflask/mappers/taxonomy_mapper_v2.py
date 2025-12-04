@@ -553,6 +553,14 @@ class TaxonomyMapper:
         return xml
     
     @classmethod
+    def _dicttoxml_taxon(self, taxon):
+        taxon["@xmlns:uom"] = "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/UOM_Database"
+        taxon["@xmlns:mtc"] = "https://cls-schemas.s3.us-west-1.amazonaws.com/MII/MeasurandTaxonomyCatalog"
+        _taxon = {"mtc:Taxon": taxon}
+        xml = xmltodict.unparse(_taxon, pretty=True)
+        return xml
+    
+    @classmethod
     def _getTaxonDict(self, obj, schema):
         # The dictionary is used to serialize to XML using xmltodict
         # The order of the dictionary elements must conform to the schema
