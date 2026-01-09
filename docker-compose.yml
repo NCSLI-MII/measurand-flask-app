@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  app:
+    # image: mlayerprodeastuscr.azurecr.io/m-layer:1.0.0
+    image: mlayerprodeastuscr.azurecr.io/m-layer:1.0.1
+    ports:
+      - "8000:8000"
+    environment:
+      - FLASK_ENV=production
+    volumes:
+      - /data/miiflask:/tmp/miiflask 
+    restart: always
+
+
+# version: '3.8'
+# services:
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     image: mlayer-app:latest
+#     ports:
+#       - "8000:8000"
+#     environment:
+#       - FLASK_ENV=production
+#     volumes:
+#       - /data/miiflask:/tmp/miiflask
+#     restart: always

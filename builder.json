@@ -8,7 +8,7 @@
     "kcdb_cmc_data": "kcdb_cmc_physics.json",
     "kcdb_cmc_api_countries": ["CA"],
     "api_mlayer": "https://api.mlayer.org",
-    "use_api": false,
+    "use_api": true,
     "use_cmc_api": false,
     "update_resources": false
 }
