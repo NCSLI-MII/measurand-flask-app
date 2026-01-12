@@ -37,6 +37,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements_pip.txt
             
+      - name: Pip list outdated
+        run: | 
+          pip list --outdated
+
+      - name: Pip upgrade
+        run: |
+          pip install $(pip list --outdated | awk '{ print $1 }') --upgrade
+          pip freeze > requirements_pip.txt
+      
       - name: list resources
         run: |
           pwd
