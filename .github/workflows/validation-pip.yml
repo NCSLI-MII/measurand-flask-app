@@ -43,7 +43,8 @@ jobs:
 
       - name: Pip upgrade
         run: |
-          pip install $(pip list --outdated | awk '{ print $1 }') --upgrade
+          # pip install $(pip list --outdated | awk '{ print $1 }') --upgrade
+          pip list --format json | jq -r '.[].name' | xargs pip install -U # pypa/pip/issues/4551
           pip freeze > requirements_pip.txt
       
       - name: list resources
