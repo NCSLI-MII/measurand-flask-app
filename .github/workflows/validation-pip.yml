@@ -1,0 +1,57 @@
+name: validation-pip
+on: 
+  pull_request:
+    branchs: [main]
+  workflow_dispatch:
+
+jobs:
+  validate-taxonomy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    - uses: actions/setup-python@v6
+      with: 
+        python-version: '3.10'
+        cache: 'pip'
+
+      - name: Create directories
+        run: |
+          mkdir -p resources/repo/measurand-taxonomy
+          mkdir -p resources/repo/m-layer
+      - name: Checkout taxonomy
+        uses: actions/checkout@v5
+        with: 
+          repository: NCSLI-MII/measurand-taxonomy
+          path: resources/repo/measurand-taxonomy 
+
+      - name: Checkout mlayer
+        uses: actions/checkout@v5
+        with: 
+          repository: NCSLI-MII/m-layer
+          path: resources/repo/m-layer 
+      
+      - name: Pip install
+        run: pip install -r requirements-pip.txt
+            
+      - name: list resources
+        run: |
+          pwd
+          echo "Resources"
+          ls resources
+          echo "Repo"
+          ls resources/repo
+          echo "Taxonomy"
+          ls resources/repo/measurand-taxonomy
+          echo "Mlayer"
+          ls resources/repo/m-layer
+          
+      
+      - name: Validate taxonomy and mlayer
+        id: validate
+        run: |
+          which python
+          python -m unittest tests/test_validate.py 
+
+
+   
+
