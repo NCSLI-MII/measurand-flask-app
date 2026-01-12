@@ -15,7 +15,7 @@ import urllib
 import re
 import string
 import xmltodict, xmlschema
-from marshmallow import pprint as mpprint
+import pprint as mpprint
 from miiflask.flask import model
 
 import pandas as pd
