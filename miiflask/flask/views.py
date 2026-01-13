@@ -16,8 +16,9 @@ from flask import (render_template,
                    redirect,
                    request,
                    url_for,
-                   flash,
-                   Markup)
+                   flash
+                   )
+
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.model.filters import BaseFilter
 from flask_admin.babel import gettext
@@ -29,6 +30,7 @@ from flask_admin.helpers import get_redirect_target
 from wtforms import HiddenField, StringField, Form
 from wtforms.validators import InputRequired
 
+from markupsafe import Markup
 from miiflask.flask.model import (
     Administrative,
     Measurand,
@@ -63,7 +65,7 @@ from miiflask.utils.model_visualizer import (
     visualize_model_instance
     )
 
-from marshmallow import pprint as mpprint
+import pprint as mpprint
 import json
 import graphviz
 import base64
