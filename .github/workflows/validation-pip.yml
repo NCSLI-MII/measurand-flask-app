@@ -40,6 +40,7 @@ jobs:
       - name: Pip list outdated
         run: | 
           pip list --outdated
+      
 
           #- name: Pip upgrade
           #run: |
@@ -73,6 +74,18 @@ jobs:
           pip list
           python -m unittest tests/test_validate.py 
 
+      - name: 
+        run: |
+          pip install --upgrade Flask
+          pip install --upgrade Flask-Admin
+          pip install --upgrade Flask-SQLAlchemy
+          pip install --upgrade marshmallow
+          pip install --upgrade marshmallow-sqlalchemy
 
-   
+      - name: Validate taxonomy and mlayer
+        id: validate
+        run: |
+          which python
+          pip list
+          python -m unittest tests/test_validate.py 
 
