@@ -1,0 +1,14 @@
+name: mdb-test
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - flask
+  - marshmallow
+  - flask-admin
+  - flask-sqlalchemy
+  - requests
+  - marshmallow-sqlalchemy
+  - xmltodict
+  - xmlschema
+prefix: /home/rwhite/miniforge3/envs/mdb-test

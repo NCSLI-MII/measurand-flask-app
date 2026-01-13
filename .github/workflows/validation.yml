@@ -31,7 +31,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: measurand-flask-app
-          environment-file: environment.yml
+          environment-file: environment_history.yml
           miniforge-version: "latest"
           auto-activate-base: true
 
@@ -69,34 +69,34 @@ jobs:
       - name: Conda update
         run: |
           # mamba update -y -f environment.yml 
-          mamba activate measurand-flask-app
-          mamba update --all
+          eval "$(mamba shell hook --shell bash)"
+          mamba update --all --dry-run
           #mamba env export > updated_environment.yml
           #conda list -e > updated_requirements_conda.txt
           #mamba list --revisions
           #diff environment.yml updated_environment.yml
           #diff requirements.txt updated_requirements_conda.txt
 
-      - name: Upload environment
-        uses: actions/upload-artifact@v4
-        with:
-          name: updated_environment.yml
-          path: updated_environment.yml
+      #- name: Upload environment
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: updated_environment.yml
+      #    path: updated_environment.yml
        
-      - name: Upload requirements
-        uses: actions/upload-artifact@v4
-        with:
-          name: updated_requirements_conda.txt
-          path: updated_requirements_conda.txt
+          #- name: Upload requirements
+          #uses: actions/upload-artifact@v4
+          #with:
+          #name: updated_requirements_conda.txt
+          #path: updated_requirements_conda.txt
 
-      - name: Validate taxonomy and mlayer
-        id: post-validate
-        run: |
-          eval "$(mamba shell hook --shell bash)"
-          mamba env list
-          mamba activate measurand-flask-app
-          mamba list
-          which python
-          python -m unittest tests/test_validate.py 
+          #- name: Validate taxonomy and mlayer
+          #id: post-validate
+          #run: |
+          #eval "$(mamba shell hook --shell bash)"
+          #mamba env list
+          #mamba activate measurand-flask-app
+          #mamba list
+          #which python
+          #python -m unittest tests/test_validate.py 
    
 

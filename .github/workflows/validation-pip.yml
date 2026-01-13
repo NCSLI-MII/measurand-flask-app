@@ -35,30 +35,27 @@ jobs:
       - name: Pip install dependencies
         run: | 
           python -m pip install --upgrade pip
-          pip install -r requirements_pip.txt
+          pip install -r requirements_pip_v2.txt
 
       - name: Pip list outdated
         run: | 
           pip list --outdated
       
 
-      - name: Pip upgrade
-        run: |
+          #- name: Pip upgrade
+          #run: |
           ## pip install $(pip list --outdated | awk '{ print $1 }') --upgrade
-          pip list --format json | jq -r '.[].name' | xargs pip install -U # pypa/pip/issues/4551
-          pip freeze > updated_requirements_pip.txt
+          #pip list --format json | jq -r '.[].name' | xargs pip install -U # pypa/pip/issues/4551
+          #pip freeze > updated_requirements_pip.txt
       
-      - name: Upload requirements
-        uses: actions/upload-artifact@v4
-        with:
-          name: updated_requirements_pip.txt
-          path: updated_requirements_pip.txt
+          #- name: Upload requirements
+          #uses: actions/upload-artifact@v4
+          #with:
+          #name: updated_requirements_pip.txt
+          #path: updated_requirements_pip.txt
 
       - name: list resources
         run: |
-          pwd
-          echo "Resources"
-          ls resources
           echo "Repo"
           ls resources/repo
           echo "Taxonomy"
