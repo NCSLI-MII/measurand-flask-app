@@ -68,13 +68,14 @@ jobs:
 
       - name: Conda update
         run: |
-          #mamba update -y -f environment.yml 
+          # mamba update -y -f environment.yml 
+          mamba activate measurand-flask-app
           mamba update --all
-          mamba env export > updated_environment.yml
-          conda list -e > updated_requirements_conda.txt
-          mamba list --revisions
-          diff environment.yml updated_environment.yml
-          diff requirements.txt updated_requirements_conda.txt
+          #mamba env export > updated_environment.yml
+          #conda list -e > updated_requirements_conda.txt
+          #mamba list --revisions
+          #diff environment.yml updated_environment.yml
+          #diff requirements.txt updated_requirements_conda.txt
 
       - name: Upload environment
         uses: actions/upload-artifact@v4

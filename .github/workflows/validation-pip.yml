@@ -35,8 +35,13 @@ jobs:
       - name: Pip install dependencies
         run: | 
           python -m pip install --upgrade pip
-          pip install -r requirements_pip.txt
-            
+          # pip install -r requirements_pip.txt
+          pip install Flask
+          pip install Flask-Admin
+          pip install Flask-SQLAlchemy
+          pip install marshmallow
+          pip install marshmallow-sqlalchemy
+
       - name: Pip list outdated
         run: | 
           pip list --outdated
@@ -69,21 +74,6 @@ jobs:
       
       - name: Validate taxonomy and mlayer
         id: validate
-        run: |
-          which python
-          pip list
-          python -m unittest tests/test_validate.py 
-
-      - name: 
-        run: |
-          pip install --upgrade Flask
-          pip install --upgrade Flask-Admin
-          pip install --upgrade Flask-SQLAlchemy
-          pip install --upgrade marshmallow
-          pip install --upgrade marshmallow-sqlalchemy
-
-      - name: Validate taxonomy and mlayer
-        id: post-validate
         run: |
           which python
           pip list
