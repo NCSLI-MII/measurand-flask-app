@@ -49,13 +49,14 @@ jobs:
           mamba update -y -f environment.yml 
           mamba env export > updated_environment.yml
           conda list -e > updated_requirements_conda.txt
+          mamba list --revisions
 
       - name: Upload environment
         uses: actions/upload-artifact@v4
         with:
           name: updated_environment.yml
           path: updated_environment.yml
-      
+       
       - name: Upload requirements
         uses: actions/upload-artifact@v4
         with:
