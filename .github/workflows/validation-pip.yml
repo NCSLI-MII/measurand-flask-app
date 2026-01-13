@@ -45,8 +45,14 @@ jobs:
         run: |
           # pip install $(pip list --outdated | awk '{ print $1 }') --upgrade
           pip list --format json | jq -r '.[].name' | xargs pip install -U # pypa/pip/issues/4551
-          pip freeze > requirements_pip.txt
+          pip freeze > updated_requirements_pip.txt
       
+      - name: Upload requirements
+        uses: action/upload-artifact@v4
+        with:
+          name: updated_requirements_pip.txt
+          path: updated_requirements_pip.txt
+
       - name: list resources
         run: |
           pwd
