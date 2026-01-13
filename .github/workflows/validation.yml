@@ -69,7 +69,7 @@ jobs:
       - name: Conda update
         run: |
           #mamba update -y -f environment.yml 
-          mambe update --all
+          mamba update --all
           mamba env export > updated_environment.yml
           conda list -e > updated_requirements_conda.txt
           mamba list --revisions
