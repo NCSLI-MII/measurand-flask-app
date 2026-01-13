@@ -39,7 +39,7 @@ jobs:
             
       - name: Pip list outdated
         run: | 
-        pip list --outdated
+          pip list --outdated
 
           #- name: Pip upgrade
           #run: |
