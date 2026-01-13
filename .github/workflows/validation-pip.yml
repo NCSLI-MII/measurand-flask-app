@@ -83,7 +83,7 @@ jobs:
           pip install --upgrade marshmallow-sqlalchemy
 
       - name: Validate taxonomy and mlayer
-        id: validate
+        id: post-validate
         run: |
           which python
           pip list
