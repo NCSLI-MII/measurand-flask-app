@@ -65,8 +65,6 @@ jobs:
       - name: list resources
         run: |
           pwd
-          echo "Resources"
-          ls resources
           echo "Repo"
           ls resources/repo
           echo "Taxonomy"
