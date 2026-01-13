@@ -18,7 +18,6 @@ import xmltodict, xmlschema
 import pprint as mpprint
 from miiflask.flask import model
 
-import pandas as pd
 
 def dicttoxml_taxonomy(taxons):
     taxonomy = {
