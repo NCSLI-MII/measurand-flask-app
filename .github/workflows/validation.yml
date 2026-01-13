@@ -51,13 +51,13 @@ jobs:
           conda list -e > updated_requirements_conda.txt
 
       - name: Upload environment
-        uses: action/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: updated_environment.yml
           path: updated_environment.yml
       
       - name: Upload requirements
-        uses: action/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: updated_requirements_conda.txt
           path: updated_requirements_conda.txt

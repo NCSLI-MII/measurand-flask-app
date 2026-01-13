@@ -48,7 +48,7 @@ jobs:
           pip freeze > updated_requirements_pip.txt
       
       - name: Upload requirements
-        uses: action/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: updated_requirements_pip.txt
           path: updated_requirements_pip.txt
