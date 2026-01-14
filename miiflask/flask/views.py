@@ -541,27 +541,29 @@ class ScaleView(ModelView):
     def _cnv_link_formatter(view, context, model, name):
         urls = []
         for s in model.conversions:
-            id_ = '{}: {} &#8594 {}'.format(s.aspect.name,
+            name_ = '{}: {} &#8594 {}'.format(s.aspect.name,
                                     s.src_scale.ml_name,
                                     s.dst_scale.ml_name)
+            id_ = '{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.aspect.id)
             url = url_for('conversion.details_view', id=id_)
-            urls.append('<a href="{}">{}</a>'.format(url,
-                                                     id_.replace(',', '.')))
+            urls.append('<a href="{}">{}</a>'.format(url,name_))
+                                                     #id_.replace(',', '.')))
         return Markup((', <br/>').join(urls))
 
     def _cast_link_formatter(view, context, model, name):
         urls = []
         for s in model.casts:
-            id_ = '{}: {} &#8594 {}: {}'.format(s.src_aspect.name,
+            name_ = '{}: {} &#8594 {}: {}'.format(s.src_aspect.name,
                                        s.src_scale.ml_name,
                                        s.dst_aspect.name,
                                        s.dst_scale.ml_name)
+            id_ = '{},{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.src_aspect.id,s.dst_aspect.id)
             url = url_for('cast.details_view', id=id_)
-            urls.append('<a href="{}">{}</a>'.format(url,
-                                                     id_.replace(',', '.')))
+            urls.append('<a href="{}">{}</a>'.format(url,name_))
+                                                     #id_.replace(',', '.')))
         return Markup((', <br/>').join(urls))
     
-    column_searchable_list = ['ml_name']
+    column_searchable_list = ['ml_name', 'id']
     can_export = True
     column_display_pk = True
     can_view_details = True
