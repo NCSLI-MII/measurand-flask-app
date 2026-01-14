@@ -1,18 +1,20 @@
-FROM continuumio/miniconda3:latest
+FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY environment.yml /app/
-RUN conda env create -f environment.yml && conda clean -afy
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-SHELL ["conda", "run", "-n", "mlayer", "/bin/bash", "-c"]
+# Install dependencies
+COPY requirements_pip_v2.txt /app/
+RUN pip install --no-cache-dir -r requirements_pip_v2.txt 
+
+# SHELL ["conda", "run", "-n", "mlayer", "/bin/bash", "-c"]
 
 COPY . /app/
 
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
-
-RUN mkdir -p /tmp/miiflask
 
 EXPOSE 8000
 

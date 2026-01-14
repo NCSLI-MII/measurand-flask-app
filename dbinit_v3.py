@@ -26,8 +26,8 @@ from miiflask.mappers.kcdb_mapper import KcdbMapper
 def main():
     
     parms = {
-        "path": "/tmp/mdb-test/var",
-        "database": "/tmp/mdb-test/var/miiflask.db",
+        "path": "var",
+        "database": "var/miiflask.db",
         "usertables": "/tmp/miiflask/tables_",
         "measurands": "resources/repo/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
         "mlayer": "resources/repo/m-layer/source/json",
@@ -58,7 +58,7 @@ def main():
 
 if __name__ == "__main__":
     engine = create_engine(
-        "sqlite:///" + os.path.abspath("/tmp/mdb-test/var/miiflask.db")
+        "sqlite:///" + os.path.abspath("var/miiflask.db")
     )
 
     bind_engine(engine)
