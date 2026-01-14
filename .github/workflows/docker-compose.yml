@@ -33,3 +33,6 @@ jobs:
 
       - name: Start service
         run: docker compose up
+
+      - name: Stop service
+        run: docker compose down
