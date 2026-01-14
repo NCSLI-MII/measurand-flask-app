@@ -1,6 +1,8 @@
 #!/bin/bash
 
-if [ ! -f var/miiflask.db ]; then
+files=$(ls)
+echo "$files"
+if [ ! -f data/miiflask.db ]; then
   echo "Database file not found. Initializing database..."
   python dbinit_v3.py 
 fi

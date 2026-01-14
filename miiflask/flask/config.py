@@ -36,5 +36,5 @@ class DemoConfig(Config):
 
 class ProductionConfig(Config):
     PRODUCTION = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.abspath("var/miiflask.db")
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.abspath("data/miiflask.db")
 
