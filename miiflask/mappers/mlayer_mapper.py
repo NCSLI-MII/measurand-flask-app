@@ -317,8 +317,10 @@ class MlayerMapper:
             .filter(model.Scale.id == obj['dst_scale_id'])
             .first()
         )
-        aspect.scales.append(src_scale)
-        aspect.scales.append(dst_scale)
+        if not src_scale in aspect.scales:
+            aspect.scales.append(src_scale)
+        if not dst_scale in aspect.scales:
+            aspect.scales.append(dst_scale)
 
         # TBD
         # Marshmallow serilization
@@ -350,8 +352,10 @@ class MlayerMapper:
             .filter(model.Scale.id == obj['dst_scale_id'])
             .first()
         )
-        src_aspect.scales.append(src_scale)
-        dst_aspect.scales.append(dst_scale)
+        if not src_scale in src_aspect.scales:
+            src_aspect.scales.append(src_scale)
+        if not dst_scale in dst_aspect.scales:
+            dst_aspect.scales.append(dst_scale)
         cast = model.Cast(src_scale_id=obj['src_scale_id'],
                           dst_scale_id=obj['dst_scale_id'],
                           src_aspect_id=obj['src_aspect_id'],
