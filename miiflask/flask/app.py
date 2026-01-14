@@ -18,6 +18,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.menu import MenuLink
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.base import Bootstrap4Theme
 
 # This is vanilla SQLAlchemy declarative base
 
@@ -97,7 +98,7 @@ if __name__ == "miiflask.flask.app":
                 KcdbBranchView
                 )
 
-        admin = Admin(app, name="qms", template_mode="bootstrap3")
+        admin = Admin(app, name="mii", theme=Bootstrap4Theme(swatch="cerulean"))
         admin.add_view(ModelView(Domain, db.session))
         admin.add_view(AspectView(Aspect, db.session, category="Mlayer"))
         admin.add_view(ScaleView(Scale, db.session, category="Mlayer"))

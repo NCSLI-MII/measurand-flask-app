@@ -16,8 +16,9 @@ from flask import (render_template,
                    redirect,
                    request,
                    url_for,
-                   flash,
-                   Markup)
+                   flash
+                   )
+
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.model.filters import BaseFilter
 from flask_admin.babel import gettext
@@ -29,6 +30,7 @@ from flask_admin.helpers import get_redirect_target
 from wtforms import HiddenField, StringField, Form
 from wtforms.validators import InputRequired
 
+from markupsafe import Markup
 from miiflask.flask.model import (
     Administrative,
     Measurand,
@@ -63,7 +65,7 @@ from miiflask.utils.model_visualizer import (
     visualize_model_instance
     )
 
-from marshmallow import pprint as mpprint
+import pprint as mpprint
 import json
 import graphviz
 import base64
@@ -539,27 +541,29 @@ class ScaleView(ModelView):
     def _cnv_link_formatter(view, context, model, name):
         urls = []
         for s in model.conversions:
-            id_ = '{}: {} &#8594 {}'.format(s.aspect.name,
+            name_ = '{}: {} &#8594 {}'.format(s.aspect.name,
                                     s.src_scale.ml_name,
                                     s.dst_scale.ml_name)
+            id_ = '{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.aspect.id)
             url = url_for('conversion.details_view', id=id_)
-            urls.append('<a href="{}">{}</a>'.format(url,
-                                                     id_.replace(',', '.')))
+            urls.append('<a href="{}">{}</a>'.format(url,name_))
+                                                     #id_.replace(',', '.')))
         return Markup((', <br/>').join(urls))
 
     def _cast_link_formatter(view, context, model, name):
         urls = []
         for s in model.casts:
-            id_ = '{}: {} &#8594 {}: {}'.format(s.src_aspect.name,
+            name_ = '{}: {} &#8594 {}: {}'.format(s.src_aspect.name,
                                        s.src_scale.ml_name,
                                        s.dst_aspect.name,
                                        s.dst_scale.ml_name)
+            id_ = '{},{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.src_aspect.id,s.dst_aspect.id)
             url = url_for('cast.details_view', id=id_)
-            urls.append('<a href="{}">{}</a>'.format(url,
-                                                     id_.replace(',', '.')))
+            urls.append('<a href="{}">{}</a>'.format(url,name_))
+                                                     #id_.replace(',', '.')))
         return Markup((', <br/>').join(urls))
     
-    column_searchable_list = ['ml_name']
+    column_searchable_list = ['ml_name', 'id']
     can_export = True
     column_display_pk = True
     can_view_details = True

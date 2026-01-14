@@ -1,0 +1,17 @@
+name: mdb-test
+channels:
+  - conda-forge
+dependencies:
+  - marshmallow
+  - xmltodict
+  - flask
+  - requests
+  - flask-admin
+  - marshmallow-sqlalchemy
+  - flask-sqlalchemy
+  - python=3.10
+  - xmlschema
+  - python-graphviz
+  - graphviz
+  - gunicorn
+prefix: /home/rwhite/mambaforge/envs/mdb-test

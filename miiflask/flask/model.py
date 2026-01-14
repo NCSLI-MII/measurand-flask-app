@@ -135,7 +135,7 @@ class Dimension(Base):
     exponents: Mapped[Optional[str]] = mapped_column(String(40))
 
     systematic_scales: Mapped[list['Scale']] = \
-        relationship(back_populates="system_dimensions")
+        relationship(back_populates="system_dimensions", viewonly=True)
 
     formal_system: Mapped['System'] = relationship()
 
