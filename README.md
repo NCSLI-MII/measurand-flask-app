@@ -14,9 +14,33 @@ resources
 ```
 ## Getting started
 
+### Updated Getting started guide
 * Create a working directory
 * Create the conda environment
 * For virtual environments, use [miniforge](https://github.com/conda-forge/miniforge)
+
+* Setup your environment
+```
+conda env create --file environment_history.yml
+conda activate mdb-test
+```
+
+* Initialize the working directory. This will get the latest versions of the taxonomy and m-layer, and initialize the database in data/
+```
+sh init.sh
+```
+* Run locally or build container
+```
+gunicorn -w 1 'miiflask.flask.app:app'
+```
+or
+```
+docker compose build
+docker compose up
+```
+* Got to the localhost on browser http://127.0.0.1/8000
+
+
 ```
 conda create -n <environment_name> --file requirements.txt
 ```

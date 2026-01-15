@@ -1,0 +1,28 @@
+#version: '3.8'
+#services:
+#  app:
+    # image: mlayerprodeastuscr.azurecr.io/m-layer:1.0.0
+    #    image: mlayerprodeastuscr.azurecr.io/m-layer:1.0.2
+    #ports:
+    #  - "8000:8000"
+    #environment:
+    #  - FLASK_ENV=production
+    #volumes:
+    #  - /data:var 
+    #restart: always
+
+
+services:
+   app:
+     build:
+       context: .
+       dockerfile: Dockerfile
+     image: mlayer-app:latest
+     ports:
+       - "8000:8000"
+     environment:
+       - FLASK_ENV=production
+         # Uncomment the following lines to persist data locally
+         #volumes:
+         #- <local_path>:/app/data
+     restart: always

@@ -51,8 +51,8 @@ class InitializeDbTestCase(unittest.TestCase):
             miimapper.extractTaxonomy()
             miimapper.loadTaxonomy()
 
-            kcdbmapper = KcdbMapper(session, parms)
-            kcdbmapper.loadServices()
+            # kcdbmapper = KcdbMapper(session, parms)
+            # kcdbmapper.loadServices()
 
 
 if __name__ == '__main__':

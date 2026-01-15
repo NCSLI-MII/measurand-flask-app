@@ -9,7 +9,7 @@
 """
 
 """
-
+import os
 
 class Config:
     DEBUG = False
@@ -36,5 +36,5 @@ class DemoConfig(Config):
 
 class ProductionConfig(Config):
     PRODUCTION = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/mdb-test/var/miiflask.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.abspath("data/miiflask.db")
 
