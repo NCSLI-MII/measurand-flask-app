@@ -32,7 +32,7 @@ def main():
         "measurands": "resources/repo/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
         "mlayer": "resources/repo/m-layer/source/json",
         "kcdb": "resources/kcdb",
-        "kcdb_cmc_data": "kcdb_cmc_physics.json",
+        "kcdb_cmc_data": "kcdb_cmc_physics_em_taxons_workshop_2024_demo.json",
         "kcdb_cmc_api_countries": ["CA"],
         "api_mlayer": "https://api.mlayer.org",
         "use_api": False,
@@ -50,8 +50,8 @@ def main():
         miimapper.loadTaxonomy()
         miimapper.roundtrip()
 
-        #kcdbmapper = KcdbMapper(session, parms)
-        #kcdbmapper.loadServices()
+        kcdbmapper = KcdbMapper(session, parms)
+        kcdbmapper.loadServices()
         session.commit()
         session.close()
 
