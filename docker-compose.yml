@@ -23,6 +23,6 @@ services:
      environment:
        - FLASK_ENV=production
          # Uncomment the following lines to persist data locally
-         #volumes:
-         #- <local_path>:/app/data
+     volumes:
+       - /tmp/mdb-test:/app/data
      restart: always
