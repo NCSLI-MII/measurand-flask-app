@@ -31,7 +31,7 @@ sh init.sh
 ```
 * Run locally or build container
 ```
-gunicorn -w 1 'miiflask.flask.app:app'
+gunicorn -w 1 wsgi
 ```
 or
 ```

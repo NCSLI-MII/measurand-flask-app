@@ -8,4 +8,4 @@ if [ ! -f data/miiflask.db ]; then
 fi
 
 echo "Starting Gunicorn..."
-gunicorn --bind 0.0.0.0:8000 -w 1 miiflask.flask.app:app
+gunicorn --bind 0.0.0.0:8000 -w 1 wsgi
