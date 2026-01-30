@@ -1,17 +1,5 @@
 # measurand-flask-app
-Flask application for MII metadata
 
-In order to setup the test database, several resources are used to initialize the database.
-* NCSLI MII Measurand Taxonomy
-* M-Layer REST API
-```
-curl -X 'GET' 'https://dr49upesmsuw0.cloudfront.net/aspects' -H 'accept: application/json' -- output aspects.json 
-curl -X 'GET' 'https://dr49upesmsuw0.cloudfront.net/scales' -H 'accept: application/json' -- output scales.json 
-```
-Updated resource files can be copied to
-```
-resources
-```
 ## Getting started
 
 ### Updated Getting started guide
@@ -39,6 +27,33 @@ docker compose build
 docker compose up
 ```
 * Got to the localhost on browser http://127.0.0.1/8000
+
+### Upgrading python
+The application has been upgraded to python 3.12. 
+
+The following steps are used to update the requirements. 
+
+* First setup the conda environment. To do so, change the python version specified in `environment_history.yml`. This contains only the required
+packages that are used in the application. The dependencies are determined using conda and conda-forge.
+* Next freeze the packages for pip requirements.
+`pip list --format=freeze > requirements.txt`
+* Next update the Dockerfile to the python base container version, e.g. python:3.12-slim
+
+## Previous Getting started guide
+
+Flask application for MII metadata
+
+In order to setup the test database, several resources are used to initialize the database.
+* NCSLI MII Measurand Taxonomy
+* M-Layer REST API
+```
+curl -X 'GET' 'https://dr49upesmsuw0.cloudfront.net/aspects' -H 'accept: application/json' -- output aspects.json 
+curl -X 'GET' 'https://dr49upesmsuw0.cloudfront.net/scales' -H 'accept: application/json' -- output scales.json 
+```
+Updated resource files can be copied to
+```
+resources
+```
 
 
 ```

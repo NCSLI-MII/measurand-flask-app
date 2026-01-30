@@ -1,4 +1,4 @@
-name: mdb-test
+name: mdb-test-py3.12
 channels:
   - conda-forge
 dependencies:
@@ -9,9 +9,9 @@ dependencies:
   - flask-admin
   - marshmallow-sqlalchemy
   - flask-sqlalchemy
-  - python=3.10
+  - python=3.12
   - xmlschema
   - python-graphviz
   - graphviz
   - gunicorn
-prefix: /home/rwhite/mambaforge/envs/mdb-test
+prefix: /home/rwhite/mambaforge/envs/mdb-test-py3.12
