@@ -52,7 +52,7 @@ from miiflask.flask.model import (
     KcdbParameter,
     KcdbArea
 )
-from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema
+from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema, UnitSchema, ScaleSchema
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
@@ -73,7 +73,13 @@ import base64
 log = logging.getLogger("flask-admin.sqla")
 
 qk_schema = AspectSchema()
+aspects_schema = AspectSchema(many=True)
+scale_schema = ScaleSchema()
+scales_schema = ScaleSchema(many=True)
+unit_schema = UnitSchema()
+units_schema = UnitSchema(many=True)
 m_schema = MeasurandTaxonSchema()
+measurands_schema = MeasurandTaxonSchema(many=True)
 cmc_schema = KcdbCmcSchema()
 
 def _link_formatter(view, context, model, name):
@@ -743,6 +749,7 @@ def kcdbcmc_export_json(kcdbcmc_id):
     response.mimetype = "text/json"
     return response 
 
+
 @app.route("/mlayer/scales/")
 def scales():
     scales = Scale().query.all()
@@ -810,10 +817,18 @@ def aspect(aspect_id):
     a = Aspect.query.get_or_404(aspect_id)
     a_schema = qk_schema.dumps(a, indent=2)
     # print(a.id)
-    mpprint(a_schema)
+    mpprint.pprint(a_schema)
     graph = visualize_model_instance(Aspect, a)
     return render_template("aspect.html", aspect=a, response=a_schema, graph=graph)
 
+@app.route("/aspect/<string:aspect_id>/export/json", methods=["GET", "POST"])
+def aspect_export_json(aspect_id):
+    # print("Get Meaurand ", measurand_id)
+    a = Aspect.query.get_or_404(aspect_id)
+    schema = qk_schema.dumps(a, indent=2)
+    response = app.make_response(schema)
+    response.mimetype = "text/json"
+    return response 
 
 @app.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
 def scale(scale_id):
@@ -894,3 +909,58 @@ def modelKcdb():
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)
 
+# Views for API
+
+@app.route("/api/aspect/<string:aspect_id>/", methods=["GET", "POST"])
+def api_aspect(aspect_id):
+    # print("Get Aspect ", aspect_id)
+    a = Aspect.query.get_or_404(aspect_id)
+    return qk_schema.dump(a)
+
+
+@app.route("/api/aspects/")
+def api_aspects():
+    # print("Get Aspect ", aspect_id)
+    aspects = Aspect().query.all()
+    return aspects_schema.dump(aspects)
+
+@app.route("/api/scale/<string:scale_id>/", methods=["GET", "POST"])
+def api_scale(scale_id):
+    # print("Get Aspect ", aspect_id)
+    s = Scale.query.get_or_404(scale_id)
+    return scale_schema.dump(s)
+
+
+@app.route("/api/scales/")
+def api_scales():
+    # print("Get Aspect ", aspect_id)
+    scales = Scale().query.all()
+    return scales_schema.dump(scales)
+
+
+@app.route("/api/unit/<string:unit_id>/", methods=["GET", "POST"])
+def api_unit(unit_id):
+    # print("Get Aspect ", aspect_id)
+    u = Unit.query.get_or_404(unit_id)
+    return unit_schema.dump(u)
+
+
+@app.route("/api/units/")
+def api_units():
+    # print("Get Aspect ", aspect_id)
+    units = Unit().query.all()
+    return units_schema.dump(units)
+
+
+@app.route("/api/measurand/<string:measurand_id>/", methods=["GET", "POST"])
+def api_measurand(measurand_id):
+    # print("Get Aspect ", aspect_id)
+    m = MeasurandTaxon.query.get_or_404(measurand_id)
+    return m_schema.dump(m)
+
+
+@app.route("/api/measurands/")
+def api_measurands():
+    # print("Get Aspect ", aspect_id)
+    measurands = MeasurandTaxon().query.all()
+    return measurands_schema.dump(measurands)
