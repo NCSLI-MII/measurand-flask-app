@@ -4,10 +4,19 @@
 
 ### Updated Getting started guide
 * Create a working directory
-* Create the conda environment
-* For virtual environments, use [miniforge](https://github.com/conda-forge/miniforge)
+* Ensure python3.12 is installed
+* Create the virtual environemnt (venv or conda environment)
+* For virtual conda environments, use [miniforge](https://github.com/conda-forge/miniforge)
 
 * Setup your environment
+```
+python3.12 -m venv venv/ --upgrade-deps
+source venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements_pip_v3_py3.12.txt
+```
+
+Also works with conda
 ```
 conda env create --file environment_history.yml
 conda activate mdb-test
