@@ -22,9 +22,14 @@ conda env create --file environment_history.yml
 conda activate mdb-test
 ```
 
-* Initialize the working directory. This will get the latest versions of the taxonomy and m-layer, and initialize the database in data/
+* Initialize the working directory. This will get the latest versions of the taxonomy and m-layer, and initialize the database in specified PATH and link to data in project directory.
+* Optionally, PATH can be removed and database reinitialized with TRUE for second or argument.
 ```
-sh init.sh
+sh init.sh <PATH>
+```
+or remove the database and reinitialize
+```
+sh init.sh <PATH> TRUE
 ```
 * Run locally or build container
 ```
