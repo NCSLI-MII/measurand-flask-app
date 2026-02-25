@@ -72,6 +72,6 @@ if [ ! -f data/miiflask.db ]; then
   mv "$PWD/$INSTALL_PREFIX/$NAME1-$VERSION1/" "$PWD/$INSTALL_PREFIX/$NAME1" 
   mv "$PWD/$INSTALL_PREFIX/$NAME2-$VERSION2/" "$PWD/$INSTALL_PREFIX/$NAME2" 
   echo "Initializing database..."
-  python dbinit_v3.py 
+  python dbinit.py 
 fi
 
