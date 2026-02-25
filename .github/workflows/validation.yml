@@ -31,7 +31,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: measurand-flask-app
-          environment-file: environment_history.yml
+          environment-file: environment.yml
           miniforge-version: "latest"
           auto-update-conda: true
           auto-activate-base: true

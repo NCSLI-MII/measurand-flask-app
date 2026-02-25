@@ -165,4 +165,4 @@ cython_debug/
 #.idea/
 #
 # Flask-app db
-data/*.db
+data
