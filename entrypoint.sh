@@ -4,7 +4,7 @@ files=$(ls)
 echo "$files"
 if [ ! -f data/miiflask.db ]; then
   echo "Database file not found. Initializing database..."
-  python dbinit_v3.py 
+  python dbinit.py 
 fi
 
 echo "Starting Gunicorn..."

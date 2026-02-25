@@ -35,7 +35,7 @@ jobs:
       - name: Pip install dependencies
         run: | 
           python -m pip install --upgrade pip
-          pip install -r requirements_pip_v3_py3.12.txt
+          pip install -r requirements.txt
 
       - name: Pip list outdated
         run: | 
