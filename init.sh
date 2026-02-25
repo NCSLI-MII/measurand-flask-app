@@ -29,7 +29,7 @@ else
 fi
 
 if [ -z "$2" ]; then
-    if "$2"=="TRUE"; then
+    if [[ "$2" == "true" ]]; then
         if [ -d $DATA_DIR]; then
             echo "Removing $DATA_DIR"
             rm -rf $DATA_DIR
@@ -46,7 +46,7 @@ if [ -d data ]; then
     rm -rf data
 fi
 
-if [ -z "$DATA_DIR" ]; then
+if [ ! -d "$DATA_DIR" ]; then
     mkdir -p $DATA_DIR
 fi
 
