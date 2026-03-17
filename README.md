@@ -13,7 +13,7 @@
 python3.12 -m venv venv/ --upgrade-deps
 source venv/bin/activate
 python -m pip install --upgrade pip
-pip install -r requirements_pip_v3_py3.12.txt
+pip install -r requirements.txt
 ```
 
 Also works with conda
