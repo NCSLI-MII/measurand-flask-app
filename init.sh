@@ -29,7 +29,7 @@ else
 fi
 
 if [ -z "$2" ]; then
-    if [[ "$2" == "true" ]]; then
+    if [ "$2" = "true" ]; then
         if [ -d $DATA_DIR]; then
             echo "Removing $DATA_DIR"
             rm -rf $DATA_DIR
