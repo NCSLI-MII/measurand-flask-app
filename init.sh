@@ -28,9 +28,10 @@ else
     DATA_DIR="$1"
 fi
 
-if [ -z "$2" ]; then
+if [ "$2" ]; then
+    echo "Remove directory? $2"
     if [ "$2" = "true" ]; then
-        if [ -d $DATA_DIR]; then
+        if [ -d $DATA_DIR ]; then
             echo "Removing $DATA_DIR"
             rm -rf $DATA_DIR
         fi
