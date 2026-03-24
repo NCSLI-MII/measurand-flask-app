@@ -2,10 +2,11 @@
 
 files=$(ls)
 echo "$files"
-if [ ! -f data/miiflask.db ]; then
-  echo "Database file not found. Initializing database..."
-  python dbinit.py 
-fi
+#if [ ! -f data/miiflask.db ]; then
+#  echo "Database file not found. Initializing database..."
+#  python dbinit.py 
+#fi
+sh init.sh /data/mii
 
 echo "Starting Gunicorn..."
 gunicorn --bind 0.0.0.0:8000 -w 1 wsgi
