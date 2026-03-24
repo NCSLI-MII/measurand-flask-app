@@ -64,6 +64,14 @@ packages that are used in the application. The dependencies are determined using
 `pip list --format=freeze > requirements.txt`
 * Next update the Dockerfile to the python base container version, e.g. python:3.12-slim
 
+## Creating a release
+* Ensure all development branches are merged into main
+* Create a release branch from main, e.g. release/0.4.0-beta
+* Update the VERSION in miiflask/flask/config.py
+* Merge release branch into main
+* Tag release with version, e.g. v0.4.0-beta
+* On push, both release branch and tag triggers docker build and publish
+
 ## Previous Getting started guide
 
 Flask application for MII metadata
