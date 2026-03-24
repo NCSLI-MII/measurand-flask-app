@@ -20,9 +20,15 @@ services:
      image: mlayer-app:latest
      ports:
        - "8000:8000"
+     volumes:
+       - "sqlite_data:/data"
      environment:
        - FLASK_ENV=production
          # Uncomment the following lines to persist data locally
          #volumes:
          #- <local_path>:/app/data
      restart: always
+
+volumes:
+  sqlite_data:
+    

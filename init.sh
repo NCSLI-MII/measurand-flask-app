@@ -28,9 +28,10 @@ else
     DATA_DIR="$1"
 fi
 
-if [ -z "$2" ]; then
-    if [[ "$2" == "true" ]]; then
-        if [ -d $DATA_DIR]; then
+if [ "$2" ]; then
+    echo "Remove directory? $2"
+    if [ "$2" = "true" ]; then
+        if [ -d $DATA_DIR ]; then
             echo "Removing $DATA_DIR"
             rm -rf $DATA_DIR
         fi
@@ -41,12 +42,17 @@ echo "$files"
 echo "$URL1"
 echo "$URL2"
 echo "$DATA_DIR"
+echo "$(ls $DATA_DIR)"
 # Symlink data directory
-if [ -d data ]; then
+if [ -L data ]; then
+    echo "$(ls -l data)"
+    echo "$(ls data)"
+    echo "Remove data symlink"
     rm -rf data
 fi
 
 if [ ! -d "$DATA_DIR" ]; then
+    echo "Create data path"
     mkdir -p $DATA_DIR
 fi
 
