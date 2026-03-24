@@ -2,7 +2,8 @@
 
 ## Getting started
 
-### Updated Getting started guide
+### Running locally 
+
 * Create a working directory
 * Ensure python3.12 is installed
 * Create the virtual environemnt (venv or conda environment)
@@ -35,7 +36,17 @@ sh init.sh <PATH> TRUE
 ```
 gunicorn -w 1 wsgi
 ```
-or
+
+### Running with Docker
+Data persistence uses docker volumes. Either define a named volume, or use docker compose to define a named volume. Initially, the database will be loaded and if volume is defined then data will be persisted.
+Either do docker build, or obtain the image from GitHub container registry.
+
+```
+docker pull ghcr.io/ncsli-mii/measurand-flask-app:main
+docker volume create sqlite_data
+docker run -it -p 8000:8000 -v sqlite_data:/data gchr.io/ncsli-mii/measurand-flask-app:main
+```
+
 ```
 docker compose build
 docker compose up
