@@ -42,12 +42,17 @@ echo "$files"
 echo "$URL1"
 echo "$URL2"
 echo "$DATA_DIR"
+echo "$(ls /data/mii)"
+echo "$(ls -l data)"
+echo "$(ls data)"
 # Symlink data directory
-if [ -d data ]; then
+if [ -L data ]; then
+    echo "Remove data symlink"
     rm -rf data
 fi
 
 if [ ! -d "$DATA_DIR" ]; then
+    echo "Create data path"
     mkdir -p $DATA_DIR
 fi
 
