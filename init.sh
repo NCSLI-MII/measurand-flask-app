@@ -42,11 +42,11 @@ echo "$files"
 echo "$URL1"
 echo "$URL2"
 echo "$DATA_DIR"
-echo "$(ls /data/mii)"
-echo "$(ls -l data)"
-echo "$(ls data)"
+echo "$(ls $DATA_DIR)"
 # Symlink data directory
 if [ -L data ]; then
+    echo "$(ls -l data)"
+    echo "$(ls data)"
     echo "Remove data symlink"
     rm -rf data
 fi
