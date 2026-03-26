@@ -569,17 +569,20 @@ class ScaleView(ModelView):
                                                      #id_.replace(',', '.')))
         return Markup((', <br/>').join(urls))
     
-    column_searchable_list = ['ml_name', 'id']
+    column_searchable_list = ['ml_name', 'id', 'unit.name']
     can_export = True
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
-    column_formatters = {'unit': _link_formatter,
-                         'prefix': _link_formatter,
-                         'root_scale_id': _root_link_formatter,
-                         'conversions': _cnv_link_formatter,
-                         'casts': _cast_link_formatter,
-                         'system_dimensions': _link_dim_formatter}
+    column_formatters = {
+            'id': _id_formatter,
+            'unit': _link_formatter,
+            'prefix': _link_formatter,
+            'root_scale_id': _root_link_formatter,
+            'conversions': _cnv_link_formatter,
+            'casts': _cast_link_formatter,
+            'system_dimensions': _link_dim_formatter
+            }
     column_list = ("id",
                    "ml_name",
                    "unit")
@@ -589,10 +592,14 @@ class ScaleView(ModelView):
                            "unit",
                            'root_scale_id',
                            'prefix',
+                           "ref_point",
+                           "ref_point_l",
+                           "ref_point_h",
+                           "system_dimensions",
+                           "is_systematic",
+                           "is_special",
                            "conversions",
                            "casts",
-                           "system_dimensions",
-                           'is_systematic'
                            )
 
 

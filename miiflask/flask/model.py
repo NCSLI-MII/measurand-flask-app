@@ -258,6 +258,14 @@ class Scale(Base):
 
     is_systematic: Mapped[Optional[bool]]
 
+    is_special: Mapped[Optional[bool]]
+
+    ref_point: Mapped[Optional[str]]
+
+    ref_point_l: Mapped[Optional[str]]
+
+    ref_point_h: Mapped[Optional[str]]
+
     aspects: Mapped[list['Aspect']] = \
         relationship(secondary=scaleaspect_table,
                      back_populates="scales")
