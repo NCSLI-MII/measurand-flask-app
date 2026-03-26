@@ -3,7 +3,8 @@
 {% block content %}
 <h1 class="title">{% block title %} Scale {{ scale.id }} {{ scale.uid_name }} {% endblock %}</h1>
     <div class="content">
-        <div class="service">
+        <div class="scale">
+            <a href="{{ url_for('api_scale', scale_id=scale.id) }}">JSON</a></td>
             <b>
                 <p>Identifier: ({{ scale.id }}, {{ scale.ml_name }})</p>
             </b>

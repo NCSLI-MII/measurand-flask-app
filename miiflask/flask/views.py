@@ -546,15 +546,40 @@ class ScaleView(ModelView):
 
     def _cnv_link_formatter(view, context, model, name):
         urls = []
+        aspects = {}
+        for s in model.conversions: aspects[s.aspect.id]=(s.aspect.name,[]) 
         for s in model.conversions:
+            
+            url_aspect = url_for('aspect.details_view', id=s.aspect.id)
+            url_src = url_for('scale.details_view', id=s.src_scale.id)
+            url_dst = url_for('scale.details_view', id=s.dst_scale.id)
             name_ = '{}: {} &#8594 {}'.format(s.aspect.name,
                                     s.src_scale.ml_name,
                                     s.dst_scale.ml_name)
             id_ = '{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.aspect.id)
+
+            
             url = url_for('conversion.details_view', id=id_)
-            urls.append('<a href="{}">{}</a>'.format(url,name_))
-                                                     #id_.replace(',', '.')))
-        return Markup((', <br/>').join(urls))
+            url_details = (
+                    '<a href={}>{}</a> &#8594 <a href={}>{}</a> <a href="{}">{}</a>'.format(
+                        url_src,
+                        s.src_scale.ml_name,
+                        url_dst,
+                        s.dst_scale.ml_name,
+                        url,"(see details)"
+                        )
+                    )
+            aspects[s.aspect.id][1].append(url_details)
+            urls.append(url_details)
+        markup=""
+        
+        for a in aspects:
+            url_aspect = url_for('aspect.details_view', id=a)
+            markup += f'<a href={url_aspect}>{a}: {aspects[a][0]}</a><br/>'
+            markup += ('<br/>').join(aspects[a][1])
+            markup += ('<br/><br/>')
+
+        return Markup(markup)
 
     def _cast_link_formatter(view, context, model, name):
         urls = []
@@ -613,9 +638,9 @@ class AspectView(MyModelView):
         urls = []
         for s in model.scales:
             url = url_for('scale.details_view', id=s.id)
-            urls.append('<a href="{}">{}</a>'.format(url, s.id))
-
-        return Markup((',').join(urls))
+            urls.append('<a href="{}">{}: {}</a>'.format(url, s.id, s.ml_name))
+        return Markup(('<br/>').join(urls))
+    
     column_searchable_list = ['name']
     can_export = True
     column_display_pk = True
@@ -631,7 +656,6 @@ class AspectView(MyModelView):
                            "name",
                            "ml_name",
                            "scales",
-                           "conversions"
                            )
 
 

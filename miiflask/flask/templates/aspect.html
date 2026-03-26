@@ -4,7 +4,7 @@
 <h1 class="title">{% block title %} Aspect {{ aspect.id }} {{ aspect.name }} {% endblock %}</h1>
     <div class="content">
         <div class="aspect">
-            <a href="{{ url_for('aspect_export_json', aspect_id=aspect.id) }}">JSON</a></td>
+            <a href="{{ url_for('api_aspect', aspect_id=aspect.id) }}">JSON</a></td>
             <b>
                 <p>Associated Scales</p>
                 <select multiple="multiple">
