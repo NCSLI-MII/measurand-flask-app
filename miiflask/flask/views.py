@@ -629,7 +629,27 @@ class ScaleView(ModelView):
 
 
 class CastConversionView(MyModelView):
-    column_formatters = {'transform': _link_formatter}
+    
+    def _aspect_link_formatter(view, context, model, name):
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        url = url_for('aspect.details_view', id=field.id)
+        return Markup('<a href="{}">{}</a>'.format(url, field))
+    
+    def _scale_link_formatter(view, context, model, name):
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        url = url_for('scale.details_view', id=field.id)
+        return Markup('<a href="{}">{}</a>'.format(url, field))
+    
+    column_formatters = {
+            'src_scale': _scale_link_formatter,
+            'dst_scale': _scale_link_formatter,
+            'aspect': _aspect_link_formatter,
+            'transform': _link_formatter
+            }
 
 
 class AspectView(MyModelView):
