@@ -93,6 +93,7 @@ if __name__ == "miiflask.flask.app":
                 KcdbServiceView,
                 AspectView,
                 ScaleView,
+                UnitView,
                 CastConversionView,
                 DimensionView,
                 KcdbBranchView
@@ -102,7 +103,7 @@ if __name__ == "miiflask.flask.app":
         admin.add_view(ModelView(Domain, db.session))
         admin.add_view(AspectView(Aspect, db.session, category="Mlayer"))
         admin.add_view(ScaleView(Scale, db.session, category="Mlayer"))
-        admin.add_view(MyModelView(Unit, db.session, category="Mlayer"))
+        admin.add_view(UnitView(Unit, db.session, category="Mlayer"))
         admin.add_view(MyModelView(Prefix, db.session, category="Mlayer"))
         admin.add_view(CastConversionView(Conversion, db.session, category="Mlayer"))
         admin.add_view(CastConversionView(Cast, db.session, category="Mlayer"))

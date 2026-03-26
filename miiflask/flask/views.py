@@ -628,6 +628,20 @@ class ScaleView(ModelView):
                            )
 
 
+class UnitView(MyModelView):
+    
+    def _ref_formatter(view, context, model, name):
+        return Markup('<a href="{}"> {} '.format(model.reference, model.reference))
+
+    page_size = 100
+    can_view_details = True
+    column_display_pk = True
+    column_hide_backrefs = False
+    column_formatters = {
+            'id': _id_formatter,
+            'reference': _ref_formatter
+            }
+
 class CastConversionView(MyModelView):
     
     def _aspect_link_formatter(view, context, model, name):
@@ -661,13 +675,17 @@ class AspectView(MyModelView):
             urls.append('<a href="{}">{}: {}</a>'.format(url, s.id, s.ml_name))
         return Markup(('<br/>').join(urls))
     
+    def _ref_formatter(view, context, model, name):
+        return Markup('<a href="{}"> {} '.format(model.reference, model.reference))
+
     column_searchable_list = ['name']
     can_export = True
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
     column_formatters = {'id': _id_formatter,
-                         'scales': _scale_formatter}
+                         'scales': _scale_formatter,
+                         'reference': _ref_formatter}
     column_list = ("id",
                    "name",
                    "ml_name",
@@ -676,6 +694,7 @@ class AspectView(MyModelView):
                            "name",
                            "ml_name",
                            "scales",
+                           "reference"
                            )
 
 
