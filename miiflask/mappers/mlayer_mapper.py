@@ -147,17 +147,16 @@ class MlayerMapper:
         data_ = {
             "id": obj['id'],
             "ml_name": obj["ml_name"],
-            #"unit_id": self._scales[key]["unit_id"],
             "scale_type": obj["type"],
+            "ref_point": obj["ref_point"],
+            "ref_point_l": obj["ref_point_l"],
+            "ref_point_h": obj["ref_point_h"],
+            "is_systematic": obj['is_systematic'],
+            "is_special": obj['is_special'],
         }
         scale = self._schemas["scale"].load(
              data_, session=self.Session
         )
-        #scale = model.Scale(id=obj['id'],
-        #                    ml_name=obj['ml_name'],
-        #                    scale_type=obj['type'],
-        #                    is_systematic=obj['is_systematic'],
-        #                    )
 
         unit = (
             self.Session.query(model.Unit)
@@ -181,8 +180,7 @@ class MlayerMapper:
         if system_dimensions:
             scale.system_dimensions = system_dimensions
 
-        # TBD
-        # Parent scale may not be loaded before derived scale
+        # Parent (Root) scale may not be loaded before derived scale
         # If root scale not loaded
         # cache obj and reload
         if obj['root_scale_id']:
