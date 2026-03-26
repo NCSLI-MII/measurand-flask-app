@@ -1,19 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="title">{% block title %} Aspect {{ aspect.id }} {{ aspect.name }} {% endblock %}</h1>
+<h1 class="title">{% block title %} Aspect: {{ aspect.name }} {% endblock %}</h1>
     <div class="content">
         <div class="aspect">
-            <a href="{{ url_for('api_aspect', aspect_id=aspect.id) }}">JSON</a></td>
-            <b>
-                <p>Associated Scales</p>
+            <a href="{{ url_for('api_aspect', aspect_id=aspect.id) }}">JSON</a></td></br>
+        <b>Identifier: </b> {{ aspect.id }} </br>
+        <b>Name: </b> {{ aspect.name }} </br>
+        <b>Associated Scales: </b></br>
                 <select multiple="multiple">
                 {% for scale in aspect.scales %}
-                    <option onClick="window.location = '/scale/{{ scale.id }}'">{{ scale.reference }}</option>
+                    <option onClick="window.location = '/scale/{{ scale.id }}'">{{ scale.ml_name }}</option>
                 {% endfor %}
                 </select>
-            </b>
-            <pre> {{ response }} </pre>
         </div>
         
     </div>
