@@ -523,7 +523,7 @@ class DimensionView(MyModelView):
         field = getattr(model, name)
         if field is None:
             return u""
-        exponents = json.loads(field)
+        exponents = field.strip('[]').split(',') 
         dim = ['M', 'L', 'T', 'I', '&#920', 'N', 'J']
         dimQ = ''.join([m+'<sup>'+str(n)+'</sup>' for m, n in zip(dim, exponents)])
         return Markup(dimQ)
