@@ -10,6 +10,7 @@
 
 """
 import logging
+from urllib.parse import urlparse
 
 from sqlalchemy.orm.base import instance_state
 from flask import (render_template,
@@ -93,6 +94,23 @@ def _link_formatter(view, context, model, name):
 def _id_formatter(view, context, model, name):
     url = url_for(f'{model.__tablename__}.details_view', id=model.id)
     return Markup(f"<a href={url}>{model.id}</a>") if model.id else u""
+
+
+def is_url(url_string):
+    try:
+        result = urlparse(url_string)
+        # Check if scheme and domain present
+        return all([result.scheme, result.netloc])
+    except ValueError:
+        return False
+
+
+def _ref_formatter(view, context, model, name):
+        if is_url(model.reference):
+            return Markup('<a href="{}"> {} '.format(model.reference, model.reference))
+        else:
+            return model.reference
+
 
 
 
@@ -630,8 +648,6 @@ class ScaleView(ModelView):
 
 class UnitView(MyModelView):
     
-    def _ref_formatter(view, context, model, name):
-        return Markup('<a href="{}"> {} '.format(model.reference, model.reference))
 
     page_size = 100
     can_view_details = True
@@ -662,6 +678,8 @@ class CastConversionView(MyModelView):
             'src_scale': _scale_link_formatter,
             'dst_scale': _scale_link_formatter,
             'aspect': _aspect_link_formatter,
+            'src_aspect': _aspect_link_formatter,
+            'dst_aspect': _aspect_link_formatter,
             'transform': _link_formatter
             }
 
@@ -675,8 +693,6 @@ class AspectView(MyModelView):
             urls.append('<a href="{}">{}: {}</a>'.format(url, s.id, s.ml_name))
         return Markup(('<br/>').join(urls))
     
-    def _ref_formatter(view, context, model, name):
-        return Markup('<a href="{}"> {} '.format(model.reference, model.reference))
 
     column_searchable_list = ['name']
     can_export = True
