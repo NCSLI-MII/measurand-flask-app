@@ -872,7 +872,7 @@ def measurand_export_xml(measurand_id):
     m = MeasurandTaxon.query.get_or_404(measurand_id)
     taxon = TaxonomyMapper._getTaxonDict(m, m_schema)
     xml = TaxonomyMapper._dicttoxml_taxon(taxon)
-    filename = m.id.replace('.','_')
+    filename = m.name.replace('.','_')
     content = f'attachment; filename= {filename}.xml'
     response = app.make_response(xml)
     response.headers["Content-Disposition"] = content 
@@ -1045,8 +1045,13 @@ def api_units():
 @app.route("/api/measurand/<string:measurand_id>/", methods=["GET", "POST"])
 def api_measurand(measurand_id):
     # print("Get Aspect ", aspect_id)
+    # accept_header = request.headers.get('Accept', '')
+    # print(accept_header)
     m = MeasurandTaxon.query.get_or_404(measurand_id)
-    return m_schema.dump(m)
+    schema = m_schema.dump(m)
+    response = app.make_response(schema)
+    response.mimetype = "application/json"
+    return response 
 
 
 @app.route("/api/measurands/")
