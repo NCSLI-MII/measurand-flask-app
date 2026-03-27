@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="title">{% block title %} Unit: {{ unit.name }} {% endblock %}</h1>
+    <div class="content">
+        <div class="unit">
+            <a href="{{ url_for('api_unit', unit_id=unit.id) }}">JSON</a></td></br>
+            <b>Identifier: </b> {{ unit.id }} </br>
+            <b>Name: </b> {{ unit.name }} </br>
+            <b>Symbol: </b> {{ unit.symbol }} </br>
+            <b>Reference: </b> 
+                {% if unit.reference %}
+                    {% if unit.reference.startswith('http') %}
+                        <td><a href="{{ unit.reference }}">{{ unit.reference }}</a></td>
+                    {% else %}
+                    <td>{{ unit.reference }}</td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                {% endif %}
+        </div>
+    </div>
+{% endblock %}
