@@ -10,6 +10,7 @@
 
 """
 import logging
+from urllib.parse import urlparse
 
 from sqlalchemy.orm.base import instance_state
 from flask import (render_template,
@@ -93,6 +94,23 @@ def _link_formatter(view, context, model, name):
 def _id_formatter(view, context, model, name):
     url = url_for(f'{model.__tablename__}.details_view', id=model.id)
     return Markup(f"<a href={url}>{model.id}</a>") if model.id else u""
+
+
+def is_url(url_string):
+    try:
+        result = urlparse(url_string)
+        # Check if scheme and domain present
+        return all([result.scheme, result.netloc])
+    except ValueError:
+        return False
+
+
+def _ref_formatter(view, context, model, name):
+        if is_url(model.reference):
+            return Markup('<a href="{}"> {} '.format(model.reference, model.reference))
+        else:
+            return model.reference
+
 
 
 
@@ -546,15 +564,40 @@ class ScaleView(ModelView):
 
     def _cnv_link_formatter(view, context, model, name):
         urls = []
+        aspects = {}
+        for s in model.conversions: aspects[s.aspect.id]=(s.aspect.name,[]) 
         for s in model.conversions:
+            
+            url_aspect = url_for('aspect.details_view', id=s.aspect.id)
+            url_src = url_for('scale.details_view', id=s.src_scale.id)
+            url_dst = url_for('scale.details_view', id=s.dst_scale.id)
             name_ = '{}: {} &#8594 {}'.format(s.aspect.name,
                                     s.src_scale.ml_name,
                                     s.dst_scale.ml_name)
             id_ = '{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.aspect.id)
+
+            
             url = url_for('conversion.details_view', id=id_)
-            urls.append('<a href="{}">{}</a>'.format(url,name_))
-                                                     #id_.replace(',', '.')))
-        return Markup((', <br/>').join(urls))
+            url_details = (
+                    '<a href={}>{}</a> &#8594 <a href={}>{}</a> <a href="{}">{}</a>'.format(
+                        url_src,
+                        s.src_scale.ml_name,
+                        url_dst,
+                        s.dst_scale.ml_name,
+                        url,"(see details)"
+                        )
+                    )
+            aspects[s.aspect.id][1].append(url_details)
+            urls.append(url_details)
+        markup=""
+        
+        for a in aspects:
+            url_aspect = url_for('aspect.details_view', id=a)
+            markup += f'<a href={url_aspect}>{a}: {aspects[a][0]}</a><br/>'
+            markup += ('<br/>').join(aspects[a][1])
+            markup += ('<br/><br/>')
+
+        return Markup(markup)
 
     def _cast_link_formatter(view, context, model, name):
         urls = []
@@ -603,8 +646,42 @@ class ScaleView(ModelView):
                            )
 
 
+class UnitView(MyModelView):
+    
+
+    page_size = 100
+    can_view_details = True
+    column_display_pk = True
+    column_hide_backrefs = False
+    column_formatters = {
+            'id': _id_formatter,
+            'reference': _ref_formatter
+            }
+
 class CastConversionView(MyModelView):
-    column_formatters = {'transform': _link_formatter}
+    
+    def _aspect_link_formatter(view, context, model, name):
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        url = url_for('aspect.details_view', id=field.id)
+        return Markup('<a href="{}">{}</a>'.format(url, field))
+    
+    def _scale_link_formatter(view, context, model, name):
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        url = url_for('scale.details_view', id=field.id)
+        return Markup('<a href="{}">{}</a>'.format(url, field))
+    
+    column_formatters = {
+            'src_scale': _scale_link_formatter,
+            'dst_scale': _scale_link_formatter,
+            'aspect': _aspect_link_formatter,
+            'src_aspect': _aspect_link_formatter,
+            'dst_aspect': _aspect_link_formatter,
+            'transform': _link_formatter
+            }
 
 
 class AspectView(MyModelView):
@@ -613,16 +690,18 @@ class AspectView(MyModelView):
         urls = []
         for s in model.scales:
             url = url_for('scale.details_view', id=s.id)
-            urls.append('<a href="{}">{}</a>'.format(url, s.id))
+            urls.append('<a href="{}">{}: {}</a>'.format(url, s.id, s.ml_name))
+        return Markup(('<br/>').join(urls))
+    
 
-        return Markup((',').join(urls))
     column_searchable_list = ['name']
     can_export = True
     column_display_pk = True
     can_view_details = True
     column_hide_backrefs = False
     column_formatters = {'id': _id_formatter,
-                         'scales': _scale_formatter}
+                         'scales': _scale_formatter,
+                         'reference': _ref_formatter}
     column_list = ("id",
                    "name",
                    "ml_name",
@@ -631,7 +710,7 @@ class AspectView(MyModelView):
                            "name",
                            "ml_name",
                            "scales",
-                           "conversions"
+                           "reference"
                            )
 
 
@@ -845,6 +924,10 @@ def scale(scale_id):
     graph = visualize_model_instance(Scale, s)
     return render_template("scale.html", scale=s, graph=graph)
 
+@app.route("/unit/<string:unit_id>/", methods=["GET", "POST"])
+def unit(unit_id):
+    u = Unit.query.get_or_404(unit_id)
+    return render_template("unit.html", unit=u)
 
 @app.route("/model/mii")
 def modelMII():
