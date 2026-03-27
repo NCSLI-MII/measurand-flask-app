@@ -11,14 +11,27 @@
                 <th>Name</th>
                 <th>Symbol</th>
                 <th>Reference</th>
+                <th>Details</th>
             </tr>
         </thead>
         <tbody>
             {% for a in aspects %}
             <tr>
                 <td>{{ a.name }}</td>
-                <td>{{ a.symbol }}</td>
-                <td>{{ a.reference }}</td>
+                {% if a.symbol %}
+                    <td>{{ a.symbol }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                {% if a.reference %}
+                    {% if a.reference.startswith('http') %}
+                        <td><a href="{{ a.reference }}">{{ a.reference }}</a></td>
+                    {% else %}
+                    <td>{{ a.reference }}</td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                {% endif %}
                 <td><a href="{{ url_for('aspect', aspect_id=a.id) }}">Details</a></td>
             </tr>
             {% endfor %}

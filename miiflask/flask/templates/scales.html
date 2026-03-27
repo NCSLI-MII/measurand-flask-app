@@ -19,7 +19,7 @@
             <tr>
                 <td>{{ s.ml_name }}</td>
                 <td>{{ s.scale_type }}</td>
-                <td>{{ s.unit.name }}</td>
+                <td><a href="{{ url_for('unit', unit_id=s.unit.id) }}"> {{ s.unit.name }}</td>
                 <td><a href="{{ url_for('scale', scale_id=s.id) }}">Details</a></td>
             </tr>
             {% endfor %}

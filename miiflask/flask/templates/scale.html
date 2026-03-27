@@ -5,15 +5,14 @@
     <div class="content">
         <div class="scale">
             <a href="{{ url_for('api_scale', scale_id=scale.id) }}">JSON</a></td></br>
-        <b>Identifier: </b> {{ scale.id }} </br>
-        <b>Name: </b> {{ scale.ml_name }} </br>
-        <b>Scale type: </b> {{ scale.scale_type}} </br>
-        <b>Associated aspects:</b></br>
-                <select multiple="multiple">
-                {% for aspect in scale.aspects %}
-                    <option onClick="window.location = '/aspect/{{ aspect.id }}'">{{ aspect.name }}</option>
-                {% endfor %}
-                </select>
+            <b>Identifier: </b> {{ scale.id }} </br>
+            <b>Name: </b> {{ scale.ml_name }} </br>
+            <b>Scale type: </b> {{ scale.scale_type}} </br>
+            <b>Unit: </b> <a href="/unit/{{ scale.unit.id }}">{{ scale.unit.name }}</a> </br>
+            <b>Associated aspects:</b></br>
+            {% for aspect in scale.aspects %}
+                <a href="/aspect/{{ aspect.id }}">{{ aspect.id }}: {{ aspect.name }}</a></br>
+            {% endfor %}
         </div>
     </div>
     <img src="data:image/png;base64,{{graph|safe}}"/>

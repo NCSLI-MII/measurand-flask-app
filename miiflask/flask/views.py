@@ -924,6 +924,10 @@ def scale(scale_id):
     graph = visualize_model_instance(Scale, s)
     return render_template("scale.html", scale=s, graph=graph)
 
+@app.route("/unit/<string:unit_id>/", methods=["GET", "POST"])
+def unit(unit_id):
+    u = Unit.query.get_or_404(unit_id)
+    return render_template("unit.html", unit=u)
 
 @app.route("/model/mii")
 def modelMII():
