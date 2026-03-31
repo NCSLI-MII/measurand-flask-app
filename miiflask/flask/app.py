@@ -38,6 +38,7 @@ from miiflask.flask.model import (
     Unit,
     Scale,
     Parameter,
+    Discipline,
     KcdbCmc,
     KcdbQuantity,
     KcdbServiceClass,
@@ -111,6 +112,7 @@ if __name__ == "miiflask.flask.app":
         admin.add_view(DimensionView(Dimension, db.session, category="Mlayer"))
         admin.add_view(MyModelView(System, db.session, category="Mlayer"))
         admin.add_view(ParameterView(Parameter, db.session, category="Measurand"))
+        admin.add_view(MyModelView(Discipline, db.session, category="Measurand"))
         # admin.add_view(MeasurandView(Measurand, db.session, category="Measurand"))
         admin.add_view(MeasurandTaxonView(MeasurandTaxon, db.session, category="Measurand"))
         admin.add_view(KcdbServiceView(KcdbServiceClass, db.session, category="KCDB"))

@@ -53,7 +53,7 @@ from miiflask.flask.model import (
     KcdbParameter,
     KcdbArea
 )
-from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema, UnitSchema, ScaleSchema
+from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema, UnitSchema, ScaleSchema, SystemSchema
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
@@ -79,6 +79,8 @@ scale_schema = ScaleSchema()
 scales_schema = ScaleSchema(many=True)
 unit_schema = UnitSchema()
 units_schema = UnitSchema(many=True)
+system_schema = SystemSchema()
+systems_schema = SystemSchema(many=True)
 m_schema = MeasurandTaxonSchema()
 measurands_schema = MeasurandTaxonSchema(many=True)
 cmc_schema = KcdbCmcSchema()
@@ -482,6 +484,7 @@ class MeasurandTaxonView(ModelView):
     column_details_list = (
            "id",
            "name",
+           "discipline",
            "aspect",
            "result",
            "definition",
@@ -496,6 +499,7 @@ class MeasurandTaxonView(ModelView):
                     'deprecated',
                     'replacement',
                     'definition',
+                    'discipline',
                     #'processtype',
                     #'qualifier',
                     #'kcdbcmcs',
@@ -513,11 +517,11 @@ class DimensionView(MyModelView):
         return Markup('<a href="{}">{}</a>'.format(url, field))
 
     def _link_scale_formatter(view, context, model, name):
-        urls = []
-        for s in model.systematic_scales:
-            url = url_for('scale.details_view', id=s.id)
-            urls.append('<a href="{}">{}</a>'.format(url, s.id))
-        return Markup((',').join(urls))
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        url = url_for('scale.details_view', id=model.systematic_scale_id)
+        return Markup('<a href="{}">{}</a>'.format(url, field))
 
     def _exponents_formatter(view, context, model, name):
         field = getattr(model, name)
@@ -537,11 +541,11 @@ class DimensionView(MyModelView):
                    "exponents")
     column_details_list = ("id",
                            "formal_system",
-                           "systematic_scales",
+                           "systematic_scale",
                            "exponents")
     column_formatters = {"id": _id_formatter,
                          "formal_system": _link_system_formatter,
-                         "systematic_scales": _link_scale_formatter,
+                         "systematic_scale": _link_scale_formatter,
                          "exponents": _exponents_formatter}
 
 
@@ -1041,6 +1045,15 @@ def api_units():
     units = Unit().query.all()
     return units_schema.dump(units)
 
+@app.route("/api/systems/")
+def api_systems():
+    systems = System().query.all()
+    return systems_schema.dump(systems)
+
+@app.route("/api/system/<string:system_id>/", methods=["GET", "POST"])
+def api_system(system_id):
+    system = System().query.get_or_404(system_id)
+    return system_schema.dump(system)
 
 @app.route("/api/measurand/<string:measurand_id>/", methods=["GET", "POST"])
 def api_measurand(measurand_id):
