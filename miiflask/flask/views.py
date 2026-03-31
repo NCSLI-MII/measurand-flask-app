@@ -53,7 +53,7 @@ from miiflask.flask.model import (
     KcdbParameter,
     KcdbArea
 )
-from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema, UnitSchema, ScaleSchema
+from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema, UnitSchema, ScaleSchema, SystemSchema
 
 from miiflask.flask.app import app
 from miiflask.flask.app import db
@@ -79,6 +79,8 @@ scale_schema = ScaleSchema()
 scales_schema = ScaleSchema(many=True)
 unit_schema = UnitSchema()
 units_schema = UnitSchema(many=True)
+system_schema = SystemSchema()
+systems_schema = SystemSchema(many=True)
 m_schema = MeasurandTaxonSchema()
 measurands_schema = MeasurandTaxonSchema(many=True)
 cmc_schema = KcdbCmcSchema()
@@ -1043,6 +1045,15 @@ def api_units():
     units = Unit().query.all()
     return units_schema.dump(units)
 
+@app.route("/api/systems/")
+def api_systems():
+    systems = System().query.all()
+    return systems_schema.dump(systems)
+
+@app.route("/api/system/<string:system_id>/", methods=["GET", "POST"])
+def api_system(system_id):
+    system = System().query.get_or_404(system_id)
+    return system_schema.dump(system)
 
 @app.route("/api/measurand/<string:measurand_id>/", methods=["GET", "POST"])
 def api_measurand(measurand_id):

@@ -22,11 +22,12 @@ from sqlalchemy import (ForeignKey,
                         )
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
+from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow_sqlalchemy.fields import Nested
 
 from typing import Optional
-
+import re
 # ##########################################
 # Managing SQLAlchemy model outside of Flask
 # stackoverflow 28789063
@@ -851,10 +852,22 @@ class UnitSchema(SQLAlchemyAutoSchema):
 
 
 class SystemSchema(SQLAlchemyAutoSchema):
+    basis = fields.Method("get_basis_representation")
     class Meta:
         model = System
         load_instance = True
         ordered = True
+
+    def get_basis_representation(self, obj):
+        if(obj.basis is None):
+            return None
+        items = []
+        pairs = re.findall(r'\(([^)]+)\)', obj.basis)
+        resulting_pairs = [pair.split(',') for pair in pairs]
+        for item in resulting_pairs:
+            items.append({"system_aspect": item[0],
+                "system_scale": item[1]})
+        return items
 
 
 class DimensionSchema(SQLAlchemyAutoSchema):
@@ -870,7 +883,7 @@ class DimensionSchema(SQLAlchemyAutoSchema):
 class ScaleSchema(SQLAlchemyAutoSchema):
     #unit = Nested(UnitSchema)
     prefix = Nested(PrefixSchema)
-    system_dimensions = Nested(lambda:DimensionSchema(only=("id","exponents","formal_system")))
+    system_dimensions = Nested(lambda:DimensionSchema(only=("id","exponents","formal_system.id")))
     # root_scale = Nested(ScaleSchema)
 
     class Meta:
