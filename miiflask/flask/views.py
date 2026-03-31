@@ -482,6 +482,7 @@ class MeasurandTaxonView(ModelView):
     column_details_list = (
            "id",
            "name",
+           "discipline",
            "aspect",
            "result",
            "definition",
@@ -496,6 +497,7 @@ class MeasurandTaxonView(ModelView):
                     'deprecated',
                     'replacement',
                     'definition',
+                    'discipline',
                     #'processtype',
                     #'qualifier',
                     #'kcdbcmcs',
@@ -513,11 +515,11 @@ class DimensionView(MyModelView):
         return Markup('<a href="{}">{}</a>'.format(url, field))
 
     def _link_scale_formatter(view, context, model, name):
-        urls = []
-        for s in model.systematic_scales:
-            url = url_for('scale.details_view', id=s.id)
-            urls.append('<a href="{}">{}</a>'.format(url, s.id))
-        return Markup((',').join(urls))
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        url = url_for('scale.details_view', id=model.systematic_scale_id)
+        return Markup('<a href="{}">{}</a>'.format(url, field))
 
     def _exponents_formatter(view, context, model, name):
         field = getattr(model, name)
@@ -537,11 +539,11 @@ class DimensionView(MyModelView):
                    "exponents")
     column_details_list = ("id",
                            "formal_system",
-                           "systematic_scales",
+                           "systematic_scale",
                            "exponents")
     column_formatters = {"id": _id_formatter,
                          "formal_system": _link_system_formatter,
-                         "systematic_scales": _link_scale_formatter,
+                         "systematic_scale": _link_scale_formatter,
                          "exponents": _exponents_formatter}
 
 

@@ -60,6 +60,7 @@ class MlayerMapper:
                 'functions': self._transformFunction,
                 }
         self._cache_objs = []
+        self._cache_systematic_scales = []
         self.Session = session
 
     def getTableIdentifier(self, uid):
@@ -179,6 +180,8 @@ class MlayerMapper:
         )
         if system_dimensions:
             scale.system_dimensions = system_dimensions
+            if obj['is_systematic']:
+                self._cache_systematic_scales.append(obj)
 
         # Parent (Root) scale may not be loaded before derived scale
         # If root scale not loaded
@@ -257,6 +260,21 @@ class MlayerMapper:
         dimension.formal_system = system
         return dimension
 
+    def _updateDimension(self, obj):
+        # Update the dimension with the systematic scale from the scale table
+        scale = (
+            self.Session.query(model.Scale)
+            .filter(model.Scale.id == obj['id'])
+            .first()
+        )
+        dimension = (
+            self.Session.query(model.Dimension)
+            .filter(model.Dimension.id == scale.system_dimensions.id)
+            .first()
+        )
+        dimension.systematic_scale = scale
+        return dimension
+
     def _transformSystem(self, obj):
         system = (
             self.Session.query(model.System)
@@ -275,6 +293,10 @@ class MlayerMapper:
         }
         system = self._schemas['system'].load(data_, session=self.Session)
         return system
+
+    def _updateDimensionSystematicScale(self):
+        for obj in self._cache_systematic_scales:
+            self._updateDimension(obj)
 
     def _loadCollection(self, type_, lst):
         while lst:
@@ -299,6 +321,8 @@ class MlayerMapper:
                 self._loadCollection(type_, json.load(f))
         if len(self._cache_objs) > 0:
             self._loadCollection(type_, self._cache_objs)
+        if len(self._cache_systematic_scales) > 0:
+            self._updateDimensionSystematicScale()
 
     def _transformConversion(self, obj):
         aspect = (self.Session.query(model.Aspect)

@@ -128,17 +128,25 @@ class Dimension(Base):
 
     formal_system_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey('system.id'))
-
-    # systematic_scale_id: Mapped[Optional[str]] = \
-    #    mapped_column(ForeignKey('scale.id'))
+    
+    # Dimensions only points back to the systematic scale
+    systematic_scale_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('scale.id'))
 
     exponents: Mapped[Optional[str]] = mapped_column(String(40))
 
-    systematic_scales: Mapped[list['Scale']] = \
-        relationship(back_populates="system_dimensions", viewonly=True)
+    # Dimension is only defined for one systematic_scale
+    # Whereas many scales may have the same dimensions 
+    # The view of all scales with the same dimension may be useful
+    # What is required is the relation between the systematic scale and the dimension
+    #systematic_scales: Mapped[list['Scale']] = \
+    #    relationship(back_populates="system_dimensions", viewonly=True)
 
     formal_system: Mapped['System'] = relationship()
+    systematic_scale: Mapped['Scale'] = relationship("Scale", foreign_keys=[systematic_scale_id])
 
+        #relationship(primaryjoin="(Scale.id == Cast.src_scale_id)",
+        #             viewonly=True)
     def __str__(self):
         # SI Brochure dimensions
         # dimQ = T^alphaL^betaM^gammaI^deltaTheta^epsilonN^psiJ^eta
@@ -253,8 +261,10 @@ class Scale(Base):
     system_dimensions_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey('dimension.id'))
 
-    system_dimensions: Mapped['Dimension'] = \
-        relationship(back_populates="systematic_scales")
+    system_dimensions: Mapped['Dimension'] = relationship("Dimension", foreign_keys=[system_dimensions_id])
+        # Remove view on all scales that share dimension
+        # Only point to the dimension that define the scale
+        #relationship(back_populates="systematic_scales")
 
     is_systematic: Mapped[Optional[bool]]
 
@@ -858,9 +868,9 @@ class DimensionSchema(SQLAlchemyAutoSchema):
 
 
 class ScaleSchema(SQLAlchemyAutoSchema):
-    # unit = Nested(UnitSchema)
+    #unit = Nested(UnitSchema)
     prefix = Nested(PrefixSchema)
-    dimension = Nested(DimensionSchema)
+    system_dimensions = Nested(lambda:DimensionSchema(only=("id","exponents","formal_system")))
     # root_scale = Nested(ScaleSchema)
 
     class Meta:
