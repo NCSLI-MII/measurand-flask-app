@@ -852,7 +852,7 @@ class UnitSchema(SQLAlchemyAutoSchema):
 
 
 class SystemSchema(SQLAlchemyAutoSchema):
-    basis = fields.Method("get_basis_representation")
+    basis_pairs = fields.Method("get_basis_representation")
     class Meta:
         model = System
         load_instance = True
