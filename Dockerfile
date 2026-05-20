@@ -11,6 +11,8 @@ RUN apt-get update && \
     apt-get install -y graphviz && \
     apt-get install -y wget && \
     rm -rf /var/lib/apt/lists/*
+# Create home area for Azure WEB APP STORAGE
+RUN mkdir -p /home/data && ln -s /home/data /data
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt 
 
