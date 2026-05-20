@@ -18,7 +18,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_ADMIN_SWATCH = "cerulean"
     SECRET_KEY = "secret"
-    VERSION = "0.5.1"
+    VERSION = "0.5.2"
 
 
 class TestingConfig(Config):
