@@ -12,6 +12,7 @@
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 
 from sqlalchemy import create_engine
@@ -23,12 +24,14 @@ from miiflask.mappers.taxonomy_mapper_v2 import TaxonomyMapper
 from miiflask.mappers.kcdb_mapper import KcdbMapper
 
 
-def main():
-    
+def main(data_dir, db_path):
+   
+    print(f"Initialize db with APP DATA DIR {data_dir}")
+    print(f"Database path {db_path}")
     parms = {
-        "path": "data/",
-        "database": "data/miiflask.db",
-        "usertables": "/tmp/miiflask/tables_",
+        "path": data_dir,
+        "database": db_path,
+        "usertables": os.path.join(data_dir,"tables_"),
         "measurands": "resources/repo/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
         "mlayer": "resources/repo/m-layer/source/json",
         "kcdb": "resources/kcdb",
@@ -50,16 +53,20 @@ def main():
         miimapper.loadTaxonomy()
         miimapper.roundtrip()
 
-        kcdbmapper = KcdbMapper(session, parms)
-        kcdbmapper.loadServices()
+        #kcdbmapper = KcdbMapper(session, parms)
+        #kcdbmapper.loadServices()
         session.commit()
         session.close()
 
 
 if __name__ == "__main__":
+    print(sys.argv[1])
+    data_dir = os.path.abspath(sys.argv[1])
+    db_path = os.path.join(data_dir, "miiflask.db")
+    print(db_path)
     engine = create_engine(
-        "sqlite:///" + os.path.abspath("data/miiflask.db")
+        f"sqlite:///{db_path}" 
     )
 
     bind_engine(engine)
-    main()
+    main(data_dir, db_path)

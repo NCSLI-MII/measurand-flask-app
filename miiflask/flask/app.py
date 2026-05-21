@@ -9,7 +9,7 @@
 """
 
 """
-from os import environ
+import os
 import argparse
 
 from flask import Flask
@@ -70,7 +70,8 @@ class MainIndexLink(MenuLink):
 def create_app(config):
     app = Flask(__name__)
     app.config.from_object(config)
-
+    print(f"Creating app with DB Path {config.SQLALCHEMY_DATABASE_URI}")
+    print("Database path exists:", os.path.exists(config.DB_PATH))
     return app
 
 if __name__ == "miiflask.flask.app":
