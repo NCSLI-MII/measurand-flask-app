@@ -11,6 +11,9 @@
 """
 import os
 
+
+
+
 class Config:
     DEBUG = False
     TESTING = False
@@ -37,5 +40,6 @@ class DemoConfig(Config):
 
 class ProductionConfig(Config):
     PRODUCTION = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.abspath("data/miiflask.db")
+    DB_PATH = os.path.join(os.getenv("APP_DATA_DIR"), "miiflask.db") 
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + DB_PATH
 
