@@ -22,15 +22,17 @@ Also works with conda
 conda env create --file environment_history.yml
 conda activate mdb-test
 ```
-
+* Define the environment variable for the database path. This allows for deployment to Azure using web app storage as well as local deployment
+* Both the initialization and flask application depend on the environment variable.
+`export APP_DATA_DIR=<PATH>`
 * Initialize the working directory. This will get the latest versions of the taxonomy and m-layer, and initialize the database in specified PATH and link to data in project directory.
-* Optionally, PATH can be removed and database reinitialized with TRUE for second or argument.
+* Optionally, $APP_DATA_DIR can be removed and database reinitialized with TRUE for second or argument.
 ```
-sh init.sh <PATH>
+sh init.sh $APP_DATA_DIR
 ```
 or remove the database and reinitialize
 ```
-sh init.sh <PATH> TRUE
+sh init.sh $APP_DATA_DIR TRUE
 ```
 * Run locally or build container
 ```
