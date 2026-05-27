@@ -1,10 +1,9 @@
 #! /usr/bin/env python3
-# -*- coding: utf-8 -*-
 # vim:fenc=utf-8
 #
-# Copyright © 2023 Ryan Mackenzie White <ryan.white@nrc-cnrc.gc.ca>
+# Copyright © 2026 Ryan Mackenzie White <ryan.white4@canada.ca>
 #
-# Distributed under terms of the Copyright © 2022 National Research Council Canada. license.
+# Distributed under terms of the Copyright © Her Majesty the Queen in Right of Canada, as represented by the Minister of Statistics Canada, 2019. license.
 
 """
 
@@ -12,18 +11,13 @@
 import logging
 from urllib.parse import urlparse
 
-from sqlalchemy.orm.base import instance_state
-from flask import (render_template,
-                   redirect,
-                   request,
-                   url_for,
-                   flash
-                   )
+from flask import url_for
 
+from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.base import Bootstrap4Theme
 from flask_admin.model.filters import BaseFilter
 from flask_admin.babel import gettext
-
 from flask_admin.actions import action
 from flask_admin import Admin, expose
 from flask_admin.helpers import get_redirect_target
@@ -53,24 +47,14 @@ from miiflask.flask.model import (
     KcdbParameter,
     KcdbArea
 )
-from miiflask.flask.model import AspectSchema, MeasurandTaxonSchema, KcdbCmcSchema, UnitSchema, ScaleSchema, SystemSchema
-
-from miiflask.flask.app import app
-from miiflask.flask.app import db
-#from miiflask.mappers.taxonomy_mapper import dicttoxml_taxonomy, getTaxonDict
-from miiflask.mappers.mlayer_mapper import MlayerMapper
-from miiflask.mappers.taxonomy_mapper_v2 import TaxonomyMapper
-from miiflask.mappers.kcdb_mapper import KcdbMapper
-from miiflask.utils.model_visualizer import (
-    generate_data_model_diagram,
-    visualize_model_instance
-    )
-
-import pprint as mpprint
-import json
-import graphviz
-import base64
-
+from miiflask.flask.model import (
+        AspectSchema,
+        MeasurandTaxonSchema, 
+        KcdbCmcSchema, 
+        UnitSchema, 
+        ScaleSchema, 
+        SystemSchema
+        )
 log = logging.getLogger("flask-admin.sqla")
 
 qk_schema = AspectSchema()
@@ -236,8 +220,8 @@ class CMCView(MyModelView):
                 for cmc in query.all():
                     cmc.measurands.append(m_query)
 
-                #db.session.bulk_update_mappings(KcdbCmc, _update_mappings)
-                db.session.commit()
+                #self.session.bulk_update_mappings(KcdbCmc, _update_mappings)
+                self.session.commit()
                 flash(f"Set measurand for {len(ids)} record{'s' if len(ids) > 1 else ''} to {measurand}.", category='info')
                 return redirect(url)
             else:
@@ -716,359 +700,3 @@ class AspectView(MyModelView):
                            "scales",
                            "reference"
                            )
-
-
-@app.route("/")
-def index():
-    meta = db.session.info
-    print(meta)
-    measurands = MeasurandTaxon.query.all()
-    aspects = Aspect.query.all()
-    scales = Scale.query.all()
-    return render_template(
-        "index.html",
-        measurands=measurands,
-        aspects=aspects,
-        scales=scales,
-    )
-
-
-@app.route("/initialize")
-def initialize():
-
-    parms = {
-            "measurands": "../../resources/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
-            "mlayer": "../../resources/m-layer",
-            "kcdb": "../../resources/kcdb",
-            "api_mlayer": "https://dr49upesmsuw0.cloudfront.net",
-            "use_api": False,
-            "use_cmc_api": False,
-            "update_resources": False,
-            "kcdb_cmc_data": "kcdb_cmc_canada.json",
-            "kcdb_cmc_api_countries": ["CA"],
-        }
-
-    mapper = MlayerMapper(db.session, parms)
-    mapper.getCollections()
-    mapper.getScaleAspectAssociations()
-
-    miimapper = TaxonomyMapper(db.session, parms)
-    miimapper.extractTaxonomy()
-    miimapper.loadTaxonomy()
-
-    kcdbmapper = KcdbMapper(db.session, parms)
-    kcdbmapper.loadServices()
-    
-    db.session.commit()
-    return redirect(url_for('index'))
-
-
-@app.route("/taxonomy/")
-def taxonomy():
-    measurand = MeasurandTaxon()
-    measurands = measurand.query.all()
-    return render_template("taxonomy.html", measurands=measurands)
-
-
-@app.route("/kcdbcmcs/")
-def kcdbcmcs():
-    cmc = KcdbCmc()
-    cmcs = cmc.query.all()
-    return render_template("kcdbcmcs.html", cmcs=cmcs)
-
-
-@app.route("/kcdbcmcs/export/json")
-def kcdbcmcs_export_json():
-    cmc = KcdbCmc()
-    cmcs = cmc.query.all()
-    schema = cmc_schema.dumps(cmcs, many=True, indent=4)
-    response = app.make_response(schema)
-    response.headers["Content-Disposition"] = "attachment; filename=export_cmcs.json"
-    response.headers["Content-type"] = "text/json"
-    return response 
-
-
-@app.route("/kcdbcmcs/auv/")
-def kcdbcmcs_auv():
-    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'AUV')).all()
-    return render_template("kcdbcmcs.html", cmcs=cmcs)
-
-
-@app.route("/kcdbcmcs/em/")
-def kcdbcmcs_em():
-    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'EM')).all()
-    return render_template("kcdbcmcs.html", cmcs=cmcs)
-
-
-@app.route("/kcdbcmcs/l/")
-def kcdbcmcs_l():
-    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'L')).all()
-    return render_template("kcdbcmcs.html", cmcs=cmcs)
-
-
-@app.route("/kcdbcmcs/m/")
-def kcdbcmcs_m():
-    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'M')).all()
-    return render_template("kcdbcmcs.html", cmcs=cmcs)
-
-
-@app.route("/kcdbcmcs/pr/")
-def kcdbcmcs_pr():
-    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'PR')).all()
-    return render_template("kcdbcmcs.html", cmcs=cmcs)
-
-
-@app.route("/kcdbcmcs/t/")
-def kcdbcmcs_t():
-    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'T')).all()
-    return render_template("kcdbcmcs.html", cmcs=cmcs)
-
-
-@app.route("/kcdbcmcs/tf/")
-def kcdbcmcs_tf():
-    cmcs = KcdbCmc.query.filter(KcdbCmc.area.has(KcdbArea.label == 'TF')).all()
-    return render_template("kcdbcmcs.html", cmcs=cmcs)
-
-
-@app.route("/kcdbcmc/<string:kcdbcmc_id>/export/json", methods=["GET", "POST"])
-def kcdbcmc_export_json(kcdbcmc_id):
-    # print("Get Meaurand ", measurand_id)
-    cmc = KcdbCmc.query.get_or_404(kcdbcmc_id)
-    schema = cmc_schema.dumps(cmc, indent=2)
-    response = app.make_response(schema)
-    response.mimetype = "text/json"
-    return response 
-
-
-@app.route("/mlayer/scales/")
-def scales():
-    scales = Scale().query.all()
-    return render_template("scales.html", scales=scales)
-
-
-@app.route("/mlayer/aspects/")
-def aspects():
-    aspects = Aspect().query.all()
-    return render_template("aspects.html", aspects=aspects)
-
-
-@app.route("/taxonomy/export")
-def taxonomy_export():
-    measurands = MeasurandTaxon.query.all()
-    c = Administrative.query.first()
-    taxons = []
-    for obj in measurands:
-        try:
-            taxons.append(TaxonomyMapper._getTaxonDict(obj, m_schema))
-        except Exception as e:
-            print(obj)
-            raise e
-    xml = TaxonomyMapper._dicttoxml_taxonomy(taxons)
-    response = app.make_response(xml)
-    response.headers["Content-Disposition"] = "attachment; filename=export_taxonomy.xml"
-    response.headers["Content-type"] = "text/xml"
-    return response
-
-
-@app.route("/measurand/<string:measurand_id>/export/xml", methods=["GET", "POST"])
-def measurand_export_xml(measurand_id):
-    # print("Get Meaurand ", measurand_id)
-    m = MeasurandTaxon.query.get_or_404(measurand_id)
-    taxon = TaxonomyMapper._getTaxonDict(m, m_schema)
-    xml = TaxonomyMapper._dicttoxml_taxon(taxon)
-    filename = m.name.replace('.','_')
-    content = f'attachment; filename= {filename}.xml'
-    response = app.make_response(xml)
-    response.headers["Content-Disposition"] = content 
-    response.headers["Content-type"] = "text/xml"
-    return response 
-
-
-@app.route("/measurand/<string:measurand_id>/export/json", methods=["GET", "POST"])
-def measurand_export_json(measurand_id):
-    # print("Get Meaurand ", measurand_id)
-    m = MeasurandTaxon.query.get_or_404(measurand_id)
-    schema = m_schema.dumps(m, indent=2)
-    response = app.make_response(schema)
-    response.mimetype = "text/json"
-    return response 
-
-@app.route("/measurand/<string:measurand_id>/", methods=["GET", "POST"])
-def measurand(measurand_id):
-    # print("Get Meaurand ", measurand_id)
-    m = MeasurandTaxon.query.get_or_404(measurand_id)
-    graph = visualize_model_instance(MeasurandTaxon, m)
-    return render_template("measurand.html", measurand=m, graph=graph)
-
-
-@app.route("/aspect/<string:aspect_id>/", methods=["GET", "POST"])
-def aspect(aspect_id):
-    # print("Get Aspect ", aspect_id)
-    a = Aspect.query.get_or_404(aspect_id)
-    a_schema = qk_schema.dumps(a, indent=2)
-    # print(a.id)
-    mpprint.pprint(a_schema)
-    graph = visualize_model_instance(Aspect, a)
-    return render_template("aspect.html", aspect=a, response=a_schema, graph=graph)
-
-@app.route("/aspect/<string:aspect_id>/export/json", methods=["GET", "POST"])
-def aspect_export_json(aspect_id):
-    # print("Get Meaurand ", measurand_id)
-    a = Aspect.query.get_or_404(aspect_id)
-    schema = qk_schema.dumps(a, indent=2)
-    response = app.make_response(schema)
-    response.mimetype = "text/json"
-    return response 
-
-@app.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
-def scale(scale_id):
-    # print("Get Scale ", scale_id)
-    s = Scale.query.get_or_404(scale_id)
-    # print(s.id)
-    graph = visualize_model_instance(Scale, s)
-    return render_template("scale.html", scale=s, graph=graph)
-
-@app.route("/unit/<string:unit_id>/", methods=["GET", "POST"])
-def unit(unit_id):
-    u = Unit.query.get_or_404(unit_id)
-    return render_template("unit.html", unit=u)
-
-@app.route("/model/mii")
-def modelMII():
-    models = [Scale, Aspect, Conversion, Transform, MeasurandTaxon, Parameter, Discipline, KcdbCmc]
-    excludes = ['Prefix',
-                'Unit',
-                'Dimension',
-                'Taxon',
-                'ClassifierTag',
-                'Cast',
-                'Measurand',
-                'KcdbArea',
-                'KcdbBranch',
-                'KcdbService',
-                'KcdbSubservice',
-                'KcdbIndividualService',
-                'KcdbQuantity',
-                'KcdbParameter',
-                'KcdbInstrument',
-                'KcdbInstrumentMethod']
-    graph = generate_data_model_diagram(models, excludes,show_attributes=False)
-    return render_template("diagram.html", graph=graph)
-
-
-@app.route("/model/mlayer/scale")
-def modelMlayerScale():
-    models = [Scale, Unit, Prefix, Dimension, System]
-    excludes = ['Aspect', 'Conversion', 'Cast']
-    graph = generate_data_model_diagram(models, excludes)
-    return render_template("diagram.html", graph=graph)
-
-
-@app.route("/model/mlayer/conversion")
-def modelMlayerConversion():
-    models = [Conversion, Aspect, Scale, Transform]
-    excludes = ['Prefix', 'Unit', 'Dimension', 'Cast']
-    graph = generate_data_model_diagram(models, excludes=excludes)
-    return render_template("diagram.html", graph=graph)
-
-
-@app.route("/model/mlayer/cast")
-def modelMlayerCast():
-    models = [Cast, Aspect, Scale, Transform]
-    excludes = ['Prefix', 'Unit', 'Dimension', 'Conversion']
-    graph = generate_data_model_diagram(models, excludes=excludes)
-    return render_template("diagram.html", graph=graph)
-
-
-@app.route("/model/taxonomy/measurand")
-def modelTaxonomyMeasurand():
-    models = [MeasurandTaxon, Parameter, Aspect, Discipline]
-    excludes = ['KcdbCmc','Prefix', 'Unit', 'Dimension', 'Conversion', 'Cast', 'Measurand']
-    graph = generate_data_model_diagram(models, excludes=excludes)
-    return render_template("diagram.html", graph=graph)
-
-
-@app.route("/model/relations")
-def modelRelations():
-    models = [KcdbCmc, Measurand]
-    excludes = ['Taxon', 'Aspect', 'Parameter', 'ClassifierTag']
-    graph = generate_data_model_diagram(models, excludes=excludes)
-    return render_template("diagram.html", graph=graph)
-
-
-@app.route("/model/kcdb")
-def modelKcdb():
-    models = [KcdbCmc, MeasurandTaxon]
-    excludes = ['ClassifierTag']
-    graph = generate_data_model_diagram(models, excludes=excludes)
-    return render_template("diagram.html", graph=graph)
-
-# Views for API
-
-@app.route("/api/aspect/<string:aspect_id>/", methods=["GET", "POST"])
-def api_aspect(aspect_id):
-    # print("Get Aspect ", aspect_id)
-    a = Aspect.query.get_or_404(aspect_id)
-    return qk_schema.dump(a)
-
-
-@app.route("/api/aspects/")
-def api_aspects():
-    # print("Get Aspect ", aspect_id)
-    aspects = Aspect().query.all()
-    return aspects_schema.dump(aspects)
-
-@app.route("/api/scale/<string:scale_id>/", methods=["GET", "POST"])
-def api_scale(scale_id):
-    # print("Get Aspect ", aspect_id)
-    s = Scale.query.get_or_404(scale_id)
-    return scale_schema.dump(s)
-
-
-@app.route("/api/scales/")
-def api_scales():
-    # print("Get Aspect ", aspect_id)
-    scales = Scale().query.all()
-    return scales_schema.dump(scales)
-
-
-@app.route("/api/unit/<string:unit_id>/", methods=["GET", "POST"])
-def api_unit(unit_id):
-    # print("Get Aspect ", aspect_id)
-    u = Unit.query.get_or_404(unit_id)
-    return unit_schema.dump(u)
-
-
-@app.route("/api/units/")
-def api_units():
-    # print("Get Aspect ", aspect_id)
-    units = Unit().query.all()
-    return units_schema.dump(units)
-
-@app.route("/api/systems/")
-def api_systems():
-    systems = System().query.all()
-    return systems_schema.dump(systems)
-
-@app.route("/api/system/<string:system_id>/", methods=["GET", "POST"])
-def api_system(system_id):
-    system = System().query.get_or_404(system_id)
-    return system_schema.dump(system)
-
-@app.route("/api/measurand/<string:measurand_id>/", methods=["GET", "POST"])
-def api_measurand(measurand_id):
-    # print("Get Aspect ", aspect_id)
-    # accept_header = request.headers.get('Accept', '')
-    # print(accept_header)
-    m = MeasurandTaxon.query.get_or_404(measurand_id)
-    schema = m_schema.dump(m)
-    response = app.make_response(schema)
-    response.mimetype = "application/json"
-    return response 
-
-
-@app.route("/api/measurands/")
-def api_measurands():
-    # print("Get Aspect ", aspect_id)
-    measurands = MeasurandTaxon().query.all()
-    return measurands_schema.dump(measurands)

@@ -30,7 +30,7 @@
                         <li><a class="dropdown-item" href="mlayer/aspects">M-layer Measurable Aspects</a></li>
                         <li><a class="dropdown-item" href="mlayer/scales">Measurement Scales</a></li>
                         <li><hr class="dropdown-divider"></li> 
-                        <li><a class="dropdown-item" href="{{ url_for('taxonomy_export') }}">Taxonomy XML</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.taxonomy_export') }}">Taxonomy XML</a></li>
                     </ul>
                 </div>
                 
@@ -47,7 +47,7 @@
                         <li><a class="dropdown-item" href="kcdbcmcs/t">Temperature</a></li>
                         <li><a class="dropdown-item" href="kcdbcmcs/tf">Time and Frequency</a></li>
                         <li><hr class="dropdown-divider"></li> 
-                        <li><a class="dropdown-item" href="{{ url_for('kcdbcmcs_export_json') }}">KCDB JSON</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.kcdbcmcs_export_json') }}">KCDB JSON</a></li>
                     </ul>
                 </div>
             </div>
