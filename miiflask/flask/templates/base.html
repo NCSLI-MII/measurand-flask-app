@@ -78,7 +78,7 @@
 
 {% block navbar %}
     <div class="navbar nav-fixed-top">
-        <a href="{{ url_for('index') }}">Homepage</a>
+        <a href="{{ url_for('main.index') }}">Homepage</a>
         <a href="{{ url_for('admin.index') }}">Administer</a>
     
         <div class="btn-group">
@@ -97,7 +97,7 @@
 
 <body>
     <nav> 
-        <a href="{{ url_for('index') }}"> Measurand Information Exchange </a>
+        <a href="{{ url_for('main.index') }}"> Measurand Information Exchange </a>
     </nav>
     <hr>
     <div class="content">

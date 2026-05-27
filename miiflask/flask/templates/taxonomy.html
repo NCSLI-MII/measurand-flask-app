@@ -18,7 +18,7 @@
             <tr>
                 <td>{{ m.name }}</td>
                 <td>{{ m.definition }}</td>
-                <td><a href="{{ url_for('measurand', measurand_id=m.id) }}">Details</a></td>
+                <td><a href="{{ url_for('main.measurand', measurand_id=m.id) }}">Details</a></td>
             </tr>
             {% endfor %}
         </tbody>

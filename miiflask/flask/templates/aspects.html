@@ -32,7 +32,7 @@
                 {% else %}
                     <td></td>
                 {% endif %}
-                <td><a href="{{ url_for('aspect', aspect_id=a.id) }}">Details</a></td>
+                <td><a href="{{ url_for('main.aspect', aspect_id=a.id) }}">Details</a></td>
             </tr>
             {% endfor %}
         </tbody>
