@@ -1,112 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} {% endblock %} - Measurement Information  </title> 
-    <!-- Bootstrap CSS 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    -->
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Bootstrap JS 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    -->
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <style>
-<!--
-        .title {
-            margin: 5px;
-        } 
--->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .content {
-            margin: 5px;
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
+<title>Measurement Information Infrastructure</title>
 
-        .area {
-            flex: 20%;
-            padding: 10px;
-            margin: 5px;
-            background-color: #f3f3f3;
-            inline-size: 100%;
-        }
-        
-        .service {
-            flex: 20%;
-            padding: 10px;
-            margin: 5px;
-            background-color: #f3f3f3;
-            inline-size: 100%;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .description {
-            padding: 10px;
-            margin: 5px;
-            background-color: #ffffff;
-            color: #004835;
-        }
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
-        .taxon a {
-            padding: 10px;
-            margin: 5px;
-            color: #00a36f;
-            text-decoration: none;
-        }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-        nav a {
-            color: #d64161;
-            font-size: 3em;
-            margin-left: 50px;
-            text-decoration: none;
-        }
+<style>
 
-        .navbar {
-            margin-left: 50px;
-            margin-right: 200px;
-        }
+body {
+    background-color: #f7f7f7;
+}
 
-    </style>
+.content {
+    margin: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.section-card {
+    margin-bottom: 20px;
+}
+
+.metadata-list {
+    height: 300px;
+}
+
+.metadata-list option {
+    padding: 4px;
+}
+
+.metadata-list {
+    font-size: 0.9rem;
+
+}
+.footer {
+    margin-top: 40px;
+    padding: 10px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+</style>
+
 </head>
 
-{% block navbar %}
-    <div class="navbar nav-fixed-top">
-        <a href="{{ url_for('main.index') }}">Homepage</a>
-    
-        <div class="btn-group">
-            <button class ="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Links
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="https://api.mlayer.org">Mlayer API</a></li>
-                <li><a class="dropdown-item" href="https://github.com/NCSLI-MII/measurand-taxonomy">MII Measurand Taxonomy Repository</a></li>
-                <li><a class="dropdown-item" href="https://si-digital-framework.org">BIPM SI Digital Framework</a></li> 
-            </ul>
-        </div>
-
-    </div>
-{% endblock %}
-
 <body>
-    <nav> 
-        <a href="{{ url_for('main.index') }}"> Measurand Information Exchange </a>
-    </nav>
-    <hr>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<div class="container-fluid">
+
+<a class="navbar-brand" href="{{ url_for('main.index') }}">
+Measurand Information Infrastructure
+</a>
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarContent">
+
+<ul class="navbar-nav me-auto">
+
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Links</a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" href="https://api.mlayer.org">Mlayer API</a></li>
+<li><a class="dropdown-item" href="https://github.com/NCSLI-MII/measurand-taxonomy">MII Measurand Taxonomy</a></li>
+<li><a class="dropdown-item" href="https://si-digital-framework.org">BIPM SI Digital Framework</a></li>
+</ul>
+</li>
+
+</ul>
+
+</div>
+</div>
+</nav>
+
+
+<div class="container mt-4">
+
     <div class="content">
-        {% block content %} {% endblock %}
+        {% block content %}
+        {% endblock %} 
     </div>
-    <div id="footer">
-        {% block footer %}
-            This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
-        {% endblock %}
-     </div>
+<div class="footer">
+This work is licensed under a
+<a href="https://creativecommons.org/licenses/by-sa/4.0/">
+Creative Commons Attribution‑ShareAlike 4.0 International License
+</a>,
+</div>
+
+</div>
+
 </body>
- 
 </html>
+
+
