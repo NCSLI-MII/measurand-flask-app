@@ -13,6 +13,25 @@
             <b>Parameters: </b>: {{ measurand.parameters| join(', ') }}
         </div>
     </div>
-    <img src="data:image/png;base64,{{graph|safe}}"/>
+
+    <div id="graph"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/viz.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/full.render.js"></script>
+
+    <script>
+
+    const dot = `{{ graph | safe }}`;
+
+    const viz = new Viz();
+
+    viz.renderSVGElement(dot)
+    .then(function(element) {
+        document.getElementById("graph").appendChild(element);
+    })
+    .catch(error => console.error(error));
+
+    </script>
+
 {% endblock %} 
 

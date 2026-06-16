@@ -1,82 +1,230 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
-        
-        <div class="row">
-        
-            <div class="col-md-6">
-            
-                <div class="btn-group">
-                    <button class ="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Data Models
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="model/mii">Measurement Information Model</a></li>
-                        <li><a class="dropdown-item" href="model/kcdb">KCDB Data Model</a></li>
-                        <li><a class="dropdown-item" href="model/taxonomy/measurand">Measurand Data Model</a></li>
-                        <li><a class="dropdown-item" href="model/mlayer/scale">Mlayer Scale Data Model</a></li>
-                        <li><a class="dropdown-item" href="model/mlayer/conversion">Mlayer Conversion Data Model</a></li>
-                        <li><a class="dropdown-item" href="model/mlayer/cast">Mlayer Cast Data Model</a></li>
-                    </ul>
-                </div>
 
-                <div class="btn-group">
-                    <button class ="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                       Metadata catalogs 
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="taxonomy">Measurand Taxonomy</a></li>
-                        <li><a class="dropdown-item" href="mlayer/aspects">M-layer Measurable Aspects</a></li>
-                        <li><a class="dropdown-item" href="mlayer/scales">Measurement Scales</a></li>
-                        <li><hr class="dropdown-divider"></li> 
-                        <li><a class="dropdown-item" href="{{ url_for('main.taxonomy_export') }}">Taxonomy XML</a></li>
-                    </ul>
-                </div>
-                
-                <div class="btn-group">
-                    <button class ="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                       KCDB CMCs 
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="kcdbcmcs/auv">AUV</a></li>
-                        <li><a class="dropdown-item" href="kcdbcmcs/em">EM</a></li> 
-                        <li><a class="dropdown-item" href="kcdbcmcs/l">Dimensional</a></li>
-                        <li><a class="dropdown-item" href="kcdbcmcs/m">Mass and related quantities</a></li>
-                        <li><a class="dropdown-item" href="kcdbcmcs/pr">Photometry and Radiometry</a></li>
-                        <li><a class="dropdown-item" href="kcdbcmcs/t">Temperature</a></li>
-                        <li><a class="dropdown-item" href="kcdbcmcs/tf">Time and Frequency</a></li>
-                        <li><hr class="dropdown-divider"></li> 
-                        <li><a class="dropdown-item" href="{{ url_for('main.kcdbcmcs_export_json') }}">KCDB JSON</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <h4>Measurand Taxons</h4>
-                <select multiple="multiple" class="form-control">
-                    {% for m in measurands %}
-                        <option onClick="window.location = '/measurand/{{ m.id }}'">{{ m.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-md-3">
-                <h4>Measurable Aspects</h4>
-                <select multiple="multiple" class="form-control">
-                    {% for a in aspects %}
-                        <option onClick="window.location = '/aspect/{{ a.id }}'">{{ a.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-md-3">
-                <h4>Measurement Scales</h4>
-                <select multiple="multiple" class="form-control">
-                    {% for scale in scales %}
-                        <option onClick="window.location = '/scale/{{ scale.id }}'">{{ scale.ml_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-    </div>
+<div class="container">
+
+<div class="row mb-4">
+
+<div class="col-md-4">
+<div class="card section-card shadow-sm">
+<div class="card-body">
+
+<h5 class="card-title">Data Models</h5>
+<p class="text-muted small">
+Schemas describing measurement information and interoperability models.
+</p>
+
+<div class="list-group">
+
+<a class="list-group-item list-group-item-action"
+href="model/mii">
+Measurement Information Model
+</a>
+
+<a class="list-group-item list-group-item-action"
+href="model/kcdb">
+KCDB Data Model
+</a>
+
+<a class="list-group-item list-group-item-action"
+href="model/taxonomy/measurand">
+Measurand Data Model
+</a>
+
+<a class="list-group-item list-group-item-action"
+href="model/mlayer/scale">
+Mlayer Scale Data Model
+</a>
+
+<a class="list-group-item list-group-item-action"
+href="model/mlayer/conversion">
+Mlayer Conversion Data Model
+</a>
+
+<a class="list-group-item list-group-item-action"
+href="model/mlayer/cast">
+Mlayer Cast Data Model
+</a>
+
+</div>
+
+</div>
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="card section-card shadow-sm">
+<div class="card-body">
+
+<h5 class="card-title">Metadata Catalogues</h5>
+<p class="text-muted small">
+Taxonomies and measurement metadata resources.
+</p>
+
+<div class="list-group">
+
+<a class="list-group-item list-group-item-action"
+href="taxonomy">
+Measurand Taxonomy
+</a>
+
+<a class="list-group-item list-group-item-action"
+href="mlayer/aspects">
+M-layer Measurable Aspects
+</a>
+
+<a class="list-group-item list-group-item-action"
+href="mlayer/scales">
+Measurement Scales
+</a>
+
+<a class="list-group-item list-group-item-action"
+href="{{ url_for('main.taxonomy_export') }}">
+Export Taxonomy (XML)
+</a>
+
+</div>
+
+</div>
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="card section-card shadow-sm">
+<div class="card-body">
+
+<h5 class="card-title">KCDB CMCs</h5>
+<p class="text-muted small">
+Calibration and Measurement Capabilities by technical field.
+</p>
+
+<div class="list-group">
+
+<a class="list-group-item list-group-item-action"
+href="kcdbcmcs/auv">AUV</a>
+
+<a class="list-group-item list-group-item-action"
+href="kcdbcmcs/em">EM</a>
+
+<a class="list-group-item list-group-item-action"
+href="kcdbcmcs/l">Dimensional</a>
+
+<a class="list-group-item list-group-item-action"
+href="kcdbcmcs/m">Mass and Related Quantities</a>
+
+<a class="list-group-item list-group-item-action"
+href="kcdbcmcs/pr">Photometry and Radiometry</a>
+
+<a class="list-group-item list-group-item-action"
+href="kcdbcmcs/t">Temperature</a>
+
+<a class="list-group-item list-group-item-action"
+href="kcdbcmcs/tf">Time and Frequency</a>
+
+<a class="list-group-item list-group-item-action"
+href="{{ url_for('main.kcdbcmcs_export_json') }}">
+Export KCDB JSON
+</a>
+
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="row mt-4">
+
+
+<div class="col-md-4">
+    <h5>Quantity aspects</h5>
+    <input class="form-control mb-2" id="aspectSearch" placeholder="Search aspects">
+
+    <select multiple size="15" class="form-control metadata-list" id="aspectList">
+        {% for a in aspects %}
+            <option onclick="window.location='{{ url_for('main.aspect', aspect_id=a.id) }}'">{{ a.name }}</option>
+        {% endfor %}
+    </select>
+
+</div>
+
+
+<div class="col-md-4">
+
+<h5>Measurement Scales</h5>
+
+<input class="form-control mb-2"
+id="scaleSearch"
+placeholder="Search scales">
+
+    <select multiple class="form-control metadata-list" id="scaleList">
+        {% for s in scales %}
+            <option onclick="window.location='{{ url_for('main.scale', scale_id=s.id) }}'">{{ s.unit.name }}</option>
+        {% endfor %}
+    </select>
+
+</div>
+
+<div class="col-md-4">
+
+<h5>Measurand Taxons</h5>
+
+<input class="form-control mb-2"
+id="measurandSearch"
+placeholder="Search taxons">
+    <select multiple class="form-control metadata-list" id="measurandList">
+        {% for m in measurands %}
+            <option onclick="window.location='{{ url_for('main.measurand', measurand_id=m.id) }}'">{{ m.name }}</option>
+        {% endfor %}
+    </select>
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+
+function filterList(inputId, listId) {
+
+    const input = document.getElementById(inputId)
+    const filter = input.value.toLowerCase()
+    const options = document.getElementById(listId).options
+
+    for (let i = 0; i < options.length; i++) {
+
+        let txt = options[i].text.toLowerCase()
+
+        options[i].style.display =
+            txt.includes(filter) ? "" : "none"
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("aspectSearch")
+        .addEventListener("keyup", function () {
+            filterList("aspectSearch", "aspectList")
+        })
+    
+        document.getElementById("scaleSearch")
+        .addEventListener("keyup", function () {
+            filterList("scaleSearch", "scaleList")
+        })
+
+        document.getElementById("measurandSearch")
+        .addEventListener("keyup", function () {
+            filterList("measurandSearch", "measurandList")
+        })
+})
+
+</script>
 {% endblock %}
+
+
+
+

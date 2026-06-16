@@ -21,6 +21,7 @@ import os
 import re
 import base64
 import json
+from flask import url_for
 
 from miiflask.utils.unicode_mapper import greek_alphabet_unicode, superscript_integers_unicode
 
@@ -81,24 +82,24 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
 
     # Render the graph to a file and open it
     # dot.render(output_file, view=view_diagram)           
-    output = dot.pipe(format='png')
-    output = base64.b64encode(output).decode('utf-8')
-    return output
+    # output = dot.pipe(format='png')
+    # output = base64.b64encode(output).decode('utf-8')
+    return dot
 
 def getDescription(cls, obj):
     print(cls, str(obj))
     if cls == 'Scale':
-        return f'{obj.scale_type} scale {obj.unit.name}'
+        return f'{obj.scale_type} scale {obj.unit.name}', url_for('main.scale', scale_id=obj.id)
     if cls == 'Conversion':
-        return f'to {obj.dst_scale.scale_type} scale {obj.dst_scale.unit.name}'
+        return f'to {obj.dst_scale.scale_type} scale {obj.dst_scale.unit.name}', None
     if cls == 'Aspect':
-        return str(obj)
+        return str(obj), url_for('main.aspect', aspect_id=obj.id)
     if cls == 'Dimension':
         dim = ['M', 'L', 'T', 'I', greek_alphabet_unicode['Theta'], 'N', 'J']
         dimQ = ''.join([m+superscript_integers_unicode[str(n)] for m, n in zip(dim, json.loads(obj.exponents))])
-        return dimQ 
+        return dimQ, None 
     else:
-        return str(obj)
+        return str(obj), None
     
 
 def visualize_model_instance(model, instance, excludes=[], add_labels=True, view_diagram=True):
@@ -110,10 +111,10 @@ def visualize_model_instance(model, instance, excludes=[], add_labels=True, view
     insp = inspect(model)
     cls_name = insp.class_.__name__
     
-    name = getDescription(cls_name, instance) 
-    
+    name, url = getDescription(cls_name, instance) 
+    print(name, url) 
     # Create the node with added hyperlink to detailed documentation
-    dot.node(name, label=name) 
+    dot.node(name, label=name, URL=url) 
 
     # Add relationships with tooltips and advanced styling
     for rel in insp.relationships:
@@ -126,7 +127,7 @@ def visualize_model_instance(model, instance, excludes=[], add_labels=True, view
                 continue
             target_name = f'{rel.mapper.class_.__name__} \n'
             if rel.mapper.class_.__name__ == 'KcdbCmc':
-                descr = getDescription(rel.mapper.class_.__name__, obj[0])
+                descr, url = getDescription(rel.mapper.class_.__name__, obj[0])
                 if(len(obj) > 1): 
                     target_name += f'{descr} ... \n '
                 else: 
@@ -135,7 +136,7 @@ def visualize_model_instance(model, instance, excludes=[], add_labels=True, view
                     continue
             else:
                 for sub in obj:
-                    descr = getDescription(rel.mapper.class_.__name__, sub)
+                    descr, url = getDescription(rel.mapper.class_.__name__, sub)
                     target_name += f'{descr} \n '
                     if target_name in excludes:
                         continue
@@ -143,7 +144,7 @@ def visualize_model_instance(model, instance, excludes=[], add_labels=True, view
             tooltip = f"Relation between {name} and {target_name}"
             dot.edge(name, target_name, label=f'has {rel.key}' if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
         else:
-            descr = getDescription(rel.mapper.class_.__name__, obj)
+            descr, url = getDescription(rel.mapper.class_.__name__, obj)
             target_name = f'{rel.mapper.class_.__name__} \n {descr}'
             if target_name in excludes:
                 continue
@@ -151,6 +152,6 @@ def visualize_model_instance(model, instance, excludes=[], add_labels=True, view
             tooltip = f"Relation between {name} and {target_name}"
             dot.edge(name, target_name, label=f'has {rel.key}' if add_labels else None, tooltip=tooltip, color="#1E88E5", style="dashed")
     
-    output = dot.pipe(format='png')
-    output = base64.b64encode(output).decode('utf-8')
-    return output
+    # output = dot.pipe(format='png')
+    # output = base64.b64encode(output).decode('utf-8')
+    return dot

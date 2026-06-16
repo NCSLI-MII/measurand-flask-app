@@ -9,7 +9,8 @@
 
 """
 from sqlalchemy import select
-from flask import render_template, make_response
+from flask import render_template, make_response, url_for
+from graphviz import Digraph
 
 from miiflask.flask.main.init import bp
 from miiflask.flask.db import (
@@ -228,27 +229,409 @@ def measurand_export_xml(measurand_id):
     response.headers["Content-type"] = "text/xml"
     return response 
 
-@bp.route("/measurand/<string:measurand_id>/", methods=["GET", "POST"])
-def measurand(measurand_id):
+#@bp.route("/measurand/<string:measurand_id>/", methods=["GET", "POST"])
+#def measurand(measurand_id):
     # print("Get Meaurand ", measurand_id)
     #m = MeasurandTaxon.query.get_or_404(measurand_id)
-    obj = get_or_404(MeasurandTaxon, measurand_id)
-    graph = visualize_model_instance(MeasurandTaxon, obj)
-    return render_template("measurand.html", measurand=obj, graph=graph)
+#    obj = get_or_404(MeasurandTaxon, measurand_id)
+#    graph = visualize_model_instance(MeasurandTaxon, obj)
+#    return render_template("measurand.html", measurand=obj, graph=graph)
+
+@bp.route("/measurand/<string:measurand_id>/", methods=["GET", "POST"])
+def measurand(measurand_id):
+
+    measurand = get_or_404(MeasurandTaxon, measurand_id)
+
+    dot = Digraph(
+        "measurand_graph",
+        graph_attr={"rankdir": "LR", "splines": "curved"}
+    )
+
+    seen_nodes = set()
+
+    def add_node(node_id, label, **attrs):
+        if node_id not in seen_nodes:
+            dot.node(node_id, label=label, **attrs)
+            seen_nodes.add(node_id)
+
+    meas_node = f"meas_{measurand.id}"
+
+    add_node(
+        meas_node,
+        measurand.name,
+        shape="diamond",
+        style="filled",
+        fillcolor="#FFE082",
+        URL=url_for("main.measurand", measurand_id=measurand.id),
+        tooltip=f"Measurand: {measurand.name}"
+    )
+
+    # ---- DIRECT ASPECT ----
+
+    aspect_node = f"aspect_{measurand.aspect.id}"
+
+    add_node(
+        aspect_node,
+        measurand.aspect.name,
+        shape="box",
+        style="filled",
+        fillcolor="#BBDEFB",
+        URL=url_for("main.aspect", aspect_id=measurand.aspect.id),
+        tooltip=f"Aspect: {measurand.aspect.name}"
+    )
+
+    dot.edge(
+        meas_node,
+        aspect_node,
+        label="has result",
+        color="#1E88E5"
+    )
+
+    # ---- PARAMETERS ----
+    for param in measurand.parameters:
+
+        param_node = f"param_{param.id}"
+
+        add_node(
+            param_node,
+            param.name,
+            shape="oval",
+            style="filled",
+            fillcolor="#FFA500",
+            tooltip=f"Parameter: {param.aspect.name}",
+            URL=url_for("main.aspect", aspect_id=param.aspect.id),
+        )
+
+        dot.edge(
+            meas_node,
+            param_node,
+            color="#FFA500"
+        )
+
+    legend_label = """<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4">
+
+    <TR><TD COLSPAN="2"><B>Legend</B></TD></TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#FFE082" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Measurand</TD>
+    </TR>
+    
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#BBDEFB" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Aspect</TD>
+    </TR>
+    
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#FFA500" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Parameter</TD>
+    </TR>
 
 
-@bp.route("/aspect/<string:aspect_id>/", methods=["GET", "POST"])
+    </TABLE>
+    >"""
+    # invisible anchor
+    dot.node("legend_anchor", "", shape="point", style="invis")
+
+    # legend node
+    dot.node(
+        "legend",
+        label=legend_label,
+        shape="plain",
+        fontsize="9"
+    )
+
+    # connect graph to anchor so it stays below
+    dot.edge(meas_node, "legend_anchor", style="invis")
+
+
+    with dot.subgraph() as s:
+        s.attr(rank="sink")
+        s.node("legend")
+        s.node("legend_anchor")
+
+
+    return render_template(
+        "measurand.html",
+        measurand=measurand,
+        graph=dot.source
+    )
+
+#@bp.route("/aspect/<string:aspect_id>/", methods=["GET", "POST"])
+#def aspect(aspect_id):
+#    obj = get_or_404(Aspect, aspect_id)
+#    schema = aspect_schema.dumps(obj, indent=2)
+#    graph = visualize_model_instance(Aspect, obj)
+#    return render_template("aspect.html", aspect=obj, response=schema, graph=graph)
+
+
+@bp.route("/aspect/<aspect_id>")
 def aspect(aspect_id):
-    obj = get_or_404(Aspect, aspect_id)
-    schema = aspect_schema.dumps(obj, indent=2)
-    graph = visualize_model_instance(Aspect, obj)
-    return render_template("aspect.html", aspect=obj, response=schema, graph=graph)
+
+    aspect  = get_or_404(Aspect, aspect_id)
+    dot = Digraph("ontology", graph_attr={"rankdir": "LR"})
+    
+    aspect_node = f"aspect_{aspect.id}"
+    # current node
+    dot.node(
+        aspect_node,
+        label=aspect.name,
+        shape="box",
+        style="filled",
+        fillcolor="#BBDEFB",
+        URL=url_for("main.aspect", aspect_id=aspect.id),
+        tooltip=f"Aspect: {aspect.name}"
+    )
+
+    # connected scales
+    for scale in aspect.scales:
+        
+        scale_node = f"scale_{scale.id}"
+        
+        dot.node(
+            scale_node,
+            label=scale.ml_name,
+            shape="ellipse",
+            style="filled",
+            fillcolor="#C8E6C9",
+            URL=url_for("main.scale", scale_id=scale.id),
+            tooltip=f"Scale: {scale.ml_name}"
+        )
+
+        dot.edge(aspect_node, scale_node, color="#C8E6C9")
+    
+    legend_label = """<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4">
+
+    <TR><TD COLSPAN="2"><B>Legend</B></TD></TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#BBDEFB" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Aspect</TD>
+    </TR>
+    
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#C8E6C9" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Scale</TD>
+    </TR>
+
+
+    </TABLE>
+    >"""
+    # invisible anchor
+    dot.node("legend_anchor", "", shape="point", style="invis")
+
+    # legend node
+    dot.node(
+        "legend",
+        label=legend_label,
+        shape="plain",
+        fontsize="9"
+    )
+
+    # connect graph to anchor so it stays below
+    dot.edge(aspect_node, "legend_anchor", style="invis")
+
+
+    with dot.subgraph() as s:
+        s.attr(rank="sink")
+        s.node("legend")
+        s.node("legend_anchor")
+
+    return render_template(
+        "aspect.html",
+        aspect=aspect,
+        graph=dot.source
+    )
+
+
+#@bp.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
+#def scale(scale_id):
+#    obj = get_or_404(Scale, scale_id)
+#    graph = visualize_model_instance(Scale, obj)
+#    return render_template("scale.html", scale=obj, graph=graph)
+
+
 
 @bp.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
 def scale(scale_id):
-    obj = get_or_404(Scale, scale_id)
-    graph = visualize_model_instance(Scale, obj)
-    return render_template("scale.html", scale=obj, graph=graph)
+
+    scale = get_or_404(Scale, scale_id)
+
+    dot = Digraph(
+        "scale_graph",
+        graph_attr={"rankdir": "LR", "splines": "curved"}
+    )
+
+    scale_node = f"scale_{scale.id}"
+
+    dot.node(
+        scale_node,
+        label=scale.ml_name,
+        shape="ellipse",
+        style="filled",
+        fillcolor="#C8E6C9",
+        URL=url_for("main.scale", scale_id=scale.id),
+        tooltip=f"Scale: {scale.ml_name}"
+    )
+
+    # ---- UNIT ----
+    if scale.unit:
+
+        unit_node = f"unit_{scale.unit.id}"
+
+        dot.node(
+            unit_node,
+            label=scale.unit.name,
+            shape="hexagon",
+            style="filled",
+            fillcolor="#FFE0B2",
+            URL=url_for("main.unit", unit_id=scale.unit.id),
+            tooltip=f"Unit: {scale.unit.name}"
+        )
+        
+        dot.edge(
+            scale_node,
+            unit_node,
+            #label="has unit",
+            color="#FFE0B2"
+        )
+
+    # ---- ASPECTS ----
+    for aspect in scale.aspects:
+
+        aspect_node = f"aspect_{aspect.id}"
+
+        dot.node(
+            aspect_node,
+            label=aspect.name,
+            shape="box",
+            style="filled",
+            fillcolor="#BBDEFB",
+            URL=url_for("main.aspect", aspect_id=aspect.id),
+            tooltip=f"Aspect: {aspect.name}"
+        )
+
+        dot.edge(
+            scale_node,
+            aspect_node,
+            #label="has aspect",
+            color="#1E88E5"
+        )
+
+        # ---- CONVERSIONS ----
+        for target in scale.conversions:
+            if (target.aspect_id == aspect.id):
+                target_node = f"scale_{target.dst_scale_id}"
+
+                dot.node(
+                    target_node,
+                    label=target.dst_scale.ml_name,
+                    shape="ellipse",
+                    style="filled",
+                    fillcolor="#E1BEE7",
+                    URL=url_for("main.scale", scale_id=target.dst_scale_id),
+                    tooltip=f"Convertible scale: {target.dst_scale_id}"
+                )
+
+                dot.edge(
+                    aspect_node,
+                    target_node,
+                    #label="converts to",
+                    style="dashed",
+                    color="#8E24AA"
+                )
+    legend_label = """<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4">
+
+    <TR><TD COLSPAN="2"><B>Legend</B></TD></TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#C8E6C9" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Scale</TD>
+    </TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#BBDEFB" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Aspect</TD>
+    </TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#FFE0B2" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Unit</TD>
+    </TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#E1BEE7" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Conversion</TD>
+    </TR>
+
+    </TABLE>
+    >"""
+    # invisible anchor
+    dot.node("legend_anchor", "", shape="point", style="invis")
+
+    # legend node
+    dot.node(
+        "legend",
+        label=legend_label,
+        shape="plain",
+        fontsize="9"
+    )
+
+    # connect graph to anchor so it stays below
+    dot.edge(scale_node, "legend_anchor", style="invis")
+
+
+    with dot.subgraph() as s:
+        s.attr(rank="sink")
+        s.node("legend")
+        s.node("legend_anchor")
+
+
+    return render_template(
+        "scale.html",
+        scale=scale,
+        graph=dot.source
+    )
+
 
 @bp.route("/unit/<string:unit_id>/", methods=["GET", "POST"])
 def unit(unit_id):
