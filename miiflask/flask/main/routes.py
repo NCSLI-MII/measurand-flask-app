@@ -283,7 +283,7 @@ def measurand(measurand_id):
     dot.edge(
         meas_node,
         aspect_node,
-        label="has aspect",
+        label="has result",
         color="#1E88E5"
     )
 
@@ -297,7 +297,7 @@ def measurand(measurand_id):
             param.name,
             shape="oval",
             style="filled",
-            fillcolor="#C8E6C9",
+            fillcolor="#FFA500",
             tooltip=f"Parameter: {param.aspect.name}",
             URL=url_for("main.aspect", aspect_id=param.aspect.id),
         )
@@ -305,9 +305,63 @@ def measurand(measurand_id):
         dot.edge(
             meas_node,
             param_node,
-            label="has parameter",
-            color="#43A047"
+            color="#FFA500"
         )
+
+    legend_label = """<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4">
+
+    <TR><TD COLSPAN="2"><B>Legend</B></TD></TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#FFE082" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Measurand</TD>
+    </TR>
+    
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#BBDEFB" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Aspect</TD>
+    </TR>
+    
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#FFA500" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Parameter</TD>
+    </TR>
+
+
+    </TABLE>
+    >"""
+    # invisible anchor
+    dot.node("legend_anchor", "", shape="point", style="invis")
+
+    # legend node
+    dot.node(
+        "legend",
+        label=legend_label,
+        shape="plain",
+        fontsize="9"
+    )
+
+    # connect graph to anchor so it stays below
+    dot.edge(meas_node, "legend_anchor", style="invis")
+
+
+    with dot.subgraph() as s:
+        s.attr(rank="sink")
+        s.node("legend")
+        s.node("legend_anchor")
 
 
     return render_template(
@@ -329,44 +383,81 @@ def aspect(aspect_id):
 
     aspect  = get_or_404(Aspect, aspect_id)
     dot = Digraph("ontology", graph_attr={"rankdir": "LR"})
-
+    
+    aspect_node = f"aspect_{aspect.id}"
     # current node
     dot.node(
-        aspect.name,
+        aspect_node,
+        label=aspect.name,
         shape="box",
         style="filled",
-        fillcolor="#E3F2FD",
+        fillcolor="#BBDEFB",
         URL=url_for("main.aspect", aspect_id=aspect.id),
         tooltip=f"Aspect: {aspect.name}"
     )
 
     # connected scales
     for scale in aspect.scales:
-
+        
+        scale_node = f"scale_{scale.id}"
+        
         dot.node(
-            scale.ml_name,
+            scale_node,
+            label=scale.ml_name,
             shape="ellipse",
             style="filled",
-            fillcolor="#E8F5E9",
+            fillcolor="#C8E6C9",
             URL=url_for("main.scale", scale_id=scale.id),
             tooltip=f"Scale: {scale.ml_name}"
         )
 
-        dot.edge(aspect.name, scale.ml_name, label="has scale")
+        dot.edge(aspect_node, scale_node, color="#C8E6C9")
+    
+    legend_label = """<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4">
 
-    # connected measurands
-    #for measurand in aspect.measurands:
+    <TR><TD COLSPAN="2"><B>Legend</B></TD></TR>
 
-    #    dot.node(
-    #        measurand.name,
-    #        shape="diamond",
-    #        style="filled",
-    #        fillcolor="#FFF3E0",
-    #        URL=url_for("main.measurand", measurand_id=measurand.id),
-    #        tooltip=f"Measurand: {measurand.name}"
-    #    )
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#BBDEFB" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Aspect</TD>
+    </TR>
+    
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#C8E6C9" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Scale</TD>
+    </TR>
 
-    #    dot.edge(measurand.name, aspect.name, label="has aspect")
+
+    </TABLE>
+    >"""
+    # invisible anchor
+    dot.node("legend_anchor", "", shape="point", style="invis")
+
+    # legend node
+    dot.node(
+        "legend",
+        label=legend_label,
+        shape="plain",
+        fontsize="9"
+    )
+
+    # connect graph to anchor so it stays below
+    dot.edge(aspect_node, "legend_anchor", style="invis")
+
+
+    with dot.subgraph() as s:
+        s.attr(rank="sink")
+        s.node("legend")
+        s.node("legend_anchor")
 
     return render_template(
         "aspect.html",
@@ -423,8 +514,8 @@ def scale(scale_id):
         dot.edge(
             scale_node,
             unit_node,
-            label="has unit",
-            color="#43A047"
+            #label="has unit",
+            color="#FFE0B2"
         )
 
     # ---- ASPECTS ----
@@ -445,32 +536,95 @@ def scale(scale_id):
         dot.edge(
             scale_node,
             aspect_node,
-            label="has aspect",
+            #label="has aspect",
             color="#1E88E5"
         )
 
-    # ---- CONVERSIONS ----
-    for target in scale.conversions:
+        # ---- CONVERSIONS ----
+        for target in scale.conversions:
+            if (target.aspect_id == aspect.id):
+                target_node = f"scale_{target.dst_scale_id}"
 
-        target_node = f"scale_{target.dst_scale_id}"
+                dot.node(
+                    target_node,
+                    label=target.dst_scale.ml_name,
+                    shape="ellipse",
+                    style="filled",
+                    fillcolor="#E1BEE7",
+                    URL=url_for("main.scale", scale_id=target.dst_scale_id),
+                    tooltip=f"Convertible scale: {target.dst_scale_id}"
+                )
 
-        dot.node(
-            target_node,
-            label=target.dst_scale.ml_name,
-            shape="ellipse",
-            style="filled",
-            fillcolor="#E1BEE7",
-            URL=url_for("main.scale", scale_id=target.dst_scale_id),
-            tooltip=f"Convertible scale: {target.dst_scale_id}"
-        )
+                dot.edge(
+                    aspect_node,
+                    target_node,
+                    #label="converts to",
+                    style="dashed",
+                    color="#8E24AA"
+                )
+    legend_label = """<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4">
 
-        dot.edge(
-            scale_node,
-            target_node,
-            label="converts to",
-            style="dashed",
-            color="#8E24AA"
-        )
+    <TR><TD COLSPAN="2"><B>Legend</B></TD></TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#C8E6C9" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Scale</TD>
+    </TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#BBDEFB" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Aspect</TD>
+    </TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#FFE0B2" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Unit</TD>
+    </TR>
+
+    <TR>
+    <TD>
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD BGCOLOR="#E1BEE7" WIDTH="24" HEIGHT="14"></TD></TR>
+    </TABLE>
+    </TD>
+    <TD ALIGN="LEFT">Conversion</TD>
+    </TR>
+
+    </TABLE>
+    >"""
+    # invisible anchor
+    dot.node("legend_anchor", "", shape="point", style="invis")
+
+    # legend node
+    dot.node(
+        "legend",
+        label=legend_label,
+        shape="plain",
+        fontsize="9"
+    )
+
+    # connect graph to anchor so it stays below
+    dot.edge(scale_node, "legend_anchor", style="invis")
+
+
+    with dot.subgraph() as s:
+        s.attr(rank="sink")
+        s.node("legend")
+        s.node("legend_anchor")
+
 
     return render_template(
         "scale.html",
