@@ -16,7 +16,7 @@ import re
 import string
 import xmltodict, xmlschema
 import pprint as mpprint
-from miiflask.flask import model
+from miiflask.flask.models import schemas
 
 
 def dicttoxml_taxonomy(taxons):
@@ -210,13 +210,13 @@ class TaxonomyMapper:
             "mlayer": f"{self._schema_taxonomy}:mLayer",
         }
         self._schemas = {}
-        self._schemas["taxon"] = model.TaxonSchema()
-        self._schemas["aspect"] = model.AspectSchema()
-        self._schemas["discipline"] = model.DisciplineSchema()
-        self._schemas["measurand"] = model.MeasurandSchema()
-        self._schemas["measurandtaxon"] = model.MeasurandTaxonSchema()
-        self._schemas["parameter"] = model.ParameterSchema()
-        self._schemas["reference"] = model.ReferenceSchema()
+        self._schemas["taxon"] = schemas.TaxonSchema()
+        self._schemas["aspect"] = schemas.AspectSchema()
+        self._schemas["discipline"] = schemas.DisciplineSchema()
+        self._schemas["measurand"] = schemas.MeasurandSchema()
+        self._schemas["measurandtaxon"] = schemas.MeasurandTaxonSchema()
+        self._schemas["parameter"] = schemas.ParameterSchema()
+        self._schemas["reference"] = schemas.ReferenceSchema()
 
         self._mii_taxons_dict = {}
         self._mii_taxons_list = None

@@ -15,14 +15,7 @@ from flask_admin.theme import Bootstrap4Theme
 from flask_admin.menu import MenuLink
 from flask_admin.contrib.sqla import ModelView
 
-from miiflask.flask.model import (
-    Measurand,
-    MeasurandTaxon,
-    Aspect,
-    Unit,
-    Scale,
-    Parameter,
-    Discipline,
+from miiflask.flask.models.model import (
     KcdbCmc,
     KcdbQuantity,
     KcdbServiceClass,
@@ -34,15 +27,28 @@ from miiflask.flask.model import (
     KcdbInstrument,
     KcdbInstrumentMethod,
     KcdbParameter,
-    Domain,
-    Conversion,
-    Cast,
-    Transform,
-    Dimension,
-    System,
-    Prefix
+    Domain
 )
 
+from miiflask.flask.models.taxonomy import (
+        Measurand,
+        MeasurandTaxon,
+        Parameter,
+        Discipline,
+        )
+
+from miiflask.flask.models.mlayer import (
+        Aspect,
+        Unit,
+        Scale,
+        Conversion,
+        Cast,
+        Transform,
+        Dimension,
+        System,
+        Prefix
+
+        )
 from miiflask.flask.admin.views import (
         MeasurandView,
         TaxonView,

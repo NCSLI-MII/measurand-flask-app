@@ -19,24 +19,31 @@ from miiflask.flask.db import (
         obj_serialize_json
         )
 
-from miiflask.flask.model import ( 
-        MeasurandTaxon,
+from miiflask.flask.models.model import (
         KcdbCmc,
+        KcdbCmcSchema
+        )
+
+from miiflask.flask.models.mlayer import ( 
         Aspect,
         Scale,
         Unit,
         Conversion,
         Cast,
         Transform,
-        Parameter,
-        Discipline,
         Prefix,
         Dimension,
         System
         )
 
-from miiflask.flask.model import ( 
-        KcdbCmcSchema,
+from miiflask.flask.models.taxonomy import (
+        MeasurandTaxon,
+        Parameter,
+        Discipline,
+        )
+
+from miiflask.flask.models.schemas import ( 
+        
         AspectSchema,
         MeasurandTaxonSchema
         )

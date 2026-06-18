@@ -26,35 +26,44 @@ from wtforms import HiddenField, StringField, Form
 from wtforms.validators import InputRequired
 
 from markupsafe import Markup
-from miiflask.flask.model import (
+
+from miiflask.flask.models.model import (
     Administrative,
-    Measurand,
-    MeasurandTaxon,
-    Discipline,
-    Aspect,
-    Scale,
-    Unit,
-    Prefix,
-    Dimension,
-    Conversion,
-    Cast,
-    Transform,
-    System,
-    Parameter,
-    Reference,
     KcdbCmc,
     KcdbBranch,
     KcdbParameter,
-    KcdbArea
+    KcdbArea,
+    KcdbCmcSchema 
 )
-from miiflask.flask.model import (
+
+from miiflask.flask.models.taxonomy import (
+        Measurand,
+        MeasurandTaxon,
+        Discipline,
+        Parameter,
+        Reference
+        )
+
+from miiflask.flask.models.mlayer import (
+        Aspect,
+        Scale,
+        Unit,
+        Prefix,
+        Dimension,
+        Conversion,
+        Cast,
+        Transform,
+        System
+        )
+
+from miiflask.flask.models.schemas import (
         AspectSchema,
         MeasurandTaxonSchema, 
-        KcdbCmcSchema, 
         UnitSchema, 
         ScaleSchema, 
         SystemSchema
         )
+
 log = logging.getLogger("flask-admin.sqla")
 
 qk_schema = AspectSchema()

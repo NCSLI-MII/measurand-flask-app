@@ -18,15 +18,16 @@ from miiflask.flask.db import (
         objs_serialize_json
         )
 
-from miiflask.flask.model import ( 
-        MeasurandTaxon,
+from miiflask.flask.models.mlayer import ( 
         Aspect,
         Scale,
         Unit,
         System
         )
 
-from miiflask.flask.model import (
+from miiflask.flask.models.taxonomy import MeasurandTaxon
+
+from miiflask.flask.models.schemas import (
         MeasurandTaxonSchema, 
         AspectSchema,
         ScaleSchema,
