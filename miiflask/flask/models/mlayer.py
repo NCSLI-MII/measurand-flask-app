@@ -6,7 +6,7 @@
 # Distributed under terms of the Copyright © Her Majesty the Queen in Right of Canada, as represented by the Minister of Statistics Canada, 2019. license.
 
 """
-SQLAlchemy Data Model
+SQLAlchemy M-Layer Data Model
 """
 from miiflask.flask.db import Base
 from sqlalchemy import (ForeignKey,
@@ -44,11 +44,11 @@ class Aspect(Base):
     # aspect | id | [core] The M-layer unique identifier for an aspect.
     id: Mapped[str] = mapped_column(String(10), primary_key=True)
     
-    # aspect | name | [core] Conventional name for the aspect
-    name: Mapped[str] = mapped_column(String(50))
-    
     # aspect | ml_name | [impl] Internal identifier for the aspect
     ml_name: Mapped[str] = mapped_column(String(50))
+    
+    # aspect | name | [core] Conventional name for the aspect
+    name: Mapped[str] = mapped_column(String(50))
     
     # aspect | symbol | [core] Conventional symbol for the aspect
     symbol: Mapped[Optional[str]] = mapped_column(String(50))
@@ -71,8 +71,6 @@ class Aspect(Base):
 # Self-referencing relation to root_scale only from child using remote_side
 # Establishes many-to-one relation
 # See https://docs.sqlalchemy.org/en/20/orm/self_referential.html
-
-
 class Scale(Base):
     __tablename__ = "scale"
     
@@ -94,28 +92,24 @@ class Scale(Base):
     # scale | type | [extd] Scale type (ratio, interval, ordinal, etc.).
     scale_type: Mapped[str] = mapped_column(String(20))
 
-    # scale | root_scale_id | [impl] Canonical scale without prefixes; NULL for root scales.
-    root_scale_id: Mapped[Optional[int]] = \
-        mapped_column(ForeignKey('scale.id'))
-
-    root_scale: Mapped['Scale'] = relationship(remote_side=[id])
-
-    # scale | prefix_id | [impl] Metric prefix applied to the root-scale unit.
-    prefix_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey("prefix.id"))  # One-to-one
-
-    prefix: Mapped['Prefix'] = relationship()
-    
     # scale | unit_id | [core] Unit defining the size of one scale division.
     unit_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey("unit.id"))  # One-to-one
-
     unit: Mapped['Unit'] = relationship()
+    
+    # scale | prefix_id | [impl] Metric prefix applied to the root-scale unit.
+    prefix_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey("prefix.id"))  # One-to-one
+    prefix: Mapped['Prefix'] = relationship()
+    
+    # scale | root_scale_id | [impl] Canonical scale without prefixes; NULL for root scales.
+    root_scale_id: Mapped[Optional[int]] = \
+        mapped_column(ForeignKey('scale.id'))
+    root_scale: Mapped['Scale'] = relationship(remote_side=[id])
 
     # scale | system_dimensions_id | [extd] System dimensions associated with scale.
     system_dimensions_id: Mapped[Optional[str]] = \
         mapped_column(ForeignKey('dimension.id'))
-
     system_dimensions: Mapped['Dimension'] = relationship("Dimension", foreign_keys=[system_dimensions_id])
         # Remove view on all scales that share dimension
         # Only point to the dimension that define the scale
@@ -153,15 +147,36 @@ class Scale(Base):
     def __unicode__(self):
         return self.ml_name
 
+###
+# table_name | column_name | comment
+# -----------------+---------------+------------------------------------------------
+# conversion_cast | is_cast | [core] True when the transformation is a cast.
+# conversion_cast | src_scale_id | [core] Initial scale identifier
+# conversion_cast | src_aspect_id | [core] Initial aspect identifier
+# conversion_cast | dst_scale_id | [core] Final scale identifier
+# conversion_cast | dst_aspect_id | [core] Final aspect identifier
+# conversion_cast | function_id | [core] Transformation function
+# conversion_cast | parameters | [core] Transformation function arguments
+####
 class Conversion(Base):
     __tablename__ = "conversion"
+    
+    # conversion_cast | src_scale_id | [core] Initial scale identifier
     src_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
                                               primary_key=True)
+
+    # conversion_cast | dst_scale_id | [core] Final scale identifier
     dst_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
                                               primary_key=True)
+
+    # conversion | aspect_id | [core] aspect identifier common to src and dst scale
     aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
                                            primary_key=True)
+
+    # conversion_cast | function_id | [core] Transformation function
     transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"))
+    
+    # conversion_cast | parameters | [core] Transformation function arguments
     parameters: Mapped[str] = mapped_column(UnicodeText)
 
     src_scale: Mapped['Scale'] = relationship(foreign_keys=[src_scale_id])
@@ -182,15 +197,29 @@ class Conversion(Base):
 
 class Cast(Base):
     __tablename__ = "cast"
+    
+    # conversion_cast | is_cast | [core] True when the transformation is a cast.
+    
+    # conversion_cast | src_scale_id | [core] Initial scale identifier
     src_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
                                               primary_key=True)
+    
+    # conversion_cast | dst_scale_id | [core] Final scale identifier
     dst_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
                                               primary_key=True)
+    
+    # conversion_cast | src_aspect_id | [core] Initial aspect identifier
     src_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
                                                primary_key=True)
+    
+    # conversion_cast | dst_aspect_id | [core] Final aspect identifier
     dst_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
                                                primary_key=True)
+
+    # conversion_cast | function_id | [core] Transformation function
     transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"))
+    
+    # conversion_cast | parameters | [core] Transformation function arguments
     parameters: Mapped[str] = mapped_column(UnicodeText)
 
     src_scale: Mapped['Scale'] = relationship(foreign_keys=[src_scale_id])
@@ -206,13 +235,50 @@ class Cast(Base):
                                     self.dst_aspect_id)
 
 
+class Unit(Base):
+    __tablename__ = "unit"
+    
+    # unit | id | [core] The M-layer unique identifier for a unit.
+    id: Mapped[str] = mapped_column(String(50), primary_key=True)
+    
+    # unit | name | [core] Conventional name of the unit
+    name: Mapped[str] = mapped_column(String(100))
+    
+    # unit | ml_name | [impl] Canonical form for unit.
+    ml_name: Mapped[str] = mapped_column(String(100))
+    
+    # unit | symbol | [core] Conventional symbol of the unit
+    symbol: Mapped[Optional[str]] = mapped_column(String(50))
+    
+    # unit | reference | [core] Reference to an authoritative definition of the unit. 
+    reference: Mapped[Optional[str]] = mapped_column(String(200))
+
+    def __str__(self):
+        return f'{self.name}'
+
+    def __unicode__(self):
+        return self.name
+
+
 class System(Base):
     __tablename__ = 'system'
+    
+    # system | id | [core] The M-layer unique identifier for a unit system.
     id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    
+    # system | ml_name | [impl] Internal identifier for the system name
     ml_name: Mapped[str] = mapped_column(String(50))
+    
+    # system | symbol | [core] A textual symbol (abbreviation) for the unit system
     symbol: Mapped[str] = mapped_column(String(10))
+    
+    # system | n | [extd] Number of system base units.
     n: Mapped[Optional[int]] = mapped_column(Integer)
+    
+    # system | basis | [extd] Sequence of (aspect, scale) id pairs defining the system's base quantities and units.
     basis: Mapped[Optional[str]] = mapped_column(String(200))
+    
+    # system | reference | [core] Reference to an authoritative definition of the unit system. 
     reference: Mapped[Optional[str]] = mapped_column(String(200))
 
     def __str__(self):
@@ -256,10 +322,20 @@ class Dimension(Base):
 
 class Transform(Base):
     __tablename__ = "transform"
+    
+    # function | id | [core] The M-layer unique identifier for a transformation function.
     id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    
+    # function | ml_name | [impl] Internal identifier for the transformation function
     ml_name: Mapped[str] = mapped_column(String(50))
+    
+    # function | py_function | [core] Python expression defining the transformation function.
     py_function: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    
+    # function | py_names_in_scope | [core] Parameter names required by the transformation function.
     py_names_in_scope: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    
+    # function | comments | [core] Free-text notes. 
     comments: Mapped[Optional[str]] = mapped_column(UnicodeText)
 
     def __str__(self):
@@ -281,18 +357,5 @@ class Prefix(Base):
         return f'{self.name}'
 
 
-class Unit(Base):
-    __tablename__ = "unit"
-    id: Mapped[str] = mapped_column(String(50), primary_key=True)
-    name: Mapped[str] = mapped_column(String(100))
-    ml_name: Mapped[str] = mapped_column(String(100))
-    symbol: Mapped[Optional[str]] = mapped_column(String(50))
-    reference: Mapped[Optional[str]] = mapped_column(String(200))
-
-    def __str__(self):
-        return f'{self.name}'
-
-    def __unicode__(self):
-        return self.name
 
 
