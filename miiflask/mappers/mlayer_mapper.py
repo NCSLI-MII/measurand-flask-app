@@ -15,7 +15,8 @@ import json
 import uuid
 import requests
 from pathlib import Path
-from miiflask.flask import model
+from miiflask.flask.models import schemas
+from miiflask.flask.models import mlayer as model
 from sqlalchemy import and_
 
 
@@ -38,13 +39,13 @@ class MlayerMapper:
         self._scales = {}
         self._units = {}
         self._schemas = {
-            "aspect": model.AspectSchema(),
-            "scale": model.ScaleSchema(),
-            "unit": model.UnitSchema(),
-            "transform": model.TransformSchema(),
-            'system': model.SystemSchema(),
-            'dimension': model.DimensionSchema(),
-            'prefix': model.PrefixSchema()
+            "aspect": schemas.AspectSchema(),
+            "scale": schemas.ScaleSchema(),
+            "unit": schemas.UnitSchema(),
+            "transform": schemas.TransformSchema(),
+            'system': schemas.SystemSchema(),
+            'dimension': schemas.DimensionSchema(),
+            'prefix': schemas.PrefixSchema()
         }
 
         # Ordered list of transform to run

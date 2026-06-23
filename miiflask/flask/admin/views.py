@@ -27,21 +27,20 @@ from wtforms.validators import InputRequired
 
 from markupsafe import Markup
 
-from miiflask.flask.models.model import (
-    Administrative,
+
+from miiflask.flask.models.kcdb import (
     KcdbCmc,
     KcdbBranch,
     KcdbParameter,
-    KcdbArea,
-    KcdbCmcSchema 
+    KcdbArea
 )
 
 from miiflask.flask.models.taxonomy import (
-        Measurand,
         MeasurandTaxon,
         Discipline,
         Parameter,
-        Reference
+        Reference,
+        Administrative
         )
 
 from miiflask.flask.models.mlayer import (
@@ -61,7 +60,8 @@ from miiflask.flask.models.schemas import (
         MeasurandTaxonSchema, 
         UnitSchema, 
         ScaleSchema, 
-        SystemSchema
+        SystemSchema,
+        KcdbCmcSchema 
         )
 
 log = logging.getLogger("flask-admin.sqla")

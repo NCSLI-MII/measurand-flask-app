@@ -46,7 +46,19 @@ from miiflask.flask.models.taxonomy import (
         MeasurandTaxon
         )
 
-
+from miiflask.flask.models.kcdb import (
+        KcdbParameter,
+        KcdbInstrument,
+        KcdbInstrumentMethod,
+        KcdbArea,
+        KcdbBranch,
+        KcdbService,
+        KcdbSubservice,
+        KcdbIndividualService,
+        KcdbQuantity,
+        KcdbCmc,
+        KcdbServiceClass
+        )
 
 class PrefixSchema(SQLAlchemyAutoSchema):
 
@@ -197,3 +209,102 @@ class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
 #        include_relatiohsips = True
 #        load_instance = True
        # ordered = True
+
+
+class KcdbParameterSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbParameter
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbInstrumentSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbInstrument
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbInstrumentMethodSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbInstrumentMethod
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbAreaSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbArea
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbBranchSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbBranch
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbServiceSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbService
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbSubserviceSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbSubservice
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbIndividualServiceSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbIndividualService
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbQuantitySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbQuantity
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbCmcSchema(SQLAlchemyAutoSchema):
+    #measurands = Nested(MeasurandSchema, many=True, only=('name',),)
+    area = Nested(KcdbAreaSchema)
+    branch = Nested(KcdbBranchSchema)
+    service = Nested(KcdbServiceSchema)
+    subservice = Nested(KcdbSubserviceSchema)
+    individualservice = Nested(KcdbIndividualServiceSchema)
+    instrument = Nested(KcdbInstrumentSchema)
+    instrumentmethod = Nested(KcdbInstrumentMethodSchema)
+    quantity = Nested(KcdbQuantitySchema)
+    parameters = Nested(KcdbParameterSchema, many=True)
+
+    class Meta:
+        model = KcdbCmc
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class KcdbServiceClassSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = KcdbServiceClass
+        include_relationships = True
+        load_instance = True
+        ordered = True

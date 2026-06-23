@@ -15,10 +15,11 @@ from flask_admin.theme import Bootstrap4Theme
 from flask_admin.menu import MenuLink
 from flask_admin.contrib.sqla import ModelView
 
-from miiflask.flask.models.model import (
+from miiflask.flask.models.model import Domain
+
+from miiflask.flask.models.kcdb import (
     KcdbCmc,
     KcdbQuantity,
-    KcdbServiceClass,
     KcdbArea,
     KcdbBranch,
     KcdbService,
@@ -27,11 +28,10 @@ from miiflask.flask.models.model import (
     KcdbInstrument,
     KcdbInstrumentMethod,
     KcdbParameter,
-    Domain
+    KcdbServiceClass
 )
 
 from miiflask.flask.models.taxonomy import (
-        Measurand,
         MeasurandTaxon,
         Parameter,
         Discipline,
@@ -87,7 +87,6 @@ def init_admin(app):
         admin.add_view(MyModelView(System, Session(), category="Mlayer"))
         admin.add_view(ParameterView(Parameter, Session(), category="Measurand"))
         admin.add_view(MyModelView(Discipline, Session(), category="Measurand"))
-        # admin.add_view(MeasurandView(Measurand, Session(), category="Measurand"))
         admin.add_view(MeasurandTaxonView(MeasurandTaxon, Session(), category="Measurand"))
         admin.add_view(KcdbServiceView(KcdbServiceClass, Session(), category="KCDB"))
         admin.add_view(MyModelView(KcdbQuantity, Session(), category="KCDB"))

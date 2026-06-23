@@ -42,6 +42,13 @@ import re
 # User needs to remove those not required, but be able to define new parameters
 # New parameters need to be added (and approved) to the canonical definition
 
+
+class Administrative(Base):
+    __tablename__ = "administrative"
+    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    mii_comment: Mapped[Optional[str]] = mapped_column(UnicodeText)
+
+
 class MeasurandTaxon(Base):
     __tablename__ = "measurandtaxon"
     id: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
@@ -88,45 +95,12 @@ class MeasurandTaxon(Base):
         return f'{self.name}'
 
 
-class Measurand(Base):
-    __tablename__ = "measurand"
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-
-    taxon_id: Mapped[str] = mapped_column(ForeignKey("measurandtaxon.id"))
-
-    name: Mapped[str] = mapped_column(String(50))
-
-    # Will be deprecated
-    # Result should be replaced by aspect and scale
-    result: Mapped[str] = mapped_column(String(50))
-
-    definition: Mapped[Optional[str]] = mapped_column(UnicodeText)
-    
-    quantitykind: Mapped[Optional[str]] = mapped_column(String(50))
-
-    aspect_id: Mapped[Optional[str]] = mapped_column(ForeignKey("aspect.id"))
-
-    # Reference only to canonical definition
-    taxon: Mapped['MeasurandTaxon'] = relationship()
-    
-    aspect: Mapped['Aspect'] = relationship()
-   
-    # One to many parameters
-    parameters: Mapped[list['Parameter']] = \
-        relationship(back_populates="measurand")
-
-    def __str__(self):
-        return f'{self.name}'
-
 
 class Parameter(Base):
     # many-to-one
     # Reference a quantity for each parameter
     __tablename__ = "parameter"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    
-    measurand_id: Mapped[Optional[int]] = mapped_column(ForeignKey("measurand.id"))
-    measurand: Mapped['Measurand'] = relationship(back_populates="parameters")
     
     measurandtaxon_id: Mapped[Optional[int]] = mapped_column(ForeignKey("measurandtaxon.id"))
     measurandtaxon: Mapped['MeasurandTaxon'] = relationship(back_populates="parameters")
@@ -154,45 +128,6 @@ class Reference(Base):
     reference_url = mapped_column(String(100))
     measurandtaxon_id: Mapped[Optional[int]] = mapped_column(ForeignKey("measurandtaxon.id"))
     measurandtaxon: Mapped['MeasurandTaxon'] = relationship(back_populates="external_references")
-
-
-class Taxon(Base):
-    __tablename__ = "taxon"
-    # deprecated class
-    # MeasurandTaxon is the canonical defintion
-    # Measurand (should) default to the attributes defined in its parent MeasurandTaxon
-
-    # id = Column(UnicodeText, primary_key=True)
-    id: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
-
-    supertaxon_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey('taxon.id'))
-
-    subtaxons: Mapped[list['Taxon']] = \
-        relationship(back_populates='supertaxon',
-                     remote_side=[id])
-
-    supertaxon: Mapped['Taxon'] = relationship(back_populates='subtaxons')
-    # Name should be constructor from init
-    # Taxon attributes following BNF grammar
-    name: Mapped[str] = mapped_column(String(50))
-    deprecated: Mapped[bool]
-    quantitykind: Mapped[str] = mapped_column(String(50))
-    processtype: Mapped[str] = mapped_column(String(10))  # Source | Measure
-    # One-to-one
-    aspect_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey("aspect.id"))
-    aspect: Mapped['Aspect'] = relationship()
-    qualifier: Mapped[Optional[str]] = mapped_column(String(50))
-    
-    # discipline_id: Mapped[Optional[int]] = \
-    #    mapped_column(ForeignKey("discipline.id"))
-    # discipline: Mapped['Discipline'] = relationship(back_populates="taxon")
-
-    def __str__(self):
-        return f'{self.id}'
-
-
 
 
 class Discipline(Base):

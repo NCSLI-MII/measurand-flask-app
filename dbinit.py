@@ -53,8 +53,8 @@ def main(data_dir, db_path):
         miimapper.loadTaxonomy()
         miimapper.roundtrip()
 
-        #kcdbmapper = KcdbMapper(session, parms)
-        #kcdbmapper.loadServices()
+        kcdbmapper = KcdbMapper(session, parms)
+        kcdbmapper.loadServices()
         session.commit()
         session.close()
 

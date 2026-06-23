@@ -17,7 +17,8 @@ import string
 import xmltodict, xmlschema
 import pprint as mpprint
 from miiflask.flask.models import schemas
-
+from miiflask.flask.models import taxonomy as model
+from miiflask.flask.models.mlayer import Aspect
 
 def dicttoxml_taxonomy(taxons):
     taxonomy = {
@@ -210,10 +211,10 @@ class TaxonomyMapper:
             "mlayer": f"{self._schema_taxonomy}:mLayer",
         }
         self._schemas = {}
-        self._schemas["taxon"] = schemas.TaxonSchema()
+        #self._schemas["taxon"] = schemas.TaxonSchema()
         self._schemas["aspect"] = schemas.AspectSchema()
         self._schemas["discipline"] = schemas.DisciplineSchema()
-        self._schemas["measurand"] = schemas.MeasurandSchema()
+        #self._schemas["measurand"] = schemas.MeasurandSchema()
         self._schemas["measurandtaxon"] = schemas.MeasurandTaxonSchema()
         self._schemas["parameter"] = schemas.ParameterSchema()
         self._schemas["reference"] = schemas.ReferenceSchema()
@@ -322,8 +323,8 @@ class TaxonomyMapper:
             
             if "mtc:mLayer" in taxon["mtc:Parameter"][0].keys():
                 measurand_aspect = (
-                        self.Session.query(model.Aspect)
-                        .filter((model.Aspect.id == taxon["mtc:Parameter"][0]["mtc:mLayer"]["@id"]))
+                        self.Session.query(Aspect)
+                        .filter((Aspect.id == taxon["mtc:Parameter"][0]["mtc:mLayer"]["@id"]))
                         .first()
                         )
             for parm in taxon["mtc:Parameter"]:
@@ -354,8 +355,8 @@ class TaxonomyMapper:
                     parameter.quantitykind = parm["uom:Quantity"]["@name"]
                 if "mtc:mLayer" in parm.keys():
                     aspect = (
-                            self.Session.query(model.Aspect)
-                            .filter((model.Aspect.id == parm["mtc:mLayer"]["@id"]))
+                            self.Session.query(Aspect)
+                            .filter((Aspect.id == parm["mtc:mLayer"]["@id"]))
                             .first()
                             )
                     if aspect:
@@ -366,16 +367,16 @@ class TaxonomyMapper:
       
         if "mtc:mLayer" in taxon["mtc:Result"].keys():
             aspect = (
-                    self.Session.query(model.Aspect)
-                    .filter((model.Aspect.id == taxon["mtc:Result"]["mtc:mLayer"]["@id"]))
+                    self.Session.query(Aspect)
+                    .filter((Aspect.id == taxon["mtc:Result"]["mtc:mLayer"]["@id"]))
                     .first()
                     )
             if aspect:
                 measurand.aspect = aspect
             aspect = None
             result_aspect = (
-                    self.Session.query(model.Aspect)
-                    .filter((model.Aspect.id == taxon["mtc:Result"]["mtc:mLayer"]["@id"]))
+                    self.Session.query(Aspect)
+                    .filter((Aspect.id == taxon["mtc:Result"]["mtc:mLayer"]["@id"]))
                     .first()
                     )
             if result_aspect:
