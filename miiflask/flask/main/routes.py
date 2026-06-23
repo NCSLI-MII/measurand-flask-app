@@ -19,7 +19,7 @@ from miiflask.flask.db import (
         obj_serialize_json
         )
 
-from miiflask.flask.models.kcdb import KcdbCmc
+from miiflask.flask.models.kcdb import KcdbCmc, KcdbArea
 
 from miiflask.flask.models.mlayer import ( 
         Aspect,
