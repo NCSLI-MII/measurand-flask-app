@@ -42,19 +42,32 @@ class Aspect(Base):
     # Do not keep relationship to other tables
     __tablename__ = "aspect"
     # aspect | id | [core] The M-layer unique identifier for an aspect.
-    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    id: Mapped[str] = mapped_column(String(10),
+            primary_key=True,
+            comment="The M-layer unique identifier for an aspect.",
+            doc="core mlayer")
     
     # aspect | ml_name | [impl] Internal identifier for the aspect
-    ml_name: Mapped[str] = mapped_column(String(50))
+    ml_name: Mapped[str] = mapped_column(String(50),
+            comment="Internal identifier for the aspect",
+            doc="implementation detail")
     
     # aspect | name | [core] Conventional name for the aspect
-    name: Mapped[str] = mapped_column(String(50))
+    name: Mapped[str] = mapped_column(String(50),
+            comment="Conventional name for the aspect",
+            doc="core mlayer")
     
     # aspect | symbol | [core] Conventional symbol for the aspect
-    symbol: Mapped[Optional[str]] = mapped_column(String(50))
+    symbol: Mapped[Optional[str]] = mapped_column(String(50),
+            comment="Conventional symbol for the aspect",
+            doc="core mlayer"
+            )
     
     # aspect | reference | [core] Reference to an authoritative definition of the aspect.
-    reference: Mapped[Optional[str]] = mapped_column(String(200))
+    reference: Mapped[Optional[str]] = mapped_column(String(200),
+            comment="Reference to an authoritative definition of the aspect.",
+            doc="core mlayer"
+            )
     
     # Association inferred from conversion or cast table
     scales: Mapped[list['Scale']] = \
@@ -190,18 +203,21 @@ class Conversion(Base):
     # conversion_cast | dst_scale_id | [core] Final scale identifier
     dst_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
                                               primary_key=True,
-                                              comment="Final scale identifier")
+                                              comment="Final scale identifier",
+                                              doc="core mlayer")
 
     # conversion | aspect_id | [core] aspect identifier common to src and dst scale
     aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
                                            primary_key=True,
-                                           comment="aspect identifier common to src and dst scale")
+                                           comment="aspect identifier common to src and dst scale",
+                                           doc="core mlayer")
 
     # conversion_cast | function_id | [core] Transformation function
-    transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"))
+    transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"),
+            comment="Transformation function" )
     
     # conversion_cast | parameters | [core] Transformation function arguments
-    parameters: Mapped[str] = mapped_column(UnicodeText)
+    parameters: Mapped[str] = mapped_column(UnicodeText, comment="Transformation function arguments")
 
     src_scale: Mapped['Scale'] = relationship(foreign_keys=[src_scale_id])
     dst_scale: Mapped['Scale'] = relationship(foreign_keys=[dst_scale_id])
@@ -263,19 +279,31 @@ class Unit(Base):
     __tablename__ = "unit"
     
     # unit | id | [core] The M-layer unique identifier for a unit.
-    id: Mapped[str] = mapped_column(String(50), primary_key=True)
+    id: Mapped[str] = mapped_column(String(50), 
+            primary_key=True,
+            comment="The M-layer unique identifier for a unit.",
+            doc="core mlayer"
+            )
     
     # unit | name | [core] Conventional name of the unit
-    name: Mapped[str] = mapped_column(String(100))
+    name: Mapped[str] = mapped_column(String(100),
+            comment=" Conventional name of the unit",
+            doc="core mlayer")
     
     # unit | ml_name | [impl] Canonical form for unit.
-    ml_name: Mapped[str] = mapped_column(String(100))
+    ml_name: Mapped[str] = mapped_column(String(100),
+            comment="Canonical form for unit.",
+            doc="implementation detail")
     
     # unit | symbol | [core] Conventional symbol of the unit
-    symbol: Mapped[Optional[str]] = mapped_column(String(50))
+    symbol: Mapped[Optional[str]] = mapped_column(String(50),
+            comment="Conventional symbol of the unit",
+            doc="core mlayer")
     
     # unit | reference | [core] Reference to an authoritative definition of the unit. 
-    reference: Mapped[Optional[str]] = mapped_column(String(200))
+    reference: Mapped[Optional[str]] = mapped_column(String(200),
+            comment="Reference to an authoritative definition of the unit.",
+            doc="core mlayer")
 
     def __str__(self):
         return f'{self.name}'
@@ -288,22 +316,39 @@ class System(Base):
     __tablename__ = 'system'
     
     # system | id | [core] The M-layer unique identifier for a unit system.
-    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    id: Mapped[str] = mapped_column(String(10),
+            primary_key=True,
+            comment="The M-layer unique identifier for a unit system.",
+            doc="core mlayer"
+            )
     
     # system | ml_name | [impl] Internal identifier for the system name
-    ml_name: Mapped[str] = mapped_column(String(50))
+    ml_name: Mapped[str] = mapped_column(String(50),
+            comment="Internal identifier for the system name",
+            doc="implementation detail")
     
     # system | symbol | [core] A textual symbol (abbreviation) for the unit system
-    symbol: Mapped[str] = mapped_column(String(10))
+    symbol: Mapped[str] = mapped_column(String(10),
+            comment="A textual symbol (abbreviation) for the unit system",
+            doc="core mlayer"
+            )
     
     # system | n | [extd] Number of system base units.
-    n: Mapped[Optional[int]] = mapped_column(Integer)
+    n: Mapped[Optional[int]] = mapped_column(Integer,
+            comment="Number of system base units.",
+            doc="extended mlayer"
+            )
     
     # system | basis | [extd] Sequence of (aspect, scale) id pairs defining the system's base quantities and units.
-    basis: Mapped[Optional[str]] = mapped_column(String(200))
+    basis: Mapped[Optional[str]] = mapped_column(String(200),
+            comment="Sequence of (aspect, scale) id pairs defining the system's base quantities and units.",
+            doc="extended mlayer")
     
     # system | reference | [core] Reference to an authoritative definition of the unit system. 
-    reference: Mapped[Optional[str]] = mapped_column(String(200))
+    reference: Mapped[Optional[str]] = mapped_column(String(200),
+            comment="Reference to an authoritative definition of the unit system. ",
+            doc="core mlayer"
+            )
 
     def __str__(self):
         return f'{self.symbol}'
@@ -348,19 +393,32 @@ class Transform(Base):
     __tablename__ = "transform"
     
     # function | id | [core] The M-layer unique identifier for a transformation function.
-    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    id: Mapped[str] = mapped_column(String(10),
+            primary_key=True,
+            comment="The M-layer unique identifier for a transformation function.",
+            doc="core mlayer"
+            )
     
     # function | ml_name | [impl] Internal identifier for the transformation function
-    ml_name: Mapped[str] = mapped_column(String(50))
+    ml_name: Mapped[str] = mapped_column(String(50),
+            comment="Internal identifier for the transformation function",
+            doc="implementation detail")
     
     # function | py_function | [core] Python expression defining the transformation function.
-    py_function: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    py_function: Mapped[Optional[str]] = mapped_column(UnicodeText,
+            comment="Python expression defining the transformation function.",
+            doc="core mlayer")
     
     # function | py_names_in_scope | [core] Parameter names required by the transformation function.
-    py_names_in_scope: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    py_names_in_scope: Mapped[Optional[str]] = mapped_column(UnicodeText,
+            comment="Parameter names required by the transformation function.",
+            doc="core mlayer"
+            )
     
     # function | comments | [core] Free-text notes. 
-    comments: Mapped[Optional[str]] = mapped_column(UnicodeText)
+    comments: Mapped[Optional[str]] = mapped_column(UnicodeText,
+            comment="Free-text notes. ",
+            doc="core mlayer")
 
     def __str__(self):
         return f'{self.ml_name}'

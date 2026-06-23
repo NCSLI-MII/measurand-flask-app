@@ -32,7 +32,7 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
     # Initialize graph with more advanced visual settings
     dot = graphviz.Digraph(comment='Interactive Data Models', format='svg', 
                             graph_attr={'bgcolor': '#EEEEEE', 'rankdir': 'TB', 'splines': 'spline'},
-                            node_attr={'shape': 'none', 'fontsize': '12', 'fontname': 'Roboto'},
+                            node_attr={'shape': 'none', 'fontsize': '10', 'fontname': 'Roboto'},
                             edge_attr={'fontsize': '10', 'fontname': 'Roboto'})
     # Iterate through each SQLAlchemy model
     for model in models:
@@ -52,7 +52,7 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
             </TR>
 
             <TR>
-            <TD BGCOLOR="#E8EAF6"><B>Attribute</B></TD>
+            <TD BGCOLOR="#E8EAF6" WIDTH="65"><B>Attribute</B></TD>
             <TD BGCOLOR="#E8EAF6"><B>Key</B></TD>
             <TD BGCOLOR="#E8EAF6"><B>Description</B></TD>
             </TR>
@@ -82,13 +82,13 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
                 #             <TD BGCOLOR="{color}">{column.name} ({constraint_str})</TD>
                 #             </TR>'''
                 label += f'''<TR>
-                <TD ALIGN="LEFT" WIDTH="60" BGCOLOR="{color}">{column.name}</TD>
-                <TD ALIGN="LEFT" WIDTH="40" BGCOLOR="{color}">{constraint_str}</TD>
+                <TD ALIGN="LEFT" WIDTH="65" BGCOLOR="{color}">{column.name}</TD>
+                <TD ALIGN="LEFT" WIDTH="30" BGCOLOR="{color}">{constraint_str}</TD>
                 <TD ALIGN="LEFT" WIDTH="300">{comment}</TD>
                 </TR>'''
         else:
             label += f'''<TR>
-            <TD WIDTH="100" HEIGHT="50" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
+            <TD WIDTH="300" HEIGHT="50" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
             '''
 
 
