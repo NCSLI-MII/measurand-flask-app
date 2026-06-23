@@ -84,42 +84,62 @@ class Scale(Base):
     # scale | symbol | [core] Conventional symbol of the scale (e.g. 'pH'); NULL if there is no established symbol. 
     # 
     # scale | id | [core] The M-layer unique identifier for a scale.
-    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    id: Mapped[str] = mapped_column(String(10), 
+            primary_key=True, 
+            comment="The M-layer unique identifier for a scale.",
+            doc="core mlayer and persistent identfifier")
 
-    # scale | ml_name | [impl] Canonical form of scale-type, system, and unit symbols.
-    ml_name: Mapped[str] = mapped_column(String(50))
+    # scale | ml_name | [impl] 
+    ml_name: Mapped[str] = mapped_column(String(50), 
+            comment="Canonical form of scale-type, system, and unit symbols.",
+            doc="implementation detail")
 
     # scale | type | [extd] Scale type (ratio, interval, ordinal, etc.).
-    scale_type: Mapped[str] = mapped_column(String(20))
+    scale_type: Mapped[str] = mapped_column(String(20), 
+            comment="Scale type (ratio, interval, ordinal, etc.).",
+            doc="extended mlayer")
 
     # scale | unit_id | [core] Unit defining the size of one scale division.
     unit_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey("unit.id"))  # One-to-one
+        mapped_column(ForeignKey("unit.id"),
+                comment="Unit defining the size of one scale division.",
+                doc="core mlayer")  # One-to-one
     unit: Mapped['Unit'] = relationship()
     
     # scale | prefix_id | [impl] Metric prefix applied to the root-scale unit.
     prefix_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey("prefix.id"))  # One-to-one
+        mapped_column(ForeignKey("prefix.id"),
+                comment="Metric prefix applied to the root-scale unit.",
+                doc="implementation detail")  # One-to-one
     prefix: Mapped['Prefix'] = relationship()
     
     # scale | root_scale_id | [impl] Canonical scale without prefixes; NULL for root scales.
     root_scale_id: Mapped[Optional[int]] = \
-        mapped_column(ForeignKey('scale.id'))
+        mapped_column(ForeignKey('scale.id'),
+                comment="Canonical scale without prefixes; NULL for root scales.",
+                doc="implementation detail")
     root_scale: Mapped['Scale'] = relationship(remote_side=[id])
 
     # scale | system_dimensions_id | [extd] System dimensions associated with scale.
     system_dimensions_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey('dimension.id'))
+        mapped_column(ForeignKey('dimension.id'),
+                comment="System dimensions associated with scale.",
+                doc="extended mlayer")
     system_dimensions: Mapped['Dimension'] = relationship("Dimension", foreign_keys=[system_dimensions_id])
         # Remove view on all scales that share dimension
         # Only point to the dimension that define the scale
         #relationship(back_populates="systematic_scales")
 
     # scale | is_systematic | [extd] True for a ratio scale associated with a compound unit expressed in system base units.
-    is_systematic: Mapped[Optional[bool]]
+    is_systematic: Mapped[Optional[bool]] = mapped_column(Boolean, 
+            comment="True for a ratio scale associated with a compound unit expressed in system base units.",
+            doc="extended mlayer"
+            )
 
     # scale | is_special | [extd] True when the scale's unit has a special name in the unit system.
-    is_special: Mapped[Optional[bool]]
+    is_special: Mapped[Optional[bool]] = mapped_column(Boolean,
+            comment="True when the scale's unit has a special name in the unit system.",
+            doc="extended mlayer")
 
     ref_point: Mapped[Optional[str]]
 
@@ -163,15 +183,19 @@ class Conversion(Base):
     
     # conversion_cast | src_scale_id | [core] Initial scale identifier
     src_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
-                                              primary_key=True)
+                                              primary_key=True,
+                                              comment="Initial scale identifier",
+                                              doc="core mlayer")
 
     # conversion_cast | dst_scale_id | [core] Final scale identifier
     dst_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
-                                              primary_key=True)
+                                              primary_key=True,
+                                              comment="Final scale identifier")
 
     # conversion | aspect_id | [core] aspect identifier common to src and dst scale
     aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
-                                           primary_key=True)
+                                           primary_key=True,
+                                           comment="aspect identifier common to src and dst scale")
 
     # conversion_cast | function_id | [core] Transformation function
     transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"))

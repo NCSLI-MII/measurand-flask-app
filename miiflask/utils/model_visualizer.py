@@ -41,14 +41,25 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
 
         # Create an HTML-like label for each model as a rich table
         label = f'''<
-        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
         '''
         if show_attributes is True:         
             label += f'''
-            <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
+            <TR>
+            <TD COLSPAN="3" BGCOLOR="#3F51B5">
+            <FONT COLOR="white"><B>{name}</B></FONT>
+            </TD>
+            </TR>
+
+            <TR>
+            <TD BGCOLOR="#E8EAF6"><B>Attribute</B></TD>
+            <TD BGCOLOR="#E8EAF6"><B>Key</B></TD>
+            <TD BGCOLOR="#E8EAF6"><B>Description</B></TD>
+            </TR>
             '''
-       
+ 
             for column in insp.columns:
+                comment = column.comment or ""
                 constraints = []
                 if column.primary_key:
                     constraints.append("PK")
@@ -56,17 +67,30 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
                     constraints.append("Unique")
                 if column.index:
                     constraints.append("Index")
+                if column.foreign_keys:
+                    constraints.append("FK")
                 
                 constraint_str = ','.join(constraints)
-                color = "#BBDEFB"
+                if column.primary_key:
+                    color = "#C8E6C9"
+                elif column.foreign_keys:
+                    color = "#FFF9C4"
+                else:
+                    color = "#BBDEFB"
                 
+                #label += f'''<TR>
+                #             <TD BGCOLOR="{color}">{column.name} ({constraint_str})</TD>
+                #             </TR>'''
                 label += f'''<TR>
-                             <TD BGCOLOR="{color}">{column.name} ({constraint_str})</TD>
-                             </TR>'''
+                <TD ALIGN="LEFT" WIDTH="60" BGCOLOR="{color}">{column.name}</TD>
+                <TD ALIGN="LEFT" WIDTH="40" BGCOLOR="{color}">{constraint_str}</TD>
+                <TD ALIGN="LEFT" WIDTH="300">{comment}</TD>
+                </TR>'''
         else:
             label += f'''<TR>
             <TD WIDTH="100" HEIGHT="50" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
             '''
+
 
         label += '</TABLE>>'
         
