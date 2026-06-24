@@ -11,6 +11,8 @@
 from datetime import datetime
 from typing import Optional
 from enum import Enum
+import html
+import textwrap
 from decimal import Decimal
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from sqlalchemy import Column, String, DateTime, Integer, Numeric, Boolean, JSON, ForeignKey, LargeBinary, Text, UniqueConstraint, CheckConstraint, text as sql_text
@@ -26,7 +28,18 @@ from flask import url_for
 from miiflask.utils.unicode_mapper import greek_alphabet_unicode, superscript_integers_unicode
 
 Base = declarative_base()
+def wrap_comment(text, width=50): 
+    #text = html.escape(text) 
+    #text = textwrap.dedent(text)
+    # The text you want to wrap
 
+    # Wrap the text at 20 characters per line
+    wrapped_lines = textwrap.wrap(text, width)
+
+    # Build HTML string dynamically using the align attribute
+    #return "<<BR/>" + "<BR/>".join([f"{line}<BR ALIGN=\"LEFT\"/>" for line in wrapped_lines]) + ">"
+
+    return "<BR ALIGN=\"LEFT\"/>".join(textwrap.wrap(text, width))
 
 def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_labels=True, view_diagram=True):
     # Initialize graph with more advanced visual settings
@@ -39,6 +52,16 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
         insp = inspect(model)
         name = insp.class_.__name__
 
+        max_comment_len = 0 
+        for column in insp.columns: 
+            comment = column.comment or "" 
+            max_comment_len = max(max_comment_len, len(comment))        
+        
+        char_px = 6 
+        min_width = 100 
+        max_width = 300
+        desc_width = max(min_width, min(max_width, max_comment_len * char_px))
+        
         # Create an HTML-like label for each model as a rich table
         label = f'''<
         <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
@@ -59,7 +82,7 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
             '''
  
             for column in insp.columns:
-                comment = column.comment or ""
+                comment = wrap_comment(column.comment or "")
                 constraints = []
                 if column.primary_key:
                     constraints.append("PK")
@@ -84,11 +107,11 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
                 label += f'''<TR>
                 <TD ALIGN="LEFT" WIDTH="65" BGCOLOR="{color}">{column.name}</TD>
                 <TD ALIGN="LEFT" WIDTH="30" BGCOLOR="{color}">{constraint_str}</TD>
-                <TD ALIGN="LEFT" WIDTH="300">{comment}</TD>
+                <TD ALIGN="LEFT" WIDTH="{desc_width}">{comment}</TD>
                 </TR>'''
         else:
             label += f'''<TR>
-            <TD WIDTH="300" HEIGHT="50" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
+            <TD WIDTH="{desc_width}" HEIGHT="50" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
             '''
 
 

@@ -352,7 +352,60 @@ class MlayerMapper:
                                aspect_id=obj['aspect_id'],
                                transform_id=obj['function_id'],
                                parameters=obj['parameters'])
+
         return cnv
+
+    def _transformQuantityObjectFromConversion(self, obj, scale_type):
+        aspect = (self.Session.query(model.Aspect)
+                  .filter(model.Aspect.id == obj['aspect_id'])
+                  .first()
+                  )
+        if scale_type == "src":
+            scale = (
+                self.Session.query(model.Scale)
+                .filter(model.Scale.id == obj['src_scale_id'])
+                .first()
+            )
+        if scale_type == "dst": 
+            scale = (
+                self.Session.query(model.Scale)
+                .filter(model.Scale.id == obj['dst_scale_id'])
+                .first()
+            )
+
+        # TBD
+        # Marshmallow serilization
+        qo = model.QuantityObject(scale=scale, aspect=aspect, name=scale.unit.name)
+
+        return qo
+
+    def _transformQuantityObjectFromCast(self, obj, scale_type):
+        if scale_type == "src":
+            scale = (
+                self.Session.query(model.Scale)
+                .filter(model.Scale.id == obj['src_scale_id'])
+                .first()
+            )
+            aspect = (self.Session.query(model.Aspect)
+                      .filter(model.Aspect.id == obj['src_aspect_id'])
+                      .first()
+                      )
+        if scale_type == "dst": 
+            aspect = (self.Session.query(model.Aspect)
+                      .filter(model.Aspect.id == obj['dst_aspect_id'])
+                      .first()
+                      )
+            scale = (
+                self.Session.query(model.Scale)
+                .filter(model.Scale.id == obj['dst_scale_id'])
+                .first()
+            )
+
+        # TBD
+        # Marshmallow serilization
+        qo = model.QuantityObject(scale=scale, aspect=aspect, name=scale.unit.name)
+
+        return qo
 
     def _transformCast(self, obj):
         src_aspect = (
@@ -453,6 +506,27 @@ class MlayerMapper:
                         .first()
                          ) is None:
                         self.Session.add(conversion)
+                    if (
+                        self.Session.query(model.QuantityObject)
+                        .filter(and_(model.QuantityObject.scale_id
+                                     == obj["src_scale_id"],
+                                     model.QuantityObject.aspect_id
+                                     == obj["aspect_id"]))
+                        .first()
+                         ) is None:
+                        qo_src = self._transformQuantityObjectFromConversion(obj, "src")
+                        
+                        self.Session.add(qo_src)
+                    if (
+                        self.Session.query(model.QuantityObject)
+                        .filter(and_(model.QuantityObject.scale_id
+                                     == obj["dst_scale_id"],
+                                     model.QuantityObject.aspect_id
+                                     == obj["aspect_id"]))
+                        .first()
+                         ) is None:
+                        qo_dst = self._transformQuantityObjectFromConversion(obj, "dst")
+                        self.Session.add(qo_dst)
                     # else:
                     #    print(f'Failed to add {conversion.src_scale_id},
                     # {conversion.dst_scale_id},
@@ -474,6 +548,27 @@ class MlayerMapper:
                         .first()
                          ) is None:
                         self.Session.add(cast)
+                    if (
+                        self.Session.query(model.QuantityObject)
+                        .filter(and_(model.QuantityObject.scale_id
+                                     == obj["src_scale_id"],
+                                     model.QuantityObject.aspect_id
+                                     == obj["src_aspect_id"]))
+                        .first()
+                         ) is None:
+                        qo_src = self._transformQuantityObjectFromCast(obj, "src")
+                        
+                        self.Session.add(qo_src)
+                    if (
+                        self.Session.query(model.QuantityObject)
+                        .filter(and_(model.QuantityObject.scale_id
+                                     == obj["dst_scale_id"],
+                                     model.QuantityObject.aspect_id
+                                     == obj["dst_aspect_id"]))
+                        .first()
+                         ) is None:
+                        qo_dst = self._transformQuantityObjectFromCast(obj, "dst")
+                        self.Session.add(qo_dst)
                     # else:
                     #    print(f'Failed to add {cast.src_scale_id},
                     # {cast.dst_scale_id},

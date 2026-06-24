@@ -36,6 +36,28 @@ scaleaspect_table = Table(
     Column("aspect_id", ForeignKey("aspect.id"), primary_key=True),
 )
 
+# Scale-Aspect Association table describing a quantity
+# scaleaspect_table with additional attributes
+class QuantityObject(Base):
+    __tablename__ = "quantityobject_table"
+    scale_id: Mapped[int] = \
+        mapped_column(ForeignKey('scale.id'),
+                primary_key=True,
+                comment="scale identifier",
+                doc="core mlayer")
+    aspect_id: Mapped[int] = \
+        mapped_column(ForeignKey('aspect.id'),
+                primary_key=True,
+                comment="aspect identifier",
+                doc="core mlayer")
+
+    name: Mapped[str] = mapped_column(String(50),
+            comment="Conventional name for the quantity",
+            doc="core mlayer")
+    scale: Mapped['Scale'] = relationship(back_populates="scale_aspect_associations")
+    aspect: Mapped['Aspect'] = relationship(back_populates="scale_aspect_associations")
+
+
 # M-Layer Aspect
 class Aspect(Base):
     # Aspect will be referenced by many tables
@@ -70,12 +92,16 @@ class Aspect(Base):
             )
     
     # Association inferred from conversion or cast table
+    #scales: Mapped[list['Scale']] = \
+    #    relationship(secondary=scaleaspect_table, back_populates="aspects")
     scales: Mapped[list['Scale']] = \
-        relationship(secondary=scaleaspect_table, back_populates="aspects")
+        relationship(secondary="quantityobject_table", viewonly=True)
     # Conversions should be related to the scale,
     # aspect only disambiguates the expression
     # conversions = relationship('Conversion', back_populates='aspect')
-
+    
+    scale_aspect_associations: Mapped[list['QuantityObject']] = \
+            relationship(back_populates="aspect", cascade="all, delete-orphan")
     def __str__(self):
         return f'{self.name}'
 
@@ -160,10 +186,13 @@ class Scale(Base):
 
     ref_point_h: Mapped[Optional[str]]
 
-    aspects: Mapped[list['Aspect']] = \
-        relationship(secondary=scaleaspect_table,
-                     back_populates="scales")
+    # Using secondary scaleaspect_table
+    #aspects: Mapped[list['Aspect']] = \
+    #    relationship(secondary=scaleaspect_table,
+    #                 back_populates="scales")
 
+    # Using QuantityObject and view only
+    aspects: Mapped[list['Aspect']] = relationship(secondary="quantityobject_table", viewonly=True)
     conversions: Mapped[list['Conversion']] = \
         relationship(primaryjoin="(Scale.id == Conversion.src_scale_id)",
                      viewonly=True)
@@ -174,6 +203,8 @@ class Scale(Base):
     # src_scales = relationship('Conversion', back_populates='src_scale')
     # dst_scales = relationship('Conversion', back_populates='dst_scale')
 
+    scale_aspect_associations: Mapped[list['QuantityObject']] = \
+            relationship(back_populates="scale", cascade="all,delete-orphan")
     def __str__(self):
         return f'{self.ml_name}'
 
@@ -242,19 +273,27 @@ class Cast(Base):
     
     # conversion_cast | src_scale_id | [core] Initial scale identifier
     src_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
-                                              primary_key=True)
+                                              primary_key=True,
+                                              comment="Initial scale identifier",
+                                              doc="core mlayer")
     
     # conversion_cast | dst_scale_id | [core] Final scale identifier
     dst_scale_id: Mapped[str] = mapped_column(ForeignKey("scale.id"),
-                                              primary_key=True)
+                                              primary_key=True,
+                                              comment="Final scale identifier",
+                                              doc="core mlayer")
     
     # conversion_cast | src_aspect_id | [core] Initial aspect identifier
     src_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
-                                               primary_key=True)
+                                               primary_key=True,
+                                               comment="Initial aspect identifier",
+                                               doc="core mlayer")
     
     # conversion_cast | dst_aspect_id | [core] Final aspect identifier
     dst_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
-                                               primary_key=True)
+                                               primary_key=True,
+                                               comment="Final aspect identifier",
+                                               doc="core mlayer")
 
     # conversion_cast | function_id | [core] Transformation function
     transform_id: Mapped[str] = mapped_column(ForeignKey("transform.id"))
