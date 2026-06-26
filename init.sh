@@ -8,9 +8,9 @@
 set -e
 
 NAME1=measurand-taxonomy
-VERSION1=0.2.0-beta
+VERSION1=0.3.0-beta
 NAME2=m-layer
-VERSION2=0.3.0-beta
+VERSION2=0.4.0-beta
 
 FILENAME1="$NAME1-$VERSION1.tar.gz"
 FILENAME2="$NAME2-$VERSION2.tar.gz"

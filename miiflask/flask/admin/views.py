@@ -558,6 +558,12 @@ class ScaleView(ModelView):
         url = url_for('dimension.details_view', id=model.system_dimensions.id)
         return Markup('<a href="{}">{}</a>'
                       .format(url, model.system_dimensions.id))
+    
+    def _find_quantity(self, scale, aspect_id):
+        for assoc in scale.scale_aspect_associations:
+            if assoc.aspect.id == aspect_id:
+                return assoc
+        return None
 
     def _cnv_link_formatter(view, context, model, name):
         urls = []
@@ -565,12 +571,16 @@ class ScaleView(ModelView):
         for s in model.conversions: aspects[s.aspect.id]=(s.aspect.name,[]) 
         for s in model.conversions:
             
+            src_qo = view._find_quantity(s.src_scale, s.aspect.id)
+            dst_qo = view._find_quantity(s.dst_scale, s.aspect.id)
+
             url_aspect = url_for('aspect.details_view', id=s.aspect.id)
             url_src = url_for('scale.details_view', id=s.src_scale.id)
             url_dst = url_for('scale.details_view', id=s.dst_scale.id)
+            
             name_ = '{}: {} &#8594 {}'.format(s.aspect.name,
-                                    s.src_scale.ml_name,
-                                    s.dst_scale.ml_name)
+                    src_qo.quantity_name,
+                    dst_qo.quantity_name)
             id_ = '{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.aspect.id)
 
             
@@ -578,9 +588,9 @@ class ScaleView(ModelView):
             url_details = (
                     '<a href={}>{}</a> &#8594 <a href={}>{}</a> <a href="{}">{}</a>'.format(
                         url_src,
-                        s.src_scale.ml_name,
+                        src_qo.quantity_name,
                         url_dst,
-                        s.dst_scale.ml_name,
+                        dst_qo.quantity_name,
                         url,"(see details)"
                         )
                     )
@@ -624,10 +634,9 @@ class ScaleView(ModelView):
             'system_dimensions': _link_dim_formatter
             }
     column_list = ("id",
-                   "ml_name",
+                   "scale_type",
                    "unit")
     column_details_list = ("id",
-                           "ml_name",
                            'scale_type',
                            "unit",
                            'root_scale_id',
@@ -681,13 +690,43 @@ class CastConversionView(MyModelView):
             }
 
 
+class QuantityObjectView(MyModelView):
+    
+    def _aspect_link_formatter(view, context, model, name):
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        url = url_for('aspect.details_view', id=field.id)
+        return Markup('<a href="{}">{}</a>'.format(url, field))
+    
+    def _scale_link_formatter(view, context, model, name):
+        field = getattr(model, name)
+        if field is None:
+            return u""
+        
+        url = url_for('scale.details_view', id=field.id)
+        return Markup('<a href="{}">{}</a>'.format(url, field.unit.name))
+    
+    column_formatters = {
+            'scale': _scale_link_formatter,
+            'aspect': _aspect_link_formatter,
+            }
+
+
 class AspectView(MyModelView):
 
+    def _find_quantity(self, aspect, scale_id):
+        for assoc in aspect.scale_aspect_associations:
+            if assoc.scale.id == scale_id:
+                return assoc
+        return None
+    
     def _scale_formatter(view, context, model, name):
         urls = []
         for s in model.scales:
+            qo = view._find_quantity(model, s.id)
             url = url_for('scale.details_view', id=s.id)
-            urls.append('<a href="{}">{}: {}</a>'.format(url, s.id, s.ml_name))
+            urls.append('<a href="{}">{}: {}</a>'.format(url, s.id, qo.quantity_name))
         return Markup(('<br/>').join(urls))
     
 

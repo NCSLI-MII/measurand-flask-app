@@ -387,8 +387,8 @@ class TaxonomyMapper:
             if(measurand_aspect.id != measurand.aspect.id):
                 print("Invalid match for measurand aspect")
                 print(taxon)
-                print(measurand_aspect.id, measurand_aspect.ml_name)
-                print(measurand.aspect.id, measurand.aspect.ml_name)
+                print(measurand_aspect.id, measurand_aspect.name)
+                print(measurand.aspect.id, measurand.aspect.name)
                 print(taxon["mtc:Result"]["mtc:mLayer"]["@id"])
                 print(taxon["mtc:Parameter"][0]["mtc:mLayer"]["@id"])
 
@@ -613,14 +613,14 @@ class TaxonomyMapper:
         if 'aspect' in data.keys():
             if data['aspect']:
                 taxon["mtc:Result"]["mtc:mLayer"] = {
-                        "@aspect": data['aspect']['ml_name'],
+                        "@aspect": data['aspect']['name'],
                         "@id": data['aspect']['id']
                         }
 
         if 'scale' in data.keys(): 
             if data['scale']:
                 taxon["mtc:Scale"] = {
-                        "@name": data['scale']['ml_name'],
+                        "@name": data['scale']['name'],
                         "@id": data['scale']['id']
                         }
 
@@ -642,7 +642,7 @@ class TaxonomyMapper:
                         dict_["uom:Quantity"] = {"@name": parm["quantitykind"]}
                     if parm['aspect']:
                             dict_["mtc:mLayer"] = {
-                                    "@aspect": parm['aspect']['ml_name'],
+                                    "@aspect": parm['aspect']['name'],
                                     "@id": parm['aspect']['id']
                                     }
                     

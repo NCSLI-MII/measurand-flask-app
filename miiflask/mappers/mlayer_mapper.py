@@ -18,7 +18,7 @@ from pathlib import Path
 from miiflask.flask.models import schemas
 from miiflask.flask.models import mlayer as model
 from sqlalchemy import and_
-
+from sqlalchemy import case, func
 
 class MlayerMapper:
     def __init__(self, session, parms):
@@ -85,7 +85,7 @@ class MlayerMapper:
         data_ = {
             "id": obj['id'],
             "name": obj["name"],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "symbol": obj["symbol"],
             "reference": obj["reference"]
         }
@@ -105,7 +105,7 @@ class MlayerMapper:
         data_ = {
             "id": obj['id'],
             "name": obj["name"],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "symbol": obj["symbol"],
             "reference": obj["reference"],
             'numerator': float(obj['numerator'].replace('"', '')),
@@ -128,7 +128,7 @@ class MlayerMapper:
         data_ = {
             "id": obj['id'],
             "name": obj["name"],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "symbol": obj["symbol"],
             "reference": obj["reference"],
         }
@@ -148,11 +148,11 @@ class MlayerMapper:
             return None
         data_ = {
             "id": obj['id'],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "scale_type": obj["type"],
-            "ref_point": obj["ref_point"],
-            "ref_point_l": obj["ref_point_l"],
-            "ref_point_h": obj["ref_point_h"],
+            "ref_point": obj.get("ref_point"),
+            "ref_point_l": obj.get("ref_point_l"),
+            "ref_point_h": obj.get("ref_point_h"),
             "is_systematic": obj['is_systematic'],
             "is_special": obj['is_special'],
         }
@@ -228,7 +228,7 @@ class MlayerMapper:
             return None
         data_ = {
             "id": obj['id'],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "py_function": obj["py_function"],
             "py_names_in_scope": obj["py_names_in_scope"],
             "comments": obj["comments"]
@@ -286,7 +286,7 @@ class MlayerMapper:
             return None
         data_ = {
             "id": obj['id'],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "symbol": obj["symbol"],
             "n": obj["n"],
             "basis": obj["basis"],
@@ -375,10 +375,50 @@ class MlayerMapper:
 
         # TBD
         # Marshmallow serilization
-        qo = model.QuantityObject(scale=scale, aspect=aspect, name=scale.unit.name)
+        qo = model.QuantityObject(scale=scale, aspect=aspect)
 
         return qo
 
+
+    def _transformQuantityObjectName(self):
+
+        quantity_name_expr = func.coalesce(
+            model.QuantityObject.name,
+            model.Aspect.name + " " + model.Scale.name, 
+            model.Aspect.name + " " + model.Unit.name
+        )
+
+        quantity_symbol_expr = func.coalesce(
+            model.QuantityObject.symbol,
+            model.Aspect.symbol + " " + model.Scale.symbol, 
+            model.Aspect.symbol + " " + model.Unit.symbol
+        )
+    
+        system_symbol_expr = model.System.symbol
+        query = (
+            self.Session.query(
+                model.QuantityObject,
+                quantity_name_expr.label("computed_name"),
+                quantity_symbol_expr.label("computed_symbol"),
+                system_symbol_expr.label("system_symbol")
+
+
+            )
+            .join(model.QuantityObject.aspect)
+            .join(model.QuantityObject.scale)
+            .join(model.Scale.unit)
+            .outerjoin(model.Scale.system_dimensions)
+            .outerjoin(model.Dimension.formal_system)
+        )
+
+        results = query.all()
+
+        for qo, name, symbol, system_symbol in results:
+            qo.quantity_name = name
+            qo.quantity_symbol = symbol
+            qo.system_symbol =  system_symbol
+
+  
     def _transformQuantityObjectFromCast(self, obj, scale_type):
         if scale_type == "src":
             scale = (
@@ -403,7 +443,7 @@ class MlayerMapper:
 
         # TBD
         # Marshmallow serilization
-        qo = model.QuantityObject(scale=scale, aspect=aspect, name=scale.unit.name)
+        qo = model.QuantityObject(scale=scale, aspect=aspect)
 
         return qo
 
@@ -574,6 +614,8 @@ class MlayerMapper:
                     # {cast.dst_scale_id},
                     # {cast.src_aspect_id},
                     # {cast.dst_aspect_id} already exists')
+
+        self._transformQuantityObjectName()
 
 
 if __name__ == "__main__":

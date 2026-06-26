@@ -46,9 +46,10 @@ from miiflask.flask.models.mlayer import (
         Transform,
         Dimension,
         System,
-        Prefix
-
+        Prefix,
+        QuantityObject
         )
+
 from miiflask.flask.admin.views import (
         MeasurandView,
         TaxonView,
@@ -61,6 +62,7 @@ from miiflask.flask.admin.views import (
         ScaleView,
         UnitView,
         CastConversionView,
+        QuantityObjectView,
         DimensionView,
         KcdbBranchView
         )
@@ -79,6 +81,7 @@ def init_admin(app):
         admin.add_view(AspectView(Aspect, Session(), category="Mlayer"))
         admin.add_view(ScaleView(Scale, Session(), category="Mlayer"))
         admin.add_view(UnitView(Unit, Session(), category="Mlayer"))
+        admin.add_view(QuantityObjectView(QuantityObject, Session(), category="Mlayer"))
         admin.add_view(MyModelView(Prefix, Session(), category="Mlayer"))
         admin.add_view(CastConversionView(Conversion, Session(), category="Mlayer"))
         admin.add_view(CastConversionView(Cast, Session(), category="Mlayer"))

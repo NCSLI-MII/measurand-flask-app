@@ -9,6 +9,8 @@
 SQLAlchemy M-Layer Data Model
 """
 from miiflask.flask.db import Base
+
+from sqlalchemy import and_
 from sqlalchemy import (ForeignKey,
                         Column,
                         Integer,
@@ -19,7 +21,7 @@ from sqlalchemy import (ForeignKey,
                         Boolean,
                         Float,
                         )
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy.orm import relationship, foreign, Mapped, mapped_column
 
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
@@ -40,21 +42,55 @@ scaleaspect_table = Table(
 # scaleaspect_table with additional attributes
 class QuantityObject(Base):
     __tablename__ = "quantityobject_table"
+    
     scale_id: Mapped[int] = \
         mapped_column(ForeignKey('scale.id'),
                 primary_key=True,
                 comment="scale identifier",
                 doc="core mlayer")
+    
     aspect_id: Mapped[int] = \
         mapped_column(ForeignKey('aspect.id'),
                 primary_key=True,
                 comment="aspect identifier",
                 doc="core mlayer")
+    
+    transformations: Mapped[list["Conversion"]] = relationship(
+            "Conversion",
+            primaryjoin=lambda: and_(
+                QuantityObject.scale_id == foreign(Conversion.src_scale_id),
+                QuantityObject.aspect_id == foreign(Conversion.aspect_id)
+                ),
+            viewonly=True
+            )
+    # Name and symbol convention - 
+    # name and symbol obtained from 
+    # aspect-scale
+    # scale, 
+    # unit tables (in that order) until name-symbol entries are found
 
-    name: Mapped[str] = mapped_column(String(50),
-            comment="Conventional name for the quantity",
-            doc="core mlayer")
+    name: Mapped[Optional[str]] = mapped_column(String(100),
+            comment="Preferred name for the quantity expression",
+            doc="core mlayer view")
+    
+    symbol: Mapped[Optional[str]] = mapped_column(String(100),
+            comment="Preferred symbol for the quantity expression",
+            doc="core mlayer view")
+    
+    quantity_name: Mapped[Optional[str]] = mapped_column(String(100),
+            comment="Conventional name for the quantity expression",
+            doc="core mlayer view")
+    
+    quantity_symbol: Mapped[Optional[str]] = mapped_column(String(100),
+            comment="Conventional symbol for the quantity expression",
+            doc="core mlayer view")
+    
+    system_symbol: Mapped[Optional[str]] = mapped_column(String(100),
+            comment="Preferred symbol of the Unit system associated with the quantity expression",
+            doc="core mlayer view")
+    
     scale: Mapped['Scale'] = relationship(back_populates="scale_aspect_associations")
+    
     aspect: Mapped['Aspect'] = relationship(back_populates="scale_aspect_associations")
 
 
@@ -70,7 +106,7 @@ class Aspect(Base):
             doc="core mlayer")
     
     # aspect | ml_name | [impl] Internal identifier for the aspect
-    ml_name: Mapped[str] = mapped_column(String(50),
+    ml_name: Mapped[Optional[str]] = mapped_column(String(50),
             comment="Internal identifier for the aspect",
             doc="implementation detail")
     
@@ -129,10 +165,21 @@ class Scale(Base):
             doc="core mlayer and persistent identfifier")
 
     # scale | ml_name | [impl] 
-    ml_name: Mapped[str] = mapped_column(String(50), 
+    ml_name: Mapped[Optional[str]] = mapped_column(String(50), 
             comment="Canonical form of scale-type, system, and unit symbols.",
             doc="implementation detail")
 
+    # scale | name | [core] Conventional name for the scale
+    name: Mapped[Optional[str]] = mapped_column(String(50),
+            comment="Conventional name for the scale",
+            doc="core mlayer")
+    
+    # scale | symbol | [core] Conventional symbol for the scale
+    symbol: Mapped[Optional[str]] = mapped_column(String(50),
+            comment="Conventional symbol for the scale",
+            doc="core mlayer"
+            )
+    
     # scale | type | [extd] Scale type (ratio, interval, ordinal, etc.).
     scale_type: Mapped[str] = mapped_column(String(20), 
             comment="Scale type (ratio, interval, ordinal, etc.).",
@@ -325,12 +372,12 @@ class Unit(Base):
             )
     
     # unit | name | [core] Conventional name of the unit
-    name: Mapped[str] = mapped_column(String(100),
+    name: Mapped[Optional[str]] = mapped_column(String(100),
             comment=" Conventional name of the unit",
             doc="core mlayer")
     
     # unit | ml_name | [impl] Canonical form for unit.
-    ml_name: Mapped[str] = mapped_column(String(100),
+    ml_name: Mapped[Optional[str]] = mapped_column(String(100),
             comment="Canonical form for unit.",
             doc="implementation detail")
     
@@ -362,7 +409,7 @@ class System(Base):
             )
     
     # system | ml_name | [impl] Internal identifier for the system name
-    ml_name: Mapped[str] = mapped_column(String(50),
+    ml_name: Mapped[Optional[str]] = mapped_column(String(50),
             comment="Internal identifier for the system name",
             doc="implementation detail")
     
@@ -439,7 +486,7 @@ class Transform(Base):
             )
     
     # function | ml_name | [impl] Internal identifier for the transformation function
-    ml_name: Mapped[str] = mapped_column(String(50),
+    ml_name: Mapped[Optional[str]] = mapped_column(String(50),
             comment="Internal identifier for the transformation function",
             doc="implementation detail")
     
@@ -468,7 +515,7 @@ class Prefix(Base):
     __tablename__ = "prefix"
     id: Mapped[str] = mapped_column(String(50), primary_key=True)
     name: Mapped[str] = mapped_column(String(100))
-    ml_name: Mapped[str] = mapped_column(String(100))
+    ml_name: Mapped[Optional[str]] = mapped_column(String(100))
     symbol: Mapped[str] = mapped_column(String(50))
     numerator: Mapped[float] = mapped_column()
     denominator: Mapped[float] = mapped_column()
