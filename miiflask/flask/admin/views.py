@@ -568,20 +568,20 @@ class ScaleView(ModelView):
     def _cnv_link_formatter(view, context, model, name):
         urls = []
         aspects = {}
-        for s in model.conversions: aspects[s.aspect.id]=(s.aspect.name,[]) 
+        for s in model.conversions: aspects[s.src_aspect.id]=(s.src_aspect.name,[]) 
         for s in model.conversions:
             
-            src_qo = view._find_quantity(s.src_scale, s.aspect.id)
-            dst_qo = view._find_quantity(s.dst_scale, s.aspect.id)
+            src_qo = view._find_quantity(s.src_scale, s.src_aspect.id)
+            dst_qo = view._find_quantity(s.dst_scale, s.src_aspect.id)
 
-            url_aspect = url_for('aspect.details_view', id=s.aspect.id)
+            url_aspect = url_for('aspect.details_view', id=s.src_aspect.id)
             url_src = url_for('scale.details_view', id=s.src_scale.id)
             url_dst = url_for('scale.details_view', id=s.dst_scale.id)
             
-            name_ = '{}: {} &#8594 {}'.format(s.aspect.name,
+            name_ = '{}: {} &#8594 {}'.format(s.src_aspect.name,
                     src_qo.quantity_name,
                     dst_qo.quantity_name)
-            id_ = '{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.aspect.id)
+            id_ = '{},{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.src_aspect.id,s.dst_aspect_id)
 
             
             url = url_for('conversion.details_view', id=id_)
@@ -594,7 +594,7 @@ class ScaleView(ModelView):
                         url,"(see details)"
                         )
                     )
-            aspects[s.aspect.id][1].append(url_details)
+            aspects[s.src_aspect.id][1].append(url_details)
             urls.append(url_details)
         markup=""
         
@@ -678,7 +678,7 @@ class CastConversionView(MyModelView):
         if field is None:
             return u""
         url = url_for('scale.details_view', id=field.id)
-        return Markup('<a href="{}">{}</a>'.format(url, field))
+        return Markup('<a href="{}">({}) {}</a>'.format(url, field.scale_type, field.unit.name))
     
     column_formatters = {
             'src_scale': _scale_link_formatter,
@@ -706,11 +706,91 @@ class QuantityObjectView(MyModelView):
         
         url = url_for('scale.details_view', id=field.id)
         return Markup('<a href="{}">{}</a>'.format(url, field.unit.name))
+  
+    def _transformations_link_formatter(view, context, model, name):
+        return view._render_transformations(model)
+
+    def _find_quantity(self, scale, aspect_id):
+        for q in scale.scale_aspect_associations:
+            if q.aspect_id == aspect_id:
+                return q
+        return None
+
+    def _render_transformations(self, model):
+        markup = ""
+        aspects = {}
+
+        for t in model.transformations:
+            aspects.setdefault(t.src_aspect_id, ("", []))
+
+        for t in model.transformations:
+
+            src_scale = self.session.get(Scale, t.src_scale_id)
+            dst_scale = self.session.get(Scale, t.dst_scale_id)
+            src_aspect = self.session.get(Aspect, t.src_aspect_id)
+            dst_aspect = self.session.get(Aspect, t.dst_aspect_id)
+
+            src_qo = self._find_quantity(src_scale, t.src_aspect_id)
+            dst_qo = self._find_quantity(dst_scale, t.dst_aspect_id)
+
+            if src_aspect:
+                aspects[t.src_aspect_id] = (src_aspect.name, aspects[t.src_aspect_id][1])
+
+            url_src_aspect = url_for('aspect.details_view', id=t.src_aspect_id)
+            url_dst_aspect = url_for('aspect.details_view', id=t.dst_aspect_id)
+            url_src = url_for('scale.details_view', id=t.src_scale_id)
+            url_dst = url_for('scale.details_view', id=t.dst_scale_id)
+
+            #id_conversion = f"{t.src_scale_id},{t.dst_scale_id},{t.src_aspect_id}"
+            id_ = f"{t.src_scale_id},{t.dst_scale_id},{t.src_aspect_id},{t.dst_aspect_id}"
+            
+            if t.type == "conversion":
+                url = url_for('conversion.details_view', id=id_)
+            else:
+                url = url_for('cast.details_view', id=id_)
+
+            label = f"{t.type}"
+
+            url_details = (
+                '<a href={}>{}</a> &#8594 <a href={}>{}</a> '
+                '<a href="{}">({})</a>'.format(
+                    url_src,
+                    src_qo.quantity_name if src_qo else "?",
+                    url_dst,
+                    dst_qo.quantity_name if dst_qo else "?",
+                    url,
+                    label
+                )
+            )
+
+            aspects[t.src_aspect_id][1].append(url_details)
+
+        for a in aspects:
+            url_aspect = url_for('aspect.details_view', id=a)
+
+            markup += f'<a href={url_aspect}>{a}: {aspects[a][0]}</a><br/>'
+            markup += ('<br/>').join(aspects[a][1])
+            markup += '<br/><br/>'
+
+        return Markup(markup)
+    
+    column_searchable_list = ['quantity_name']
     
     column_formatters = {
             'scale': _scale_link_formatter,
             'aspect': _aspect_link_formatter,
+            'transformations': _transformations_link_formatter
             }
+    
+    column_list = ("scale",
+                   "aspect",
+                   "quantity_name",
+                   "unit")
+
+    column_details_list = ("scale",
+                           'aspect',
+                           'transformations'
+                           )
 
 
 class AspectView(MyModelView):

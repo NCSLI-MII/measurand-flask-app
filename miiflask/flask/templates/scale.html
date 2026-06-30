@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="title">{% block title %} Scale: {{ scale.ml_name }} {% endblock %}</h1>
+<h1 class="title">{% block title %} Scale: ({{ scale.scale_type }}) {{ scale.unit.name }} {% endblock %}</h1>
     <div class="content">
         <div class="scale">
             <a href="{{ url_for('api.api_scale', scale_id=scale.id) }}">JSON</a></td></br>
             <b>Identifier: </b> {{ scale.id }} </br>
-            <b>Name: </b> {{ scale.ml_name }} </br>
             <b>Scale type: </b> {{ scale.scale_type}} </br>
-            <b>Unit: </b> <a href="/unit/{{ scale.unit.id }}">{{ scale.unit.name }}</a> </br>
+            <b>Unit: </b> <a href="/unit/{{ scale.unit.id }}">{{ scale.unit.name or scale.unit.symbol }}</a> </br>
             <b>Associated aspects:</b></br>
             {% for aspect in scale.aspects %}
                 <a href="/aspect/{{ aspect.id }}">{{ aspect.id }}: {{ aspect.name }}</a></br>

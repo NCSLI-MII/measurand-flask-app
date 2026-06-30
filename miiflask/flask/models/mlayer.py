@@ -10,7 +10,7 @@ SQLAlchemy M-Layer Data Model
 """
 from miiflask.flask.db import Base
 
-from sqlalchemy import and_
+from sqlalchemy import and_, select, union_all, literal
 from sqlalchemy import (ForeignKey,
                         Column,
                         Integer,
@@ -40,6 +40,13 @@ scaleaspect_table = Table(
 
 # Scale-Aspect Association table describing a quantity
 # scaleaspect_table with additional attributes
+# table_name  | column_name |                                                         comment                                                          
+# --------------+-------------+--------------------------------------------------------------------------------------------------------------------------
+# aspect_scale | aspect_id   | [core] Aspect identifier
+# aspect_scale | scale_id    | [core] Scale identifier
+# aspect_scale | name        | [core] Conventional name of the aspect-scale pair itself (not a quantity or unit); NULL if there is no established name.
+# aspect_scale | symbol      | [core] Conventional symbol of the aspect-scale pair (e.g. 'pH'); NULL if there is no established symbol.
+# aspect_scale | source      | [core] Reference to an authoritative definition of the aspect-scale.
 class QuantityObject(Base):
     __tablename__ = "quantityobject_table"
     
@@ -55,14 +62,24 @@ class QuantityObject(Base):
                 comment="aspect identifier",
                 doc="core mlayer")
     
-    transformations: Mapped[list["Conversion"]] = relationship(
-            "Conversion",
-            primaryjoin=lambda: and_(
-                QuantityObject.scale_id == foreign(Conversion.src_scale_id),
-                QuantityObject.aspect_id == foreign(Conversion.aspect_id)
-                ),
-            viewonly=True
-            )
+    #transformations: Mapped[list["Conversion"]] = relationship(
+    #        "Conversion",
+    #        primaryjoin=lambda: and_(
+    #            QuantityObject.scale_id == foreign(Conversion.src_scale_id),
+    #            QuantityObject.aspect_id == foreign(Conversion.aspect_id)
+    #            ),
+     #       viewonly=True
+     #       )
+    
+    transformations: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        primaryjoin=lambda: and_(
+            QuantityObject.scale_id == foreign(ConversionCast.src_scale_id),
+            QuantityObject.aspect_id == foreign(ConversionCast.src_aspect_id)
+        ),
+        viewonly=True
+    )
+
     # Name and symbol convention - 
     # name and symbol obtained from 
     # aspect-scale
@@ -89,6 +106,11 @@ class QuantityObject(Base):
             comment="Preferred symbol of the Unit system associated with the quantity expression",
             doc="core mlayer view")
     
+    # aspect-scale | source | [core] Reference to an authoritative definition of the aspect.
+    reference: Mapped[Optional[str]] = mapped_column(String(200),
+            comment="Reference to an authoritative definition of the aspect-scale.",
+            doc="core mlayer"
+            )
     scale: Mapped['Scale'] = relationship(back_populates="scale_aspect_associations")
     
     aspect: Mapped['Aspect'] = relationship(back_populates="scale_aspect_associations")
@@ -121,7 +143,7 @@ class Aspect(Base):
             doc="core mlayer"
             )
     
-    # aspect | reference | [core] Reference to an authoritative definition of the aspect.
+    # aspect | source | [core] Reference to an authoritative definition of the aspect.
     reference: Mapped[Optional[str]] = mapped_column(String(200),
             comment="Reference to an authoritative definition of the aspect.",
             doc="core mlayer"
@@ -157,8 +179,9 @@ class Scale(Base):
     # scale | scale_factor | [impl] Multiplicative scale factor relative to root_scale_id
     # scale | name | [core] Conventional name of the scale itself (not a quantity or unit); NULL if there is no established name.
     # scale | symbol | [core] Conventional symbol of the scale (e.g. 'pH'); NULL if there is no established symbol. 
-    # 
-    # scale | id | [core] The M-layer unique identifier for a scale.
+    # scale | is_augmented  | [extd] True for a ratio scale with a compound unit combining system base units and named dimensionless units.    # scale | id | [core] The M-layer unique identifier for a scale.
+    
+    # Comments - system_id equivalent to system_dimensions.formal_system_id
     id: Mapped[str] = mapped_column(String(10), 
             primary_key=True, 
             comment="The M-layer unique identifier for a scale.",
@@ -227,10 +250,13 @@ class Scale(Base):
             comment="True when the scale's unit has a special name in the unit system.",
             doc="extended mlayer")
 
+    # Deprecated - replaced with in_point
     ref_point: Mapped[Optional[str]]
 
+    # Deprecated - replaced with bi_point_l
     ref_point_l: Mapped[Optional[str]]
 
+    # Deprecated - replaced with bi_point_h
     ref_point_h: Mapped[Optional[str]]
 
     # Using secondary scaleaspect_table
@@ -285,9 +311,21 @@ class Conversion(Base):
                                               doc="core mlayer")
 
     # conversion | aspect_id | [core] aspect identifier common to src and dst scale
-    aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
+    #aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
+    #                                       primary_key=True,
+    #                                       comment="aspect identifier common to src and dst scale",
+    #                                       doc="core mlayer")
+    
+    # conversion | src_aspect_id | [core] Initial aspect identifier 
+    src_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
                                            primary_key=True,
-                                           comment="aspect identifier common to src and dst scale",
+                                           comment="Initial aspect identifier",
+                                           doc="core mlayer")
+    
+    # conversion | dst_aspect_id | [core] Final aspect identifier 
+    dst_aspect_id: Mapped[str] = mapped_column(ForeignKey("aspect.id"),
+                                           primary_key=True,
+                                           comment="Final aspect identifier", 
                                            doc="core mlayer")
 
     # conversion_cast | function_id | [core] Transformation function
@@ -299,7 +337,9 @@ class Conversion(Base):
 
     src_scale: Mapped['Scale'] = relationship(foreign_keys=[src_scale_id])
     dst_scale: Mapped['Scale'] = relationship(foreign_keys=[dst_scale_id])
-    aspect: Mapped['Aspect'] = relationship(foreign_keys=[aspect_id])
+    #aspect: Mapped['Aspect'] = relationship(foreign_keys=[aspect_id])
+    src_aspect: Mapped['Aspect'] = relationship(foreign_keys=[src_aspect_id])
+    dst_aspect: Mapped['Aspect'] = relationship(foreign_keys=[dst_aspect_id])
     transform: Mapped['Transform'] = relationship(foreign_keys=[transform_id])
 
     # Investigate whether to use PrimaryKeyConstraint.
@@ -308,9 +348,10 @@ class Conversion(Base):
     # which includes the option of being configured directly:
 
     def __str__(self):
-        return "{}.{}.{}".format(self.src_scale_id,
+        return "{}.{}.{}.{}".format(self.src_scale_id,
                                  self.dst_scale_id,
-                                 self.aspect_id)
+                                 self.src_aspect_id,
+                                 self.dst_aspect_id)
 
 
 class Cast(Base):
@@ -361,6 +402,36 @@ class Cast(Base):
                                     self.dst_aspect_id)
 
 
+conversion_cast_select = union_all(
+        select(
+            Conversion.src_scale_id.label("src_scale_id"),
+            Conversion.src_aspect_id.label("src_aspect_id"),
+            Conversion.dst_scale_id.label("dst_scale_id"),
+            Conversion.dst_aspect_id.label("dst_aspect_id"),
+            literal("conversion").label("type")
+        ),
+        select(
+            Cast.src_scale_id.label("src_scale_id"),
+            Cast.src_aspect_id.label("src_aspect_id"),
+            Cast.dst_scale_id.label("dst_scale_id"),
+            Cast.dst_aspect_id.label("dst_aspect_id"),
+            literal("cast").label("type")
+        )
+    ).subquery()
+
+class ConversionCast(Base):
+    __table__ = conversion_cast_select
+
+    __mapper_args__ = {
+        "primary_key": [
+            conversion_cast_select.c.src_scale_id,
+            conversion_cast_select.c.src_aspect_id,
+            conversion_cast_select.c.dst_scale_id,
+            conversion_cast_select.c.dst_aspect_id,
+            conversion_cast_select.c.type
+        ]
+    }
+
 class Unit(Base):
     __tablename__ = "unit"
     
@@ -386,13 +457,13 @@ class Unit(Base):
             comment="Conventional symbol of the unit",
             doc="core mlayer")
     
-    # unit | reference | [core] Reference to an authoritative definition of the unit. 
+    # unit | source | [core] Reference to an authoritative definition of the unit. 
     reference: Mapped[Optional[str]] = mapped_column(String(200),
             comment="Reference to an authoritative definition of the unit.",
             doc="core mlayer")
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name or self.symbol}'
 
     def __unicode__(self):
         return self.name
@@ -430,7 +501,7 @@ class System(Base):
             comment="Sequence of (aspect, scale) id pairs defining the system's base quantities and units.",
             doc="extended mlayer")
     
-    # system | reference | [core] Reference to an authoritative definition of the unit system. 
+    # system | source | [core] Reference to an authoritative definition of the unit system. 
     reference: Mapped[Optional[str]] = mapped_column(String(200),
             comment="Reference to an authoritative definition of the unit system. ",
             doc="core mlayer"
@@ -442,16 +513,29 @@ class System(Base):
 
 class Dimension(Base):
     __tablename__ = 'dimension'
-    id: Mapped[str] = mapped_column(String(10), primary_key=True)
+     # dimension  | id                  | [extd] The M-layer unique identifier for the dimension
+    id: Mapped[str] = mapped_column(String(10), 
+            primary_key=True,
+            comment="The M-layer unique identifier for the dimension",
+            doc="extended mlayer")
 
+    # dimension  | formal_system_id    | [extd] Unit system in which this system dimension is defined.
     formal_system_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey('system.id'))
+        mapped_column(ForeignKey('system.id'),
+                comment="Unit system in which this system dimension is defined.",
+                doc="extended detail")
     
     # Dimensions only points back to the systematic scale
+    # dimension  | systematic_scale_id | [extd] Systematic scale with the same dimension
     systematic_scale_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey('scale.id'))
-
-    exponents: Mapped[Optional[str]] = mapped_column(String(40))
+        mapped_column(ForeignKey('scale.id'),
+                comment="Systematic scale with the same dimension",
+                doc="extended mlayer")
+ 
+    # dimension  | exponents           | [extd] Integer or rational exponent sequence for this system dimension.
+    exponents: Mapped[Optional[str]] = mapped_column(String(40),
+            comment="Integer or rational exponent sequence for this system dimension.",
+            doc="extended mlayer")
 
     # Dimension is only defined for one systematic_scale
     # Whereas many scales may have the same dimensions 
@@ -513,17 +597,52 @@ class Transform(Base):
 
 class Prefix(Base):
     __tablename__ = "prefix"
-    id: Mapped[str] = mapped_column(String(50), primary_key=True)
-    name: Mapped[str] = mapped_column(String(100))
-    ml_name: Mapped[Optional[str]] = mapped_column(String(100))
-    symbol: Mapped[str] = mapped_column(String(50))
-    numerator: Mapped[float] = mapped_column()
-    denominator: Mapped[float] = mapped_column()
-    reference: Mapped[Optional[str]] = mapped_column(String(200))
+
+    # prefix     | id          | [impl] The M-layer unique identifier for a prefix.
+    id: Mapped[str] = mapped_column(String(50), 
+            primary_key=True,
+            comment="The M-layer unique identifier for a prefix.",
+            doc="implementation detail")
+    
+    # prefix     | name        | [impl] Conventional name of the prefix.
+    name: Mapped[str] = mapped_column(String(100),
+            comment="Conventional name of the prefix.",
+            doc="implementation detail")
+    
+    # prefix     | ml_name     | [impl] The M-layer unique identifier for a prefix
+    ml_name: Mapped[Optional[str]] = mapped_column(String(100),
+            comment="The M-layer unique identifier for a prefix",
+            doc="implementation detail")
+    
+    # prefix     | symbol      | [impl] Conventional symbol of the prefix.
+    symbol: Mapped[str] = mapped_column(String(50),
+            comment="Conventional symbol of the prefix.",
+            doc="implementation detail")
+    
+    # prefix     | numerator   | [impl] Numerator of the prefix factor, stored as an integer string.
+    numerator: Mapped[float] = mapped_column(comment="Numerator of the prefix factor, stored as an integer string.")
+    
+    # prefix     | denominator | [impl] Denominator of the prefix factor, stored as an integer string.
+    denominator: Mapped[float] = mapped_column(comment="Denominator of the prefix factor, stored as an integer string.")
+    
+    # prefix     | source      | [impl] Reference to an authoritative definition of the prefix.
+    reference: Mapped[Optional[str]] = mapped_column(String(200),
+            comment="Reference to an authoritative definition of the prefix.",
+            doc="implementation details")
 
     def __str__(self):
         return f'{self.name}'
 
+# Undefined table 
+# table_name | column_name |                        comment
+# ------------+-------------+--------------------------------------------------------
+# reference  | id          | [core] The M-layer unique identifier for the reference
+# reference  | ml_name     | [impl] Internal identifier for the reference
+# reference  | name        | [core] Conventional name for the reference
+# reference  | symbol      | [core] M-layer symbol for the reference
+# reference  | source      | [core] Source defining or documenting this entry.
+# class Reference(Base):
+#     __tablename__ = "reference"
 
 
 

@@ -407,12 +407,12 @@ def aspect(aspect_id):
         
         dot.node(
             scale_node,
-            label=scale.ml_name,
+            label=f"{scale.unit.name}",
             shape="ellipse",
             style="filled",
             fillcolor="#C8E6C9",
             URL=url_for("main.scale", scale_id=scale.id),
-            tooltip=f"Scale: {scale.ml_name}"
+            tooltip=f"Scale: {scale.unit.name}"
         )
 
         dot.edge(aspect_node, scale_node, color="#C8E6C9")
@@ -492,12 +492,12 @@ def scale(scale_id):
 
     dot.node(
         scale_node,
-        label=scale.ml_name,
+        label=f"({scale.scale_type}) {scale.unit.name or scale.unit.symbol}",
         shape="ellipse",
         style="filled",
         fillcolor="#C8E6C9",
         URL=url_for("main.scale", scale_id=scale.id),
-        tooltip=f"Scale: {scale.ml_name}"
+        tooltip=f"Scale: {scale.unit.name or scale.unit.symbol}"
     )
 
     # ---- UNIT ----
@@ -507,12 +507,12 @@ def scale(scale_id):
 
         dot.node(
             unit_node,
-            label=scale.unit.name,
+            label=f"{scale.unit.name or scale.unit.symbol}",
             shape="hexagon",
             style="filled",
             fillcolor="#FFE0B2",
             URL=url_for("main.unit", unit_id=scale.unit.id),
-            tooltip=f"Unit: {scale.unit.name}"
+            tooltip=f"Unit: {scale.unit.name or scale.unit.symbol}"
         )
         
         dot.edge(
@@ -546,12 +546,12 @@ def scale(scale_id):
 
         # ---- CONVERSIONS ----
         for target in scale.conversions:
-            if (target.aspect_id == aspect.id):
+            if (target.src_aspect_id == aspect.id):
                 target_node = f"scale_{target.dst_scale_id}"
 
                 dot.node(
                     target_node,
-                    label=target.dst_scale.ml_name,
+                    label=f"({target.dst_scale.scale_type}) {target.dst_scale.unit.name}",
                     shape="ellipse",
                     style="filled",
                     fillcolor="#E1BEE7",
@@ -566,6 +566,48 @@ def scale(scale_id):
                     style="dashed",
                     color="#8E24AA"
                 )
+        # ---- CASTS ----
+        for target in scale.casts:
+            
+            if (target.src_aspect_id == aspect.id):
+                dst_aspect_node = f"cast_{target.dst_aspect_id}"
+                target_node = f"cast_scale_{target.dst_scale_id}"
+
+                dot.node(
+                    dst_aspect_node,
+                    label=f"({target.dst_aspect.name})",
+                    shape="box",
+                    style="filled",
+                    fillcolor="#BBDEFB",
+                    URL=url_for("main.aspect", aspect_id=target.dst_aspect_id),
+                    tooltip=f"Castable aspect: {target.dst_aspect_id}"
+                )
+                
+                dot.edge(
+                    aspect_node,
+                    dst_aspect_node,
+                    #label="converts to",
+                    style="dashed",
+                    color="#1E88E5"
+                )
+
+                dot.node(
+                    target_node,
+                    label=f"({target.dst_scale.scale_type}) {target.dst_scale.unit.name}",
+                    shape="ellipse",
+                    style="filled",
+                    fillcolor="#E1BEE7",
+                    URL=url_for("main.scale", scale_id=target.dst_scale_id),
+                    tooltip=f"Castable scale: {target.dst_scale_id}"
+                )
+                dot.edge(
+                    dst_aspect_node,
+                    target_node,
+                    #label="converts to",
+                    style="dashed",
+                    color="#8E24AA"
+                )
+
     legend_label = """<
     <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4">
 
@@ -604,7 +646,7 @@ def scale(scale_id):
     <TR><TD BGCOLOR="#E1BEE7" WIDTH="24" HEIGHT="14"></TD></TR>
     </TABLE>
     </TD>
-    <TD ALIGN="LEFT">Conversion</TD>
+    <TD ALIGN="LEFT">Transformation</TD>
     </TR>
 
     </TABLE>

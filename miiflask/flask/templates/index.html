@@ -163,7 +163,7 @@ placeholder="Search scales">
 
     <select multiple class="form-control metadata-list" id="scaleList">
         {% for s in scales %}
-            <option onclick="window.location='{{ url_for('main.scale', scale_id=s.id) }}'">{{ s.unit.name }}</option>
+            <option onclick="window.location='{{ url_for('main.scale', scale_id=s.id) }}'">{{ s.unit.name or s.unit.symbol }}</option>
         {% endfor %}
     </select>
 
