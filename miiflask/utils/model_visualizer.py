@@ -51,7 +51,6 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
     for model in models:
         insp = inspect(model)
         name = insp.class_.__name__
-
         max_comment_len = 0 
         for column in insp.columns: 
             comment = column.comment or "" 
@@ -69,7 +68,7 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
         if show_attributes is True:         
             label += f'''
             <TR>
-            <TD COLSPAN="3" BGCOLOR="#3F51B5">
+            <TD COLSPAN="4" BGCOLOR="#3F51B5">
             <FONT COLOR="white"><B>{name}</B></FONT>
             </TD>
             </TR>
@@ -77,12 +76,16 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
             <TR>
             <TD BGCOLOR="#E8EAF6" WIDTH="65"><B>Attribute</B></TD>
             <TD BGCOLOR="#E8EAF6"><B>Key</B></TD>
+            <TD BGCOLOR="#E8EAF6"><B>Detail</B></TD>
             <TD BGCOLOR="#E8EAF6"><B>Description</B></TD>
             </TR>
             '''
  
             for column in insp.columns:
                 comment = wrap_comment(column.comment or "")
+                detail = None
+                if column.doc:
+                    detail = column.doc
                 constraints = []
                 if column.primary_key:
                     constraints.append("PK")
@@ -107,6 +110,7 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
                 label += f'''<TR>
                 <TD ALIGN="LEFT" WIDTH="65" BGCOLOR="{color}">{column.name}</TD>
                 <TD ALIGN="LEFT" WIDTH="30" BGCOLOR="{color}">{constraint_str}</TD>
+                <TD ALIGN="LEFT" WIDTH="30" BGCOLOR="{color}">{detail}</TD>
                 <TD ALIGN="LEFT" WIDTH="{desc_width}">{comment}</TD>
                 </TR>'''
         else:

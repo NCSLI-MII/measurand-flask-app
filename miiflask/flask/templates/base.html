@@ -83,6 +83,38 @@ Measurand Information Infrastructure
 </ul>
 </li>
 
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Schemas</a>
+<ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="{{ url_for('main.modelMII') }}">MII model</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.modelQuantity') }}">Quantity model</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.modelTaxonomyMeasurand') }}">Measurand model</a></li>
+</ul>
+</li>
+
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Catalogues</a>
+<ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="{{ url_for('main.aspects') }}">Aspects</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.scales') }}">Scales</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.taxonomy') }}">Measurand taxonomy</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.taxonomy_export') }}">Export taxonomy</a></li>
+</ul>
+</li>
+
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">KCDB CMCs</a>
+<ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="{{ url_for('main.kcdbcmcs_auv') }}">AUV</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.kcdbcmcs_em') }}">EM</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.kcdbcmcs_l') }}">Length</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.kcdbcmcs_m') }}">Mass</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.kcdbcmcs_pr') }}">PR</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.kcdbcmcs_t') }}">Temperature</a></li
+    ><li><a class="dropdown-item" href="{{ url_for('main.kcdbcmcs_tf') }}">Time & Frequency</a></li>
+</ul>
+</li>
+
 </ul>
 
 </div>

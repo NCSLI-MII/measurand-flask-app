@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="title">{% block title %} Quantity: {{ quantity_object.quantity_name }} {% endblock %}</h1>
+    <div class="content">
+        <div id="qo">
+            <b>Aspect: </b> <a href="/aspect/{{ quantity_object.aspect.id }}">{{ quantity_object.aspect.id }}: {{ quantity_object.aspect.name }}</a> </br>
+            <b>Scale: </b> <a href="/scale/{{ quantity_object.scale.id }}">{{ quantity_object.scale.id }}: {{ quantity_object.scale.name or quantity_object.scale.unit.name }}</a> </br>
+        </div>
+    </div>
+    <div id="graph"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/viz.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/full.render.js"></script>
+
+    <script>
+
+    const dot = `{{ graph | safe }}`;
+
+    const viz = new Viz();
+
+    viz.renderSVGElement(dot)
+    .then(function(element) {
+        document.getElementById("graph").appendChild(element);
+    })
+    .catch(error => console.error(error));
+
+    </script>
+{% endblock %}

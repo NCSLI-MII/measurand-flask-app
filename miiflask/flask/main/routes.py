@@ -30,7 +30,8 @@ from miiflask.flask.models.mlayer import (
         Transform,
         Prefix,
         Dimension,
-        System
+        System,
+        QuantityObject
         )
 
 from miiflask.flask.models.taxonomy import (
@@ -64,11 +65,13 @@ def index():
     measurands = session.scalars(select(MeasurandTaxon)).all()
     aspects = session.scalars(select(Aspect)).all()
     scales = session.scalars(select(Scale)).all()
+    quantities = session.scalars(select(QuantityObject)).all()
     return render_template(
         "index.html",
         measurands=measurands,
         aspects=aspects,
         scales=scales,
+        quantities=quantities
     )
 
 @bp.route("/taxonomy/")
@@ -477,6 +480,105 @@ def aspect(aspect_id):
 #    return render_template("scale.html", scale=obj, graph=graph)
 
 
+@bp.route("/quantity-object/<string:aspect_id>/<string:scale_id>")
+def quantity_object_detail(aspect_id, scale_id):
+    session = get_session() 
+    qo = session.get(
+        QuantityObject,
+        {
+            "scale_id": scale_id,
+            "aspect_id": aspect_id,
+        }
+    )
+
+    if qo is None:
+        abort(404)
+
+    dot = Digraph(
+        "qo_graph",
+        graph_attr={"rankdir": "LR", "splines": "curved"}
+    )
+
+    qo_node = f"qo_{qo.aspect.id}_{qo.scale_id}"
+
+    dot.node(
+        qo_node,
+        label=f"{qo.quantity_name}",
+        shape="ellipse",
+        style="filled",
+        fillcolor="#C8E6C9",
+        #URL=url_for("main.scale", scale_id=qo.scale.id),
+        #tooltip=f"Scale: {qo.scale.unit.name or qo.scale.unit.symbol}"
+    )
+
+    # ---- SCALE ----
+    if qo.scale:
+
+        scale_node = f"scale_{qo.scale.id}"
+
+        dot.node(
+            scale_node,
+            label=f"({qo.scale.scale_type}) {qo.scale.unit.name or qo.scale.unit.symbol}",
+            shape="ellipse",
+            style="filled",
+            fillcolor="#C8E6C9",
+            URL=url_for("main.scale", scale_id=qo.scale.id),
+            tooltip=f"Scale: {qo.scale.unit.name or qo.scale.unit.symbol}"
+        )
+        
+        dot.edge(
+            scale_node,
+            qo_node,
+            #label="has unit",
+            color="#FFE0B2"
+        )
+    if qo.aspect:
+        aspect_node = f"aspect_{qo.aspect.id}"
+        # current node
+        dot.node(
+            aspect_node,
+            label=qo.aspect.name,
+            shape="box",
+            style="filled",
+            fillcolor="#BBDEFB",
+            URL=url_for("main.aspect", aspect_id=qo.aspect.id),
+            tooltip=f"Aspect: {qo.aspect.name}"
+        )
+        dot.edge(
+            aspect_node,
+            qo_node,
+            #label="has aspect",
+            color="#1E88E5"
+        )
+    # ---- CONVERSIONS ----
+    for target in qo.transformations:
+            dst_qo = session.get(
+                QuantityObject,
+                {
+                    "scale_id": target.dst_scale_id,
+                    "aspect_id": target.dst_aspect_id,
+                }
+            )
+            target_node = f"qo_{dst_qo.quantity_name}"
+
+            dot.node(
+                target_node,
+                label=f"{dst_qo.quantity_name}",
+                shape="ellipse",
+                style="filled",
+                fillcolor="#E1BEE7",
+                URL=url_for("main.quantity_object_detail", aspect_id=dst_qo.aspect_id, scale_id=dst_qo.scale_id),
+                tooltip=f"Transforms to: {dst_qo.name}"
+            )
+
+            dot.edge(
+                qo_node,
+                target_node,
+                #label="converts to",
+                style="dashed",
+                color="#8E24AA"
+            )
+    return render_template("quantity_object_detail.html", quantity_object=qo, graph=dot.source)
 
 @bp.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
 def scale(scale_id):
@@ -686,7 +788,7 @@ def unit(unit_id):
 
 @bp.route("/model/mii")
 def modelMII():
-    models = [Scale, Aspect, Conversion, Transform, MeasurandTaxon, Parameter, Discipline, KcdbCmc]
+    models = [Scale, Aspect, Conversion, Transform, MeasurandTaxon, Parameter, Discipline, KcdbCmc, QuantityObject]
     excludes = ['Prefix',
                 'Unit',
                 'Dimension',
@@ -706,10 +808,16 @@ def modelMII():
     graph = generate_data_model_diagram(models, excludes,show_attributes=False)
     return render_template("diagram.html", graph=graph)
 
+@bp.route("/model/mlayer/quantity")
+def modelQuantity():
+    models = [QuantityObject, Aspect, Scale, Unit, Prefix, Dimension, System]
+    excludes = ['Conversion', 'Cast']
+    graph = generate_data_model_diagram(models, excludes)
+    return render_template("diagram.html", graph=graph)
 
 @bp.route("/model/mlayer/scale")
 def modelMlayerScale():
-    models = [Scale, Unit, Prefix, Dimension, System]
+    models = [Scale, Unit, Prefix, Dimension, System, QuantityObject]
     excludes = ['Aspect', 'Conversion', 'Cast']
     graph = generate_data_model_diagram(models, excludes)
     return render_template("diagram.html", graph=graph)
@@ -717,7 +825,7 @@ def modelMlayerScale():
 
 @bp.route("/model/mlayer/conversion")
 def modelMlayerConversion():
-    models = [Conversion, Aspect, Scale, Transform]
+    models = [Conversion, Aspect, Scale, Transform, QuantityObject]
     excludes = ['Prefix', 'Unit', 'Dimension', 'Cast']
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)
@@ -725,7 +833,7 @@ def modelMlayerConversion():
 
 @bp.route("/model/mlayer/cast")
 def modelMlayerCast():
-    models = [Cast, Aspect, Scale, Transform]
+    models = [Cast, Aspect, Scale, Transform, QuantityObject]
     excludes = ['Prefix', 'Unit', 'Dimension', 'Conversion']
     graph = generate_data_model_diagram(models, excludes=excludes)
     return render_template("diagram.html", graph=graph)

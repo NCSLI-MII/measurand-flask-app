@@ -6,135 +6,20 @@
 
 <div class="row mb-4">
 
-<div class="col-md-4">
-<div class="card section-card shadow-sm">
-<div class="card-body">
+    <div class="col-md-4">
 
-<h5 class="card-title">Data Models</h5>
-<p class="text-muted small">
-Schemas describing measurement information and interoperability models.
-</p>
+        <h5>Quantities</h5>
 
-<div class="list-group">
+        <input class="form-control mb-2"
+        id="quantitySearch"
+        placeholder="Search quantities">
+            <select multiple class="form-control metadata-list" id="quantityList">
+                {% for qo in quantities %}
+                    <option onclick="window.location='{{ url_for('main.quantity_object_detail', aspect_id=qo.aspect_id, scale_id=qo.scale_id) }}'">{{ qo.quantity_name }}</option>
+                {% endfor %}
+            </select>
 
-<a class="list-group-item list-group-item-action"
-href="model/mii">
-Measurement Information Model
-</a>
-
-<a class="list-group-item list-group-item-action"
-href="model/kcdb">
-KCDB Data Model
-</a>
-
-<a class="list-group-item list-group-item-action"
-href="model/taxonomy/measurand">
-Measurand Data Model
-</a>
-
-<a class="list-group-item list-group-item-action"
-href="model/mlayer/scale">
-Mlayer Scale Data Model
-</a>
-
-<a class="list-group-item list-group-item-action"
-href="model/mlayer/conversion">
-Mlayer Conversion Data Model
-</a>
-
-<a class="list-group-item list-group-item-action"
-href="model/mlayer/cast">
-Mlayer Cast Data Model
-</a>
-
-</div>
-
-</div>
-</div>
-</div>
-
-
-<div class="col-md-4">
-<div class="card section-card shadow-sm">
-<div class="card-body">
-
-<h5 class="card-title">Metadata Catalogues</h5>
-<p class="text-muted small">
-Taxonomies and measurement metadata resources.
-</p>
-
-<div class="list-group">
-
-<a class="list-group-item list-group-item-action"
-href="taxonomy">
-Measurand Taxonomy
-</a>
-
-<a class="list-group-item list-group-item-action"
-href="mlayer/aspects">
-M-layer Measurable Aspects
-</a>
-
-<a class="list-group-item list-group-item-action"
-href="mlayer/scales">
-Measurement Scales
-</a>
-
-<a class="list-group-item list-group-item-action"
-href="{{ url_for('main.taxonomy_export') }}">
-Export Taxonomy (XML)
-</a>
-
-</div>
-
-</div>
-</div>
-</div>
-
-
-<div class="col-md-4">
-<div class="card section-card shadow-sm">
-<div class="card-body">
-
-<h5 class="card-title">KCDB CMCs</h5>
-<p class="text-muted small">
-Calibration and Measurement Capabilities by technical field.
-</p>
-
-<div class="list-group">
-
-<a class="list-group-item list-group-item-action"
-href="kcdbcmcs/auv">AUV</a>
-
-<a class="list-group-item list-group-item-action"
-href="kcdbcmcs/em">EM</a>
-
-<a class="list-group-item list-group-item-action"
-href="kcdbcmcs/l">Dimensional</a>
-
-<a class="list-group-item list-group-item-action"
-href="kcdbcmcs/m">Mass and Related Quantities</a>
-
-<a class="list-group-item list-group-item-action"
-href="kcdbcmcs/pr">Photometry and Radiometry</a>
-
-<a class="list-group-item list-group-item-action"
-href="kcdbcmcs/t">Temperature</a>
-
-<a class="list-group-item list-group-item-action"
-href="kcdbcmcs/tf">Time and Frequency</a>
-
-<a class="list-group-item list-group-item-action"
-href="{{ url_for('main.kcdbcmcs_export_json') }}">
-Export KCDB JSON
-</a>
-
-</div>
-
-</div>
-</div>
-</div>
-
+    </div>
 </div>
 
 <div class="row mt-4">
@@ -183,6 +68,8 @@ placeholder="Search taxons">
     </select>
 
 </div>
+</div>
+<div class="row mt-4">
 </div>
 
 </div>
