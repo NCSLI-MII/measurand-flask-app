@@ -4,74 +4,69 @@
 
 <div class="container">
 
-<div class="row mb-4">
+    <div class="row mb-4">
 
-    <div class="col-md-4">
+        <div class="col-md-4">
 
-        <h5>Quantities</h5>
+            <h5>Represented quantities</h5>
+
+            <input class="form-control mb-2"
+            id="quantitySearch"
+            placeholder="Search quantities">
+                <select multiple class="form-control metadata-list" id="quantityList">
+                    {% for qo in quantities %}
+                        <option onclick="window.location='{{ url_for('main.quantity_object_detail', aspect_id=qo.aspect_id, scale_id=qo.scale_id) }}'">{{ qo.quantity_name }}</option>
+                    {% endfor %}
+                </select>
+
+        </div>
+
+        <div class="col-md-4">
+
+        <h5>Measurand Taxons</h5>
 
         <input class="form-control mb-2"
-        id="quantitySearch"
-        placeholder="Search quantities">
-            <select multiple class="form-control metadata-list" id="quantityList">
-                {% for qo in quantities %}
-                    <option onclick="window.location='{{ url_for('main.quantity_object_detail', aspect_id=qo.aspect_id, scale_id=qo.scale_id) }}'">{{ qo.quantity_name }}</option>
+        id="measurandSearch"
+        placeholder="Search taxons">
+            <select multiple class="form-control metadata-list" id="measurandList">
+                {% for m in measurands %}
+                    <option onclick="window.location='{{ url_for('main.measurand', measurand_id=m.id) }}'">{{ m.name }}</option>
                 {% endfor %}
             </select>
 
+        </div>
     </div>
-</div>
 
-<div class="row mt-4">
-
-
-<div class="col-md-4">
-    <h5>Quantity aspects</h5>
-    <input class="form-control mb-2" id="aspectSearch" placeholder="Search aspects">
-
-    <select multiple size="15" class="form-control metadata-list" id="aspectList">
-        {% for a in aspects %}
-            <option onclick="window.location='{{ url_for('main.aspect', aspect_id=a.id) }}'">{{ a.name }}</option>
-        {% endfor %}
-    </select>
-
-</div>
+    <div class="row mt-4">
 
 
-<div class="col-md-4">
+        <div class="col-md-4">
+            <h5>Quantity aspects</h5>
+            <input class="form-control mb-2" id="aspectSearch" placeholder="Search aspects">
 
-<h5>Measurement Scales</h5>
+            <select multiple size="15" class="form-control metadata-list" id="aspectList">
+                {% for a in aspects %}
+                    <option onclick="window.location='{{ url_for('main.aspect', aspect_id=a.id) }}'">{{ a.name }}</option>
+                {% endfor %}
+            </select>
 
-<input class="form-control mb-2"
-id="scaleSearch"
-placeholder="Search scales">
+        </div>
 
-    <select multiple class="form-control metadata-list" id="scaleList">
-        {% for s in scales %}
-            <option onclick="window.location='{{ url_for('main.scale', scale_id=s.id) }}'">{{ s.unit.name or s.unit.symbol }}</option>
-        {% endfor %}
-    </select>
+        <div class="col-md-4">
 
-</div>
+        <h5>Measurement Scales</h5>
 
-<div class="col-md-4">
+        <input class="form-control mb-2"
+        id="scaleSearch"
+        placeholder="Search scales">
 
-<h5>Measurand Taxons</h5>
-
-<input class="form-control mb-2"
-id="measurandSearch"
-placeholder="Search taxons">
-    <select multiple class="form-control metadata-list" id="measurandList">
-        {% for m in measurands %}
-            <option onclick="window.location='{{ url_for('main.measurand', measurand_id=m.id) }}'">{{ m.name }}</option>
-        {% endfor %}
-    </select>
-
-</div>
-</div>
-<div class="row mt-4">
-</div>
-
+            <select multiple class="form-control metadata-list" id="scaleList">
+                {% for s in scales %}
+                    <option onclick="window.location='{{ url_for('main.scale', scale_id=s.id) }}'">{{ s.unit.name or s.unit.symbol }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
 </div>
 
 <script>

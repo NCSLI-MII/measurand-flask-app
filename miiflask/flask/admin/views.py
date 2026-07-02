@@ -784,8 +784,8 @@ class QuantityObjectView(MyModelView):
     
     column_list = ("scale",
                    "aspect",
-                   "quantity_name",
-                   "unit")
+                   "quantity_name"
+                   )
 
     column_details_list = ("scale",
                            'aspect',

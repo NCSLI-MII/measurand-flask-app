@@ -65,7 +65,8 @@ def index():
     measurands = session.scalars(select(MeasurandTaxon)).all()
     aspects = session.scalars(select(Aspect)).all()
     scales = session.scalars(select(Scale)).all()
-    quantities = session.scalars(select(QuantityObject)).all()
+    statement = select(QuantityObject).order_by(QuantityObject.quantity_name)
+    quantities = get_session().scalars(statement).all() 
     return render_template(
         "index.html",
         measurands=measurands,

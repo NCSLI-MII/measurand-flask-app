@@ -595,7 +595,7 @@ class Transform(Base):
             doc="core")
 
     def __str__(self):
-        return f'{self.ml_name}'
+        return f'{self.py_function}'
 
 
 
