@@ -10,7 +10,9 @@
 """
 import requests
 import json
-from miiflask.flask import model
+from miiflask.flask.models import schemas
+from miiflask.flask.models import kcdb as model
+from miiflask.flask.models.taxonomy import MeasurandTaxon
 
 
 class KcdbMapper:
@@ -28,14 +30,16 @@ class KcdbMapper:
         self._service_classifications = []
         self._quantities = []
         self._schemas = {
-            "serviceclass": model.KcdbServiceClassSchema(),
-            "quantity": model.KcdbQuantitySchema(),
-            "area": model.KcdbAreaSchema(),
-            "branch": model.KcdbBranchSchema(),
-            "service": model.KcdbServiceSchema(),
-            "subservice": model.KcdbSubserviceSchema(),
-            "individualservice": model.KcdbIndividualServiceSchema(),
-            'cmc': model.KcdbCmcSchema()
+            "serviceclass": schemas.KcdbServiceClassSchema(),
+            "quantity": schemas.KcdbQuantitySchema(),
+            "area": schemas.KcdbAreaSchema(),
+            "branch": schemas.KcdbBranchSchema(),
+            "service": schemas.KcdbServiceSchema(),
+            "subservice": schemas.KcdbSubserviceSchema(),
+            "individualservice": schemas.KcdbIndividualServiceSchema(),
+            "instrument": schemas.KcdbInstrumentSchema(),
+            "instrumentmethod": schemas.KcdbInstrumentMethodSchema(),
+            'cmc': schemas.KcdbCmcSchema()
         }
         self.Session = session
 
@@ -207,8 +211,8 @@ class KcdbMapper:
 
         if obj['measurands']:
             for m in obj['measurands']:
-                measurand = (self.Session.query(model.MeasurandTaxon).
-                             filter(model.MeasurandTaxon.name == m['name']).
+                measurand = (self.Session.query(MeasurandTaxon).
+                             filter(MeasurandTaxon.name == m['name']).
                              first()
                              )
                 if measurand:
@@ -347,7 +351,7 @@ class KcdbMapper:
                         'internationalStandard': obj.get('internationalStandard', None),
                         'comments': obj.get('comments', None),
                     }
-                    cmc = model.KcdbCmcSchema().load(
+                    cmc = self._schemas["cmc"].load(
                         payload, session=self.Session
                     )
                     self.Session.add(cmc)
@@ -467,35 +471,35 @@ class KcdbMapper:
     def _getKcdbRefDataLocal(self):
         self._transformKcdbRefDataLocal('quantity',
                                         model.KcdbQuantity,
-                                        model.KcdbQuantitySchema()
+                                        self._schemas["quantity"] 
                                         )
         self._transformKcdbRefDataLocal('area',
                                         model.KcdbArea,
-                                        model.KcdbAreaSchema()
+                                        self._schemas["area"] 
                                         )
         self._transformKcdbRefDataLocal('branch',
                                         model.KcdbBranch,
-                                        model.KcdbBranchSchema()
+                                        self._schemas["branch"]
                                         )
         self._transformKcdbRefDataLocal('service',
                                         model.KcdbService,
-                                        model.KcdbServiceSchema()
+                                        self._schemas["service"]
                                         )
         self._transformKcdbRefDataLocal('subservice',
                                         model.KcdbSubservice,
-                                        model.KcdbSubserviceSchema()
+                                        self._schemas["subservice"]
                                         )
         self._transformKcdbRefDataLocal('individualservice',
                                         model.KcdbIndividualService,
-                                        model.KcdbIndividualServiceSchema()
+                                        self._schemas["individualservice"]
                                         )
         self._transformKcdbRefDataLocal('instrument',
                                         model.KcdbInstrument,
-                                        model.KcdbInstrumentSchema()
+                                        self._schemas["instrument"]
                                         )
         self._transformKcdbRefDataLocal('instrumentmethod',
                                         model.KcdbInstrumentMethod,
-                                        model.KcdbInstrumentMethodSchema()
+                                        self._schemas["instrumentmethod"]
                                         )
         self._transformKcdbServiceClassLocal()
 

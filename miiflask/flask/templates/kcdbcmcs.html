@@ -19,10 +19,10 @@
                 <td><a href="https://si-digital-framework.org/kcdb-cmc/{{ c.kcdbCode }}">{{ c.kcdbCode }}</a></td>
                 <td>
                     {% for m in c.measurands %}
-                    <a href="{{ url_for('measurand', measurand_id=m.id) }}">{{ m.name }}</a><br />
+                    <a href="{{ url_for('main.measurand', measurand_id=m.id) }}">{{ m.name }}</a><br />
                     {% endfor %}
                 </td>
-                <td><a href="{{ url_for('kcdbcmc_export_json', kcdbcmc_id=c.id) }}">Details</a></td>
+                <td><a href="{{ url_for('main.kcdbcmc_export_json', kcdbcmc_id=c.id) }}">Details</a></td>
             </tr>
             {% endfor %}
         </tbody>

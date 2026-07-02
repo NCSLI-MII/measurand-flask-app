@@ -15,17 +15,11 @@ from flask_admin.theme import Bootstrap4Theme
 from flask_admin.menu import MenuLink
 from flask_admin.contrib.sqla import ModelView
 
-from miiflask.flask.model import (
-    Measurand,
-    MeasurandTaxon,
-    Aspect,
-    Unit,
-    Scale,
-    Parameter,
-    Discipline,
+from miiflask.flask.models.model import Domain
+
+from miiflask.flask.models.kcdb import (
     KcdbCmc,
     KcdbQuantity,
-    KcdbServiceClass,
     KcdbArea,
     KcdbBranch,
     KcdbService,
@@ -34,14 +28,27 @@ from miiflask.flask.model import (
     KcdbInstrument,
     KcdbInstrumentMethod,
     KcdbParameter,
-    Domain,
-    Conversion,
-    Cast,
-    Transform,
-    Dimension,
-    System,
-    Prefix
+    KcdbServiceClass
 )
+
+from miiflask.flask.models.taxonomy import (
+        MeasurandTaxon,
+        Parameter,
+        Discipline,
+        )
+
+from miiflask.flask.models.mlayer import (
+        Aspect,
+        Unit,
+        Scale,
+        Conversion,
+        Cast,
+        Transform,
+        Dimension,
+        System,
+        Prefix,
+        QuantityObject
+        )
 
 from miiflask.flask.admin.views import (
         MeasurandView,
@@ -55,6 +62,7 @@ from miiflask.flask.admin.views import (
         ScaleView,
         UnitView,
         CastConversionView,
+        QuantityObjectView,
         DimensionView,
         KcdbBranchView
         )
@@ -73,6 +81,7 @@ def init_admin(app):
         admin.add_view(AspectView(Aspect, Session(), category="Mlayer"))
         admin.add_view(ScaleView(Scale, Session(), category="Mlayer"))
         admin.add_view(UnitView(Unit, Session(), category="Mlayer"))
+        admin.add_view(QuantityObjectView(QuantityObject, Session(), category="Mlayer"))
         admin.add_view(MyModelView(Prefix, Session(), category="Mlayer"))
         admin.add_view(CastConversionView(Conversion, Session(), category="Mlayer"))
         admin.add_view(CastConversionView(Cast, Session(), category="Mlayer"))
@@ -81,7 +90,6 @@ def init_admin(app):
         admin.add_view(MyModelView(System, Session(), category="Mlayer"))
         admin.add_view(ParameterView(Parameter, Session(), category="Measurand"))
         admin.add_view(MyModelView(Discipline, Session(), category="Measurand"))
-        # admin.add_view(MeasurandView(Measurand, Session(), category="Measurand"))
         admin.add_view(MeasurandTaxonView(MeasurandTaxon, Session(), category="Measurand"))
         admin.add_view(KcdbServiceView(KcdbServiceClass, Session(), category="KCDB"))
         admin.add_view(MyModelView(KcdbQuantity, Session(), category="KCDB"))

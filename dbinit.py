@@ -20,7 +20,7 @@ from sqlalchemy.orm import Session
 
 from miiflask.flask.db import bind_engine
 from miiflask.mappers.mlayer_mapper import MlayerMapper
-from miiflask.mappers.taxonomy_mapper_v2 import TaxonomyMapper
+from miiflask.mappers.taxonomy_mapper_v2 import TaxonomyMapper, ValidationError
 from miiflask.mappers.kcdb_mapper import KcdbMapper
 
 
@@ -51,7 +51,11 @@ def main(data_dir, db_path):
         miimapper = TaxonomyMapper(session, parms)
         miimapper.extractTaxonomy_v2()
         miimapper.loadTaxonomy()
-        miimapper.roundtrip()
+        try:
+            miimapper.roundtrip()
+        except ValidationError as e:
+            print("Validation Error, check logs")
+        
 
         #kcdbmapper = KcdbMapper(session, parms)
         #kcdbmapper.loadServices()

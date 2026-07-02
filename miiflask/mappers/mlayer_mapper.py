@@ -15,9 +15,10 @@ import json
 import uuid
 import requests
 from pathlib import Path
-from miiflask.flask import model
+from miiflask.flask.models import schemas
+from miiflask.flask.models import mlayer as model
 from sqlalchemy import and_
-
+from sqlalchemy import case, func
 
 class MlayerMapper:
     def __init__(self, session, parms):
@@ -38,13 +39,13 @@ class MlayerMapper:
         self._scales = {}
         self._units = {}
         self._schemas = {
-            "aspect": model.AspectSchema(),
-            "scale": model.ScaleSchema(),
-            "unit": model.UnitSchema(),
-            "transform": model.TransformSchema(),
-            'system': model.SystemSchema(),
-            'dimension': model.DimensionSchema(),
-            'prefix': model.PrefixSchema()
+            "aspect": schemas.AspectSchema(),
+            "scale": schemas.ScaleSchema(),
+            "unit": schemas.UnitSchema(),
+            "transform": schemas.TransformSchema(),
+            'system': schemas.SystemSchema(),
+            'dimension': schemas.DimensionSchema(),
+            'prefix': schemas.PrefixSchema()
         }
 
         # Ordered list of transform to run
@@ -84,7 +85,7 @@ class MlayerMapper:
         data_ = {
             "id": obj['id'],
             "name": obj["name"],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "symbol": obj["symbol"],
             "reference": obj["reference"]
         }
@@ -104,7 +105,7 @@ class MlayerMapper:
         data_ = {
             "id": obj['id'],
             "name": obj["name"],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "symbol": obj["symbol"],
             "reference": obj["reference"],
             'numerator': float(obj['numerator'].replace('"', '')),
@@ -127,7 +128,7 @@ class MlayerMapper:
         data_ = {
             "id": obj['id'],
             "name": obj["name"],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "symbol": obj["symbol"],
             "reference": obj["reference"],
         }
@@ -147,11 +148,11 @@ class MlayerMapper:
             return None
         data_ = {
             "id": obj['id'],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "scale_type": obj["type"],
-            "ref_point": obj["ref_point"],
-            "ref_point_l": obj["ref_point_l"],
-            "ref_point_h": obj["ref_point_h"],
+            "ref_point": obj.get("ref_point"),
+            "ref_point_l": obj.get("ref_point_l"),
+            "ref_point_h": obj.get("ref_point_h"),
             "is_systematic": obj['is_systematic'],
             "is_special": obj['is_special'],
         }
@@ -227,7 +228,7 @@ class MlayerMapper:
             return None
         data_ = {
             "id": obj['id'],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "py_function": obj["py_function"],
             "py_names_in_scope": obj["py_names_in_scope"],
             "comments": obj["comments"]
@@ -285,7 +286,7 @@ class MlayerMapper:
             return None
         data_ = {
             "id": obj['id'],
-            "ml_name": obj["ml_name"],
+            "ml_name": obj.get("ml_name"),
             "symbol": obj["symbol"],
             "n": obj["n"],
             "basis": obj["basis"],
@@ -325,10 +326,20 @@ class MlayerMapper:
             self._updateDimensionSystematicScale()
 
     def _transformConversion(self, obj):
-        aspect = (self.Session.query(model.Aspect)
-                  .filter(model.Aspect.id == obj['aspect_id'])
-                  .first()
-                  )
+        #aspect = (self.Session.query(model.Aspect)
+        #          .filter(model.Aspect.id == obj['aspect_id'])
+        #          .first()
+        #          )
+        src_aspect = (
+            self.Session.query(model.Aspect)
+            .filter(model.Aspect.id == obj['aspect_id'])
+            .first()
+        )
+        dst_aspect = (
+            self.Session.query(model.Aspect)
+            .filter(model.Aspect.id == obj['aspect_id'])
+            .first()
+        )
         src_scale = (
             self.Session.query(model.Scale)
             .filter(model.Scale.id == obj['src_scale_id'])
@@ -339,19 +350,118 @@ class MlayerMapper:
             .filter(model.Scale.id == obj['dst_scale_id'])
             .first()
         )
-        if not src_scale in aspect.scales:
-            aspect.scales.append(src_scale)
-        if not dst_scale in aspect.scales:
-            aspect.scales.append(dst_scale)
+        #if not src_scale in aspect.scales:
+        #    aspect.scales.append(src_scale)
+        #if not dst_scale in aspect.scales:
+        #    aspect.scales.append(dst_scale)
+        if not src_scale in src_aspect.scales:
+            src_aspect.scales.append(src_scale)
+        if not dst_scale in dst_aspect.scales:
+            dst_aspect.scales.append(dst_scale)
 
         # TBD
         # Marshmallow serilization
         cnv = model.Conversion(src_scale_id=obj['src_scale_id'],
                                dst_scale_id=obj['dst_scale_id'],
-                               aspect_id=obj['aspect_id'],
+                               #aspect_id=obj['aspect_id'],
+                               src_aspect_id=obj['aspect_id'],
+                               dst_aspect_id=obj['aspect_id'],
                                transform_id=obj['function_id'],
                                parameters=obj['parameters'])
+
         return cnv
+
+    def _transformQuantityObjectFromConversion(self, obj, scale_type):
+        aspect = (self.Session.query(model.Aspect)
+                  .filter(model.Aspect.id == obj['aspect_id'])
+                  .first()
+                  )
+        if scale_type == "src":
+            scale = (
+                self.Session.query(model.Scale)
+                .filter(model.Scale.id == obj['src_scale_id'])
+                .first()
+            )
+        if scale_type == "dst": 
+            scale = (
+                self.Session.query(model.Scale)
+                .filter(model.Scale.id == obj['dst_scale_id'])
+                .first()
+            )
+
+        # TBD
+        # Marshmallow serilization
+        qo = model.QuantityObject(scale=scale, aspect=aspect)
+
+        return qo
+
+
+    def _transformQuantityObjectName(self):
+
+        quantity_name_expr = func.coalesce(
+            model.QuantityObject.name,
+            model.Aspect.name + " " + model.Scale.name, 
+            model.Aspect.name + " " + model.Unit.name
+        )
+
+        quantity_symbol_expr = func.coalesce(
+            model.QuantityObject.symbol,
+            model.Aspect.symbol + " " + model.Scale.symbol, 
+            model.Aspect.symbol + " " + model.Unit.symbol
+        )
+    
+        system_symbol_expr = model.System.symbol
+        query = (
+            self.Session.query(
+                model.QuantityObject,
+                quantity_name_expr.label("computed_name"),
+                quantity_symbol_expr.label("computed_symbol"),
+                system_symbol_expr.label("system_symbol")
+
+
+            )
+            .join(model.QuantityObject.aspect)
+            .join(model.QuantityObject.scale)
+            .join(model.Scale.unit)
+            .outerjoin(model.Scale.system_dimensions)
+            .outerjoin(model.Dimension.formal_system)
+        )
+
+        results = query.all()
+
+        for qo, name, symbol, system_symbol in results:
+            qo.quantity_name = name
+            qo.quantity_symbol = symbol
+            qo.system_symbol =  system_symbol
+
+  
+    def _transformQuantityObjectFromCast(self, obj, scale_type):
+        if scale_type == "src":
+            scale = (
+                self.Session.query(model.Scale)
+                .filter(model.Scale.id == obj['src_scale_id'])
+                .first()
+            )
+            aspect = (self.Session.query(model.Aspect)
+                      .filter(model.Aspect.id == obj['src_aspect_id'])
+                      .first()
+                      )
+        if scale_type == "dst": 
+            aspect = (self.Session.query(model.Aspect)
+                      .filter(model.Aspect.id == obj['dst_aspect_id'])
+                      .first()
+                      )
+            scale = (
+                self.Session.query(model.Scale)
+                .filter(model.Scale.id == obj['dst_scale_id'])
+                .first()
+            )
+
+        # TBD
+        # Marshmallow serilization
+        qo = model.QuantityObject(scale=scale, aspect=aspect)
+
+        return qo
 
     def _transformCast(self, obj):
         src_aspect = (
@@ -404,8 +514,10 @@ class MlayerMapper:
                                      == cnv.src_scale_id,
                                      model.Conversion.dst_scale_id
                                      == cnv.dst_scale_id,
-                                     model.Conversion.aspect_id
-                                     == cnv.aspect_id))
+                                     model.Conversion.src_aspect_id
+                                     == cnv.src_aspect_id,
+                                     model.Conversion.dst_aspect_id
+                                     == cnv.dst_aspect_id))
                         .first()
                          ) is None:
                         self.Session.add(cnv)
@@ -447,11 +559,35 @@ class MlayerMapper:
                                      == conversion.src_scale_id,
                                      model.Conversion.dst_scale_id
                                      == conversion.dst_scale_id,
-                                     model.Conversion.aspect_id
-                                     == conversion.aspect_id))
+                                     model.Conversion.src_aspect_id
+                                     == conversion.src_aspect_id,
+                                     model.Conversion.dst_aspect_id
+                                     == conversion.dst_aspect_id)
+                                     )
                         .first()
                          ) is None:
                         self.Session.add(conversion)
+                    if (
+                        self.Session.query(model.QuantityObject)
+                        .filter(and_(model.QuantityObject.scale_id
+                                     == obj["src_scale_id"],
+                                     model.QuantityObject.aspect_id
+                                     == obj["aspect_id"]))
+                        .first()
+                         ) is None:
+                        qo_src = self._transformQuantityObjectFromConversion(obj, "src")
+                        
+                        self.Session.add(qo_src)
+                    if (
+                        self.Session.query(model.QuantityObject)
+                        .filter(and_(model.QuantityObject.scale_id
+                                     == obj["dst_scale_id"],
+                                     model.QuantityObject.aspect_id
+                                     == obj["aspect_id"]))
+                        .first()
+                         ) is None:
+                        qo_dst = self._transformQuantityObjectFromConversion(obj, "dst")
+                        self.Session.add(qo_dst)
                     # else:
                     #    print(f'Failed to add {conversion.src_scale_id},
                     # {conversion.dst_scale_id},
@@ -473,11 +609,34 @@ class MlayerMapper:
                         .first()
                          ) is None:
                         self.Session.add(cast)
+                    if (
+                        self.Session.query(model.QuantityObject)
+                        .filter(and_(model.QuantityObject.scale_id
+                                     == obj["src_scale_id"],
+                                     model.QuantityObject.aspect_id
+                                     == obj["src_aspect_id"]))
+                        .first()
+                         ) is None:
+                        qo_src = self._transformQuantityObjectFromCast(obj, "src")
+                        
+                        self.Session.add(qo_src)
+                    if (
+                        self.Session.query(model.QuantityObject)
+                        .filter(and_(model.QuantityObject.scale_id
+                                     == obj["dst_scale_id"],
+                                     model.QuantityObject.aspect_id
+                                     == obj["dst_aspect_id"]))
+                        .first()
+                         ) is None:
+                        qo_dst = self._transformQuantityObjectFromCast(obj, "dst")
+                        self.Session.add(qo_dst)
                     # else:
                     #    print(f'Failed to add {cast.src_scale_id},
                     # {cast.dst_scale_id},
                     # {cast.src_aspect_id},
                     # {cast.dst_aspect_id} already exists')
+
+        self._transformQuantityObjectName()
 
 
 if __name__ == "__main__":

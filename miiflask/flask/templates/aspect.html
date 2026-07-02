@@ -9,7 +9,7 @@
             <b>Name: </b> {{ aspect.name }} </br>
             <b>Associated Scales: </b></br>
             {% for scale in aspect.scales %}
-                <a href="/scale/{{ scale.id }}">{{ scale.id }}: {{ scale.ml_name }}</a></br>
+            <a href="/scale/{{ scale.id }}">{{ scale.id }}: {{ scale.scale_type }} scale, {{ scale.unit.name }}</a></br>
             {% endfor %}
         </div>
     </div>

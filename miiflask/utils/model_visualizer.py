@@ -11,6 +11,8 @@
 from datetime import datetime
 from typing import Optional
 from enum import Enum
+import html
+import textwrap
 from decimal import Decimal
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from sqlalchemy import Column, String, DateTime, Integer, Numeric, Boolean, JSON, ForeignKey, LargeBinary, Text, UniqueConstraint, CheckConstraint, text as sql_text
@@ -26,29 +28,64 @@ from flask import url_for
 from miiflask.utils.unicode_mapper import greek_alphabet_unicode, superscript_integers_unicode
 
 Base = declarative_base()
+def wrap_comment(text, width=50): 
+    #text = html.escape(text) 
+    #text = textwrap.dedent(text)
+    # The text you want to wrap
 
+    # Wrap the text at 20 characters per line
+    wrapped_lines = textwrap.wrap(text, width)
+
+    # Build HTML string dynamically using the align attribute
+    #return "<<BR/>" + "<BR/>".join([f"{line}<BR ALIGN=\"LEFT\"/>" for line in wrapped_lines]) + ">"
+
+    return "<BR ALIGN=\"LEFT\"/>".join(textwrap.wrap(text, width))
 
 def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_labels=True, view_diagram=True):
     # Initialize graph with more advanced visual settings
     dot = graphviz.Digraph(comment='Interactive Data Models', format='svg', 
                             graph_attr={'bgcolor': '#EEEEEE', 'rankdir': 'TB', 'splines': 'spline'},
-                            node_attr={'shape': 'none', 'fontsize': '12', 'fontname': 'Roboto'},
+                            node_attr={'shape': 'none', 'fontsize': '10', 'fontname': 'Roboto'},
                             edge_attr={'fontsize': '10', 'fontname': 'Roboto'})
     # Iterate through each SQLAlchemy model
     for model in models:
         insp = inspect(model)
         name = insp.class_.__name__
-
+        max_comment_len = 0 
+        for column in insp.columns: 
+            comment = column.comment or "" 
+            max_comment_len = max(max_comment_len, len(comment))        
+        
+        char_px = 6 
+        min_width = 100 
+        max_width = 300
+        desc_width = max(min_width, min(max_width, max_comment_len * char_px))
+        
         # Create an HTML-like label for each model as a rich table
         label = f'''<
-        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
         '''
         if show_attributes is True:         
             label += f'''
-            <TR><TD COLSPAN="2" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
+            <TR>
+            <TD COLSPAN="4" BGCOLOR="#3F51B5">
+            <FONT COLOR="white"><B>{name}</B></FONT>
+            </TD>
+            </TR>
+
+            <TR>
+            <TD BGCOLOR="#E8EAF6" WIDTH="65"><B>Attribute</B></TD>
+            <TD BGCOLOR="#E8EAF6"><B>Key</B></TD>
+            <TD BGCOLOR="#E8EAF6"><B>Detail</B></TD>
+            <TD BGCOLOR="#E8EAF6"><B>Description</B></TD>
+            </TR>
             '''
-       
+ 
             for column in insp.columns:
+                comment = wrap_comment(column.comment or "")
+                detail = None
+                if column.doc:
+                    detail = column.doc
                 constraints = []
                 if column.primary_key:
                     constraints.append("PK")
@@ -56,17 +93,31 @@ def generate_data_model_diagram(models, excludes=[], show_attributes=True, add_l
                     constraints.append("Unique")
                 if column.index:
                     constraints.append("Index")
+                if column.foreign_keys:
+                    constraints.append("FK")
                 
                 constraint_str = ','.join(constraints)
-                color = "#BBDEFB"
+                if column.primary_key:
+                    color = "#C8E6C9"
+                elif column.foreign_keys:
+                    color = "#FFF9C4"
+                else:
+                    color = "#BBDEFB"
                 
+                #label += f'''<TR>
+                #             <TD BGCOLOR="{color}">{column.name} ({constraint_str})</TD>
+                #             </TR>'''
                 label += f'''<TR>
-                             <TD BGCOLOR="{color}">{column.name} ({constraint_str})</TD>
-                             </TR>'''
+                <TD ALIGN="LEFT" WIDTH="65" BGCOLOR="{color}">{column.name}</TD>
+                <TD ALIGN="LEFT" WIDTH="30" BGCOLOR="{color}">{constraint_str}</TD>
+                <TD ALIGN="LEFT" WIDTH="30" BGCOLOR="{color}">{detail}</TD>
+                <TD ALIGN="LEFT" WIDTH="{desc_width}">{comment}</TD>
+                </TR>'''
         else:
             label += f'''<TR>
-            <TD WIDTH="100" HEIGHT="50" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
+            <TD WIDTH="{desc_width}" HEIGHT="50" BGCOLOR="#3F51B5"><FONT COLOR="white">{name}</FONT></TD></TR>
             '''
+
 
         label += '</TABLE>>'
         
