@@ -31,7 +31,7 @@ from miiflask.flask.models.mlayer import (
         Prefix,
         Dimension,
         System,
-        QuantityObject
+        QuantityObject,
         )
 
 from miiflask.flask.models.taxonomy import (
@@ -73,6 +73,26 @@ def index():
         scales=scales,
         quantities=quantities
     )
+
+
+@bp.route("/mlayer/quantities/")
+def quantities():
+    statement = select(QuantityObject).order_by(QuantityObject.quantity_name)
+    quantities = get_session().scalars(statement).all() 
+    return render_template("represented_quantities.html", quantities=quantities)
+
+
+@bp.route("/mlayer/scales/")
+def scales():
+    scales = get_session().scalars(select(Scale)).all()
+    return render_template("scales.html", scales=scales)
+
+
+@bp.route("/mlayer/aspects/")
+def aspects():
+    aspects = get_session().scalars(select(Aspect)).all()
+    return render_template("aspects.html", aspects=aspects)
+
 
 @bp.route("/taxonomy/")
 def taxonomy():
@@ -192,18 +212,6 @@ def kcdbcmc_export_json(kcdbcmc_id):
     response = make_response(schema)
     response.mimetype = "text/json"
     return response 
-
-
-@bp.route("/mlayer/scales/")
-def scales():
-    scales = get_session().scalars(select(Scale)).all()
-    return render_template("scales.html", scales=scales)
-
-
-@bp.route("/mlayer/aspects/")
-def aspects():
-    aspects = get_session().scalars(select(Aspect)).all()
-    return render_template("aspects.html", aspects=aspects)
 
 
 @bp.route("/taxonomy/export")

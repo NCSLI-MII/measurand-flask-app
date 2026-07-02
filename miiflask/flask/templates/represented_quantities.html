@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Represented quantities{% endblock %}
+
+{% block content %}
+<h1 class="title">Represented quantities</h1>
+<div class="content">
+    <input
+        type="text"
+        id="quantitySearch"
+        class="form-control"
+        placeholder="Search represented quantities..."
+        style="margin-bottom: 1rem;"
+    >
+    <table class="table" id="quantityTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Aspect</th>
+                <th>Scale</th>
+                <th>Scale type</th>
+                <th>Unit</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for qo in quantities %}
+            <tr>
+                <td>{{ qo.quantity_name }}</td>
+                {% if qo.quantity_symbol %}
+                    <td>{{ qo.quantity_symbol }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                <td><a href="{{ url_for('main.aspect', aspect_id=qo.aspect.id) }}">{{ qo.aspect.name }}</a></td>
+                <td><a href="{{ url_for('main.scale', scale_id=qo.scale.id) }}">{{ qo.scale.name or qo.scale.unit.name or qo.scale.unit.symbol }}</a></td>
+                <td>{{ qo.scale.scale_type }}</td?>
+                <td><a href="{{ url_for('main.unit', unit_id=qo.scale.unit.id) }}">{{ qo.scale.unit.name or qo.scale.unit.symbol }}</a></td>
+                <td><a href="{{ url_for('main.quantity_object_detail', aspect_id=qo.aspect_id, scale_id=qo.scale_id) }}">Details</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("quantitySearch");
+    const table = document.getElementById("quantityTable");
+    const rows = table.querySelectorAll("tbody tr");
+
+    searchInput.addEventListener("keyup", function () {
+        const query = searchInput.value.toLowerCase().trim();
+
+        rows.forEach(function (row) {
+            const rowText = row.textContent.toLowerCase();
+            row.style.display = rowText.includes(query) ? "" : "none";
+        });
+    });
+});
+</script>
+{% endblock %}

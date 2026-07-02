@@ -22,7 +22,8 @@ from miiflask.flask.models.mlayer import (
         Aspect,
         Scale,
         Unit,
-        System
+        System,
+        QuantityObject
         )
 
 from miiflask.flask.models.taxonomy import MeasurandTaxon
@@ -32,7 +33,8 @@ from miiflask.flask.models.schemas import (
         AspectSchema,
         ScaleSchema,
         UnitSchema,
-        SystemSchema
+        SystemSchema,
+        QuantityObjectSchema
         )
 
 measurand_schema = MeasurandTaxonSchema()
@@ -45,9 +47,26 @@ unit_schema = UnitSchema()
 units_schema = UnitSchema(many=True)
 system_schema = SystemSchema()
 systems_schema = SystemSchema(many=True)
-
+quantityobject_schema = QuantityObjectSchema()
+quantityobjects_schema = QuantityObjectSchema(many=True)
 
 # Views for API
+@bp.route("/api/represented_quantity/<string:aspect_id>/<string:scale_id>/", methods=["GET","POST"])
+def api_represented_quantity(aspect_id, scale_id):
+    session = get_session()
+    qo = session.get(
+        QuantityObject,
+        {
+            "scale_id": scale_id,
+            "aspect_id": aspect_id,
+        }
+    )
+
+    if qo is None:
+        abort(404)
+    data = quantityobject_schema.dump(qo)
+    return data
+
 @bp.route("/api/aspect/<string:aspect_id>/", methods=["GET", "POST"])
 def api_aspect(aspect_id):
     return obj_serialize_json(Aspect, aspect_schema, aspect_id) 

@@ -21,7 +21,7 @@ from sqlalchemy import (ForeignKey,
                         )
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
-from marshmallow import fields
+from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow_sqlalchemy.fields import Nested
 
@@ -36,7 +36,8 @@ from miiflask.flask.models.mlayer import (
         Scale,
         Aspect,
         Transform,
-        Conversion
+        Conversion,
+        QuantityObject
         )
 
 from miiflask.flask.models.taxonomy import (
@@ -59,6 +60,63 @@ from miiflask.flask.models.kcdb import (
         KcdbCmc,
         KcdbServiceClass
         )
+
+
+class QuantityObjectSchema(Schema):
+    scale_id = fields.String()
+    aspect_id = fields.String()
+
+    name = fields.Method("get_name")
+    symbol = fields.Method("get_symbol")
+
+    scale_name = fields.Method("get_scale_name")
+    scale_symbol = fields.Method("get_scale_symbol")
+    scale_type = fields.Method("get_scale_type")
+
+    aspect_name = fields.Method("get_aspect_name")
+    aspect_symbol = fields.Method("get_aspect_symbol")
+    aspect_reference = fields.Method("get_aspect_reference")
+
+    unit_id = fields.Method("get_unit_id")
+    unit_name = fields.Method("get_unit_name")
+    unit_symbol = fields.Method("get_unit_symbol")
+    unit_reference = fields.Method("get_unit_reference")
+
+    def get_name(self, obj):
+        return obj.quantity_name
+
+    def get_symbol(self, obj):
+        return obj.quantity_symbol
+
+    def get_scale_name(self, obj):
+        return obj.scale.name if obj.scale else None
+
+    def get_scale_symbol(self, obj):
+        return obj.scale.symbol if obj.scale else None
+
+    def get_scale_type(self, obj):
+        return obj.scale.scale_type if obj.scale else None
+    
+    def get_aspect_name(self, obj):
+        return obj.aspect.name if obj.aspect else None
+
+    def get_aspect_symbol(self, obj):
+        return obj.aspect.symbol if obj.aspect else None
+    
+    def get_aspect_reference(self, obj):
+        return obj.aspect.reference if obj.aspect else None
+
+    def get_unit_id(self, obj):
+        return obj.scale.unit.id if obj.scale and obj.scale.unit else None
+
+    def get_unit_name(self, obj):
+        return obj.scale.unit.name if obj.scale and obj.scale.unit else None
+
+    def get_unit_symbol(self, obj):
+        return obj.scale.unit.symbol if obj.scale and obj.scale.unit else None
+    
+    def get_unit_reference(self, obj):
+        return obj.scale.unit.reference if obj.scale and obj.scale.unit else None
 
 class PrefixSchema(SQLAlchemyAutoSchema):
 
