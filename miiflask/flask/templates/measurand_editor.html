@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="title">{% block title %} Measurand XML editor {% endblock %}</h1>
+<div class="content">
+
+    <form method="post">
+        {{ form.hidden_tag() }}
+
+        <h2>Measurand</h2>
+
+        <p>
+            {{ form.id.label }}<br>
+            {{ form.id(size=60) }}
+        </p>
+
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=60) }}
+        </p>
+
+        <p>
+            {{ form.definition.label }}<br>
+            {{ form.definition(rows=5, cols=90) }}
+        </p>
+
+        <p>
+            {{ form.deprecated() }}
+            {{ form.deprecated.label }}
+        </p>
+
+        <p>
+            {{ form.replacement.label }}<br>
+            {{ form.replacement(size=60) }}
+        </p>
+
+        <p>
+            {{ form.quantitykind.label }}<br>
+            {{ form.quantitykind(size=60) }}
+        </p>
+
+        <p>
+            {{ form.aspect_id.label }}<br>
+            {{ form.aspect_id() }}
+        </p>
+
+        <p>
+            {{ form.processtype.label }}<br>
+            {{ form.processtype() }}
+        </p>
+
+        <p>
+            {{ form.qualifier.label }}<br>
+            {{ form.qualifier(size=60) }}
+        </p>
+
+        <h2>Result</h2>
+
+        <p>
+            {{ form.result.label }}<br>
+            {{ form.result(size=60) }}
+        </p>
+
+        <p>
+            {{ form.result_quantity.label }}<br>
+            {{ form.result_quantity(size=60) }}
+        </p>
+
+        <p>
+            {{ form.result_aspect_id.label }}<br>
+            {{ form.result_aspect_id() }}
+        </p>
+
+        <h2>Discipline</h2>
+
+        <p>
+            {{ form.discipline_id.label }}<br>
+            {{ form.discipline_id() }}
+        </p>
+
+        <h2>Parameters</h2>
+        
+        <div id="parameters-container">
+            <button type="button" id="add-parameter" value="1">Add Parameter</button>
+            {% for parameter in form.parameters %}    
+                <fieldset class="parameter-fieldset">
+                    <legend>{{ parameter.label.text }}</legend>
+
+                    <p>
+                        {{ parameter.form.name.label }}<br>
+                        {{ parameter.form.name(size=60) }}
+                    </p>
+
+                    <p>
+                        {{ parameter.form.quantity.label }}<br>
+                        {{ parameter.form.quantity(size=60) }}
+                    </p>
+
+                    <p>
+                        {{ parameter.form.aspect_id.label }}<br>
+                        {{ parameter.form.aspect_id(class_="aspect-select") }}
+                    </p>
+
+                    <p>
+                        {{ parameter.form.definition.label }}<br>
+                        {{ parameter.form.definition(rows=3, cols=90) }}
+                    </p>
+
+                    <button type="button" class="remove-parameter">Remove Parameter</button>
+                </fieldset>
+             {% endfor %} 
+             <template id="parameter-template"> 
+                 <fieldset class="parameter-fieldset"> 
+                     <legend>Parameter number</legend>
+                        <p> <label for="parameters-prefix-name">Parameter name</label><br> 
+                        <input id="parameters-prefix-name" name="parameters-prefix-name" type="text" size="60"> 
+                        </p>
+                        <p> 
+                        <label for="parameters-prefix-quantity">Parameter quantity</label><br> 
+                        <input id="parameters-prefix-quantity" name="parameters-prefix-quantity" type="text" size="60">
+                        </p>
+                <p>
+                <label for="parameters-__prefix__-aspect_id">Parameter aspect</label><br> 
+                <select id="parameters-__prefix__-aspect_id" 
+                    name="parameters-__prefix__-aspect_id"
+                    class="aspect-select">  
+                        {% for value in aspect_choices %}
+                        <option value="{{ value[0] }}">{{ value[1] }}</option>  
+                        {% endfor %}
+                </select> 
+                </p>
+                <p> 
+                <label for="parameters-prefix-definition">Parameter definition</label><br> 
+                <textarea id="parameters-prefix-definition" name="parameters-prefix-definition" rows="3" cols="90">
+                </textarea> 
+                </p>
+                <button type="button" class="remove-parameter">Remove Parameter</button> 
+                 </fieldset> 
+             </template>
+            
+             
+             
+         </div>
+        <p>
+            {{ form.generate_xml() }}
+        </p>
+    </form>
+
+<h2>Generated XML</h2>
+<textarea rows="35" cols="120" readonly>{{ xml_output }}</textarea>
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("parameters-container");
+    const template = document.getElementById("parameter-template");
+    const addButton = document.getElementById("add-parameter");
+
+    if (!container || !template || !addButton) {
+        console.error("Parameter editor elements are missing.");
+        return;
+    }
+    
+    function initialiseAspectSelects(scope) {
+        scope.querySelectorAll(".aspect-select").forEach(function (select) {
+            if (!select.tomselect) {
+                new TomSelect(select, {
+                    create: false,
+                    allowEmptyOption: true,
+                    maxOptions: 1000,
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+            }
+        });
+    }
+
+    function reindexParameters() {
+        const fieldsets = container.querySelectorAll(".parameter-fieldset");
+
+        fieldsets.forEach(function (fieldset, index) {
+            fieldset.querySelectorAll("[name]").forEach(function (el) {
+                el.name = el.name.replace(/parameters-\d+-/, "parameters-" + index + "-");
+            });
+
+            fieldset.querySelectorAll("[id]").forEach(function (el) {
+                el.id = el.id.replace(/parameters-\d+-/, "parameters-" + index + "-");
+            });
+
+            fieldset.querySelectorAll("label[for]").forEach(function (label) {
+                label.htmlFor = label.htmlFor.replace(/parameters-\d+-/, "parameters-" + index + "-");
+            });
+
+            const legend = fieldset.querySelector("legend");
+            if (legend) {
+                legend.textContent = "Parameter " + (index + 1);
+            }
+        });
+    }
+
+    addButton.addEventListener("click", function () {
+        const index = container.querySelectorAll(".parameter-fieldset").length;
+
+        let html = template.innerHTML
+            .replaceAll("__prefix__", index)
+            .replaceAll("__number__", index + 1);
+
+        container.insertAdjacentHTML("beforeend", html);
+        reindexParameters();
+        const newFieldset = container.querySelector(".parameter-fieldset:last-child");
+        initialiseAspectSelects(newFieldset);
+    });
+
+    container.addEventListener("click", function (event) {
+        if (event.target.classList.contains("remove-parameter")) {
+            const fieldsets = container.querySelectorAll(".parameter-fieldset");
+
+            if (fieldsets.length <= 1) {
+                alert("At least one parameter is required.");
+                return;
+            }
+
+            event.target.closest(".parameter-fieldset").remove();
+            reindexParameters();
+        }
+    });
+
+    reindexParameters();
+    initialiseAspectSelects(document);
+});
+</script>
+
+{% endblock %}
