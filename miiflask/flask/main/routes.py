@@ -561,32 +561,32 @@ def quantity_object_detail(aspect_id, scale_id):
         )
     # ---- CONVERSIONS ----
     for target in qo.transformations:
-            dst_qo = session.get(
-                QuantityObject,
-                {
-                    "scale_id": target.dst_scale_id,
-                    "aspect_id": target.dst_aspect_id,
-                }
-            )
-            target_node = f"qo_{dst_qo.quantity_name}"
+        
+        dst_qo = session.get(
+            QuantityObject,
+            {
+                "scale_id": target.dst_scale_id,
+                "aspect_id": target.dst_aspect_id,
+            }
+        )
+        target_node = f"qo_{dst_qo.aspect_id}_{dst_qo.scale_id}"
+        dot.node(
+            target_node,
+            label=f"{dst_qo.quantity_name}",
+            shape="ellipse",
+            style="filled",
+            fillcolor="#E1BEE7",
+            URL=url_for("main.quantity_object_detail", aspect_id=dst_qo.aspect_id, scale_id=dst_qo.scale_id),
+            tooltip=f"Transforms to: {dst_qo.name}"
+        )
 
-            dot.node(
-                target_node,
-                label=f"{dst_qo.quantity_name}",
-                shape="ellipse",
-                style="filled",
-                fillcolor="#E1BEE7",
-                URL=url_for("main.quantity_object_detail", aspect_id=dst_qo.aspect_id, scale_id=dst_qo.scale_id),
-                tooltip=f"Transforms to: {dst_qo.name}"
-            )
-
-            dot.edge(
-                qo_node,
-                target_node,
-                #label="converts to",
-                style="dashed",
-                color="#8E24AA"
-            )
+        dot.edge(
+            qo_node,
+            target_node,
+            #label="converts to",
+            style="dashed",
+            color="#8E24AA"
+        )
     return render_template("quantity_object_detail.html", quantity_object=qo, graph=dot.source)
 
 @bp.route("/scale/<string:scale_id>/", methods=["GET", "POST"])
