@@ -11,17 +11,17 @@
 
         <p>
             {{ form.id.label }}<br>
-            {{ form.id(size=60) }}
+            {{ form.id(size=60, class_="form-control") }}
         </p>
 
         <p>
             {{ form.name.label }}<br>
-            {{ form.name(size=60) }}
+            {{ form.name(size=60, class_="form-control") }}
         </p>
 
         <p>
             {{ form.definition.label }}<br>
-            {{ form.definition(rows=5, cols=90) }}
+            {{ form.definition(rows=5, cols=90, class_="form-control") }}
         </p>
 
         <p>
@@ -31,51 +31,51 @@
 
         <p>
             {{ form.replacement.label }}<br>
-            {{ form.replacement(size=60) }}
+            {{ form.replacement(size=60, class_="form-control") }}
         </p>
 
         <p>
             {{ form.quantitykind.label }}<br>
-            {{ form.quantitykind(size=60) }}
+            {{ form.quantitykind(size=60, class_="form-control") }}
         </p>
 
         <p>
             {{ form.aspect_id.label }}<br>
-            {{ form.aspect_id() }}
+            {{ form.aspect_id(class_="form-select aspect-select") }}
         </p>
 
         <p>
             {{ form.processtype.label }}<br>
-            {{ form.processtype() }}
+            {{ form.processtype(class_="form-control") }}
         </p>
 
         <p>
             {{ form.qualifier.label }}<br>
-            {{ form.qualifier(size=60) }}
+            {{ form.qualifier(size=60, class_="form-control") }}
         </p>
 
         <h2>Result</h2>
 
         <p>
             {{ form.result.label }}<br>
-            {{ form.result(size=60) }}
+            {{ form.result(size=60, class_="form-control") }}
         </p>
 
         <p>
             {{ form.result_quantity.label }}<br>
-            {{ form.result_quantity(size=60) }}
+            {{ form.result_quantity(size=60, class_="form-control") }}
         </p>
 
         <p>
             {{ form.result_aspect_id.label }}<br>
-            {{ form.result_aspect_id() }}
+            {{ form.result_aspect_id(class_="form-select aspect-select") }}
         </p>
 
         <h2>Discipline</h2>
 
         <p>
             {{ form.discipline_id.label }}<br>
-            {{ form.discipline_id() }}
+            {{ form.discipline_id(class_="form-control") }}
         </p>
 
         <h2>Parameters</h2>
@@ -88,22 +88,22 @@
 
                     <p>
                         {{ parameter.form.name.label }}<br>
-                        {{ parameter.form.name(size=60) }}
+                        {{ parameter.form.name(size=60, class_="form-control") }}
                     </p>
 
                     <p>
                         {{ parameter.form.quantity.label }}<br>
-                        {{ parameter.form.quantity(size=60) }}
+                        {{ parameter.form.quantity(size=60, class_="form-control") }}
                     </p>
 
                     <p>
                         {{ parameter.form.aspect_id.label }}<br>
-                        {{ parameter.form.aspect_id(class_="aspect-select") }}
+                        {{ parameter.form.aspect_id(class_="form-select aspect-select") }}
                     </p>
 
                     <p>
                         {{ parameter.form.definition.label }}<br>
-                        {{ parameter.form.definition(rows=3, cols=90) }}
+                        {{ parameter.form.definition(rows=3, cols=90, class_="form-control") }}
                     </p>
 
                     <button type="button" class="remove-parameter">Remove Parameter</button>
@@ -123,7 +123,7 @@
                 <label for="parameters-__prefix__-aspect_id">Parameter aspect</label><br> 
                 <select id="parameters-__prefix__-aspect_id" 
                     name="parameters-__prefix__-aspect_id"
-                    class="aspect-select">  
+                    class="form-select aspect-select">  
                         {% for value in aspect_choices %}
                         <option value="{{ value[0] }}">{{ value[1] }}</option>  
                         {% endfor %}
