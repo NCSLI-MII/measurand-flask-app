@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="title">{% block title %} Measurand XML editor {% endblock %}</h1>
-<div class="content">
 
+<div class="content">
+<h1 class="title">{% block title %} Measurand XML editor {% endblock %}</h1>
     <form method="post">
         {{ form.hidden_tag() }}
 
@@ -144,10 +144,11 @@
         <p>
             {{ form.generate_xml() }}
         </p>
+    
+    <h2>Generated XML</h2>
+    <textarea rows="35" cols="120" readonly>{{ xml_output }}</textarea>
     </form>
 
-<h2>Generated XML</h2>
-<textarea rows="35" cols="120" readonly>{{ xml_output }}</textarea>
 </div>
 
 <script>
