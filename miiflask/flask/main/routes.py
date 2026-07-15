@@ -37,7 +37,8 @@ from miiflask.flask.models.mlayer import (
 from miiflask.flask.models.taxonomy import (
         MeasurandTaxon,
         Parameter,
-        Discipline
+        Discipline,
+        Reference
         )
 
 from miiflask.flask.models.schemas import ( 
@@ -217,6 +218,16 @@ def kcdbcmc_export_json(kcdbcmc_id):
     return response 
 
 
+def get_measurand_choices():
+    session = get_session() 
+    measurands = session.query(MeasurandTaxon).order_by(MeasurandTaxon.id).all()
+
+    return [("", "")] + [
+        (str(m.id), f"{m.id}")
+        for m in measurands
+    ]
+
+
 def get_aspect_choices():
     session = get_session() 
     aspects = session.query(Aspect).order_by(Aspect.name).all()
@@ -238,10 +249,12 @@ def get_discipline_choices():
 
 
 def populate_measurand_form_choices(form):
+    measurand_choices = get_measurand_choices()
     aspect_choices = get_aspect_choices()
     discipline_choices = get_discipline_choices()
-
-    form.aspect_id.choices = aspect_choices
+    
+    #form.aspect_id.choices = aspect_choices
+    form.existing_measurand_id.choices = measurand_choices
     form.result_aspect_id.choices = aspect_choices
     form.discipline_id.choices = discipline_choices
 
@@ -249,10 +262,10 @@ def populate_measurand_form_choices(form):
         parameter_entry.form.aspect_id.choices = aspect_choices
 
 def build_measurand_from_form(form):
-    aspect = None
+    #aspect = None
     session = get_session()
-    if form.aspect_id.data:
-        aspect = session.get(Aspect, form.aspect_id.data)
+    #if form.aspect_id.data:
+    #    aspect = session.get(Aspect, form.aspect_id.data)
 
     result_aspect = None
     if form.result_aspect_id.data:
@@ -270,9 +283,9 @@ def build_measurand_from_form(form):
         definition=form.definition.data,
         deprecated=bool(form.deprecated.data),
         replacement=form.replacement.data or "",
-        quantitykind=form.quantitykind.data,
-        aspect_id=form.aspect_id.data or None,
-        aspect=aspect,
+        #quantitykind=form.quantitykind.data,
+        #aspect_id=form.aspect_id.data or None,
+        #aspect=aspect,
         processtype=form.processtype.data or "",
         qualifier=form.qualifier.data or "",
         result=form.result.data,
@@ -285,7 +298,7 @@ def build_measurand_from_form(form):
 
     measurand.parameters = []
     measurand.external_references = []
-
+    #print(form.parameters)
     for parameter_entry in form.parameters:
         pf = parameter_entry.form
 
@@ -306,32 +319,72 @@ def build_measurand_from_form(form):
 
         parameter.measurandtaxon = measurand
         measurand.parameters.append(parameter)
-
     for reference_entry in form.external_references:
         rf = reference_entry.form
-
-        if not rf.label.data and not rf.uri.data:
+        if not any([
+                rf.category_name.data,
+                rf.category_value.data,
+                rf.reference_name.data,
+                rf.reference_url.data
+            ]):
             continue
-
         reference = Reference(
-            label=rf.label.data,
-            uri=rf.uri.data,
-            description=rf.description.data
+            category_name=rf.category_name.data,
+            category_value=rf.category_value.data,
+            reference_name=rf.reference_name.data,
+            reference_url=rf.reference_url.data
         )
 
-        reference.measurandtaxon = measurand
         measurand.external_references.append(reference)
-
     return measurand
 
 
 def generate_measurand_xml(measurand):
-
+    
     data = TaxonomyMapper._getTaxonDict(measurand, measurand_schema)
+    print(data)
     xml = TaxonomyMapper._dicttoxml_taxon(data)
 
     return xml
 
+@bp.route("/measurand/<string:measurand_id>/json")
+def measurand_json(measurand_id):
+    print("Get form measurand data")
+    
+    measurand = get_or_404(MeasurandTaxon, measurand_id)
+    return {
+        "id": measurand.id,
+        "name": measurand.name,
+        "definition": measurand.definition,
+        "deprecated": measurand.deprecated,
+        "replacement": measurand.replacement,
+        "processtype": measurand.processtype,
+        "qualifier": measurand.qualifier,
+        "result": measurand.result,
+        "result_quantity": measurand.result_quantity,
+        "result_aspect_id": measurand.result_aspect_id,
+        "discipline_id": measurand.discipline_id,
+
+        "parameters": [
+            {
+                "name": p.name,
+                "quantity": p.quantitykind,
+                "aspect_id": p.aspect_id,
+                "definition": p.definition
+            }
+            for p in measurand.parameters
+        ],
+
+        "external_references": [
+            {
+                "category_name": r.category_name,
+                "category_value": r.category_value,
+                "reference_name": r.reference_name,
+                "reference_url": r.reference_url
+            }
+            for r in measurand.external_references
+        ]
+    }
 
 @bp.route("/measurand/editor", methods=["GET", "POST"])
 def measurand_editor():
@@ -344,6 +397,9 @@ def measurand_editor():
     populate_measurand_form_choices(form)
 
     aspect_choices = get_aspect_choices()
+    measurand_choices = get_measurand_choices()
+
+    form.existing_measurand_id.choices = [("", "-- Create new measurand --")] + measurand_choices
 
     if form.validate_on_submit():
         with session.no_autoflush:

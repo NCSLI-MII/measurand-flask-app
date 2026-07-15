@@ -67,18 +67,23 @@ class ParameterForm(FlaskForm):
 
 
 class ReferenceForm(FlaskForm):
-    label = StringField(
-        "Reference label",
+    category_name = StringField(
+        "Reference category name",
+        validators=[Optional(), Length(max=100)]
+    )
+    
+    category_value = StringField(
+        "Reference category value",
         validators=[Optional(), Length(max=100)]
     )
 
-    uri = StringField(
-        "Reference URI",
+    reference_url = StringField(
+        "Reference URL",
         validators=[Optional()]
     )
 
-    description = TextAreaField(
-        "Description",
+    reference_name = StringField(
+        "Reference Name",
         validators=[Optional()]
     )
 
@@ -87,6 +92,15 @@ class ReferenceForm(FlaskForm):
 
 
 class MeasurandForm(FlaskForm):
+    
+    existing_measurand_id = SelectField(
+        "Load existing measurand",
+        choices=[],
+        validators=[Optional()],
+        coerce=lambda x: str(x) if x else None
+    )
+
+
     id = StringField(
         "ID",
         validators=[DataRequired()]
@@ -111,16 +125,16 @@ class MeasurandForm(FlaskForm):
         validators=[Optional(), Length(max=50)]
     )
 
-    quantitykind = StringField(
-        "Quantity kind",
-        validators=[Optional(), Length(max=50)]
-    )
+    #quantitykind = StringField(
+    #    "Quantity kind",
+    #    validators=[Optional(), Length(max=50)]
+    #)
 
-    aspect_id = SelectField(
-        "Measurand aspect",
-        choices=[],
-        validators=[Optional()]
-    )
+    #aspect_id = SelectField(
+    #    "Measurand aspect",
+    #    choices=[],
+    #    validators=[Optional()]
+    #)
 
     processtype = SelectField(
         "Process type",
@@ -167,7 +181,7 @@ class MeasurandForm(FlaskForm):
 
     external_references = FieldList(
         FormField(ReferenceForm),
-        min_entries=0,
+        min_entries=1,
         max_entries=20
     )
 
