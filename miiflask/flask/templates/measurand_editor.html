@@ -108,33 +108,51 @@
                 </fieldset>
              {% endfor %} 
              <template id="parameter-template"> 
-                 <fieldset class="parameter-fieldset"> 
-                     <legend>Parameter number</legend>
-                        <p> <label for="parameters-prefix-name">Parameter name</label><br> 
-                        <input id="parameters-prefix-name" name="parameters-prefix-name" type="text" size="60"> 
-                        </p>
-                        <p> 
-                        <label for="parameters-prefix-quantity">Parameter quantity</label><br> 
-                        <input id="parameters-prefix-quantity" name="parameters-prefix-quantity" type="text" size="60">
-                        </p>
+            <fieldset class="parameter-fieldset"> 
+                <legend>Parameter __number__</legend>
+
                 <p>
-                <label for="parameters-__prefix__-aspect_id">Parameter aspect</label><br> 
-                <select id="parameters-__prefix__-aspect_id" 
-                    name="parameters-__prefix__-aspect_id"
-                    class="form-select aspect-select">  
-                        {% for value in aspect_choices %}
-                        <option value="{{ value[0] }}">{{ value[1] }}</option>  
-                        {% endfor %}
-                </select> 
+                    <label for="parameters-__prefix__-name">Parameter name</label><br> 
+                    <input id="parameters-__prefix__-name"
+                           name="parameters-__prefix__-name"
+                           type="text"
+                           size="60"
+                           class="form-control"> 
                 </p>
+
                 <p> 
-                <label for="parameters-prefix-definition">Parameter definition</label><br> 
-                <textarea id="parameters-prefix-definition" name="parameters-prefix-definition" rows="3" cols="90">
-                </textarea> 
+                    <label for="parameters-__prefix__-quantity">Parameter quantity</label><br> 
+                    <input id="parameters-__prefix__-quantity"
+                           name="parameters-__prefix__-quantity"
+                           type="text"
+                           size="60"
+                           class="form-control">
                 </p>
+
+                <p>
+                    <label for="parameters-__prefix__-aspect_id">Parameter aspect</label><br> 
+                    <select id="parameters-__prefix__-aspect_id" 
+                            name="parameters-__prefix__-aspect_id"
+                            class="form-select aspect-select">  
+                            {% for value in aspect_choices %}
+                            <option value="{{ value[0] }}">{{ value[1] }}</option>  
+                            {% endfor %}
+                    </select> 
+                </p>
+
+                <p> 
+                    <label for="parameters-__prefix__-definition">Parameter definition</label><br> 
+                    <textarea id="parameters-__prefix__-definition"
+                              name="parameters-__prefix__-definition"
+                              rows="3"
+                              cols="90"
+                              class="form-control"></textarea> 
+                </p>
+
                 <button type="button" class="remove-parameter">Remove Parameter</button> 
-                 </fieldset> 
-             </template>
+            </fieldset> 
+        </template>
+
             
              
              
@@ -297,14 +315,18 @@ function populateMeasurandForm(data) {
 
 <script>
 function populateParameters(parameters) {
+    console.log("populateParameters called with:", parameters);
     const container = document.getElementById("parameters-container");
     const template = document.getElementById("parameter-template");
 
+    console.log("Parameter container:", container);
+    console.log("Parameter template:", template);
     container.querySelectorAll(".parameter-fieldset").forEach(function (fieldset) {
         fieldset.remove();
     });
 
     parameters.forEach(function (parameter, index) {
+        console.log("Adding parameter", index, parameter);
         let html = template.innerHTML
             .replaceAll("__prefix__", index)
             .replaceAll("__number__", index + 1);
@@ -368,6 +390,7 @@ function initialiseMeasurandSelects(scope) {
                         })
                         .then(function (data) {
                             console.log("Loaded measurand data:", data);
+                            console.log("Loaded parameters data:", data.parameters)
                             populateMeasurandForm(data);
                         })
                         .catch(function (error) {
