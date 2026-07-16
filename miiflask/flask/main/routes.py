@@ -27,6 +27,7 @@ from miiflask.flask.models.mlayer import (
         Unit,
         Conversion,
         Cast,
+        ConversionCast,
         Transform,
         Prefix,
         Dimension,
@@ -1020,10 +1021,21 @@ def modelMII():
 
 @bp.route("/model/mlayer/quantity")
 def modelQuantity():
-    models = [QuantityObject, Aspect, Scale, Unit, Prefix, Dimension, System]
+    models = [QuantityObject, Aspect, Scale, Unit, Dimension, System]
     excludes = ['Conversion', 'Cast']
-    graph = generate_data_model_diagram(models, excludes)
+    detail = "core"
+    graph = generate_data_model_diagram(models, excludes, detail)
     return render_template("diagram.html", graph=graph)
+
+
+@bp.route("/model/mlayer/quantity_extd")
+def modelQuantityExtd():
+    models = [QuantityObject, Aspect, Scale, Unit, Dimension, System]
+    excludes = ['Conversion', 'Cast']
+    detail = "extd"
+    graph = generate_data_model_diagram(models, excludes, detail)
+    return render_template("diagram.html", graph=graph)
+
 
 @bp.route("/model/mlayer/scale")
 def modelMlayerScale():
