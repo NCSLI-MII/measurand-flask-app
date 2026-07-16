@@ -6,7 +6,7 @@
 <h1 class="title">{% block title %} Measurand XML editor {% endblock %}</h1>
     <form method="post">
         {{ form.hidden_tag() }}
-        
+ 
         <h2>Load existing measurand</h2>
 
         <p>
@@ -238,13 +238,19 @@
                 <button type="button" class="remove-reference">Remove Reference</button> 
             </fieldset> 
         </template>
-             
-        <p>
-            {{ form.generate_xml() }}
-        </p>
     
+    <p class="mt-3">
+        {{ form.generate_xml(class_="btn btn-primary") }}
+
+        <button type="button" id="clear-form" class="btn btn-outline-secondary ms-2">
+            Clear form
+        </button>
+    </p>
+
     <h2>Generated XML</h2>
     <textarea rows="35" cols="120" readonly>{{ xml_output }}</textarea>
+             
+
     </form>
 
 </div>
@@ -555,6 +561,66 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     reindexReferences();
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const clearButton = document.getElementById("clear-form");
+
+    if (!clearButton) {
+        return;
+    }
+
+    clearButton.addEventListener("click", function () {
+        if (!confirm("Clear the form? Unsaved changes will be lost.")) {
+            return;
+        }
+
+        const form = clearButton.closest("form");
+
+        if (!form) {
+            return;
+        }
+
+        // Clear standard inputs, textareas, selects, and checkboxes
+        form.querySelectorAll("input, textarea, select").forEach(function (field) {
+            if (field.type === "hidden" || field.type === "submit" || field.type === "button") {
+                return;
+            }
+
+            if (field.type === "checkbox" || field.type === "radio") {
+                field.checked = false;
+            } else {
+                field.value = "";
+            }
+
+            if (field.tomselect) {
+                field.tomselect.clear();
+            }
+        });
+
+        // Remove dynamic parameter blocks
+        document
+            .querySelectorAll("#parameters-container .parameter-fieldset")
+            .forEach(function (fieldset) {
+                fieldset.remove();
+            });
+
+        // Remove dynamic reference blocks
+        document
+            .querySelectorAll("#references-container .reference-fieldset")
+            .forEach(function (fieldset) {
+                fieldset.remove();
+            });
+
+        // Clear generated XML output, if present
+        const xmlOutput = form.querySelector("textarea[readonly]");
+        if (xmlOutput) {
+            xmlOutput.value = "";
+        }
+    });
+    
+
 });
 </script>
 
