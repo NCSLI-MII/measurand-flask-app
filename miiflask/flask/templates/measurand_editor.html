@@ -79,7 +79,7 @@
         <h2>Parameters</h2>
         
         <div id="parameters-container">
-            <button type="button" id="add-parameter" value="1">Add Parameter</button>
+            
             {% for parameter in form.parameters %}    
                 <fieldset class="parameter-fieldset">
                     <legend>{{ parameter.label.text }}</legend>
@@ -107,6 +107,10 @@
                     <button type="button" class="remove-parameter">Remove Parameter</button>
                 </fieldset>
              {% endfor %} 
+             </div>
+            <button type="button" id="add-parameter" class="btn btn-outline-primary mt-2">
+                Add Parameter
+            </button>
              <template id="parameter-template"> 
             <fieldset class="parameter-fieldset"> 
                 <legend>Parameter __number__</legend>
@@ -152,15 +156,12 @@
                 <button type="button" class="remove-parameter">Remove Parameter</button> 
             </fieldset> 
         </template>
-
-            
              
-             
-         </div>
+         
         <h2>External references</h2>
         
         <div id="references-container">
-            <button type="button" id="add-reference" value="1">Add Reference</button>
+            
             {% for reference in form.external_references %}    
                 <fieldset class="reference-fieldset">
                     <legend>{{ reference.label.text }}</legend>
@@ -188,7 +189,12 @@
 
                     <button type="button" class="remove-reference">Remove Reference</button>
                 </fieldset>
-             {% endfor %} 
+             {% endfor %}
+        </div>
+
+            <button type="button" id="add-reference" class="btn btn-outline-primary mt-2">
+                Add Reference
+            </button>
            <template id="reference-template"> 
             <fieldset class="reference-fieldset"> 
                 <legend>Reference __number__</legend>
@@ -233,8 +239,6 @@
             </fieldset> 
         </template>
              
-             
-         </div>
         <p>
             {{ form.generate_xml() }}
         </p>

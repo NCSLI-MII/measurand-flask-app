@@ -317,7 +317,6 @@ def build_measurand_from_form(form):
             aspect=parameter_aspect
         )
 
-        parameter.measurandtaxon = measurand
         measurand.parameters.append(parameter)
     for reference_entry in form.external_references:
         rf = reference_entry.form
