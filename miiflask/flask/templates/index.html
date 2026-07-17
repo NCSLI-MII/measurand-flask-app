@@ -112,43 +112,51 @@
         </div>
     </div>
 </div>
-
 <script>
-
-
-function filterList(inputId, listId) {
-
-    const input = document.getElementById(inputId)
-    const filter = input.value.toLowerCase()
-    const options = document.getElementById(listId).options
-
-    for (let i = 0; i < options.length; i++) {
-
-        let txt = options[i].text.toLowerCase()
-
-        options[i].style.display =
-            txt.includes(filter) ? "" : "none"
-    }
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("aspectSearch")
-        .addEventListener("keyup", function () {
-            filterList("aspectSearch", "aspectList")
-        })
-    
-        document.getElementById("scaleSearch")
-        .addEventListener("keyup", function () {
-            filterList("scaleSearch", "scaleList")
-        })
+    function filterList(inputId, listId) {
+        const input = document.getElementById(inputId);
+        const list = document.getElementById(listId);
 
-        document.getElementById("measurandSearch")
-        .addEventListener("keyup", function () {
-            filterList("measurandSearch", "measurandList")
-        })
-})
+        if (!input || !list) {
+            return;
+        }
 
+        const filter = input.value.toLowerCase();
+        const items = list.querySelectorAll("a");
+
+        items.forEach(function (item) {
+            const txt = item.textContent.toLowerCase();
+            item.style.display = txt.includes(filter) ? "" : "none";
+        });
+    }
+
+    const filters = [
+        ["aspectSearch", "aspectList"],
+        ["scaleSearch", "scaleList"],
+        ["measurandSearch", "measurandList"],
+        ["quantitySearch", "quantityList"],
+    ];
+
+    filters.forEach(function ([inputId, listId]) {
+        const input = document.getElementById(inputId);
+
+        if (!input) {
+            return;
+        }
+
+        input.addEventListener("keyup", function () {
+            filterList(inputId, listId);
+        });
+
+        // Optional: also catch paste, clear, autocomplete, etc.
+        input.addEventListener("input", function () {
+            filterList(inputId, listId);
+        });
+    });
+});
 </script>
+
 {% endblock %}
 
 
