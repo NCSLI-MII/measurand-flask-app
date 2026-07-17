@@ -509,15 +509,19 @@ def measurand(measurand_id):
     for param in measurand.parameters:
 
         param_node = f"param_{param.id}"
-
+        aspect_name = ""
+        aspect_url = ""
+        if param.aspect:
+            aspect_name = param.aspect.name
+            aspect_url = url_for("main.aspect", aspect_id=param.aspect.id) 
         add_node(
             param_node,
             param.name,
             shape="oval",
             style="filled",
             fillcolor="#FFA500",
-            tooltip=f"Parameter: {param.aspect.name}",
-            URL=url_for("main.aspect", aspect_id=param.aspect.id),
+            tooltip=f"Parameter: {aspect_name}",
+            URL=aspect_url
         )
 
         dot.edge(
