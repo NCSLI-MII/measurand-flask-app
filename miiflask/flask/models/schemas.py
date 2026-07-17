@@ -239,14 +239,13 @@ class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
 
     class Meta:
         model = MeasurandTaxon
-        include_relatiohsips = True
+        include_relationships = True
         load_instance = True
         ordered = True
 
     parameters = Nested(ParameterSchema, many=True)
     external_references = Nested(ReferenceSchema, many=True)
-    aspect = Nested(AspectSchema(only=("name", "ml_name", "id",)))
-    scale = Nested(ScaleSchema(only=("ml_name", "id",)))
+    aspect = Nested(AspectSchema(only=("name", "id",)))
     discipline = Nested(DisciplineSchema(only=("label",)))
 
 

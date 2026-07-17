@@ -2,109 +2,161 @@
 
 {% block content %}
 
-<div class="container">
 
-    <div class="row mb-4">
+<div class="container-fluid px-3 px-md-4">
 
-        <div class="col-md-4">
+    <div class="row g-4 mb-4">
 
-            <h5>Represented quantities</h5>
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
 
-            <input class="form-control mb-2"
-            id="quantitySearch"
-            placeholder="Search quantities">
-                <select multiple class="form-control metadata-list" id="quantityList">
-                    {% for qo in quantities %}
-                        <option onclick="window.location='{{ url_for('main.quantity_object_detail', aspect_id=qo.aspect_id, scale_id=qo.scale_id) }}'">{{ qo.quantity_name }}</option>
-                    {% endfor %}
-                </select>
+                    <h5 class="card-title">Represented quantities</h5>
 
+                    <input class="form-control mb-3"
+                           id="quantitySearch"
+                           placeholder="Search quantities">
+
+                    <div class="list-group metadata-list" id="quantityList">
+                         {% for qo in quantities %}   
+                        <a class="list-group-item list-group-item-action"
+                               href="{{ url_for('main.quantity_object_detail', aspect_id=qo.aspect_id, scale_id=qo.scale_id) }}">
+                                {{ qo.quantity_name }}
+                            </a>
+                            {% endfor %}
+                    </div>
+
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
 
-        <h5>Measurand Taxons</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title mb-0">Measurand Taxons</h5>
+                        <a class="btn btn-sm btn-outline-primary"
+                           href="{{ url_for('main.measurand_editor') }}">
+                            Measurand editor
+                        </a>
+                    </div>
 
-        <input class="form-control mb-2"
-        id="measurandSearch"
-        placeholder="Search taxons">
-            <select multiple class="form-control metadata-list" id="measurandList">
-                {% for m in measurands %}
-                    <option onclick="window.location='{{ url_for('main.measurand', measurand_id=m.id) }}'">{{ m.name }}</option>
-                {% endfor %}
-            </select>
+                    <input class="form-control mb-3"
+                           id="measurandSearch"
+                           placeholder="Search taxons">
 
+                    <div class="list-group metadata-list" id="measurandList">
+                        {% for m in measurands %}    
+                        <a class="list-group-item list-group-item-action"
+                               href="{{ url_for('main.measurand', measurand_id=m.id) }}">
+                                {{ m.name }}
+                            </a>
+                            {% endfor %}
+                    </div>
+
+                </div>
+            </div>
         </div>
+
     </div>
 
-    <div class="row mt-4">
 
 
-        <div class="col-md-4">
-            <h5>Quantity aspects</h5>
-            <input class="form-control mb-2" id="aspectSearch" placeholder="Search aspects">
+    <div class="row g-4 mb-4">
 
-            <select multiple size="15" class="form-control metadata-list" id="aspectList">
-                {% for a in aspects %}
-                    <option onclick="window.location='{{ url_for('main.aspect', aspect_id=a.id) }}'">{{ a.name }}</option>
-                {% endfor %}
-            </select>
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
 
+                    <h5 class="card-title">Quantity aspects</h5>
+
+                    <input class="form-control mb-3"
+                           id="aspectSearch"
+                           placeholder="Search quantity aspects">
+
+                    <div class="list-group metadata-list" id="aspectList">
+                         {% for a in aspects %}   
+                        <a class="list-group-item list-group-item-action"
+                               href="{{ url_for('main.aspect', aspect_id=a.id) }}">
+                                {{ a.name }}
+                            </a>
+                            {% endfor %}
+                    </div>
+
+                </div>
+            </div>
         </div>
+        
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
 
-        <div class="col-md-4">
+                    <h5 class="card-title">Measurement scales</h5>
 
-        <h5>Measurement Scales</h5>
+                    <input class="form-control mb-3"
+                           id="scaleSearch"
+                           placeholder="Search scales">
 
-        <input class="form-control mb-2"
-        id="scaleSearch"
-        placeholder="Search scales">
+                    <div class="list-group metadata-list" id="scaleList">
+                         {% for s in scales %}   
+                        <a class="list-group-item list-group-item-action"
+                               href="{{ url_for('main.scale', scale_id=s.id) }}">
+                                {{ s.unit.name or s.unit.symbol }}
+                            </a>
+                            {% endfor %}
+                    </div>
 
-            <select multiple class="form-control metadata-list" id="scaleList">
-                {% for s in scales %}
-                    <option onclick="window.location='{{ url_for('main.scale', scale_id=s.id) }}'">{{ s.unit.name or s.unit.symbol }}</option>
-                {% endfor %}
-            </select>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 <script>
-
-
-function filterList(inputId, listId) {
-
-    const input = document.getElementById(inputId)
-    const filter = input.value.toLowerCase()
-    const options = document.getElementById(listId).options
-
-    for (let i = 0; i < options.length; i++) {
-
-        let txt = options[i].text.toLowerCase()
-
-        options[i].style.display =
-            txt.includes(filter) ? "" : "none"
-    }
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("aspectSearch")
-        .addEventListener("keyup", function () {
-            filterList("aspectSearch", "aspectList")
-        })
-    
-        document.getElementById("scaleSearch")
-        .addEventListener("keyup", function () {
-            filterList("scaleSearch", "scaleList")
-        })
+    function filterList(inputId, listId) {
+        const input = document.getElementById(inputId);
+        const list = document.getElementById(listId);
 
-        document.getElementById("measurandSearch")
-        .addEventListener("keyup", function () {
-            filterList("measurandSearch", "measurandList")
-        })
-})
+        if (!input || !list) {
+            return;
+        }
 
+        const filter = input.value.toLowerCase();
+        const items = list.querySelectorAll("a");
+
+        items.forEach(function (item) {
+            const txt = item.textContent.toLowerCase();
+            item.style.display = txt.includes(filter) ? "" : "none";
+        });
+    }
+
+    const filters = [
+        ["aspectSearch", "aspectList"],
+        ["scaleSearch", "scaleList"],
+        ["measurandSearch", "measurandList"],
+        ["quantitySearch", "quantityList"],
+    ];
+
+    filters.forEach(function ([inputId, listId]) {
+        const input = document.getElementById(inputId);
+
+        if (!input) {
+            return;
+        }
+
+        input.addEventListener("keyup", function () {
+            filterList(inputId, listId);
+        });
+
+        // Optional: also catch paste, clear, autocomplete, etc.
+        input.addEventListener("input", function () {
+            filterList(inputId, listId);
+        });
+    });
+});
 </script>
+
 {% endblock %}
 
 

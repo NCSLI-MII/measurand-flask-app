@@ -12,6 +12,10 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
 <style>
 
 body {
@@ -52,6 +56,18 @@ body {
     font-size: 0.9em;
     color: #555;
 }
+.metadata-list {
+    max-height: 60vh;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+.metadata-list .list-group-item {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+}
 
 </style>
 
@@ -88,6 +104,7 @@ Measurand Information Infrastructure
 <ul class="dropdown-menu">
     <li><a class="dropdown-item" href="{{ url_for('main.modelMII') }}">MII model</a></li>
     <li><a class="dropdown-item" href="{{ url_for('main.modelQuantity') }}">Quantity model</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('main.modelQuantityExtd') }}">Quantity model extended</a></li>
     <li><a class="dropdown-item" href="{{ url_for('main.modelTaxonomyMeasurand') }}">Measurand model</a></li>
 </ul>
 </li>

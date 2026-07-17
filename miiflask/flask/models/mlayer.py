@@ -49,6 +49,9 @@ scaleaspect_table = Table(
 # aspect_scale | source      | [core] Reference to an authoritative definition of the aspect-scale.
 class QuantityObject(Base):
     __tablename__ = "quantityobject_table"
+    __table_args__ = {
+            "comment": "Association between a measurement scale and the quantity aspect."
+            }
     
     scale_id: Mapped[int] = \
         mapped_column(ForeignKey('scale.id'),
@@ -124,6 +127,8 @@ class Aspect(Base):
     # Aspect will be referenced by many tables
     # Do not keep relationship to other tables
     __tablename__ = "aspect"
+    __table_args__ = {
+            "comment": "A related term to the quantity being expressed to disambiguate the quantity value expression."}
     # aspect | id | [core] The M-layer unique identifier for an aspect.
     id: Mapped[str] = mapped_column(String(10),
             primary_key=True,
@@ -174,7 +179,8 @@ class Aspect(Base):
 # See https://docs.sqlalchemy.org/en/20/orm/self_referential.html
 class Scale(Base):
     __tablename__ = "scale"
-    
+    __table_args__ = {
+            "comment": "Type of scale (ratio, interval, ordinal) and a reference (unit) that defines the scale division."} 
     # --- The following reference model attributes are not implemented --- 
     # scale | in_point | [extd] Interval scale reference point
     # scale | bi_point_l | [extd] Bounded interval scale lower reference point
@@ -425,6 +431,11 @@ conversion_cast_select = union_all(
 
 class ConversionCast(Base):
     __table__ = conversion_cast_select
+    #__table_args__ = {
+    #        "comment": "Transformation function for source and destination quantity object."}
+   # __table_args__ = {
+   #         "comment": "Definition of a reference (unit) associated with a scale."
+   #         }
 
     __mapper_args__ = {
         "primary_key": [
@@ -433,11 +444,14 @@ class ConversionCast(Base):
             conversion_cast_select.c.dst_scale_id,
             conversion_cast_select.c.dst_aspect_id,
             conversion_cast_select.c.type
-        ]
+        ],
     }
 
 class Unit(Base):
     __tablename__ = "unit"
+    __table_args__ = {
+            "comment": "Definition of a reference (unit) associated with a scale."
+            }
     
     # unit | id | [core] The M-layer unique identifier for a unit.
     id: Mapped[str] = mapped_column(String(50), 
@@ -475,6 +489,9 @@ class Unit(Base):
 
 class System(Base):
     __tablename__ = 'system'
+    __table_args__ = {
+            "comment": "Base dimensions for a system of measurement scales."
+            }
     
     # system | id | [core] The M-layer unique identifier for a unit system.
     id: Mapped[str] = mapped_column(String(10),

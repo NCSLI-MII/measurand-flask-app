@@ -1,0 +1,627 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content">
+<h1 class="title">{% block title %} Measurand XML editor {% endblock %}</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+ 
+        <h2>Load existing measurand</h2>
+
+        <p>
+            {{ form.existing_measurand_id.label }}<br>
+            {{ form.existing_measurand_id(size=60, class_="form-select measurand-select") }}
+        </p>
+
+        <h2>Measurand</h2>
+
+        
+        <p>
+            {{ form.id.label }}<br>
+            {{ form.id(size=60, class_="form-control") }}
+        </p>
+
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=60, class_="form-control") }}
+        </p>
+
+        <p>
+            {{ form.definition.label }}<br>
+            {{ form.definition(rows=5, cols=90, class_="form-control") }}
+        </p>
+
+        <p>
+            {{ form.deprecated() }}
+            {{ form.deprecated.label }}
+        </p>
+
+        <p>
+            {{ form.replacement.label }}<br>
+            {{ form.replacement(size=60, class_="form-control") }}
+        </p>
+
+        <p>
+            {{ form.processtype.label }}<br>
+            {{ form.processtype(class_="form-control") }}
+        </p>
+
+        <p>
+            {{ form.qualifier.label }}<br>
+            {{ form.qualifier(size=60, class_="form-control") }}
+        </p>
+
+        <h2>Result</h2>
+
+        <p>
+            {{ form.result.label }}<br>
+            {{ form.result(size=60, class_="form-control") }}
+        </p>
+
+        <p>
+            {{ form.result_quantity.label }}<br>
+            {{ form.result_quantity(size=60, class_="form-control") }}
+        </p>
+
+        <p>
+            {{ form.result_aspect_id.label }}<br>
+            {{ form.result_aspect_id(class_="form-select aspect-select") }}
+        </p>
+
+        <h2>Discipline</h2>
+
+        <p>
+            {{ form.discipline_id.label }}<br>
+            {{ form.discipline_id(class_="form-control") }}
+        </p>
+
+        <h2>Parameters</h2>
+        
+        <div id="parameters-container">
+            
+            {% for parameter in form.parameters %}    
+                <fieldset class="parameter-fieldset">
+                    <legend>{{ parameter.label.text }}</legend>
+
+                    <p>
+                        {{ parameter.form.name.label }}<br>
+                        {{ parameter.form.name(size=60, class_="form-control") }}
+                    </p>
+
+                    <p>
+                        {{ parameter.form.quantity.label }}<br>
+                        {{ parameter.form.quantity(size=60, class_="form-control") }}
+                    </p>
+
+                    <p>
+                        {{ parameter.form.aspect_id.label }}<br>
+                        {{ parameter.form.aspect_id(class_="form-select aspect-select") }}
+                    </p>
+
+                    <p>
+                        {{ parameter.form.definition.label }}<br>
+                        {{ parameter.form.definition(rows=3, cols=90, class_="form-control") }}
+                    </p>
+
+                    <button type="button" class="remove-parameter">Remove Parameter</button>
+                </fieldset>
+             {% endfor %} 
+             </div>
+            <button type="button" id="add-parameter" class="btn btn-outline-primary mt-2">
+                Add Parameter
+            </button>
+             <template id="parameter-template"> 
+            <fieldset class="parameter-fieldset"> 
+                <legend>Parameter __number__</legend>
+
+                <p>
+                    <label for="parameters-__prefix__-name">Parameter name</label><br> 
+                    <input id="parameters-__prefix__-name"
+                           name="parameters-__prefix__-name"
+                           type="text"
+                           size="60"
+                           class="form-control"> 
+                </p>
+
+                <p> 
+                    <label for="parameters-__prefix__-quantity">Parameter quantity</label><br> 
+                    <input id="parameters-__prefix__-quantity"
+                           name="parameters-__prefix__-quantity"
+                           type="text"
+                           size="60"
+                           class="form-control">
+                </p>
+
+                <p>
+                    <label for="parameters-__prefix__-aspect_id">Parameter aspect</label><br> 
+                    <select id="parameters-__prefix__-aspect_id" 
+                            name="parameters-__prefix__-aspect_id"
+                            class="form-select aspect-select">  
+                            {% for value in aspect_choices %}
+                            <option value="{{ value[0] }}">{{ value[1] }}</option>  
+                            {% endfor %}
+                    </select> 
+                </p>
+
+                <p> 
+                    <label for="parameters-__prefix__-definition">Parameter definition</label><br> 
+                    <textarea id="parameters-__prefix__-definition"
+                              name="parameters-__prefix__-definition"
+                              rows="3"
+                              cols="90"
+                              class="form-control"></textarea> 
+                </p>
+
+                <button type="button" class="remove-parameter">Remove Parameter</button> 
+            </fieldset> 
+        </template>
+             
+         
+        <h2>External references</h2>
+        
+        <div id="references-container">
+            
+            {% for reference in form.external_references %}    
+                <fieldset class="reference-fieldset">
+                    <legend>{{ reference.label.text }}</legend>
+
+                    <p>
+                        {{ reference.form.category_name.label }}<br>
+                        {{ reference.form.category_name(size=60, class_="form-control") }}
+                    </p>
+
+                    <p>
+                        {{ reference.form.category_value.label }}<br>
+                        {{ reference.form.category_value(size=60, class_="form-control") }}
+                    </p>
+
+                    <p>
+                        {{ reference.form.reference_name.label }}<br>
+                        {{ reference.form.reference_name(rows=3, cols=90, class_="form-control") }}
+                    </p>
+                    
+                    <p>
+                        {{ reference.form.reference_url.label }}<br>
+                        {{ reference.form.reference_url(rows=3, cols=90, class_="form-control") }}
+                    </p>
+                    
+
+                    <button type="button" class="remove-reference">Remove Reference</button>
+                </fieldset>
+             {% endfor %}
+        </div>
+
+            <button type="button" id="add-reference" class="btn btn-outline-primary mt-2">
+                Add Reference
+            </button>
+           <template id="reference-template"> 
+            <fieldset class="reference-fieldset"> 
+                <legend>Reference __number__</legend>
+
+                <p>
+                    <label for="external_references-__prefix__-category_name">Reference category</label><br> 
+                    <input id="external_references-__prefix__-category_name"
+                           name="external_references-__prefix__-category_name"
+                           type="text"
+                           size="60"
+                           class="form-control"> 
+                </p>
+
+                <p>
+                    <label for="external_references-__prefix__-category_value">Reference category value</label><br> 
+                    <input id="external_references-__prefix__-category_value"
+                           name="external_references-__prefix__-category_value"
+                           type="text"
+                           size="60"
+                           class="form-control"> 
+                </p>
+
+                <p> 
+                    <label for="external_references-__prefix__-reference_name">Reference name</label><br> 
+                    <input id="external_references-__prefix__-reference_name"
+                           name="external_references-__prefix__-reference_name"
+                           type="text"
+                           size="60"
+                           class="form-control">
+                </p>
+
+                <p> 
+                    <label for="external_references-__prefix__-reference_url">Reference URL</label><br> 
+                    <input id="external_references-__prefix__-reference_url"
+                           name="external_references-__prefix__-reference_url"
+                           type="text"
+                           size="60"
+                           class="form-control">
+                </p>
+
+                <button type="button" class="remove-reference">Remove Reference</button> 
+            </fieldset> 
+        </template>
+    
+    <p class="mt-3">
+        {{ form.generate_xml(class_="btn btn-primary") }}
+
+        <button type="button" id="clear-form" class="btn btn-outline-secondary ms-2">
+            Clear form
+        </button>
+    </p>
+
+    <h2>Generated XML</h2>
+    <textarea rows="35" cols="120" readonly>{{ xml_output }}</textarea>
+             
+
+    </form>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const existingSelect = document.querySelector("[name='existing_measurand_id']");
+
+    if (!existingSelect) {
+        return;
+    }
+
+    existingSelect.addEventListener("change", function () {
+        const measurandId = existingSelect.value;
+
+        if (!measurandId) {
+            return;
+        }
+
+        fetch(`/measurand/${measurandId}/json`)
+            .then(response => response.json())
+            .then(data => {
+                populateMeasurandForm(data);
+            })
+            .catch(error => {
+                console.error("Could not load measurand:", error);
+            });
+    });
+});
+</script>
+
+<script> 
+function setField(name, value) {
+    const field = document.querySelector(`[name="${name}"]`);
+
+    if (!field) {
+        console.warn("Field not found:", name);
+        return;
+    }
+
+    if (field.type === "checkbox") {
+        field.checked = Boolean(value);
+        return;
+    }
+
+    field.value = value ?? "";
+
+    if (field.tomselect) {
+        field.tomselect.setValue(value ?? "");
+    }
+}
+</script>
+
+<script>
+function populateMeasurandForm(data) {
+    setField("id", data.id);
+    setField("name", data.name);
+    setField("definition", data.definition);
+    setField("deprecated", data.deprecated);
+    setField("replacement", data.replacement);
+    setField("processtype", data.processtype);
+    setField("qualifier", data.qualifier);
+    setField("result", data.result);
+    setField("result_quantity", data.result_quantity);
+    setField("result_aspect_id", data.result_aspect_id);
+    setField("discipline_id", data.discipline_id);
+
+    populateParameters(data.parameters || []);
+    populateReferences(data.external_references || []);
+}
+</script>
+
+<script>
+function populateParameters(parameters) {
+    console.log("populateParameters called with:", parameters);
+    const container = document.getElementById("parameters-container");
+    const template = document.getElementById("parameter-template");
+
+    console.log("Parameter container:", container);
+    console.log("Parameter template:", template);
+    container.querySelectorAll(".parameter-fieldset").forEach(function (fieldset) {
+        fieldset.remove();
+    });
+
+    parameters.forEach(function (parameter, index) {
+        console.log("Adding parameter", index, parameter);
+        let html = template.innerHTML
+            .replaceAll("__prefix__", index)
+            .replaceAll("__number__", index + 1);
+
+        container.insertAdjacentHTML("beforeend", html);
+
+        const fieldset = container.querySelector(".parameter-fieldset:last-child");
+
+        fieldset.querySelector(`[name="parameters-${index}-name"]`).value = parameter.name || "";
+        fieldset.querySelector(`[name="parameters-${index}-quantity"]`).value = parameter.quantity || "";
+        fieldset.querySelector(`[name="parameters-${index}-definition"]`).value = parameter.definition || "";
+
+        const aspectSelect = fieldset.querySelector(`[name="parameters-${index}-aspect_id"]`);
+
+        if (aspectSelect) {
+            if (!aspectSelect.tomselect) {
+                new TomSelect(aspectSelect, {
+                    create: false,
+                    allowEmptyOption: true,
+                    maxOptions: 1000
+                });
+            }
+
+            aspectSelect.tomselect.setValue(parameter.aspect_id || "");
+        }
+    });
+}
+</script>
+
+<script>
+const measurandJsonUrlTemplate = "{{ url_for('main.measurand_json', measurand_id=0) }}";
+</script>
+
+<script>
+function initialiseMeasurandSelects(scope) {
+    scope.querySelectorAll(".measurand-select").forEach(function (select) {
+        if (!select.tomselect) {
+            new TomSelect(select, {
+                create: false,
+                allowEmptyOption: true,
+                maxOptions: 1000,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                onChange: function (value) {
+                    console.log("Selected measurand:", value);
+
+                    if (!value) {
+                        return;
+                    }
+                    const url = measurandJsonUrlTemplate.replace("0", value);
+                    console.log("Fetching measurand URL:", url);
+                    fetch(url)
+                        .then(function (response) {
+                            if (!response.ok) {
+                                throw new Error("HTTP error " + response.status);
+                            }
+
+                            return response.json();
+                        })
+                        .then(function (data) {
+                            console.log("Loaded measurand data:", data);
+                            console.log("Loaded parameters data:", data.parameters)
+                            populateMeasurandForm(data);
+                        })
+                        .catch(function (error) {
+                            console.error("Could not load measurand:", error);
+                        });
+                }
+            });
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    initialiseMeasurandSelects(document);
+});
+</script>
+          
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("parameters-container");
+    const template = document.getElementById("parameter-template");
+    const addButton = document.getElementById("add-parameter");
+
+    if (!container || !template || !addButton) {
+        console.error("Parameter editor elements are missing.");
+        return;
+    }
+    
+    function initialiseAspectSelects(scope) {
+        scope.querySelectorAll(".aspect-select").forEach(function (select) {
+            if (!select.tomselect) {
+                new TomSelect(select, {
+                    create: false,
+                    allowEmptyOption: true,
+                    maxOptions: 1000,
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+            }
+        });
+    }
+    
+
+    function reindexParameters() {
+        const fieldsets = container.querySelectorAll(".parameter-fieldset");
+
+        fieldsets.forEach(function (fieldset, index) {
+            fieldset.querySelectorAll("[name]").forEach(function (el) {
+                el.name = el.name.replace(/parameters-\d+-/, "parameters-" + index + "-");
+            });
+
+            fieldset.querySelectorAll("[id]").forEach(function (el) {
+                el.id = el.id.replace(/parameters-\d+-/, "parameters-" + index + "-");
+            });
+
+            fieldset.querySelectorAll("label[for]").forEach(function (label) {
+                label.htmlFor = label.htmlFor.replace(/parameters-\d+-/, "parameters-" + index + "-");
+            });
+
+            const legend = fieldset.querySelector("legend");
+            if (legend) {
+                legend.textContent = "Parameter " + (index + 1);
+            }
+        });
+    }
+
+    addButton.addEventListener("click", function () {
+        const index = container.querySelectorAll(".parameter-fieldset").length;
+
+        let html = template.innerHTML
+            .replaceAll("__prefix__", index)
+            .replaceAll("__number__", index + 1);
+
+        container.insertAdjacentHTML("beforeend", html);
+        reindexParameters();
+        const newFieldset = container.querySelector(".parameter-fieldset:last-child");
+        initialiseAspectSelects(newFieldset);
+    });
+
+    container.addEventListener("click", function (event) {
+        if (event.target.classList.contains("remove-parameter")) {
+            const fieldsets = container.querySelectorAll(".parameter-fieldset");
+
+            if (fieldsets.length <= 1) {
+                alert("At least one parameter is required.");
+                return;
+            }
+
+            event.target.closest(".parameter-fieldset").remove();
+            reindexParameters();
+        }
+    });
+
+    reindexParameters();
+    initialiseAspectSelects(document);
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("references-container");
+    const template = document.getElementById("reference-template");
+    const addButton = document.getElementById("add-reference");
+
+    if (!container || !template || !addButton) {
+        console.error("Reference editor elements are missing.");
+        return;
+    }
+
+    function reindexReferences() {
+        const fieldsets = container.querySelectorAll(".reference-fieldset");
+
+        fieldsets.forEach(function (fieldset, index) {
+            fieldset.querySelectorAll("[name]").forEach(function (el) {
+                el.name = el.name.replace(/external_references-\d+-/, "external_references-" + index + "-");
+            });
+
+            fieldset.querySelectorAll("[id]").forEach(function (el) {
+                el.id = el.id.replace(/external_references-\d+-/, "external_references-" + index + "-");
+            });
+
+            fieldset.querySelectorAll("label[for]").forEach(function (label) {
+                label.htmlFor = label.htmlFor.replace(/external_references-\d+-/, "external_references-" + index + "-");
+            });
+
+            const legend = fieldset.querySelector("legend");
+            if (legend) {
+                legend.textContent = "Reference " + (index + 1);
+            }
+        });
+    }
+
+    addButton.addEventListener("click", function () {
+        const index = container.querySelectorAll(".reference-fieldset").length;
+
+        let html = template.innerHTML
+            .replaceAll("__prefix__", index)
+            .replaceAll("__number__", index + 1);
+
+        container.insertAdjacentHTML("beforeend", html);
+
+        reindexReferences();
+    });
+
+    container.addEventListener("click", function (event) {
+        if (event.target.classList.contains("remove-reference")) {
+            const fieldsets = container.querySelectorAll(".reference-fieldset");
+
+            if (fieldsets.length <= 1) {
+                alert("At least one reference is required.");
+                return;
+            }
+
+            event.target.closest(".reference-fieldset").remove();
+            reindexReferences();
+        }
+    });
+
+    reindexReferences();
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const clearButton = document.getElementById("clear-form");
+
+    if (!clearButton) {
+        return;
+    }
+
+    clearButton.addEventListener("click", function () {
+        if (!confirm("Clear the form? Unsaved changes will be lost.")) {
+            return;
+        }
+
+        const form = clearButton.closest("form");
+
+        if (!form) {
+            return;
+        }
+
+        // Clear standard inputs, textareas, selects, and checkboxes
+        form.querySelectorAll("input, textarea, select").forEach(function (field) {
+            if (field.type === "hidden" || field.type === "submit" || field.type === "button") {
+                return;
+            }
+
+            if (field.type === "checkbox" || field.type === "radio") {
+                field.checked = false;
+            } else {
+                field.value = "";
+            }
+
+            if (field.tomselect) {
+                field.tomselect.clear();
+            }
+        });
+
+        // Remove dynamic parameter blocks
+        document
+            .querySelectorAll("#parameters-container .parameter-fieldset")
+            .forEach(function (fieldset) {
+                fieldset.remove();
+            });
+
+        // Remove dynamic reference blocks
+        document
+            .querySelectorAll("#references-container .reference-fieldset")
+            .forEach(function (fieldset) {
+                fieldset.remove();
+            });
+
+        // Clear generated XML output, if present
+        const xmlOutput = form.querySelector("textarea[readonly]");
+        if (xmlOutput) {
+            xmlOutput.value = "";
+        }
+    });
+    
+
+});
+</script>
+
+{% endblock %}
