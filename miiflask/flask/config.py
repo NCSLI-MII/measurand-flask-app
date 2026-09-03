@@ -40,6 +40,6 @@ class DemoConfig(Config):
 
 class ProductionConfig(Config):
     PRODUCTION = True
-    DB_PATH = os.path.join(os.getenv("APP_DATA_DIR"), "miiflask.db") 
+    DB_PATH = os.path.join(os.getenv("APP_DATA_DIR"), "mlayer.v2.sqlite") 
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + DB_PATH
 

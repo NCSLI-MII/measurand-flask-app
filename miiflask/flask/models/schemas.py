@@ -104,7 +104,7 @@ class QuantityObjectSchema(Schema):
         return obj.aspect.symbol if obj.aspect else None
     
     def get_aspect_reference(self, obj):
-        return obj.aspect.reference if obj.aspect else None
+        return obj.aspect.sources if obj.aspect else None
 
     def get_unit_id(self, obj):
         return obj.scale.unit.id if obj.scale and obj.scale.unit else None
@@ -116,7 +116,7 @@ class QuantityObjectSchema(Schema):
         return obj.scale.unit.symbol if obj.scale and obj.scale.unit else None
     
     def get_unit_reference(self, obj):
-        return obj.scale.unit.reference if obj.scale and obj.scale.unit else None
+        return obj.scale.unit.sources if obj.scale and obj.scale.unit else None
 
 class PrefixSchema(SQLAlchemyAutoSchema):
 
