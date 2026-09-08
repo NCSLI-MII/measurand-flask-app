@@ -168,7 +168,19 @@ class Aspect(Base):
     
     scale_aspect_associations: Mapped[list['QuantityObject']] = \
             relationship(back_populates="aspect", cascade="all, delete-orphan")
-    
+   
+    source_conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        foreign_keys="ConversionCast.src_aspect_id",
+        back_populates="src_aspect",
+    )
+
+    destination_conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        foreign_keys="ConversionCast.dst_aspect_id",
+        back_populates="dst_aspect",
+    )
+
     def __str__(self):
         return f'{self.name}'
 
@@ -307,6 +319,20 @@ class Scale(Base):
 
     scale_aspect_associations: Mapped[list['QuantityObject']] = \
             relationship(back_populates="scale", cascade="all,delete-orphan")
+    
+    source_conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        foreign_keys="ConversionCast.src_scale_id",
+        back_populates="src_scale",
+    )
+
+    destination_conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        foreign_keys="ConversionCast.dst_scale_id",
+        back_populates="dst_scale",
+    )
+
+
     def __str__(self):
         return f'{self.ml_name}'
 
@@ -324,6 +350,92 @@ class Scale(Base):
 # conversion_cast | function_id | [core] Transformation function
 # conversion_cast | parameters | [core] Transformation function arguments
 ####
+
+class ConversionCast(Base):
+    __tablename__ = "conversion_cast"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+
+    is_cast: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+    src_scale_id: Mapped[str] = mapped_column(
+        ForeignKey("scale.id"),
+        nullable=False,
+    )
+
+    dst_scale_id: Mapped[str] = mapped_column(
+        ForeignKey("scale.id"),
+        nullable=False,
+    )
+
+    src_aspect_id: Mapped[str] = mapped_column(
+        ForeignKey("aspect.id"),
+        nullable=False,
+    )
+
+    dst_aspect_id: Mapped[str] = mapped_column(
+        ForeignKey("aspect.id"),
+        nullable=False,
+    )
+
+    transform_id: Mapped[str] = mapped_column(
+        ForeignKey("transform.id"),
+        nullable=False,
+    )
+
+    parameters: Mapped[Optional[str]] = mapped_column(UnicodeText)
+
+    src_scale: Mapped["Scale"] = relationship(
+        "Scale",
+        foreign_keys=[src_scale_id],
+        back_populates="source_conversion_casts",
+    )
+
+    dst_scale: Mapped["Scale"] = relationship(
+        "Scale",
+        foreign_keys=[dst_scale_id],
+        back_populates="destination_conversion_casts",
+    )
+
+    src_aspect: Mapped["Aspect"] = relationship(
+        "Aspect",
+        foreign_keys=[src_aspect_id],
+        back_populates="source_conversion_casts",
+    )
+
+    dst_aspect: Mapped["Aspect"] = relationship(
+        "Aspect",
+        foreign_keys=[dst_aspect_id],
+        back_populates="destination_conversion_casts",
+    )
+
+    transform: Mapped["Transform"] = relationship(
+        "Transform",
+        back_populates="conversion_casts",
+    )
+
+    @property
+    def kind(self) -> str:
+        return "cast" if self.is_cast else "conversion"
+
+    @property
+    def is_conversion(self) -> bool:
+        return not self.is_cast
+
+    def __repr__(self) -> str:
+        return (
+            f"<ConversionCast("
+            f"id={self.id!r}, "
+            f"kind={self.kind!r}, "
+            f"src_scale_id={self.src_scale_id!r}, "
+            f"dst_scale_id={self.dst_scale_id!r}, "
+            f"src_aspect_id={self.src_aspect_id!r}, "
+            f"dst_aspect_id={self.dst_aspect_id!r}, "
+            f"transform_id={self.transform_id!r}"
+            f")>"
+        )
+
+
 class Conversion(Base):
     __tablename__ = "conversion"
     
@@ -430,41 +542,42 @@ class Cast(Base):
                                     self.dst_scale_id,
                                     self.dst_aspect_id)
 
+###
+### Deprecate and move to unified ORM
+#conversion_cast_select = union_all(
+#        select(
+#            Conversion.src_scale_id.label("src_scale_id"),
+#            Conversion.src_aspect_id.label("src_aspect_id"),
+#            Conversion.dst_scale_id.label("dst_scale_id"),
+#            Conversion.dst_aspect_id.label("dst_aspect_id"),
+#            literal("conversion").label("type")
+#        ),
+#        select(
+#            Cast.src_scale_id.label("src_scale_id"),
+#            Cast.src_aspect_id.label("src_aspect_id"),
+#            Cast.dst_scale_id.label("dst_scale_id"),
+#            Cast.dst_aspect_id.label("dst_aspect_id"),
+#            literal("cast").label("type")
+#        )
+#    ).subquery()
 
-conversion_cast_select = union_all(
-        select(
-            Conversion.src_scale_id.label("src_scale_id"),
-            Conversion.src_aspect_id.label("src_aspect_id"),
-            Conversion.dst_scale_id.label("dst_scale_id"),
-            Conversion.dst_aspect_id.label("dst_aspect_id"),
-            literal("conversion").label("type")
-        ),
-        select(
-            Cast.src_scale_id.label("src_scale_id"),
-            Cast.src_aspect_id.label("src_aspect_id"),
-            Cast.dst_scale_id.label("dst_scale_id"),
-            Cast.dst_aspect_id.label("dst_aspect_id"),
-            literal("cast").label("type")
-        )
-    ).subquery()
-
-class ConversionCast(Base):
-    __table__ = conversion_cast_select
+#class ConversionCast(Base):
+#    __table__ = conversion_cast_select
     #__table_args__ = {
     #        "comment": "Transformation function for source and destination quantity object."}
    # __table_args__ = {
    #         "comment": "Definition of a reference (unit) associated with a scale."
    #         }
 
-    __mapper_args__ = {
-        "primary_key": [
-            conversion_cast_select.c.src_scale_id,
-            conversion_cast_select.c.src_aspect_id,
-            conversion_cast_select.c.dst_scale_id,
-            conversion_cast_select.c.dst_aspect_id,
-            conversion_cast_select.c.type
-        ],
-    }
+#    __mapper_args__ = {
+#        "primary_key": [
+#            conversion_cast_select.c.src_scale_id,
+#            conversion_cast_select.c.src_aspect_id,
+#            conversion_cast_select.c.dst_scale_id,
+#            conversion_cast_select.c.dst_aspect_id,
+#            conversion_cast_select.c.type
+#        ],
+#    }
 
 class Unit(Base):
     __tablename__ = "unit"
@@ -629,6 +742,11 @@ class Transform(Base):
     comments: Mapped[Optional[str]] = mapped_column(UnicodeText,
             comment="Free-text notes. ",
             doc="core")
+
+    conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        back_populates="transform",
+    )
 
     def __str__(self):
         return f'{self.py_function}'

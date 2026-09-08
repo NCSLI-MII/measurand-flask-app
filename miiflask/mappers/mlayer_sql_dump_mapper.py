@@ -400,12 +400,17 @@ class MlayerDumpTransforms:
             "quantityobject_table": {
                 "reference": source_ref,
             },
-            "conversion": {
+            #"conversion": {
+            #    "parameters": cls.normalise_parameters,
+            #},
+            #"cast": {
+            #    "parameters": cls.normalise_parameters,
+            #},
+            "conversion_cast": {
+                "is_cast": cls.coerce_bool,
                 "parameters": cls.normalise_parameters,
             },
-            "cast": {
-                "parameters": cls.normalise_parameters,
-            },
+
         }
 
 
@@ -847,6 +852,46 @@ class MlayerSqlDumpMapper:
             output.append((target_table, model, row))
 
         return output
+
+    def import_conversion_cast_block(self, session: Session, block: CopyBlock) -> None:
+        conversion_cast_model = self.registry.require("conversion_cast")
+
+        for source_row in block.rows:
+            row = self.map_conversion_cast_row(source_row)
+
+            row = self.keep_model_columns(conversion_cast_model, row)
+            row = self.apply_transforms("conversion_cast", row)
+            row = self.coerce_model_column_types(conversion_cast_model, row)
+
+            session.add(conversion_cast_model(**row))
+            self.inserted_counts["conversion_cast"] += 1
+
+            if self.inserted_counts["conversion_cast"] % self.config.batch_size == 0:
+                session.flush()
+
+        self.logger.info(
+            "Imported %s rows from conversion_cast into conversion_cast",
+            len(block.rows),
+        )
+
+
+    def map_conversion_cast_row(self, source_row: dict[str, Any]) -> dict[str, Any]:
+        row = dict(source_row)
+
+        if "function_id" in row:
+            row["transform_id"] = row.pop("function_id")
+
+        row["is_cast"] = self.transforms_cls.coerce_bool(row.get("is_cast"))
+
+        # If a non-cast conversion source only has aspect_id, use it for both sides.
+        if not row["is_cast"] and "aspect_id" in row:
+            row.setdefault("src_aspect_id", row["aspect_id"])
+            row.setdefault("dst_aspect_id", row["aspect_id"])
+
+        # Unified target model does not need the generic aspect_id column.
+        row.pop("aspect_id", None)
+
+        return row
 
     def conversion_cast_source_rows(self) -> list[dict[str, Any]]:
         rows: list[dict[str, Any]] = []

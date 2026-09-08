@@ -21,6 +21,7 @@ from miiflask.mappers.mlayer_sql_dump_mapper import (
     MlayerSqlDumpMapper,
 )
 
+from miiflask.mappers.mlayer_json_mapper import MlayerJsonImportConfig, MlayerJsonMapper
 # from mlayer_mapper import MlayerMapper
 
 
@@ -42,9 +43,20 @@ def run_sql_dump_import(args):
 
 
 def run_json_import(args):
-    raise NotImplementedError(
-        "Wire this to your existing mlayer_mapper.MlayerMapper configuration."
+    config = MlayerJsonImportConfig(
+        json_dir=Path(args.json_dir),
+        sqlite_path=Path(args.sqlite),
+        drop_create=True,
+        strict=False,
+        batch_size=1000,
     )
+
+    mapper = MlayerJsonMapper(
+        config=config,
+        models_module=mlayer,
+    )
+
+    return mapper.run()
 
 
 def main():
