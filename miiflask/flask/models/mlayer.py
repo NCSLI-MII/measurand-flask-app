@@ -332,6 +332,19 @@ class Scale(Base):
         back_populates="dst_scale",
     )
 
+    @property
+    def conversions(self):
+        return [
+            item for item in self.source_conversion_casts
+            if not item.is_cast
+        ]
+
+    @property
+    def casts(self):
+        return [
+            item for item in self.source_conversion_casts
+            if item.is_cast
+        ]
 
     def __str__(self):
         return f'{self.ml_name}'
@@ -422,18 +435,33 @@ class ConversionCast(Base):
     def is_conversion(self) -> bool:
         return not self.is_cast
 
-    def __repr__(self) -> str:
-        return (
-            f"<ConversionCast("
-            f"id={self.id!r}, "
-            f"kind={self.kind!r}, "
-            f"src_scale_id={self.src_scale_id!r}, "
-            f"dst_scale_id={self.dst_scale_id!r}, "
-            f"src_aspect_id={self.src_aspect_id!r}, "
-            f"dst_aspect_id={self.dst_aspect_id!r}, "
-            f"transform_id={self.transform_id!r}"
-            f")>"
+    @property
+    def natural_id(self) -> str:
+        return "{},{},{},{}".format(
+            self.src_scale_id,
+            self.dst_scale_id,
+            self.src_aspect_id,
+            self.dst_aspect_id,
         )
+
+    @property
+    def legacy_id(self) -> str:
+        return self.natural_id
+
+    @classmethod
+    def parse_natural_id(cls, value: str) -> tuple[str, str, str, str]:
+        parts = value.split(",")
+
+        if len(parts) != 4:
+            raise ValueError(
+                "ConversionCast natural id must have four comma-separated parts: "
+                "src_scale_id,dst_scale_id,src_aspect_id,dst_aspect_id"
+            )
+
+        return tuple(parts)
+
+    def __str__(self) -> str:
+        return self.natural_id
 
 
 class Conversion(Base):
