@@ -13,8 +13,10 @@
 from pathlib import Path
 import argparse
 import logging
-
+from sqlalchemy.orm import Session
 from miiflask.flask.models import mlayer
+from sqlalchemy import create_engine
+from miiflask.flask.db import bind_engine
 
 from miiflask.mappers.mlayer_sql_dump_mapper import (
     MlayerDumpImportConfig,
@@ -22,7 +24,7 @@ from miiflask.mappers.mlayer_sql_dump_mapper import (
 )
 
 from miiflask.mappers.mlayer_json_mapper import MlayerJsonImportConfig, MlayerJsonMapper
-# from mlayer_mapper import MlayerMapper
+from miiflask.mappers.taxonomy_mapper_v2 import TaxonomyMapper, ValidationError
 
 
 def run_sql_dump_import(args):
@@ -46,9 +48,9 @@ def run_json_import(args):
     config = MlayerJsonImportConfig(
         json_dir=Path(args.json_dir),
         sqlite_path=Path(args.sqlite),
-        drop_create=True,
-        strict=False,
-        batch_size=1000,
+        drop_create=args.drop_create,
+        strict=args.strict,
+        batch_size=args.batch_size,
     )
 
     mapper = MlayerJsonMapper(
@@ -58,6 +60,33 @@ def run_json_import(args):
 
     return mapper.run()
 
+
+def run_taxonomy_import(args):
+    parms = {
+        "measurands": args.taxonomy_xml,
+    }
+
+    engine = create_engine(
+        f"sqlite:///{args.sqlite}",
+        future=True,
+    )
+
+    bind_engine(engine)
+
+    with Session(engine) as session:
+        mapper = TaxonomyMapper(session, parms)
+        mapper.extractTaxonomy_v2()
+        mapper.loadTaxonomy()
+
+        if not args.skip_taxonomy_roundtrip:
+            try:
+                mapper.roundtrip()
+            except ValidationError:
+                print("Validation Error, check logs")
+                if args.strict:
+                    raise
+
+        session.commit()
 
 def main():
     parser = argparse.ArgumentParser()
@@ -69,12 +98,26 @@ def main():
     sql_parser.add_argument("--drop-create", action="store_true")
     sql_parser.add_argument("--strict", action="store_true")
     sql_parser.add_argument("--batch-size", type=int, default=1000)
+    sql_parser.add_argument(
+        "--taxonomy-xml",
+        default="resources/repo/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
+    )
+    sql_parser.add_argument("--skip-taxonomy", action="store_true")
+    sql_parser.add_argument("--skip-taxonomy-roundtrip", action="store_true")
 
     json_parser = subparsers.add_parser("json")
     json_parser.add_argument("--json-dir", required=True)
     json_parser.add_argument("--sqlite", required=True)
     json_parser.add_argument("--drop-create", action="store_true")
-
+    json_parser.add_argument("--strict", action="store_true")
+    json_parser.add_argument("--batch-size", type=int, default=1000)
+    json_parser.add_argument(
+        "--taxonomy-xml",
+        default="resources/repo/measurand-taxonomy/MeasurandTaxonomyCatalog.xml",
+    )
+    json_parser.add_argument("--skip-taxonomy", action="store_true")
+    json_parser.add_argument("--skip-taxonomy-roundtrip", action="store_true")
+    
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -86,6 +129,8 @@ def main():
         run_sql_dump_import(args)
     elif args.source == "json":
         run_json_import(args)
+
+    run_taxonomy_import(args)
 
 
 if __name__ == "__main__":
