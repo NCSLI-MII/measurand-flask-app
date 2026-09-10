@@ -10,6 +10,7 @@
 """
 import tempfile
 import unittest
+import warnings
 from pathlib import Path
 
 from sqlalchemy import create_engine
