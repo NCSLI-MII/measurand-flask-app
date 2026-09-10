@@ -1,7 +1,5 @@
 name: validation
 on: 
-  pull_request:
-    branchs: [main]
   workflow_dispatch:
 
 jobs:
