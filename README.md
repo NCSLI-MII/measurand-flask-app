@@ -23,22 +23,6 @@ then the application will expect the database at:
 
 The database can be initialized from local or downloaded M-Layer and measurand-taxonomy data sources. The preferred deployment path uses M-Layer JSON data so the deployed database stays aligned with the official API-style data source.
 
-Contents
-Getting started locally
-Python environment setup
-Setting APP_DATA_DIR
-Initializing the database with init.sh
-Running the Flask application locally
-Working with local data sources
-Running import_mlayer.py locally
-Running dbinit_sqldump.py locally
-Switching between JSON and SQL dump sources for testing
-Updating data sources for deployment
-Running with Docker
-Creating a release
-Troubleshooting
-
-
 ## Getting started locally
 
 To run the application locally:
@@ -314,9 +298,9 @@ python import_mlayer.py compare \
     --sql-sqlite ./data/mlayer_sql.sqlite \
     --json-sqlite ./data/mlayer_json.sqlite \
     --fail-on-mismatch
-``
-`
-Running dbinit_sqldump.py locally
+```
+
+**Running dbinit_sqldump.py locally**
 
 dbinit_sqldump.py initializes the application database. Unlike import_mlayer.py, this script is intended to create the database used by the Flask application.
 
@@ -426,13 +410,14 @@ python import_mlayer.py both \
 ```    
 
 **Recommended workflow:**
-Import SQL dump to a temporary SQLite database.
-Import JSON data to a separate temporary SQLite database.
-Compare both databases with import_mlayer.py.
-If the JSON importer is correct, initialize the application database using the JSON path.
-Use the JSON path for deployment.
-Updating data sources for deployment
-The deployment data source versions are configured in init.sh.
+- Import SQL dump to a temporary SQLite database.
+- Import JSON data to a separate temporary SQLite database.
+- Compare both databases with import_mlayer.py.
+- If the JSON importer is correct, initialize the application database using the JSON path.
+- Use the JSON path for deployment.
+- Updating data sources for deployment
+- The deployment data source versions are configured in init.sh.
+
 The relevant variables are:
 
 
@@ -475,8 +460,7 @@ VERSION1=0.4.0-beta
 
 NAME2=m-layer
 VERSION2=0.6.0-beta
-
-Copy
+```
 
 The deployment path should continue to use M-Layer JSON data:
 
@@ -517,13 +501,15 @@ Open
 `http://127.0.0.1:8000`
 
 Recommended checks:
-the application starts without database errors;
-taxonomy pages load;
-quantity, unit, scale, and aspect views load;
-expected measurand taxons are present;
-expected M-Layer aspects and scales are present;
-administration views load if enabled.
-Running with Docker
+
+- the application starts without database errors;
+- taxonomy pages load;
+- quantity, unit, scale, and aspect views load;
+- expected measurand taxons are present;
+- expected M-Layer aspects and scales are present;
+- administration views load if enabled.
+
+## Running with Docker
 Data persistence uses Docker volumes. Either define a named volume manually or use Docker Compose.
 Example using a named volume:
 
@@ -542,16 +528,18 @@ docker compose build
 docker compose up
 The container should set or rely on an application data directory such as:
 
-Copy text
-/data
+
+`/data`
 The initialized database should be located at:
 
-/data/miiflask.db
+`/data/miiflask.db`
 
 ## Creating a release
 Use the following process to create a new application release.
-Ensure all development branches are merged into main.
-Create a release branch from main.
+
+1. Ensure all development branches are merged into main.
+2. Create a release branch from main.
+
 Example:
 
 ```bash
@@ -559,13 +547,17 @@ git checkout main
 git pull
 git checkout -b release/0.4.0-beta
 ```
-Update the application version in:
 
+3. Update the application version in:
 
 `miiflask/flask/config.py`
-If the release also updates deployed data sources, update the data versions in:
+
+4. Check `main` contains the updated data sources specified in `init.sh.`
+
+The release also updates deployed data sources, the updated the data versions should already have been merged from a development branch.
 
 `init.sh`
+
 For example:
 
 ```ini
@@ -583,27 +575,31 @@ Copy
 rm -rf ./instance-data
 sh init.sh ./instance-data true
 ```
-Run the application locally.
+
+6. Run the application locally.
 
 ```bash
 export APP_DATA_DIR="$PWD/instance-data"
 gunicorn -w 1 wsgi
 ```
 
-Perform smoke testing.
-Commit the release changes.
+7. Perform smoke testing.
+
+8. Commit the release changes.
 
 ```sh
 git add miiflask/flask/config.py init.sh README.md
 git commit -m "Prepare release 0.4.0-beta"
 ```
-Merge the release branch into main.
+
+9. Merge the release branch into main.
 
 ```sh
 git checkout main
 git merge release/0.4.0-beta
 ```
-Tag the release.
+
+10. Tag the release.
 
 Example:
 
@@ -615,6 +611,8 @@ git push origin main
 git push origin v0.4.0-beta
 
 On push, the release branch and tag should trigger the Docker build and publish workflow.
+
+11. Deploy to Azure and locally.
 
 ## Troubleshooting
 Database file is missing
