@@ -10,7 +10,7 @@ set -e
 NAME1=measurand-taxonomy
 VERSION1=0.3.0-beta
 NAME2=m-layer
-VERSION2=0.5.0-beta.1
+VERSION2=1.0.0
 
 FILENAME1="$NAME1-$VERSION1.tar.gz"
 FILENAME2="$NAME2-$VERSION2.tar.gz"
@@ -59,8 +59,7 @@ if [ ! -f "$DATA_DIR"/miiflask.db ]; then
   mv "$PWD/$INSTALL_PREFIX/$NAME1-$VERSION1/" "$PWD/$INSTALL_PREFIX/$NAME1" 
   mv "$PWD/$INSTALL_PREFIX/$NAME2-$VERSION2/" "$PWD/$INSTALL_PREFIX/$NAME2" 
   echo "Initializing database..."
-  #python dbinit.py "$DATA_DIR" 
-  #python dbinit_sqldump.py json --json-dir "resources/repo/m-layer/source/json" --sqlite "$DATA_DIR/miiflask.db" 
+  
   python dbinit_sqldump.py json \
         --json-dir "resources/repo/m-layer/source/json" \
         --sqlite "$DATA_DIR/miiflask.db" \
