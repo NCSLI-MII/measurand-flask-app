@@ -1,168 +1,700 @@
 # measurand-flask-app
 
-## Getting started
+Flask application for browsing and managing MII measurand, quantity, unit, scale, and taxonomy metadata.
 
-### Running locally 
+The application database is a SQLite database named:
 
-* Create a working directory
-* Ensure python3.12 is installed
-* Create the virtual environemnt (venv or conda environment)
-* For virtual conda environments, use [miniforge](https://github.com/conda-forge/miniforge)
-
-* Setup your environment
+```text
+miiflask.db
 ```
-python3.12 -m venv venv/ --upgrade-deps
+
+The application expects this database to be located under the directory specified by the environment variable:
+
+```text
+APP_DATA_DIR
+```
+For example, if:
+
+```bash
+export APP_DATA_DIR=/tmp/miiflask
+```
+then the application will expect the database at:
+`/tmp/miiflask/miiflask.db`
+
+The database can be initialized from local or downloaded M-Layer and measurand-taxonomy data sources. The preferred deployment path uses M-Layer JSON data so the deployed database stays aligned with the official API-style data source.
+
+## Getting started locally
+
+To run the application locally:
+- Clone this repository.
+- Create a Python 3.12 environment.
+- Install dependencies.
+- Set `APP_DATA_DIR`.
+- Initialize the SQLite database.
+- Run the Flask application using gunicorn or flask run.
+
+A typical local setup uses a writable data directory such as:
+
+`/tmp/miiflask`
+
+or a project-local directory such as:
+
+
+`./instance-data`
+
+### Python environment setup
+Option 1: Python virtual environment
+Ensure Python 3.12 is installed.
+
+```bash
+python3.12 -m venv venv --upgrade-deps
 source venv/bin/activate
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Also works with conda
-```
-conda env create --file environment_history.yml
-conda activate mdb-test
+### Setting APP_DATA_DIR
+
+The Flask application uses APP_DATA_DIR to locate the SQLite database.
+Set it before initializing or running the application:
+
+```bash
+export APP_DATA_DIR=/tmp/miiflask
+mkdir -p "$APP_DATA_DIR"
 ```
 
-* Initialize the working directory. This will get the latest versions of the taxonomy and m-layer, and initialize the database in specified PATH and link to data in project directory.
-* Optionally, PATH can be removed and database reinitialized with TRUE for second or argument.
+The expected database file is:
+`$APP_DATA_DIR/miiflask.db`
+
+For example:
+
+`ls -la "$APP_DATA_DIR"`
+
+should eventually show: `miiflask.db`
+
+after database initialization.
+If you use a project-local data directory:
+
+```bash
+export APP_DATA_DIR="$PWD/instance-data"
+mkdir -p "$APP_DATA_DIR"
 ```
+
+### Initializing the database with init.sh
+The init.sh script downloads the configured versions of the MII measurand taxonomy and M-Layer data, places them under resources/repo, and initializes the SQLite database.
+Basic usage:
+
+```bash
 sh init.sh <PATH>
 ```
-or remove the database and reinitialize
+
+Example:
+
+```bash
+sh init.sh /tmp/miiflask
 ```
-sh init.sh <PATH> TRUE
+
+This initializes:
+`/tmp/miiflask/miiflask.db`
+
+To remove the existing data directory and reinitialize the database:
+
+
+```bash
+sh init.sh <PATH> true
 ```
-* Run locally or build container
+Example:
+
+```bash
+sh init.sh /tmp/miiflask true
 ```
+
+Depending on the shell and platform, the second argument is expected to be the string true.
+The script should set:
+
+```bash
+export APP_DATA_DIR="$DATA_DIR"
+```
+
+so child processes invoked by the script, such as database initialization scripts, see the correct application data directory.
+
+A typical initialization command inside init.sh for the JSON-based deployment path is:
+
+```bash
+python dbinit_sqldump.py json \
+    --json-dir "resources/repo/m-layer/source/json" \
+    --sqlite "$DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml "resources/repo/measurand-taxonomy/MeasurandTaxonomyCatalog.xml"
+```
+
+If taxonomy roundtrip validation is available but too strict for deployment initialization, the script may use:
+`--skip-taxonomy-roundtrip`
+
+For example:
+
+```bash
+python dbinit_sqldump.py json \
+    --json-dir "resources/repo/m-layer/source/json" \
+    --sqlite "$DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml "resources/repo/measurand-taxonomy/MeasurandTaxonomyCatalog.xml" \
+    --skip-taxonomy-roundtrip
+```
+
+### Running the Flask application locally
+After the database has been initialized, ensure APP_DATA_DIR points to the directory containing miiflask.db.
+Example:
+
+```bash
+export APP_DATA_DIR=/tmp/miiflask
+```
+
+Then run the application.
+Using Gunicorn
+
+```bash
+gunicorn -w 1 wsgi
+```
+or, depending on the application entry point:
+
+```bash
+gunicorn -w 1 'miiflask.flask.app:app'
+```
+
+Then open: `http://127.0.0.1:8000`
+The administration view may be available at: `http://127.0.0.1:8000/admin`
+
+### Working with local data sources
+
+For testing and development, you may want to initialize the database from local copies of the M-Layer and measurand taxonomy data instead of using the versions downloaded by init.sh.
+A recommended local structure is:
+
+```text
+data/
+├── m-layer/
+│   └── source/
+│       └── json/
+│           ├── prefixes.json
+│           ├── systems.json
+│           ├── dimensions.json
+│           ├── aspects.json
+│           ├── units.json
+│           ├── scales.json
+│           ├── functions.json
+│           ├── conversions.json
+│           └── casts.json
+├── measurand-taxonomy/
+│   └── MeasurandTaxonomyCatalog.xml
+└── sql/
+    └── m_layer.dmp
+```
+
+The JSON import expects a directory containing the M-Layer JSON collection files. The current JSON importer uses collection files such as:
+
+```text
+prefixes.json
+systems.json
+dimensions.json
+aspects.json
+units.json
+scales.json
+functions.json
+conversions.json
+casts.json
+```
+
+The SQL dump importer expects a PostgreSQL plain-text dump that can be transformed into the SQLite application schema.
+
+**Running import_mlayer.py locally**
+
+import_mlayer.py is a utility for importing and validating M-Layer data. It supports:
+importing from SQL dump;
+importing from JSON;
+importing both SQL and JSON into separate SQLite databases;
+comparing SQL-derived and JSON-derived SQLite databases.
+
+This script is useful for testing whether the JSON-based importer and SQL-dump importer produce equivalent M-Layer application data.
+Import from JSON
+
+```bash
+python import_mlayer.py json \
+    --json-dir ./data/m-layer/source/json \
+    --sqlite ./data/mlayer_json.sqlite \
+    --drop-create \
+    --batch-size 1000
+With strict validation:
+```
+
+```bash
+python import_mlayer.py json \
+    --json-dir ./data/m-layer/source/json \
+    --sqlite ./data/mlayer_json.sqlite \
+    --drop-create \
+    --strict \
+    --batch-size 1000
+```
+
+Import from SQL dump
+
+```bash
+python import_mlayer.py sql-dump \
+    --dump ./data/sql/m_layer.dmp \
+    --sqlite ./data/mlayer_sql.sqlite \
+    --drop-create \
+    --batch-size 1000
+```
+
+With strict validation:
+
+```bash
+python import_mlayer.py sql-dump \
+    --dump ./data/sql/m_layer.dmp \
+    --sqlite ./data/mlayer_sql.sqlite \
+    --drop-create \
+    --strict \
+    --batch-size 1000
+```
+
+Import both JSON and SQL, then compare
+
+```bash
+python import_mlayer.py both \
+    --dump ./data/sql/m_layer.dmp \
+    --json-dir ./data/m-layer/source/json \
+    --sql-sqlite ./data/mlayer_sql.sqlite \
+    --json-sqlite ./data/mlayer_json.sqlite \
+    --drop-create \
+    --batch-size 1000 \
+    --compare
+```
+
+To make mismatches fail the command:
+
+```bash
+python import_mlayer.py both \
+    --dump ./data/sql/m_layer.dmp \
+    --json-dir ./data/m-layer/source/json \
+    --sql-sqlite ./data/mlayer_sql.sqlite \
+    --json-sqlite ./data/mlayer_json.sqlite \
+    --drop-create \
+    --batch-size 1000 \
+    --compare \
+    --fail-on-mismatch
+```
+
+Compare two existing SQLite databases
+
+```bash
+python import_mlayer.py compare \
+    --sql-sqlite ./data/mlayer_sql.sqlite \
+    --json-sqlite ./data/mlayer_json.sqlite
+```
+
+With failure on mismatch:
+
+```bash
+python import_mlayer.py compare \
+    --sql-sqlite ./data/mlayer_sql.sqlite \
+    --json-sqlite ./data/mlayer_json.sqlite \
+    --fail-on-mismatch
+```
+
+**Running dbinit_sqldump.py locally**
+
+dbinit_sqldump.py initializes the application database. Unlike import_mlayer.py, this script is intended to create the database used by the Flask application.
+
+It can initialize from either:
+M-Layer JSON data; or
+an M-Layer SQL dump.
+
+It should also load the measurand taxonomy into the same SQLite database.
+Initialize application database from local JSON data
+Set the application data directory:
+
+```bash
+export APP_DATA_DIR="$PWD/instance-data"
+mkdir -p "$APP_DATA_DIR"
+```
+Run database initialization:
+
+```bash
+python dbinit_sqldump.py json \
+    --json-dir ./data/m-layer/source/json \
+    --sqlite "$APP_DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml ./data/measurand-taxonomy/MeasurandTaxonomyCatalog.xml
+```
+
+If taxonomy roundtrip validation is enabled but not needed for local smoke testing:
+
+```bash
+python dbinit_sqldump.py json \
+    --json-dir ./data/m-layer/source/json \
+    --sqlite "$APP_DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml ./data/measurand-taxonomy/MeasurandTaxonomyCatalog.xml \
+    --skip-taxonomy-roundtrip
+```
+
+Then run the application:
+
+```
+export APP_DATA_DIR="$PWD/instance-data"
 gunicorn -w 1 wsgi
 ```
 
-### Running with Docker
-Data persistence uses docker volumes. Either define a named volume, or use docker compose to define a named volume. Initially, the database will be loaded and if volume is defined then data will be persisted.
-Either do docker build, or obtain the image from GitHub container registry.
+Open: `http://127.0.0.1:8000`
+
+Initialize application database from local SQL dump
+
+```bash
+export APP_DATA_DIR="$PWD/instance-data"
+mkdir -p "$APP_DATA_DIR"
+```
+Then run:
+
+```bash
+python dbinit_sqldump.py sql-dump \
+    --dump ./data/sql/m_layer.dmp \
+    --sqlite "$APP_DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml ./data/measurand-taxonomy/MeasurandTaxonomyCatalog.xml
+```
+Optionally skip taxonomy roundtrip validation:
+
+```bash
+python dbinit_sqldump.py sql-dump \
+    --dump ./data/sql/m_layer.dmp \
+    --sqlite "$APP_DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml ./data/measurand-taxonomy/MeasurandTaxonomyCatalog.xml \
+    --skip-taxonomy-roundtrip
+```
+Then run:
+
+```bash
+export APP_DATA_DIR="$PWD/instance-data"
+gunicorn -w 1 wsgi
+```
+Switching between JSON and SQL dump sources for testing
+The application deployment should use the JSON data source. This keeps the deployed database aligned with the official API-style M-Layer data.
+Use JSON for normal initialization:
+
+```bash
+python dbinit_sqldump.py json \
+    --json-dir ./data/m-layer/source/json \
+    --sqlite "$APP_DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml ./data/measurand-taxonomy/MeasurandTaxonomyCatalog.xml
+```
+Use SQL dump only for testing, validation, or comparison:
 
 ```
+python dbinit_sqldump.py sql-dump \
+    --dump ./data/sql/m_layer.dmp \
+    --sqlite "$APP_DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml ./data/measurand-taxonomy/MeasurandTaxonomyCatalog.xml
+```
+For importer comparison, use import_mlayer.py both:
+
+```
+python import_mlayer.py both \
+    --dump ./data/sql/m_layer.dmp \
+    --json-dir ./data/m-layer/source/json \
+    --sql-sqlite ./data/mlayer_sql.sqlite \
+    --json-sqlite ./data/mlayer_json.sqlite \
+    --drop-create \
+    --compare
+```    
+
+**Recommended workflow:**
+- Import SQL dump to a temporary SQLite database.
+- Import JSON data to a separate temporary SQLite database.
+- Compare both databases with import_mlayer.py.
+- If the JSON importer is correct, initialize the application database using the JSON path.
+- Use the JSON path for deployment.
+- Updating data sources for deployment
+- The deployment data source versions are configured in init.sh.
+
+The relevant variables are:
+
+
+```ini
+NAME1=measurand-taxonomy
+VERSION1=0.3.0-beta
+
+NAME2=m-layer
+VERSION2=0.5.0-beta.1
+```
+
+Copy
+
+These are used to build GitHub archive URLs:
+
+```ini
+URL1="https://github.com/NCSLI-MII/$NAME1/archive/refs/tags/v$VERSION1.tar.gz"
+URL2="https://github.com/NCSLI-MII/$NAME2/archive/refs/tags/v$VERSION2.tar.gz"
+```
+
+Copy
+
+To update the deployment data source versions:
+
+1. Confirm the new measurand taxonomy release tag exists.
+2. Confirm the new M-Layer release tag exists.
+3. Update `VERSION1` and/or `VERSION2` in `init.sh`.
+4. Run initialization locally using a clean data directory.
+5. Confirm the database initializes successfully.
+6. Run the Flask application locally against the newly initialized database.
+7. Perform application smoke tests.
+8. Commit the updated `init.sh`.
+9. Create an application release following the release process below.
+
+Example change:
+
+```sh
+NAME1=measurand-taxonomy
+VERSION1=0.4.0-beta
+
+NAME2=m-layer
+VERSION2=0.6.0-beta
+```
+
+The deployment path should continue to use M-Layer JSON data:
+
+```sh
+python dbinit_sqldump.py json \
+    --json-dir "resources/repo/m-layer/source/json" \
+    --sqlite "$DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml "resources/repo/measurand-taxonomy/MeasurandTaxonomyCatalog.xml"
+```
+
+Do not switch deployment to SQL dump unless there is a specific testing or migration reason to do so. JSON is the preferred deployment input because it follows the official API-style data source.
+Recommended local verification before deployment
+After updating data source versions in init.sh, run a full clean initialization locally:
+
+```bash
+rm -rf ./instance-data
+sh init.sh ./instance-data true
+```
+Set the application data directory:
+
+```bash
+export APP_DATA_DIR="$PWD/instance-data"
+```
+
+Confirm the database exists:
+
+```bash
+ls -la "$APP_DATA_DIR/miiflask.db"
+```
+Run the application:
+
+```bash
+gunicorn -w 1 wsgi
+```
+Open
+
+`http://127.0.0.1:8000`
+
+Recommended checks:
+
+- the application starts without database errors;
+- taxonomy pages load;
+- quantity, unit, scale, and aspect views load;
+- expected measurand taxons are present;
+- expected M-Layer aspects and scales are present;
+- administration views load if enabled.
+
+## Running with Docker
+Data persistence uses Docker volumes. Either define a named volume manually or use Docker Compose.
+Example using a named volume:
+
+```bash
 docker pull ghcr.io/ncsli-mii/measurand-flask-app:main
 docker volume create sqlite_data
-docker run -it -p 8000:8000 -v sqlite_data:/data gchr.io/ncsli-mii/measurand-flask-app:main
+docker run -it -p 8000:8000 -v sqlite_data:/data ghcr.io/ncsli-mii/measurand-flask-app:main
 ```
+Then open:
 
-```
+http://127.0.0.1:8000
+
+Using Docker Compose:
+
 docker compose build
 docker compose up
-```
-* Got to the localhost on browser http://127.0.0.1/8000
+The container should set or rely on an application data directory such as:
 
-### Upgrading python
-The application has been upgraded to python 3.12. 
 
-The following steps are used to update the requirements. 
+`/data`
+The initialized database should be located at:
 
-* First setup the conda environment. To do so, change the python version specified in `environment_history.yml`. This contains only the required
-packages that are used in the application. The dependencies are determined using conda and conda-forge.
-* Next freeze the packages for pip requirements.
-`pip list --format=freeze > requirements.txt`
-* Next update the Dockerfile to the python base container version, e.g. python:3.12-slim
+`/data/miiflask.db`
 
 ## Creating a release
-* Ensure all development branches are merged into main
-* Create a release branch from main, e.g. release/0.4.0-beta
-* Update the VERSION in miiflask/flask/config.py
-* Merge release branch into main
-* Tag release with version, e.g. v0.4.0-beta
-* On push, both release branch and tag triggers docker build and publish
+Use the following process to create a new application release.
 
-## Previous Getting started guide
+1. Ensure all development branches are merged into main.
+2. Create a release branch from main.
 
-Flask application for MII metadata
+Example:
 
-In order to setup the test database, several resources are used to initialize the database.
-* NCSLI MII Measurand Taxonomy
-* M-Layer REST API
-```
-curl -X 'GET' 'https://dr49upesmsuw0.cloudfront.net/aspects' -H 'accept: application/json' -- output aspects.json 
-curl -X 'GET' 'https://dr49upesmsuw0.cloudfront.net/scales' -H 'accept: application/json' -- output scales.json 
-```
-Updated resource files can be copied to
-```
-resources
+```bash
+git checkout main
+git pull
+git checkout -b release/0.4.0-beta
 ```
 
+3. Update the application version in:
 
+`miiflask/flask/config.py`
+
+4. Check `main` contains the updated data sources specified in `init.sh.`
+
+The release also updates deployed data sources, the updated the data versions should already have been merged from a development branch.
+
+`init.sh`
+
+For example:
+
+```ini
+   NAME1=measurand-taxonomy
+   VERSION1=0.4.0-beta
+
+   NAME2=m-layer
+   VERSION2=0.6.0-beta
 ```
-conda create -n <environment_name> --file requirements.txt
-```
-* Run the unit test for loading data locally and creating the database
-* Set the flask environment to test
-```
-export FLASK_ENV=testing
-python -m unittest
-```
-* Update to the latest input data for the taxonomy and mlayer.
-* Run the mappers.
-* Load the data in memory
-```
-python dbinit.py -p builder.json -m
-```
-* Create a persistent database. See the builder.json for database path. The current location is in /tmp
-```
-/tmp/miiflask/miiflask.db
-```
-* First set the flask environment to development, then create the database using the script.
-```
-export FLASK_ENV=development
-python dbinit.py -p builder.json -d
-```
-* Update database path in flask [config](./miiflask/flask/config.py) if changed in builder.json.
-* To extract data from the KCDB and m-layer APIs, update the builder.json file.
-```
-use_api=true
+Copy
+
+5. Run a clean local initialization.
+
+```sh
+rm -rf ./instance-data
+sh init.sh ./instance-data true
 ```
 
-### Running the flask application
-Three modes have configurations for running the flask application. Before running the application export the Flask environment.
+6. Run the application locally.
 
-#### Testing and Development
-* Testing configuration runs an in-memory database that requires extracting and loading the data each time. 
-
-```
-export FLASK_ENV=testing
+```bash
+export APP_DATA_DIR="$PWD/instance-data"
+gunicorn -w 1 wsgi
 ```
 
-* The debug mode uses the database that was initialized from the dbinit.py script. Changes to the database will be persisted, so the user keep changes to the database.
+7. Perform smoke testing.
+
+8. Commit the release changes.
+
+```sh
+git add miiflask/flask/config.py init.sh README.md
+git commit -m "Prepare release 0.4.0-beta"
+```
+
+9. Merge the release branch into main.
+
+```sh
+git checkout main
+git merge release/0.4.0-beta
+```
+
+10. Tag the release.
+
+Example:
+
+git tag v0.4.0-beta
+Push main and the release tag.
+
+Copy sh
+git push origin main
+git push origin v0.4.0-beta
+
+On push, the release branch and tag should trigger the Docker build and publish workflow.
+
+11. Deploy to Azure and locally.
+
+## Troubleshooting
+Database file is missing
+Confirm APP_DATA_DIR is set:
+
+`echo "$APP_DATA_DIR"`
+
+Confirm the database exists:
+
+
+`ls -la "$APP_DATA_DIR/miiflask.db"`
+If it does not exist, rerun initialization:
+
+
+`sh init.sh "$APP_DATA_DIR" true`
+
+or initialize manually:
+
+```bash
+python dbinit_sqldump.py json \
+    --json-dir ./data/m-layer/source/json \
+    --sqlite "$APP_DATA_DIR/miiflask.db" \
+    --drop-create \
+    --taxonomy-xml ./data/measurand-taxonomy/MeasurandTaxonomyCatalog.xml
+```
+
+Application is using the wrong database
+The database path is determined by APP_DATA_DIR and the fixed database file name miiflask.db.
+Check:
 
 ```
-export FLASK_ENV=development
+echo "$APP_DATA_DIR"
+ls -la "$APP_DATA_DIR"
 ```
 
-``` 
-cd miiflask/flask
-flask run
-```
-* Go to the localhost on browser http://127.0.0.1/5000
-* The administration view can be found at http://127.0.0.1/5000/admin
-* For in-memory, you'll need to load some data. Go to http://127.0.0.1/5000/initialize
+Restart the Flask application after changing APP_DATA_DIR.
+JSON import fails because files are missing
+Confirm the JSON directory contains the expected collection files:
 
-#### Production
-This mode is in progress for running a production service with nginx and gunicorn. As above, initialize the database with dbinit.py.The default port for gunicorn is 8000.
-```
-export FLASK_ENV=production
-gunicorn -w 1 'miiflask.flask.app:app'
-```
-* Got to the localhost on browser http://127.0.0.1/8000
+`ls -la ./data/m-layer/source/json`
+Expected files include:
 
-Below was a diagram of the database schema implemented as a flask [model](./miiflask/flask/model.py).
+```text
+prefixes.json
+systems.json
+dimensions.json
+aspects.json
+units.json
+scales.json
+functions.json
+conversions.json
+casts.json
+```
 
-#### Workshop Demonstration
-This mode runs a production server and initializes the database with references of measurand taxons from KCDB CMC identifiers.
+SQL dump testing produces different results from JSON
+Use import_mlayer.py both with --compare:
 
 ```
-export FLASK_ENV=demo
-dbinit.py -p builder_workshop_2024.json -d 
-gunicorn -w 1 'miiflask.flask.app:app'
+python import_mlayer.py both \
+    --dump ./data/sql/m_layer.dmp \
+    --json-dir ./data/m-layer/source/json \
+    --sql-sqlite ./data/mlayer_sql.sqlite \
+    --json-sqlite ./data/mlayer_json.sqlite \
+    --drop-create \
+    --compare
 ```
-* Go to localhost on browser http://127.0.0.1/8000
-* The database is configured to reside in `/tmp/miiflask/miiflask_workshop_2024_demo.db`
+Review the logged table counts, key mismatches, and field mismatches.
+Reinitialize from scratch
+
+```
+rm -rf "$APP_DATA_DIR"
+mkdir -p "$APP_DATA_DIR"
+sh init.sh "$APP_DATA_DIR" true
+```
+
+A few notes based on the current code state:
+
+- The current `init.sh` already downloads `measurand-taxonomy` and `m-layer`, then runs `dbinit_sqldump.py json` against `resources/repo/m-layer/source/json`.
+- The current `dbinit_sqldump.py` has the JSON and SQL-dump import paths, but its taxonomy import function needs to be wired correctly to the SQLite path and to `TaxonomyMapper`.
+- `import_mlayer.py` is better suited for local importer validation and SQL-vs-JSON comparison, while `dbinit_sqldump.py` is the right script to initialize the actual Flask application database.
+- Deployment should use JSON data. SQL dump import should remain useful for testing, validation, or migration comparison.
+
 
 ![Schema](./taxonomyschema.png)
 

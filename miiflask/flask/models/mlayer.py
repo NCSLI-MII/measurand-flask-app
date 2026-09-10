@@ -110,7 +110,7 @@ class QuantityObject(Base):
             doc="core")
     
     # aspect-scale | source | [core] Reference to an authoritative definition of the aspect.
-    reference: Mapped[Optional[str]] = mapped_column(String(200),
+    sources: Mapped[Optional[str]] = mapped_column(String(200),
             comment="Reference to an authoritative definition of the aspect-scale.",
             doc="core"
             )
@@ -152,7 +152,7 @@ class Aspect(Base):
             )
     
     # aspect | source | [core] Reference to an authoritative definition of the aspect.
-    reference: Mapped[Optional[str]] = mapped_column(String(200),
+    sources: Mapped[Optional[str]] = mapped_column(String(200),
             comment="Reference to an authoritative definition of the aspect.",
             doc="core"
             )
@@ -168,7 +168,19 @@ class Aspect(Base):
     
     scale_aspect_associations: Mapped[list['QuantityObject']] = \
             relationship(back_populates="aspect", cascade="all, delete-orphan")
-    
+   
+    source_conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        foreign_keys="ConversionCast.src_aspect_id",
+        back_populates="src_aspect",
+    )
+
+    destination_conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        foreign_keys="ConversionCast.dst_aspect_id",
+        back_populates="dst_aspect",
+    )
+
     def __str__(self):
         return f'{self.name}'
 
@@ -259,6 +271,25 @@ class Scale(Base):
     is_special: Mapped[Optional[bool]] = mapped_column(Boolean,
             comment="True when the scale's unit has a special name in the unit system.",
             doc="extd")
+    
+    
+    # dimension  | formal_system_id    | [extd] Unit system in which this system dimension is defined.
+    system_id: Mapped[Optional[str]] = \
+        mapped_column(ForeignKey('system.id'),
+                comment="Unit system in which this scale is defined.",
+                doc="extd")
+    system: Mapped[Optional['System']] = relationship("System", foreign_keys=[system_id])
+
+    in_point_reference_id: Mapped[Optional[str]] = mapped_column(ForeignKey("externalreference.id"))
+    in_point_reference: Mapped['ExternalReference'] = relationship('ExternalReference', foreign_keys=[in_point_reference_id])
+    bi_point_l_reference_id: Mapped[Optional[str]] = mapped_column(ForeignKey("externalreference.id"))
+    bi_point_l_reference: Mapped['ExternalReference'] = relationship('ExternalReference', foreign_keys=[bi_point_l_reference_id])
+    bi_point_u_reference_id: Mapped[Optional[str]] = mapped_column(ForeignKey("externalreference.id"))
+    bi_point_u_reference: Mapped['ExternalReference'] = relationship('ExternalReference', foreign_keys=[bi_point_u_reference_id])
+
+    
+    scale_factor: Mapped[Optional[str]] = mapped_column(String(100))
+    is_augmented: Mapped[Optional[bool]] = mapped_column(Boolean)
 
     # Deprecated - replaced with in_point
     ref_point: Mapped[Optional[str]]
@@ -288,6 +319,33 @@ class Scale(Base):
 
     scale_aspect_associations: Mapped[list['QuantityObject']] = \
             relationship(back_populates="scale", cascade="all,delete-orphan")
+    
+    source_conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        foreign_keys="ConversionCast.src_scale_id",
+        back_populates="src_scale",
+    )
+
+    destination_conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        foreign_keys="ConversionCast.dst_scale_id",
+        back_populates="dst_scale",
+    )
+
+    @property
+    def conversions(self):
+        return [
+            item for item in self.source_conversion_casts
+            if not item.is_cast
+        ]
+
+    @property
+    def casts(self):
+        return [
+            item for item in self.source_conversion_casts
+            if item.is_cast
+        ]
+
     def __str__(self):
         return f'{self.ml_name}'
 
@@ -305,6 +363,107 @@ class Scale(Base):
 # conversion_cast | function_id | [core] Transformation function
 # conversion_cast | parameters | [core] Transformation function arguments
 ####
+
+class ConversionCast(Base):
+    __tablename__ = "conversion_cast"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+
+    is_cast: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+    src_scale_id: Mapped[str] = mapped_column(
+        ForeignKey("scale.id"),
+        nullable=False,
+    )
+
+    dst_scale_id: Mapped[str] = mapped_column(
+        ForeignKey("scale.id"),
+        nullable=False,
+    )
+
+    src_aspect_id: Mapped[str] = mapped_column(
+        ForeignKey("aspect.id"),
+        nullable=False,
+    )
+
+    dst_aspect_id: Mapped[str] = mapped_column(
+        ForeignKey("aspect.id"),
+        nullable=False,
+    )
+
+    transform_id: Mapped[str] = mapped_column(
+        ForeignKey("transform.id"),
+        nullable=False,
+    )
+
+    parameters: Mapped[Optional[str]] = mapped_column(UnicodeText)
+
+    src_scale: Mapped["Scale"] = relationship(
+        "Scale",
+        foreign_keys=[src_scale_id],
+        back_populates="source_conversion_casts",
+    )
+
+    dst_scale: Mapped["Scale"] = relationship(
+        "Scale",
+        foreign_keys=[dst_scale_id],
+        back_populates="destination_conversion_casts",
+    )
+
+    src_aspect: Mapped["Aspect"] = relationship(
+        "Aspect",
+        foreign_keys=[src_aspect_id],
+        back_populates="source_conversion_casts",
+    )
+
+    dst_aspect: Mapped["Aspect"] = relationship(
+        "Aspect",
+        foreign_keys=[dst_aspect_id],
+        back_populates="destination_conversion_casts",
+    )
+
+    transform: Mapped["Transform"] = relationship(
+        "Transform",
+        back_populates="conversion_casts",
+    )
+
+    @property
+    def kind(self) -> str:
+        return "cast" if self.is_cast else "conversion"
+
+    @property
+    def is_conversion(self) -> bool:
+        return not self.is_cast
+
+    @property
+    def natural_id(self) -> str:
+        return "{},{},{},{}".format(
+            self.src_scale_id,
+            self.dst_scale_id,
+            self.src_aspect_id,
+            self.dst_aspect_id,
+        )
+
+    @property
+    def legacy_id(self) -> str:
+        return self.natural_id
+
+    @classmethod
+    def parse_natural_id(cls, value: str) -> tuple[str, str, str, str]:
+        parts = value.split(",")
+
+        if len(parts) != 4:
+            raise ValueError(
+                "ConversionCast natural id must have four comma-separated parts: "
+                "src_scale_id,dst_scale_id,src_aspect_id,dst_aspect_id"
+            )
+
+        return tuple(parts)
+
+    def __str__(self) -> str:
+        return self.natural_id
+
+
 class Conversion(Base):
     __tablename__ = "conversion"
     
@@ -411,41 +570,42 @@ class Cast(Base):
                                     self.dst_scale_id,
                                     self.dst_aspect_id)
 
+###
+### Deprecate and move to unified ORM
+#conversion_cast_select = union_all(
+#        select(
+#            Conversion.src_scale_id.label("src_scale_id"),
+#            Conversion.src_aspect_id.label("src_aspect_id"),
+#            Conversion.dst_scale_id.label("dst_scale_id"),
+#            Conversion.dst_aspect_id.label("dst_aspect_id"),
+#            literal("conversion").label("type")
+#        ),
+#        select(
+#            Cast.src_scale_id.label("src_scale_id"),
+#            Cast.src_aspect_id.label("src_aspect_id"),
+#            Cast.dst_scale_id.label("dst_scale_id"),
+#            Cast.dst_aspect_id.label("dst_aspect_id"),
+#            literal("cast").label("type")
+#        )
+#    ).subquery()
 
-conversion_cast_select = union_all(
-        select(
-            Conversion.src_scale_id.label("src_scale_id"),
-            Conversion.src_aspect_id.label("src_aspect_id"),
-            Conversion.dst_scale_id.label("dst_scale_id"),
-            Conversion.dst_aspect_id.label("dst_aspect_id"),
-            literal("conversion").label("type")
-        ),
-        select(
-            Cast.src_scale_id.label("src_scale_id"),
-            Cast.src_aspect_id.label("src_aspect_id"),
-            Cast.dst_scale_id.label("dst_scale_id"),
-            Cast.dst_aspect_id.label("dst_aspect_id"),
-            literal("cast").label("type")
-        )
-    ).subquery()
-
-class ConversionCast(Base):
-    __table__ = conversion_cast_select
+#class ConversionCast(Base):
+#    __table__ = conversion_cast_select
     #__table_args__ = {
     #        "comment": "Transformation function for source and destination quantity object."}
    # __table_args__ = {
    #         "comment": "Definition of a reference (unit) associated with a scale."
    #         }
 
-    __mapper_args__ = {
-        "primary_key": [
-            conversion_cast_select.c.src_scale_id,
-            conversion_cast_select.c.src_aspect_id,
-            conversion_cast_select.c.dst_scale_id,
-            conversion_cast_select.c.dst_aspect_id,
-            conversion_cast_select.c.type
-        ],
-    }
+#    __mapper_args__ = {
+#        "primary_key": [
+#            conversion_cast_select.c.src_scale_id,
+#            conversion_cast_select.c.src_aspect_id,
+#            conversion_cast_select.c.dst_scale_id,
+#            conversion_cast_select.c.dst_aspect_id,
+#            conversion_cast_select.c.type
+#        ],
+#    }
 
 class Unit(Base):
     __tablename__ = "unit"
@@ -476,7 +636,7 @@ class Unit(Base):
             doc="core")
     
     # unit | source | [core] Reference to an authoritative definition of the unit. 
-    reference: Mapped[Optional[str]] = mapped_column(String(200),
+    sources: Mapped[Optional[str]] = mapped_column(String(200),
             comment="Reference to an authoritative definition of the unit.",
             doc="core")
 
@@ -523,7 +683,7 @@ class System(Base):
             doc="extd")
     
     # system | source | [core] Reference to an authoritative definition of the unit system. 
-    reference: Mapped[Optional[str]] = mapped_column(String(200),
+    sources: Mapped[Optional[str]] = mapped_column(String(200),
             comment="Reference to an authoritative definition of the unit system. ",
             doc="core"
             )
@@ -611,6 +771,11 @@ class Transform(Base):
             comment="Free-text notes. ",
             doc="core")
 
+    conversion_casts: Mapped[list["ConversionCast"]] = relationship(
+        "ConversionCast",
+        back_populates="transform",
+    )
+
     def __str__(self):
         return f'{self.py_function}'
 
@@ -647,7 +812,7 @@ class Prefix(Base):
     denominator: Mapped[float] = mapped_column(comment="Denominator of the prefix factor, stored as an integer string.")
     
     # prefix     | source      | [impl] Reference to an authoritative definition of the prefix.
-    reference: Mapped[Optional[str]] = mapped_column(String(200),
+    sources: Mapped[Optional[str]] = mapped_column(String(200),
             comment="Reference to an authoritative definition of the prefix.",
             doc="impl")
 
@@ -662,8 +827,33 @@ class Prefix(Base):
 # reference  | name        | [core] Conventional name for the reference
 # reference  | symbol      | [core] M-layer symbol for the reference
 # reference  | source      | [core] Source defining or documenting this entry.
-# class Reference(Base):
-#     __tablename__ = "reference"
+
+class ExternalReference(Base):
+    __tablename__ = "externalreference"
+
+    # reference     | id          | [impl] The M-layer unique identifier for a reference.
+    id: Mapped[str] = mapped_column(String(50), 
+            primary_key=True,
+            comment="The M-layer unique identifier for a prefix.",
+            doc="impl")
+    
+    # reference     | name        | [impl] Conventional name of the reference.
+    name: Mapped[str] = mapped_column(String(100),
+            comment="Conventional name of the prefix.",
+            doc="impl")
+    
+    # reference     | ml_name     | [impl] The M-layer unique identifier for a reference
+    ml_name: Mapped[Optional[str]] = mapped_column(String(100),
+            comment="The M-layer unique identifier for a prefix",
+            doc="impl")
+    
+    # reference     | source      | [impl] Reference to an authoritative definition of the prefix.
+    sources: Mapped[Optional[str]] = mapped_column(String(200),
+            comment="Reference to an authoritative definition of the reference.",
+            doc="impl")
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 

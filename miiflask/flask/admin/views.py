@@ -49,8 +49,7 @@ from miiflask.flask.models.mlayer import (
         Unit,
         Prefix,
         Dimension,
-        Conversion,
-        Cast,
+        ConversionCast,
         Transform,
         System
         )
@@ -568,56 +567,96 @@ class ScaleView(ModelView):
     def _cnv_link_formatter(view, context, model, name):
         urls = []
         aspects = {}
-        for s in model.conversions: aspects[s.src_aspect.id]=(s.src_aspect.name,[]) 
-        for s in model.conversions:
-            
+
+        conversions = [
+            item for item in model.source_conversion_casts
+            if not item.is_cast
+        ]
+
+        for s in conversions:
+            aspects[s.src_aspect.id] = (s.src_aspect.name, [])
+
+        for s in conversions:
             src_qo = view._find_quantity(s.src_scale, s.src_aspect.id)
-            dst_qo = view._find_quantity(s.dst_scale, s.src_aspect.id)
+            dst_qo = view._find_quantity(s.dst_scale, s.dst_aspect.id)
 
-            url_aspect = url_for('aspect.details_view', id=s.src_aspect.id)
-            url_src = url_for('scale.details_view', id=s.src_scale.id)
-            url_dst = url_for('scale.details_view', id=s.dst_scale.id)
-            
-            name_ = '{}: {} &#8594 {}'.format(s.src_aspect.name,
-                    src_qo.quantity_name,
-                    dst_qo.quantity_name)
-            id_ = '{},{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.src_aspect.id,s.dst_aspect_id)
+            src_label = (
+                src_qo.quantity_name
+                if src_qo is not None and src_qo.quantity_name
+                else s.src_scale.ml_name
+            )
 
-            
-            url = url_for('conversion.details_view', id=id_)
+            dst_label = (
+                dst_qo.quantity_name
+                if dst_qo is not None and dst_qo.quantity_name
+                else s.dst_scale.ml_name
+            )
+
+            url_src = url_for("scale.details_view", id=s.src_scale.id)
+            url_dst = url_for("scale.details_view", id=s.dst_scale.id)
+
+            url = url_for(
+                "conversioncast.details_view",
+                id=s.natural_id,
+            )
+
             url_details = (
-                    '<a href={}>{}</a> &#8594 <a href={}>{}</a> <a href="{}">{}</a>'.format(
-                        url_src,
-                        src_qo.quantity_name,
-                        url_dst,
-                        dst_qo.quantity_name,
-                        url,"(see details)"
-                        )
-                    )
+                '<a href="{}">{}</a> &#8594 '
+                '<a href="{}">{}</a> '
+                '<a href="{}">{}</a>'
+            ).format(
+                url_src,
+                src_label,
+                url_dst,
+                dst_label,
+                url,
+                "(see details)",
+            )
+
             aspects[s.src_aspect.id][1].append(url_details)
             urls.append(url_details)
-        markup=""
-        
-        for a in aspects:
-            url_aspect = url_for('aspect.details_view', id=a)
-            markup += f'<a href={url_aspect}>{a}: {aspects[a][0]}</a><br/>'
-            markup += ('<br/>').join(aspects[a][1])
-            markup += ('<br/><br/>')
+
+        markup = ""
+
+        for aspect_id in aspects:
+            url_aspect = url_for("aspect.details_view", id=aspect_id)
+            markup += (
+                '<a href="{}">{}: {}</a><br/>'
+            ).format(
+                url_aspect,
+                aspect_id,
+                aspects[aspect_id][0],
+            )
+            markup += "<br/>".join(aspects[aspect_id][1])
+            markup += "<br/><br/>"
 
         return Markup(markup)
 
     def _cast_link_formatter(view, context, model, name):
         urls = []
-        for s in model.casts:
-            name_ = '{}: {} &#8594 {}: {}'.format(s.src_aspect.name,
-                                       s.src_scale.ml_name,
-                                       s.dst_aspect.name,
-                                       s.dst_scale.ml_name)
-            id_ = '{},{},{},{}'.format(s.src_scale.id,s.dst_scale.id,s.src_aspect.id,s.dst_aspect.id)
-            url = url_for('cast.details_view', id=id_)
-            urls.append('<a href="{}">{}</a>'.format(url,name_))
-                                                     #id_.replace(',', '.')))
-        return Markup((', <br/>').join(urls))
+
+        casts = [
+            item for item in model.source_conversion_casts
+            if item.is_cast
+        ]
+
+        for s in casts:
+            name_ = "{}: {} &#8594 {}: {}".format(
+                s.src_aspect.name,
+                s.src_scale.ml_name,
+                s.dst_aspect.name,
+                s.dst_scale.ml_name,
+            )
+
+            url = url_for(
+                "conversioncast.details_view",
+                id=s.natural_id,
+            )
+
+            urls.append('<a href="{}">{}</a>'.format(url, name_))
+
+        return Markup(", <br/>".join(urls))
+
     
     column_searchable_list = ['ml_name', 'id', 'unit.name']
     can_export = True
@@ -664,8 +703,43 @@ class UnitView(MyModelView):
             'reference': _ref_formatter
             }
 
-class CastConversionView(MyModelView):
-    
+
+class ConversionCastView(MyModelView):
+   
+    def get_one(self, id):
+        if id is None:
+            return None
+
+        # First try the real integer primary key.
+        try:
+            db_id = int(id)
+        except (TypeError, ValueError):
+            db_id = None
+
+        if db_id is not None:
+            model = self.session.get(self.model, db_id)
+            if model is not None:
+                return model
+
+        # Fall back to old composite/natural id.
+        try:
+            src_scale_id, dst_scale_id, src_aspect_id, dst_aspect_id = (
+                self.model.parse_natural_id(id)
+            )
+        except ValueError:
+            return None
+
+        return (
+            self.session.query(self.model)
+            .filter(
+                self.model.src_scale_id == src_scale_id,
+                self.model.dst_scale_id == dst_scale_id,
+                self.model.src_aspect_id == src_aspect_id,
+                self.model.dst_aspect_id == dst_aspect_id,
+            )
+            .first()
+        )
+
     def _aspect_link_formatter(view, context, model, name):
         field = getattr(model, name)
         if field is None:
@@ -679,11 +753,64 @@ class CastConversionView(MyModelView):
             return u""
         url = url_for('scale.details_view', id=field.id)
         return Markup('<a href="{}">({}) {}</a>'.format(url, field.scale_type, field.unit.name))
-    
+
+    column_list = (
+        "natural_id",
+        "kind",
+        "src_scale",
+        "src_aspect",
+        "dst_scale",
+        "dst_aspect",
+        "transform",
+        "parameters",
+    )
+
+    column_details_list = (
+        "id",
+        "natural_id",
+        "kind",
+        "is_cast",
+        "src_scale",
+        "src_aspect",
+        "dst_scale",
+        "dst_aspect",
+        "transform",
+        "parameters",
+    )
+
+    column_labels = {
+        "id": "Database ID",
+        "natural_id": "ID",
+        "kind": "Type",
+        "is_cast": "Is Cast",
+        "src_scale": "Source Scale",
+        "src_aspect": "Source Aspect",
+        "dst_scale": "Destination Scale",
+        "dst_aspect": "Destination Aspect",
+        "transform": "Transform",
+        "parameters": "Parameters",
+    }
+
+    column_searchable_list = (
+        "src_scale_id",
+        "dst_scale_id",
+        "src_aspect_id",
+        "dst_aspect_id",
+        "transform_id",
+    )
+
+    column_filters = (
+        "is_cast",
+        "src_scale_id",
+        "dst_scale_id",
+        "src_aspect_id",
+        "dst_aspect_id",
+        "transform_id",
+    )
+ 
     column_formatters = {
             'src_scale': _scale_link_formatter,
             'dst_scale': _scale_link_formatter,
-            'aspect': _aspect_link_formatter,
             'src_aspect': _aspect_link_formatter,
             'dst_aspect': _aspect_link_formatter,
             'transform': _link_formatter
@@ -691,106 +818,197 @@ class CastConversionView(MyModelView):
 
 
 class QuantityObjectView(MyModelView):
-    
+
     def _aspect_link_formatter(view, context, model, name):
         field = getattr(model, name)
+
         if field is None:
             return u""
-        url = url_for('aspect.details_view', id=field.id)
+
+        url = url_for("aspect.details_view", id=field.id)
         return Markup('<a href="{}">{}</a>'.format(url, field))
-    
+
     def _scale_link_formatter(view, context, model, name):
         field = getattr(model, name)
+
         if field is None:
             return u""
-        
-        url = url_for('scale.details_view', id=field.id)
-        return Markup('<a href="{}">{}</a>'.format(url, field.unit.name))
-  
+
+        url = url_for("scale.details_view", id=field.id)
+
+        label = None
+
+        if getattr(field, "unit", None) is not None:
+            label = field.unit.name
+
+        if not label:
+            label = getattr(field, "ml_name", None) or getattr(field, "id", "")
+
+        return Markup('<a href="{}">{}</a>'.format(url, label))
+
     def _transformations_link_formatter(view, context, model, name):
         return view._render_transformations(model)
 
     def _find_quantity(self, scale, aspect_id):
+        if scale is None:
+            return None
+
         for q in scale.scale_aspect_associations:
             if q.aspect_id == aspect_id:
                 return q
+
         return None
+
+    def _conversion_cast_legacy_id(self, transformation):
+        """
+        Preserve the old admin-link identifier format used before Conversion and
+        Cast were merged into ConversionCast.
+
+        Old Scale/QuantityObject admin links used:
+            src_scale_id,dst_scale_id,src_aspect_id,dst_aspect_id
+
+        The unified ConversionCast table now has an autoincrementing database id,
+        but the data import/dump is still naturally identified by these four
+        source/destination fields.
+        """
+
+        if hasattr(transformation, "legacy_id"):
+            return transformation.legacy_id
+
+        if hasattr(transformation, "natural_id"):
+            return transformation.natural_id
+
+        return "{},{},{},{}".format(
+            transformation.src_scale_id,
+            transformation.dst_scale_id,
+            transformation.src_aspect_id,
+            transformation.dst_aspect_id,
+        )
 
     def _render_transformations(self, model):
         markup = ""
         aspects = {}
 
-        for t in model.transformations:
+        transformations = getattr(model, "transformations", []) or []
+
+        for t in transformations:
             aspects.setdefault(t.src_aspect_id, ("", []))
 
-        for t in model.transformations:
+        for t in transformations:
+            src_scale = getattr(t, "src_scale", None)
+            dst_scale = getattr(t, "dst_scale", None)
+            src_aspect = getattr(t, "src_aspect", None)
+            dst_aspect = getattr(t, "dst_aspect", None)
 
-            src_scale = self.session.get(Scale, t.src_scale_id)
-            dst_scale = self.session.get(Scale, t.dst_scale_id)
-            src_aspect = self.session.get(Aspect, t.src_aspect_id)
-            dst_aspect = self.session.get(Aspect, t.dst_aspect_id)
+            # Defensive fallback in case relationships are not loaded or are absent.
+            if src_scale is None and t.src_scale_id:
+                src_scale = self.session.get(Scale, t.src_scale_id)
+
+            if dst_scale is None and t.dst_scale_id:
+                dst_scale = self.session.get(Scale, t.dst_scale_id)
+
+            if src_aspect is None and t.src_aspect_id:
+                src_aspect = self.session.get(Aspect, t.src_aspect_id)
+
+            if dst_aspect is None and t.dst_aspect_id:
+                dst_aspect = self.session.get(Aspect, t.dst_aspect_id)
 
             src_qo = self._find_quantity(src_scale, t.src_aspect_id)
             dst_qo = self._find_quantity(dst_scale, t.dst_aspect_id)
 
-            if src_aspect:
-                aspects[t.src_aspect_id] = (src_aspect.name, aspects[t.src_aspect_id][1])
-
-            url_src_aspect = url_for('aspect.details_view', id=t.src_aspect_id)
-            url_dst_aspect = url_for('aspect.details_view', id=t.dst_aspect_id)
-            url_src = url_for('scale.details_view', id=t.src_scale_id)
-            url_dst = url_for('scale.details_view', id=t.dst_scale_id)
-
-            #id_conversion = f"{t.src_scale_id},{t.dst_scale_id},{t.src_aspect_id}"
-            id_ = f"{t.src_scale_id},{t.dst_scale_id},{t.src_aspect_id},{t.dst_aspect_id}"
-            
-            if t.type == "conversion":
-                url = url_for('conversion.details_view', id=id_)
-            else:
-                url = url_for('cast.details_view', id=id_)
-
-            label = f"{t.type}"
-
-            url_details = (
-                '<a href={}>{}</a> &#8594 <a href={}>{}</a> '
-                '<a href="{}">({})</a>'.format(
-                    url_src,
-                    src_qo.quantity_name if src_qo else "?",
-                    url_dst,
-                    dst_qo.quantity_name if dst_qo else "?",
-                    url,
-                    label
+            if src_aspect is not None:
+                aspects[t.src_aspect_id] = (
+                    src_aspect.name,
+                    aspects[t.src_aspect_id][1],
                 )
+
+            url_src = url_for("scale.details_view", id=t.src_scale_id)
+            url_dst = url_for("scale.details_view", id=t.dst_scale_id)
+
+            conversion_cast_id = self._conversion_cast_legacy_id(t)
+
+            url_details = url_for(
+                "conversioncast.details_view",
+                id=conversion_cast_id,
             )
 
-            aspects[t.src_aspect_id][1].append(url_details)
+            label = getattr(t, "kind", None)
 
-        for a in aspects:
-            url_aspect = url_for('aspect.details_view', id=a)
+            if label is None:
+                label = "cast" if getattr(t, "is_cast", False) else "conversion"
 
-            markup += f'<a href={url_aspect}>{a}: {aspects[a][0]}</a><br/>'
-            markup += ('<br/>').join(aspects[a][1])
-            markup += '<br/><br/>'
+            src_label = None
+            dst_label = None
+
+            if src_qo is not None:
+                src_label = src_qo.quantity_name
+
+            if dst_qo is not None:
+                dst_label = dst_qo.quantity_name
+
+            if not src_label and src_scale is not None:
+                src_label = getattr(src_scale, "ml_name", None) or getattr(src_scale, "id", "?")
+
+            if not dst_label and dst_scale is not None:
+                dst_label = getattr(dst_scale, "ml_name", None) or getattr(dst_scale, "id", "?")
+
+            if not src_label:
+                src_label = "?"
+
+            if not dst_label:
+                dst_label = "?"
+
+            url_details_markup = (
+                '<a href="{}">{}</a> &#8594; '
+                '<a href="{}">{}</a> '
+                '<a href="{}">({})</a>'
+            ).format(
+                url_src,
+                src_label,
+                url_dst,
+                dst_label,
+                url_details,
+                label,
+            )
+
+            aspects[t.src_aspect_id][1].append(url_details_markup)
+
+        for aspect_id in aspects:
+            url_aspect = url_for("aspect.details_view", id=aspect_id)
+
+            aspect_name = aspects[aspect_id][0] or ""
+
+            markup += '<a href="{}">{}: {}</a><br/>'.format(
+                url_aspect,
+                aspect_id,
+                aspect_name,
+            )
+
+            markup += "<br/>".join(aspects[aspect_id][1])
+            markup += "<br/><br/>"
 
         return Markup(markup)
-    
-    column_searchable_list = ['quantity_name']
-    
-    column_formatters = {
-            'scale': _scale_link_formatter,
-            'aspect': _aspect_link_formatter,
-            'transformations': _transformations_link_formatter
-            }
-    
-    column_list = ("scale",
-                   "aspect",
-                   "quantity_name"
-                   )
 
-    column_details_list = ("scale",
-                           'aspect',
-                           'transformations'
-                           )
+    column_searchable_list = ["quantity_name"]
+
+    column_formatters = {
+        "scale": _scale_link_formatter,
+        "aspect": _aspect_link_formatter,
+        "transformations": _transformations_link_formatter,
+    }
+
+    column_list = (
+        "scale",
+        "aspect",
+        "quantity_name",
+    )
+
+    column_details_list = (
+        "scale",
+        "aspect",
+        "quantity_name",
+        "transformations",
+    )
 
 
 class AspectView(MyModelView):

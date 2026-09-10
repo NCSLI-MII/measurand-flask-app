@@ -1,7 +1,5 @@
 name: validation
 on: 
-  pull_request:
-    branchs: [main]
   workflow_dispatch:
 
 jobs:
@@ -101,6 +99,6 @@ jobs:
           mamba activate measurand-flask-app
           mamba list
           which python
-          python -m unittest tests/test_validate.py 
+          python -m unittest tests/test_validate_db_json.py 
    
 
