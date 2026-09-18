@@ -117,6 +117,7 @@ class MlayerJsonImportConfig:
             "systems": "systems.json",
             "dimensions": "dimensions.json",
             "aspects": "aspects.json",
+            "references": "references.json",
             "units": "units.json",
             "scales": "scales.json",
             "functions": "functions.json",
@@ -200,6 +201,7 @@ class MlayerJsonMapper:
         "systems",
         "dimensions",
         "aspects",
+        "references",
         "units",
         "scales",
         "functions",
@@ -477,7 +479,7 @@ class MlayerJsonMapper:
             ml_name=obj.get("ml_name"),
             name=obj.get("name"),
             symbol=obj.get("symbol"),
-            sources=obj.get("reference"),
+            sources=obj.get("sources"),
             numerator=self.coerce_float(obj.get("numerator")),
             denominator=self.coerce_float(obj.get("denominator")),
         )
@@ -495,7 +497,7 @@ class MlayerJsonMapper:
             symbol=obj.get("symbol"),
             n=self.coerce_int(obj.get("n")),
             basis=obj.get("basis"),
-            sources=obj.get("reference"),
+            sources=", ".join(obj.get("sources")),
         )
 
         session.add(system)
@@ -537,7 +539,7 @@ class MlayerJsonMapper:
             ml_name=obj.get("ml_name"),
             name=name,
             symbol=obj.get("symbol"),
-            sources=obj.get("reference"),
+            sources=", ".join(obj.get("sources")),
         )
 
         session.add(aspect)
@@ -551,11 +553,25 @@ class MlayerJsonMapper:
             ml_name=obj.get("ml_name"),
             name=obj.get("name"),
             symbol=obj.get("symbol"),
-            sources=obj.get("reference"),
+            sources=", ".join(obj.get("sources")),
         )
 
         session.add(unit)
         return unit
+
+    def transform_references(self, session: Session, obj: dict[str, Any]) -> Any:
+        Reference = self.registry.require("reference")
+
+        reference = Reference(
+            id=obj.get("id"),
+            ml_name=obj.get("ml_name"),
+            name=obj.get("name"),
+            symbol=obj.get("symbol"),
+            sources=", ".join(obj.get("sources")),
+        )
+
+        session.add(reference)
+        return reference
 
     def transform_scales(self, session: Session, obj: dict[str, Any]) -> Any:
         Scale = self.registry.require("scale")
@@ -566,17 +582,18 @@ class MlayerJsonMapper:
             "name": obj.get("name"),
             "symbol": obj.get("symbol"),
             "scale_type": obj.get("type") or obj.get("scale_type"),
-            "ref_point": obj.get("ref_point"),
-            "ref_point_l": obj.get("ref_point_l"),
-            "ref_point_h": obj.get("ref_point_h"),
+            "in_point_reference": obj.get("in_point"),
+            "bi_point_l_refernce": obj.get("bi_point_l"),
+            "bi_point_h_reference": obj.get("bi_point_h"),
             "is_systematic": obj.get("is_systematic"),
             "is_special": obj.get("is_special"),
             "is_augmented": obj.get("is_augmented"),
             "unit_id": obj.get("unit_id"),
             "prefix_id": obj.get("prefix_id"),
             "system_dimensions_id": obj.get("system_dimensions_id"),
+            "system_id": obj.get("system_id"),
             "root_scale_id": obj.get("root_scale_id"),
-            "reference": obj.get("reference"),
+            "sources": ", ".join(obj.get("sources")),
         }
 
         values = self.keep_model_columns(Scale, values)

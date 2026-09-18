@@ -37,11 +37,12 @@ from miiflask.flask.models.mlayer import (
         Aspect,
         Transform,
         Conversion,
-        QuantityObject
+        QuantityObject,
+        Reference
         )
 
 from miiflask.flask.models.taxonomy import (
-        Reference,
+        ExternalReference,
         Parameter,
         Discipline,
         MeasurandTaxon
@@ -62,6 +63,7 @@ from miiflask.flask.models.kcdb import (
         )
 
 
+
 class QuantityObjectSchema(Schema):
     scale_id = fields.String()
     aspect_id = fields.String()
@@ -72,7 +74,7 @@ class QuantityObjectSchema(Schema):
     scale_name = fields.Method("get_scale_name")
     scale_symbol = fields.Method("get_scale_symbol")
     scale_type = fields.Method("get_scale_type")
-
+    
     aspect_name = fields.Method("get_aspect_name")
     aspect_symbol = fields.Method("get_aspect_symbol")
     aspect_reference = fields.Method("get_aspect_reference")
@@ -81,6 +83,9 @@ class QuantityObjectSchema(Schema):
     unit_name = fields.Method("get_unit_name")
     unit_symbol = fields.Method("get_unit_symbol")
     unit_reference = fields.Method("get_unit_reference")
+
+    system = fields.Method("get_system")
+    dimensions = fields.Method("get_dimensions")
 
     def get_name(self, obj):
         return obj.quantity_name
@@ -117,6 +122,12 @@ class QuantityObjectSchema(Schema):
     
     def get_unit_reference(self, obj):
         return obj.scale.unit.sources if obj.scale and obj.scale.unit else None
+
+    def get_system(self, obj):
+        return obj.scale.system.symbol if obj.scale and obj.scale.system else None
+
+    def get_dimensions(self, obj):
+        return obj.scale.system_dimensions.exponents if obj.scale and obj.scale.system_dimensions else None
 
 class PrefixSchema(SQLAlchemyAutoSchema):
 
@@ -159,6 +170,15 @@ class DimensionSchema(SQLAlchemyAutoSchema):
 
     class Meta:
         model = Dimension
+        include_relationships = True
+        load_instance = True
+        ordered = True
+
+
+class ReferenceSchema(SQLAlchemyAutoSchema):
+
+    class Meta:
+        model = Reference
         include_relationships = True
         load_instance = True
         ordered = True
@@ -208,10 +228,10 @@ class ConversionSchema(SQLAlchemyAutoSchema):
         ordered = True
 
 
-class ReferenceSchema(SQLAlchemyAutoSchema):
+class ExternalReferenceSchema(SQLAlchemyAutoSchema):
 
     class Meta:
-        model = Reference
+        model = ExternalReference
         include_relationships = True
         load_instance = True
         ordered = True
@@ -248,6 +268,16 @@ class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
     aspect = Nested(AspectSchema(only=("name", "id",)))
     discipline = Nested(DisciplineSchema(only=("label",)))
 
+
+class QuantityObjectSchema_v1(SQLAlchemyAutoSchema):
+    scale = Nested(ScaleSchema)
+    aspect = Nested(AspectSchema)
+
+    class Meta:
+        model = QuantityObject
+        include_relationships = True
+        load_instance = True
+        ordered = True
 
 #class TaxonSchema(SQLAlchemyAutoSchema#):
 #    class Meta:

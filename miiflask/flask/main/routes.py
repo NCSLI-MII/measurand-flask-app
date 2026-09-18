@@ -39,7 +39,7 @@ from miiflask.flask.models.taxonomy import (
         MeasurandTaxon,
         Parameter,
         Discipline,
-        Reference
+        ExternalReference
         )
 
 from miiflask.flask.models.schemas import ( 

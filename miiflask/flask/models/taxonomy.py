@@ -88,7 +88,7 @@ class MeasurandTaxon(Base):
         relationship(back_populates="measurandtaxon")
     
     # One to many parameters
-    external_references: Mapped[list['Reference']] = \
+    external_references: Mapped[list['ExternalReference']] = \
         relationship(back_populates="measurandtaxon")
 
     def __str__(self):
@@ -119,8 +119,8 @@ class Parameter(Base):
         return f'{self.name}'
 
 
-class Reference(Base):
-    __tablename__ = "reference"
+class ExternalReference(Base):
+    __tablename__ = "external_reference"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     category_name = mapped_column(String(50))
     category_value = mapped_column(String(50))

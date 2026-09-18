@@ -39,7 +39,7 @@ from miiflask.flask.models.taxonomy import (
         MeasurandTaxon,
         Discipline,
         Parameter,
-        Reference,
+        ExternalReference,
         Administrative
         )
 
@@ -51,7 +51,7 @@ from miiflask.flask.models.mlayer import (
         Dimension,
         ConversionCast,
         Transform,
-        System
+        System,
         )
 
 from miiflask.flask.models.schemas import (
@@ -472,7 +472,7 @@ class MeasurandTaxonView(ModelView):
             "aspect", 
             "definition"
             )
-    inline_models = [(Parameter, dict(form_excluded_columns=['quantitykind','measurandtaxon','measurand'])), Reference]
+    inline_models = [(Parameter, dict(form_excluded_columns=['quantitykind','measurandtaxon','measurand'])), ExternalReference]
     column_details_list = (
            "id",
            "name",
