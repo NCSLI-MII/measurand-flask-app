@@ -108,6 +108,7 @@ class MlayerJsonImportConfig:
     enable_sqlite_foreign_keys: bool = False
 
     skip_post_processing: bool = False
+    skip_scale_name_update: bool = False
     skip_quantity_object_name_update: bool = False
     skip_dimension_systematic_scale_update: bool = False
 
@@ -133,6 +134,7 @@ class JsonImportResult:
     skipped_counts: dict[str, int]
     updated_dimension_systematic_scales: int = 0
     updated_quantity_object_fields: int = 0
+    updated_scale_fields: int = 0
 
 
 class MlayerModelRegistry:
@@ -269,6 +271,10 @@ class MlayerJsonMapper:
                     self.update_dimension_systematic_scales(session)
                 )
 
+            if not self.config.skip_scale_name_update:
+                result.updated_scale_fields = (
+                        self.update_scale_names(session)
+                        )
             if not self.config.skip_quantity_object_name_update:
                 result.updated_quantity_object_fields = (
                     self.update_quantity_object_names(session)
@@ -843,6 +849,79 @@ class MlayerJsonMapper:
 
         return updated
 
+    def update_scale_names(self, session: Session) -> int:
+        """
+        Populate missing Scale name and symbol fields.
+
+        If Scale.name is missing, derive it from:
+            <scale_type> <unit.name>
+
+        If Scale.symbol is missing, derive it from:
+            <scale_type> <unit.symbol>
+
+        This should run as a post-processing step after Scale and Unit records
+        have been loaded, and before QuantityObject names/symbols are updated.
+        """
+
+        Scale = self.registry.get("scale")
+        Unit = self.registry.get("unit")
+
+        if not all([Scale, Unit]):
+            self.logger.warning(
+                "Cannot update Scale names: required models not found"
+            )
+            return 0
+
+        updated = 0
+
+        scales = session.query(Scale).all()
+
+        for scale in scales:
+            scale_type = getattr(scale, "scale_type", None)
+
+            unit = None
+            unit_id = getattr(scale, "unit_id", None)
+
+            if unit_id:
+                unit = session.get(Unit, unit_id)
+
+            unit_name = getattr(unit, "name", None) if unit is not None else None
+            unit_symbol = getattr(unit, "symbol", None) if unit is not None else None
+
+            if hasattr(scale, "name") and not getattr(scale, "name", None):
+                computed_name = None
+
+                if scale_type and unit_name:
+                    computed_name = f"{scale_type} {unit_name}"
+                elif unit_name:
+                    computed_name = unit_name
+                elif scale_type:
+                    computed_name = scale_type
+
+                if computed_name:
+                    setattr(scale, "name", computed_name)
+                    updated += 1
+
+            if hasattr(scale, "symbol") and not getattr(scale, "symbol", None):
+                computed_symbol = None
+
+                if scale_type and unit_symbol:
+                    computed_symbol = f"{scale_type} {unit_symbol}"
+                elif unit_symbol:
+                    computed_symbol = unit_symbol
+                elif scale_type:
+                    computed_symbol = scale_type
+
+                if computed_symbol:
+                    setattr(scale, "symbol", computed_symbol)
+                    updated += 1
+
+        session.flush()
+
+        self.logger.info("Updated %s Scale derived fields", updated)
+        return updated
+
+
     def update_quantity_object_names(self, session: Session) -> int:
         """
         Populate derived QuantityObject fields where those columns exist.
@@ -881,16 +960,24 @@ class MlayerJsonMapper:
 
             if getattr(scale, "unit_id", None):
                 unit = session.get(Unit, scale.unit_id)
-
+            
             if hasattr(qo, "quantity_name"):
                 current_name = getattr(qo, "name", None)
 
+                aspect_name = getattr(aspect, "name", None)
+                scale_name = getattr(scale, "name", None)
+                unit_name = getattr(unit, "name", None) if unit is not None else None
+
                 if current_name:
                     computed_name = current_name
-                elif getattr(scale, "name", None):
-                    computed_name = f"{aspect.name} {scale.name}"
-                elif unit is not None and getattr(unit, "name", None):
-                    computed_name = f"{aspect.name} {unit.name}"
+                elif aspect_name and scale_name:
+                    computed_name = f"{aspect_name} {scale_name}"
+                elif aspect_name and unit_name:
+                    computed_name = f"{aspect_name} {unit_name}"
+                elif scale_name:
+                    computed_name = scale_name
+                elif unit_name:
+                    computed_name = unit_name
                 else:
                     computed_name = None
 
@@ -901,12 +988,20 @@ class MlayerJsonMapper:
             if hasattr(qo, "quantity_symbol"):
                 current_symbol = getattr(qo, "symbol", None)
 
+                aspect_symbol = getattr(aspect, "symbol", None)
+                scale_symbol = getattr(scale, "symbol", None)
+                unit_symbol = getattr(unit, "symbol", None) if unit is not None else None
+
                 if current_symbol:
                     computed_symbol = current_symbol
-                elif getattr(scale, "symbol", None):
-                    computed_symbol = f"{aspect.symbol} {scale.symbol}"
-                elif unit is not None and getattr(unit, "symbol", None):
-                    computed_symbol = f"{aspect.symbol} {unit.symbol}"
+                elif aspect_symbol and scale_symbol:
+                    computed_symbol = f"{aspect_symbol} {scale_symbol}"
+                elif aspect_symbol and unit_symbol:
+                    computed_symbol = f"{aspect_symbol} {unit_symbol}"
+                elif scale_symbol:
+                    computed_symbol = scale_symbol
+                elif unit_symbol:
+                    computed_symbol = unit_symbol
                 else:
                     computed_symbol = None
 
@@ -1058,6 +1153,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--echo-sql", action="store_true")
     parser.add_argument("--enable-sqlite-foreign-keys", action="store_true")
     parser.add_argument("--skip-post-processing", action="store_true")
+    parser.add_argument("--skip-scale-name-update", action="store_rtue")
     parser.add_argument("--skip-quantity-object-name-update", action="store_true")
     parser.add_argument("--skip-dimension-systematic-scale-update", action="store_true")
     return parser.parse_args(argv)
@@ -1077,6 +1173,7 @@ def config_from_args(args: argparse.Namespace) -> MlayerJsonImportConfig:
         echo_sql=args.echo_sql,
         enable_sqlite_foreign_keys=args.enable_sqlite_foreign_keys,
         skip_post_processing=args.skip_post_processing,
+        skip_scale_name_update=args.skip_scale_name_update,
         skip_quantity_object_name_update=args.skip_quantity_object_name_update,
         skip_dimension_systematic_scale_update=args.skip_dimension_systematic_scale_update,
     )
