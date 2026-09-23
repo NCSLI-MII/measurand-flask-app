@@ -1153,7 +1153,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--echo-sql", action="store_true")
     parser.add_argument("--enable-sqlite-foreign-keys", action="store_true")
     parser.add_argument("--skip-post-processing", action="store_true")
-    parser.add_argument("--skip-scale-name-update", action="store_rtue")
+    parser.add_argument("--skip-scale-name-update", action="store_true")
     parser.add_argument("--skip-quantity-object-name-update", action="store_true")
     parser.add_argument("--skip-dimension-systematic-scale-update", action="store_true")
     return parser.parse_args(argv)

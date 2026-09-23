@@ -147,10 +147,11 @@ class QuantityObjectSchema(Schema):
         for transformation in getattr(obj, "transformations", []) or []:
             dst_aspect_id = getattr(transformation, "dst_aspect_id", None)
             dst_scale_id = getattr(transformation, "dst_scale_id", None)
-
             if not dst_aspect_id or not dst_scale_id:
                 continue
-
+            dst_scale = getattr(transformation, "dst_scale", None)
+            dst_aspect = getattr(transformation, "dst_aspect", None)
+            
             dst_quantity_object = self._get_destination_quantity_object(
                 transformation
             )
@@ -183,12 +184,14 @@ class QuantityObjectSchema(Schema):
                     "kind": getattr(transformation, "kind", None),
                     "is_cast": getattr(transformation, "is_cast", None),
 
-                    "aspect_scale": {
-                        "aspect_id": dst_aspect_id,
-                        "scale_id": dst_scale_id,
-                    },
                     "aspect_id": dst_aspect_id,
+                    "aspect_name": getattr(dst_aspect, "name", None)
+                                        if dst_aspect
+                                        else None,
                     "scale_id": dst_scale_id,
+                    "scale_name": getattr(dst_scale, "name", None)
+                                        if dst_scale
+                                        else None,
 
                     "name": dst_name,
                     "symbol": dst_symbol,

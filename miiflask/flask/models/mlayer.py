@@ -300,15 +300,6 @@ class Scale(Base):
 
     # Using QuantityObject and view only
     aspects: Mapped[list['Aspect']] = relationship(secondary="quantityobject_table", viewonly=True)
-    conversions: Mapped[list['Conversion']] = \
-        relationship(primaryjoin="(Scale.id == Conversion.src_scale_id)",
-                     viewonly=True)
-
-    casts: Mapped[list['Cast']] = \
-        relationship(primaryjoin="(Scale.id == Cast.src_scale_id)",
-                     viewonly=True)
-    # src_scales = relationship('Conversion', back_populates='src_scale')
-    # dst_scales = relationship('Conversion', back_populates='dst_scale')
 
     scale_aspect_associations: Mapped[list['QuantityObject']] = \
             relationship(back_populates="scale", cascade="all,delete-orphan")
@@ -327,17 +318,11 @@ class Scale(Base):
 
     @property
     def conversions(self):
-        return [
-            item for item in self.source_conversion_casts
-            if not item.is_cast
-        ]
+        return [item for item in self.source_conversion_casts if not item.is_cast]
 
     @property
     def casts(self):
-        return [
-            item for item in self.source_conversion_casts
-            if item.is_cast
-        ]
+        return [item for item in self.source_conversion_casts if item.is_cast]
 
     def __str__(self):
         return f'{self.ml_name}'
