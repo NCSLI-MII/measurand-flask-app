@@ -478,7 +478,7 @@ class MeasurandTaxonSchema(SQLAlchemyAutoSchema):
         ordered = True
 
     parameters = Nested(ParameterSchema, many=True)
-    external_references = Nested(ReferenceSchema, many=True)
+    external_references = Nested(ExternalReferenceSchema, many=True)
     aspect = Nested(AspectSchema(only=("name", "id",)))
     discipline = Nested(DisciplineSchema(only=("label",)))
 
