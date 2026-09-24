@@ -280,25 +280,18 @@ class Scale(Base):
                 doc="extd")
     system: Mapped[Optional['System']] = relationship("System", foreign_keys=[system_id])
 
-    in_point_reference_id: Mapped[Optional[str]] = mapped_column(ForeignKey("externalreference.id"))
-    in_point_reference: Mapped['ExternalReference'] = relationship('ExternalReference', foreign_keys=[in_point_reference_id])
-    bi_point_l_reference_id: Mapped[Optional[str]] = mapped_column(ForeignKey("externalreference.id"))
-    bi_point_l_reference: Mapped['ExternalReference'] = relationship('ExternalReference', foreign_keys=[bi_point_l_reference_id])
-    bi_point_u_reference_id: Mapped[Optional[str]] = mapped_column(ForeignKey("externalreference.id"))
-    bi_point_u_reference: Mapped['ExternalReference'] = relationship('ExternalReference', foreign_keys=[bi_point_u_reference_id])
+    in_point_reference_id: Mapped[Optional[str]] = mapped_column(ForeignKey("reference.id"))
+    in_point_reference: Mapped['Reference'] = relationship('Reference', foreign_keys=[in_point_reference_id])
+    
+    bi_point_l_reference_id: Mapped[Optional[str]] = mapped_column(ForeignKey("reference.id"))
+    bi_point_l_reference: Mapped['Reference'] = relationship('Reference', foreign_keys=[bi_point_l_reference_id])
+    
+    bi_point_u_reference_id: Mapped[Optional[str]] = mapped_column(ForeignKey("reference.id"))
+    bi_point_u_reference: Mapped['Reference'] = relationship('Reference', foreign_keys=[bi_point_u_reference_id])
 
     
     scale_factor: Mapped[Optional[str]] = mapped_column(String(100))
     is_augmented: Mapped[Optional[bool]] = mapped_column(Boolean)
-
-    # Deprecated - replaced with in_point
-    ref_point: Mapped[Optional[str]]
-
-    # Deprecated - replaced with bi_point_l
-    ref_point_l: Mapped[Optional[str]]
-
-    # Deprecated - replaced with bi_point_h
-    ref_point_h: Mapped[Optional[str]]
 
     # Using secondary scaleaspect_table
     #aspects: Mapped[list['Aspect']] = \
@@ -307,15 +300,6 @@ class Scale(Base):
 
     # Using QuantityObject and view only
     aspects: Mapped[list['Aspect']] = relationship(secondary="quantityobject_table", viewonly=True)
-    conversions: Mapped[list['Conversion']] = \
-        relationship(primaryjoin="(Scale.id == Conversion.src_scale_id)",
-                     viewonly=True)
-
-    casts: Mapped[list['Cast']] = \
-        relationship(primaryjoin="(Scale.id == Cast.src_scale_id)",
-                     viewonly=True)
-    # src_scales = relationship('Conversion', back_populates='src_scale')
-    # dst_scales = relationship('Conversion', back_populates='dst_scale')
 
     scale_aspect_associations: Mapped[list['QuantityObject']] = \
             relationship(back_populates="scale", cascade="all,delete-orphan")
@@ -334,17 +318,11 @@ class Scale(Base):
 
     @property
     def conversions(self):
-        return [
-            item for item in self.source_conversion_casts
-            if not item.is_cast
-        ]
+        return [item for item in self.source_conversion_casts if not item.is_cast]
 
     @property
     def casts(self):
-        return [
-            item for item in self.source_conversion_casts
-            if item.is_cast
-        ]
+        return [item for item in self.source_conversion_casts if item.is_cast]
 
     def __str__(self):
         return f'{self.ml_name}'
@@ -828,29 +806,33 @@ class Prefix(Base):
 # reference  | symbol      | [core] M-layer symbol for the reference
 # reference  | source      | [core] Source defining or documenting this entry.
 
-class ExternalReference(Base):
-    __tablename__ = "externalreference"
+class Reference(Base):
+    __tablename__ = "reference"
 
     # reference     | id          | [impl] The M-layer unique identifier for a reference.
     id: Mapped[str] = mapped_column(String(50), 
             primary_key=True,
-            comment="The M-layer unique identifier for a prefix.",
-            doc="impl")
+            comment="The M-layer unique identifier for a reference.",
+            doc="core")
     
     # reference     | name        | [impl] Conventional name of the reference.
     name: Mapped[str] = mapped_column(String(100),
-            comment="Conventional name of the prefix.",
-            doc="impl")
+            comment="Conventional name of the reference.",
+            doc="core")
     
     # reference     | ml_name     | [impl] The M-layer unique identifier for a reference
     ml_name: Mapped[Optional[str]] = mapped_column(String(100),
-            comment="The M-layer unique identifier for a prefix",
+            comment="The M-layer unique identifier for a reference",
             doc="impl")
     
+    symbol: Mapped[str] = mapped_column(String(100),
+            comment="M-layer symbol of the reference.",
+            doc="core")
+
     # reference     | source      | [impl] Reference to an authoritative definition of the prefix.
     sources: Mapped[Optional[str]] = mapped_column(String(200),
             comment="Reference to an authoritative definition of the reference.",
-            doc="impl")
+            doc="core")
 
     def __str__(self):
         return f'{self.name}'

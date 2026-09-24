@@ -217,7 +217,7 @@ class TaxonomyMapper:
         #self._schemas["measurand"] = schemas.MeasurandSchema()
         self._schemas["measurandtaxon"] = schemas.MeasurandTaxonSchema()
         self._schemas["parameter"] = schemas.ParameterSchema()
-        self._schemas["reference"] = schemas.ReferenceSchema()
+        self._schemas["reference"] = schemas.ExternalReferenceSchema()
 
         self._mii_taxons_dict = {}
         self._mii_taxons_list = None
