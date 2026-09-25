@@ -257,9 +257,8 @@ class Scale(Base):
                 comment="System dimensions associated with scale.",
                 doc="extd")
     system_dimensions: Mapped['Dimension'] = relationship("Dimension", foreign_keys=[system_dimensions_id])
-        # Remove view on all scales that share dimension
-        # Only point to the dimension that define the scale
-        #relationship(back_populates="systematic_scales")
+    # Remove view on all scales that share dimension
+    # Only point to the dimension that define the scale
 
     # scale | is_systematic | [extd] True for a ratio scale associated with a compound unit expressed in system base units.
     is_systematic: Mapped[Optional[bool]] = mapped_column(Boolean, 
@@ -325,7 +324,11 @@ class Scale(Base):
         return [item for item in self.source_conversion_casts if item.is_cast]
 
     def __str__(self):
-        return f'{self.ml_name}'
+        for attr in ("ml_name", "name", "symbol", "id"):
+            value = getattr(self, attr, None)
+            if value:
+                return str(value)
+        return ""
 
     def __unicode__(self):
         return self.ml_name
@@ -686,10 +689,15 @@ class Dimension(Base):
     
     # Dimensions only points back to the systematic scale
     # dimension  | systematic_scale_id | [extd] Systematic scale with the same dimension
-    systematic_scale_id: Mapped[Optional[str]] = \
-        mapped_column(ForeignKey('scale.id'),
-                comment="Systematic scale with the same dimension",
-                doc="extd")
+    systematic_scale_id: Mapped[Optional[str]] = mapped_column(
+            ForeignKey(
+                'scale.id',
+                use_alter=True,
+                name="fk_dimension_systematic_scale_id"
+                ),
+            comment="Systematic scale with the same dimension",
+            doc="extd")
+        
  
     # dimension  | exponents           | [extd] Integer or rational exponent sequence for this system dimension.
     exponents: Mapped[Optional[str]] = mapped_column(String(40),
@@ -700,11 +708,15 @@ class Dimension(Base):
     # Whereas many scales may have the same dimensions 
     # The view of all scales with the same dimension may be useful
     # What is required is the relation between the systematic scale and the dimension
-    #systematic_scales: Mapped[list['Scale']] = \
-    #    relationship(back_populates="system_dimensions", viewonly=True)
+    #scales: Mapped[list["Scale"]] = relationship(
+    #    "Scale",
+    #    foreign_keys="Scale.system_dimensions_id",
+    #    primaryjoin="Dimension.id == Scale.system_dimensions_id",
+    #    viewonly=True,
+    #)
 
     formal_system: Mapped['System'] = relationship()
-    systematic_scale: Mapped['Scale'] = relationship("Scale", foreign_keys=[systematic_scale_id])
+    systematic_scale: Mapped['Scale'] = relationship("Scale", foreign_keys=[systematic_scale_id], post_update=True)
 
         #relationship(primaryjoin="(Scale.id == Cast.src_scale_id)",
         #             viewonly=True)

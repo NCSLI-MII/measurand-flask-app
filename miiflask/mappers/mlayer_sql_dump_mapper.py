@@ -374,19 +374,19 @@ class MlayerDumpTransforms:
         return {
             "aspect": {
                 "name": cls.normalise_aspect_name,
-                "reference": source_ref,
+                "sources": source_ref,
             },
             "prefix": {
                 "numerator": cls.coerce_float,
                 "denominator": cls.coerce_float,
-                "reference": source_ref,
+                "sources": source_ref,
             },
             "unit": {
-                "reference": source_ref,
+                "sources": source_ref,
             },
             "system": {
                 "n": cls.coerce_int,
-                "reference": source_ref,
+                "sources": source_ref,
             },
             "dimension": {
                 "is_quotient": cls.coerce_bool,
@@ -395,10 +395,10 @@ class MlayerDumpTransforms:
                 "is_systematic": cls.coerce_bool,
                 "is_special": cls.coerce_bool,
                 "is_augmented": cls.coerce_bool,
-                "reference": source_ref,
+                "sources": source_ref,
             },
             "quantityobject_table": {
-                "reference": source_ref,
+                "sources": source_ref,
             },
             #"conversion": {
             #    "parameters": cls.normalise_parameters,
@@ -487,6 +487,8 @@ class MlayerSqlDumpMapper:
 
         self.blocks: list[CopyBlock] = []
         self.inserted_counts: dict[str, int] = defaultdict(int)
+        self.pending_dimension_systematic_scales: dict[str, str] = {}
+
 
     def run(self) -> ImportResult:
         """
@@ -594,7 +596,8 @@ class MlayerSqlDumpMapper:
 
     def import_blocks(self, session: Session) -> dict[str, int]:
         self.inserted_counts = defaultdict(int)
-
+        self.pending_dimension_systematic_scales = {}
+        
         for block in self.order_blocks_for_import(self.blocks):
             self.import_block(session, block)
 
@@ -603,13 +606,6 @@ class MlayerSqlDumpMapper:
 
     def import_block(self, session: Session, block: CopyBlock) -> None:
         source_table = block.table_name
-
-        if source_table == "reference":
-            self.logger.warning(
-                "Skipping source table 'reference'. If you add an active Reference "
-                "model to mlayer.py, add its mapping in build_mapping()."
-            )
-            return
 
         if source_table == "conversion_cast":
             self.import_conversion_cast_block(session, block)
@@ -671,49 +667,42 @@ class MlayerSqlDumpMapper:
         return {
             "prefix": {
                 "model": self.registry.get("prefix"),
-                "column_map": {
-                    "sources": "reference",
+                "column_map": {},
                 },
-            },
             "system": {
                 "model": self.registry.get("system"),
-                "column_map": {
-                    "sources": "reference",
+                "column_map": {},
                 },
-            },
             "dimension": {
                 "model": self.registry.get("dimension"),
                 "column_map": {},
-            },
+                },
+            "reference": {
+                "model": self.registry.get("reference"),
+                "column_map": {},
+                },
             "aspect": {
                 "model": self.registry.get("aspect"),
-                "column_map": {
-                    "sources": "reference",
+                "column_map": {},
                 },
-            },
             "unit": {
                 "model": self.registry.get("unit"),
-                "column_map": {
-                    "sources": "reference",
+                "column_map": {},
                 },
-            },
             "scale": {
                 "model": self.registry.get("scale"),
                 "column_map": {
                     "type": "scale_type",
-                    "sources": "reference",
+                    },
                 },
-            },
             "function": {
                 "model": self.registry.get("transform"),
                 "column_map": {},
-            },
+                },
             "aspect_scale": {
                 "model": self.registry.get("quantityobject_table"),
-                "column_map": {
-                    "sources": "reference",
+                "column_map": {},
                 },
-            },
         }
 
     def order_blocks_for_import(self, blocks: list[CopyBlock]) -> list[CopyBlock]:
@@ -752,6 +741,8 @@ class MlayerSqlDumpMapper:
         row = self.keep_model_columns(model, row)
         row = self.apply_transforms(target_table, row)
         row = self.coerce_model_column_types(model, row)
+        row = self.defer_dimension_systematic_scale(target_table, row)
+
         return model(**row)
 
     @staticmethod
@@ -769,6 +760,39 @@ class MlayerSqlDumpMapper:
         for column_name, transform in table_transforms.items():
             if column_name in row:
                 row[column_name] = transform(row[column_name])
+
+        return row
+
+    def defer_dimension_systematic_scale(
+        self,
+        target_table: str,
+        row: dict[str, Any],
+    ) -> dict[str, Any]:
+        """
+        Defer Dimension.systematic_scale_id during initial dimension insert.
+
+        The Dimension/Scale model has an intentional circular reference:
+
+            Dimension.systematic_scale_id -> Scale.id
+            Scale.system_dimensions_id    -> Dimension.id
+
+        SQL dump rows may include dimension.systematic_scale_id, but scales are
+        loaded after dimensions. Therefore, capture the original value, insert the
+        Dimension with systematic_scale_id = None, then restore it in post-processing
+        after Scale rows exist.
+        """
+
+        if target_table != "dimension":
+            return row
+
+        dimension_id = row.get("id")
+        systematic_scale_id = row.get("systematic_scale_id")
+
+        if dimension_id and systematic_scale_id:
+            self.pending_dimension_systematic_scales[str(dimension_id)] = str(systematic_scale_id)
+
+        if "systematic_scale_id" in row:
+            row["systematic_scale_id"] = None
 
         return row
 
@@ -973,28 +997,29 @@ class MlayerSqlDumpMapper:
 
     def update_dimension_systematic_scales(self, session: Session) -> int:
         """
-        Align with mlayer_mapper.py's _updateDimensionSystematicScale.
+        Apply deferred Dimension.systematic_scale_id values captured from the SQL dump.
 
-        For each systematic scale, set the corresponding
-        Dimension.systematic_scale_id if the model exposes these attributes.
+        The source dump may contain dimension.systematic_scale_id directly, but the
+        ORM load order inserts dimensions before scales. To avoid the intentional
+        circular FK problem, the initial dimension insert uses NULL for
+        systematic_scale_id. This method restores the original dump values after
+        Scale rows have been inserted.
+
+        This mirrors the JSON mapper strategy:
+
+            1. load Dimension without systematic_scale_id
+            2. load Scale with system_dimensions_id
+            3. update Dimension.systematic_scale_id from the captured source value
         """
-        scale_model = self.registry.get("scale")
-        dimension_model = self.registry.get("dimension")
 
-        if scale_model is None or dimension_model is None:
+        dimension_model = self.registry.get("dimension")
+        scale_model = self.registry.get("scale")
+
+        if dimension_model is None or scale_model is None:
             self.logger.warning(
-                "Cannot update systematic scales: scale or dimension model not found"
+                "Cannot update systematic scales: dimension or scale model not found"
             )
             return 0
-
-        required_scale_attrs = ["is_systematic", "system_dimensions_id"]
-        for attr in required_scale_attrs:
-            if not hasattr(scale_model, attr):
-                self.logger.warning(
-                    "Cannot update systematic scales: Scale.%s not found",
-                    attr,
-                )
-                return 0
 
         if not hasattr(dimension_model, "systematic_scale_id"):
             self.logger.warning(
@@ -1002,32 +1027,56 @@ class MlayerSqlDumpMapper:
             )
             return 0
 
+        if not self.pending_dimension_systematic_scales:
+            self.logger.info(
+                "No deferred Dimension.systematic_scale_id values found"
+            )
+            return 0
+
         count = 0
 
-        scales = (
-            session.query(scale_model)
-            .filter(scale_model.is_systematic.is_(True))
-            .all()
-        )
-
-        for scale in scales:
-            dimension_id = getattr(scale, "system_dimensions_id", None)
-
-            if not dimension_id:
-                continue
-
+        for dimension_id, systematic_scale_id in self.pending_dimension_systematic_scales.items():
             dimension = session.get(dimension_model, dimension_id)
 
             if dimension is None:
+                message = (
+                    f"Cannot set systematic scale for Dimension {dimension_id!r}: "
+                    "dimension not found"
+                )
+
+                if self.config.strict:
+                    raise RuntimeError(message)
+
+                self.logger.warning(message)
                 continue
 
-            if getattr(dimension, "systematic_scale_id", None) != scale.id:
-                setattr(dimension, "systematic_scale_id", scale.id)
+            scale = session.get(scale_model, systematic_scale_id)
+
+            if scale is None:
+                message = (
+                    f"Cannot set systematic scale for Dimension {dimension_id!r}: "
+                    f"Scale {systematic_scale_id!r} not found"
+                )
+
+                if self.config.strict:
+                    raise RuntimeError(message)
+
+                self.logger.warning(message)
+                continue
+
+            if getattr(dimension, "systematic_scale_id", None) != systematic_scale_id:
+                setattr(dimension, "systematic_scale_id", systematic_scale_id)
                 count += 1
 
         session.flush()
-        self.logger.info("Updated %s Dimension.systematic_scale_id values", count)
+
+        self.logger.info(
+            "Updated %s Dimension.systematic_scale_id values from deferred dump data",
+            count,
+        )
+
         return count
+
 
     def update_quantity_object_names(self, session: Session) -> int:
         """

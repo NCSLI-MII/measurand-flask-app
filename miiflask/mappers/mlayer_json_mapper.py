@@ -231,6 +231,8 @@ class MlayerJsonMapper:
 
         self.inserted_counts: dict[str, int] = defaultdict(int)
         self.skipped_counts: dict[str, int] = defaultdict(int)
+        self.pending_dimension_systematic_scales: list[tuple[str, str]] = []
+
 
     def run(self) -> JsonImportResult:
         """
@@ -512,14 +514,17 @@ class MlayerJsonMapper:
     def transform_dimensions(self, session: Session, obj: dict[str, Any]) -> Any:
         Dimension = self.registry.require("dimension")
 
+        dimension_id = obj.get("id")
+        systematic_scale_id = obj.get("systematic_scale_id")
+
         values = self.keep_model_columns(
             Dimension,
             {
-                "id": obj.get("id"),
+                "id": dimension_id,
                 "exponents": obj.get("exponents"),
                 "formal_system_id": obj.get("formal_system_id"),
-                "systematic_scale_id": obj.get("systematic_scale_id"),
                 "is_quotient": obj.get("is_quotient"),
+                # Deliberately skip systematic_scale_id during initial insert.
             },
         )
 
@@ -527,6 +532,12 @@ class MlayerJsonMapper:
 
         dimension = Dimension(**values)
         session.add(dimension)
+
+        if dimension_id and systematic_scale_id:
+            self.pending_dimension_systematic_scales.append(
+                (dimension_id, systematic_scale_id)
+            )
+
         return dimension
 
     def transform_aspects(self, session: Session, obj: dict[str, Any]) -> Any:
@@ -794,60 +805,84 @@ class MlayerJsonMapper:
     # -------------------------------------------------------------------------
     # Post-processing
     # -------------------------------------------------------------------------
-
     def update_dimension_systematic_scales(self, session: Session) -> int:
         """
-        For each systematic scale, set Dimension.systematic_scale_id when the
-        ORM model supports it.
+        Populate Dimension.systematic_scale_id after Dimension and Scale rows
+        have both been inserted.
+
+        This resolves the inherent circular dependency:
+
+            Scale.system_dimensions_id -> Dimension.id
+            Dimension.systematic_scale_id -> Scale.id
+
+        by inserting dimensions first with systematic_scale_id = NULL,
+        then inserting scales, then updating dimensions.
         """
 
-        Scale = self.registry.get("scale")
         Dimension = self.registry.get("dimension")
+        Scale = self.registry.get("scale")
 
-        if Scale is None or Dimension is None:
-            self.logger.warning("Cannot update systematic scales: missing Scale or Dimension model")
-            return 0
-
-        if not hasattr(Scale, "is_systematic"):
-            self.logger.warning("Scale.is_systematic not found")
-            return 0
-
-        if not hasattr(Scale, "system_dimensions_id"):
-            self.logger.warning("Scale.system_dimensions_id not found")
+        if Dimension is None or Scale is None:
+            self.logger.warning(
+                "Cannot update dimension systematic scales: missing Dimension or Scale model"
+            )
             return 0
 
         if not hasattr(Dimension, "systematic_scale_id"):
-            self.logger.warning("Dimension.systematic_scale_id not found")
+            self.logger.warning(
+                "Cannot update dimension systematic scales: "
+                "Dimension.systematic_scale_id not found"
+            )
             return 0
 
         updated = 0
 
-        scales = (
-            session.query(Scale)
-            .filter(Scale.is_systematic.is_(True))
-            .all()
-        )
-
-        for scale in scales:
-            dimension_id = getattr(scale, "system_dimensions_id", None)
-
-            if not dimension_id:
-                continue
-
+        for dimension_id, systematic_scale_id in self.pending_dimension_systematic_scales:
             dimension = session.get(Dimension, dimension_id)
 
             if dimension is None:
+                message = (
+                    f"Cannot set systematic scale for Dimension {dimension_id!r}: "
+                    "dimension not found"
+                )
+
+                if self.config.strict:
+                    raise RuntimeError(message)
+
+                self.logger.warning(message)
                 continue
 
-            if getattr(dimension, "systematic_scale_id", None) != scale.id:
-                setattr(dimension, "systematic_scale_id", scale.id)
-                updated += 1
+            scale = session.get(Scale, systematic_scale_id)
+
+            if scale is None:
+                message = (
+                    f"Cannot set systematic scale for Dimension {dimension_id!r}: "
+                    f"Scale {systematic_scale_id!r} not found"
+                )
+
+                if self.config.strict:
+                    raise RuntimeError(message)
+
+                self.logger.warning(message)
+                continue
+
+            current_value = getattr(dimension, "systematic_scale_id", None)
+
+            if current_value == systematic_scale_id:
+                continue
+
+            setattr(dimension, "systematic_scale_id", systematic_scale_id)
+            updated += 1
 
         session.flush()
 
-        self.logger.info("Updated %s Dimension.systematic_scale_id values", updated)
+        self.logger.info(
+            "Updated Dimension.systematic_scale_id for %s dimensions",
+            updated,
+        )
 
         return updated
+
 
     def update_scale_names(self, session: Session) -> int:
         """
