@@ -64,10 +64,20 @@ jobs:
           ls resources/repo/m-layer
           
       
+      - name: Validate mlayer object serialization Dand mlayer
+        id: validate_serializer
+        run: python -m unittest tests/test_quantity_object_serialization.py
+      
       - name: Validate taxonomy and mlayer
         id: validate
         run: |
           which python
           pip list
           python -m unittest tests/test_validate_db_json.py 
+
+      - name: Validation cordra db serialization
+        id: validate_db_to_do
+        run: python -m unittest tests/test_quantity_object_cordra_db_serialization.py 
+            
+
 

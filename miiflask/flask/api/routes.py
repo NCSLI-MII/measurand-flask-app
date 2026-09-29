@@ -8,7 +8,7 @@
 """
 
 """
-from flask import make_response
+from flask import make_response, jsonify
 from miiflask.flask.api.init import bp
 
 from miiflask.flask.db import (
@@ -37,6 +37,8 @@ from miiflask.flask.models.schemas import (
         QuantityObjectSchema
         )
 
+from miiflask.flask.serializers import quantity_object_to_cordra_content
+
 measurand_schema = MeasurandTaxonSchema()
 measurands_schema = MeasurandTaxonSchema(many=True)
 aspect_schema = AspectSchema()
@@ -50,8 +52,54 @@ systems_schema = SystemSchema(many=True)
 quantityobject_schema = QuantityObjectSchema()
 quantityobjects_schema = QuantityObjectSchema(many=True)
 
+
+
+bp.route("/api/represented_quantities/", methods=["GET"])
+def api_represented_quantities():
+    """
+    List quantity object representations.
+
+    Optional query parameters:
+      missing_cordra_id=true
+      limit=100
+      offset=0
+    """
+    session = get_session()
+
+    missing_cordra_id = request.args.get("missing_cordra_id", "").lower()
+    limit = request.args.get("limit", default=100, type=int)
+    offset = request.args.get("offset", default=0, type=int)
+
+    limit = min(max(limit, 1), 1000)
+    offset = max(offset, 0)
+
+    stmt = (
+        select(QuantityObject)
+        .options(
+            selectinload(QuantityObject.scale),
+            selectinload(QuantityObject.aspect),
+            selectinload(QuantityObject.transformations)
+        )
+        .order_by(QuantityObject.aspect_id, QuantityObject.scale_id)
+        .limit(limit)
+        .offset(offset)
+    )
+
+    if missing_cordra_id in ("true", "1", "yes"):
+        stmt = stmt.where(QuantityObject.cordra_id.is_(None))
+
+    objects = session.scalars(stmt).all()
+
+    return jsonify({
+        "limit": limit,
+        "offset": offset,
+        "count": len(objects),
+        "items": quantityobjects_schema.dump(objects)
+    })
+
+
 # Views for API
-@bp.route("/api/represented_quantity/<string:aspect_id>/<string:scale_id>/", methods=["GET","POST"])
+@bp.route("/api/represented_quantity/<string:aspect_id>/<string:scale_id>/", methods=["GET"])
 def api_represented_quantity(aspect_id, scale_id):
     session = get_session()
     qo = session.get(
@@ -66,6 +114,72 @@ def api_represented_quantity(aspect_id, scale_id):
         abort(404)
     data = quantityobject_schema.dump(qo)
     return data
+
+
+@bp.route(
+    "/api/represented_quantity/<string:aspect_id>/<string:scale_id>/cordra-content/",
+    methods=["GET"]
+)
+def api_represented_quantity_cordra_content(aspect_id, scale_id):
+    session = get_session()
+
+    qo = session.get(
+        QuantityObject,
+        {
+            "scale_id": scale_id,
+            "aspect_id": aspect_id,
+        }
+    )
+
+    if qo is None:
+        abort(404)
+
+    data = quantityobject_schema.dump(qo)
+    cordra_content = quantity_object_to_cordra_content(data)
+
+    return jsonify(cordra_content)
+
+
+@bp.route(
+    "/api/represented_quantity/<string:aspect_id>/<string:scale_id>/cordra/",
+    methods=["PATCH"]
+)
+def api_update_represented_quantity_cordra_id(aspect_id, scale_id):
+    """
+    Update the Cordra identifier for a represented quantity.
+
+    Expected request body:
+      {
+        "cordra_id": "..."
+      }
+    """
+    session = get_session()
+
+    payload = request.get_json(silent=True) or {}
+    cordra_id = payload.get("cordra_id")
+
+    if not cordra_id:
+        return jsonify({
+            "error": "Missing required field: cordra_id"
+        }), 400
+
+    qo = session.get(
+        QuantityObject,
+        {
+            "scale_id": scale_id,
+            "aspect_id": aspect_id,
+        }
+    )
+
+    if qo is None:
+        abort(404)
+
+    qo.cordra_id = cordra_id
+    session.add(qo)
+    session.commit()
+
+    return jsonify(quantityobject_schema.dump(qo))
+
 
 @bp.route("/api/aspect/<string:aspect_id>/", methods=["GET", "POST"])
 def api_aspect(aspect_id):
