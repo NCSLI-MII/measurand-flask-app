@@ -27,6 +27,8 @@ from marshmallow_sqlalchemy.fields import Nested
 
 from typing import Optional
 import re
+import ast
+import json
 
 from miiflask.flask.models.mlayer import (
         Prefix,
@@ -67,6 +69,10 @@ from miiflask.flask.models.kcdb import (
 class QuantityObjectSchema(Schema):
     scale_id = fields.String()
     aspect_id = fields.String()
+    cordra_id = fields.String(allow_none=True)
+
+    natural_id = fields.Method("get_natural_id")
+
 
     name = fields.Method("get_name")
     symbol = fields.Method("get_symbol")
@@ -88,6 +94,10 @@ class QuantityObjectSchema(Schema):
     dimensions = fields.Method("get_dimensions")
 
     transforms_to = fields.Method("get_transforms_to")
+
+    def get_natural_id(self, obj):
+        return f"{obj.aspect_id}:{obj.scale_id}"
+
     def get_name(self, obj):
         return obj.quantity_name
 
@@ -181,14 +191,19 @@ class QuantityObjectSchema(Schema):
 
             items.append(
                 {
+                    "aspect_scale": {
+                         "aspect_id": dst_aspect_id,
+                         "scale_id": dst_scale_id,
+                        },
+
                     "kind": getattr(transformation, "kind", None),
                     "is_cast": getattr(transformation, "is_cast", None),
 
-                    "aspect_id": dst_aspect_id,
+                   
                     "aspect_name": getattr(dst_aspect, "name", None)
                                         if dst_aspect
                                         else None,
-                    "scale_id": dst_scale_id,
+                  
                     "scale_name": getattr(dst_scale, "name", None)
                                         if dst_scale
                                         else None,
@@ -201,13 +216,59 @@ class QuantityObjectSchema(Schema):
                         src_symbol=src_symbol,
                         dst_symbol=dst_symbol_for_relation,
                         py_function=py_function,
-                        parameters=getattr(transformation, "parameters", None),
+                        parameters=self._parse_parameters(transformation.parameters)
                     ),
-                    "parameters": getattr(transformation, "parameters", None),
+                    "parameters": self._parse_parameters(transformation.parameters)
                 }
             )
 
         return items
+
+    def _parse_parameters(self, parameters):
+        """
+        Convert transformation parameters to a JSON-serializable dictionary.
+
+        The database may contain parameters as:
+          - None
+          - a Python dict
+          - a JSON string, e.g. '{"a": "1E+3"}'
+          - a Python-literal dict string, e.g. "{'a': '1E+3'}"
+
+        Returns:
+          - dict when parsing succeeds
+          - None when no parameters are present
+          - original string only as a fallback
+        """
+        if parameters is None:
+            return None
+
+        if isinstance(parameters, dict):
+            return parameters
+
+        if isinstance(parameters, str):
+            value = parameters.strip()
+
+            if not value:
+                return None
+
+            try:
+                parsed = json.loads(value)
+                if isinstance(parsed, dict):
+                    return parsed
+            except json.JSONDecodeError:
+                pass
+
+            try:
+                parsed = ast.literal_eval(value)
+                if isinstance(parsed, dict):
+                    return parsed
+            except (ValueError, SyntaxError):
+                pass
+
+            return value
+
+        return parameters
+
 
     def _get_destination_quantity_object(self, transformation):
         """

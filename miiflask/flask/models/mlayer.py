@@ -65,15 +65,15 @@ class QuantityObject(Base):
                 comment="aspect identifier",
                 doc="core")
     
-    #transformations: Mapped[list["Conversion"]] = relationship(
-    #        "Conversion",
-    #        primaryjoin=lambda: and_(
-    #            QuantityObject.scale_id == foreign(Conversion.src_scale_id),
-    #            QuantityObject.aspect_id == foreign(Conversion.aspect_id)
-    #            ),
-     #       viewonly=True
-     #       )
     
+    cordra_id: Mapped[Optional[str]] = mapped_column(
+            String(255),
+            nullable=True,
+            unique=True,
+            comment="Cordra identifier for the serialized digital object",
+            doc="external"
+            )
+
     transformations: Mapped[list["ConversionCast"]] = relationship(
         "ConversionCast",
         primaryjoin=lambda: and_(
