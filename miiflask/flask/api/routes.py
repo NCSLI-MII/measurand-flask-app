@@ -56,7 +56,7 @@ quantityobjects_schema = QuantityObjectSchema(many=True)
 
 
 
-bp.route("/api/represented_quantities/", methods=["GET"])
+@bp.route("/api/represented_quantities/", methods=["GET"])
 def api_represented_quantities():
     """
     List quantity object representations.
