@@ -23,9 +23,20 @@ from typing import Any
 
 
 CORDRA_SCHEMA_VERSION = "1.0.0"
-CORDRA_OBJECT_TYPE = "MlayerQuantityObject"
 MLAYER_SOURCE_SYSTEM = "mlayer"
-
+REPRESENTED_QUANTITY_CONTEXT = {
+    "@vocab": "https://example.org/mlayer/represented-quantity#",
+    "mlayer": "https://example.org/mlayer/",
+    "quantity": "https://example.org/mlayer/quantity/",
+    "aspect": "https://example.org/mlayer/aspect/",
+    "scale": "https://example.org/mlayer/scale/",
+    "unit": "https://example.org/mlayer/unit/",
+    "system": "https://example.org/mlayer/system/",
+    "transforms_to": {
+        "@id": "https://example.org/mlayer/transformsTo",
+        "@type": "@id"
+    }
+}
 
 def parse_transform_parameters(parameters: Any) -> Any:
     """
@@ -122,7 +133,7 @@ def quantity_object_to_cordra_content(data: dict[str, Any]) -> dict[str, Any]:
 
     return {
         "schema_version": CORDRA_SCHEMA_VERSION,
-        "object_type": CORDRA_OBJECT_TYPE,
+        "object_type": "RepresentedQuantity",
         "mlayer": {
             "natural_id": natural_id,
             "aspect_id": aspect_id,
