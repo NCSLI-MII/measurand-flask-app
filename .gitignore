@@ -5,6 +5,7 @@ __pycache__/
 
 # tmp file
 *~
+tmp/
 
 # C extensions
 *.so
@@ -166,3 +167,4 @@ cython_debug/
 #
 # Flask-app db
 data
+/resources/repo

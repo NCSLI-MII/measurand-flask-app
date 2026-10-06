@@ -10,7 +10,7 @@ set -e
 NAME1=measurand-taxonomy
 VERSION1=0.3.0-beta
 NAME2=m-layer
-VERSION2=1.0.0
+VERSION2=1.0.1
 
 FILENAME1="$NAME1-$VERSION1.tar.gz"
 FILENAME2="$NAME2-$VERSION2.tar.gz"

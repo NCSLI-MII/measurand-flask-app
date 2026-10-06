@@ -40,6 +40,7 @@ from miiflask.flask.models.schemas import QuantityObjectSchema
 from miiflask.flask.serializers.cordra import (
     parse_transform_parameters,
     quantity_object_to_cordra_content,
+    REPRESENTED_QUANTITY_CONTEXT
 )
 from miiflask.mappers.mlayer_json_mapper import (
     MlayerJsonImportConfig,
@@ -146,7 +147,8 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
         cordra_content = quantity_object_to_cordra_content(serialized)
 
         self.assertEqual(cordra_content["schema_version"], "1.0.0")
-        self.assertEqual(cordra_content["object_type"], "MlayerQuantityObject")
+        self.assertEqual(cordra_content["object_type"], "RepresentedQuantity")
+        #self.assertEqual(cordra_content["@context"], REPRESENTED_QUANTITY_CONTEXT)
 
         self.assertIn("mlayer", cordra_content)
         self.assertIn("quantity", cordra_content)
@@ -266,7 +268,7 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
 
         expected_without_transforms = {
             "schema_version": "1.0.0",
-            "object_type": "MlayerQuantityObject",
+            "object_type": "RepresentedQuantity",
             "mlayer": {
                 "natural_id": "AS2:SC1",
                 "aspect_id": "AS2",

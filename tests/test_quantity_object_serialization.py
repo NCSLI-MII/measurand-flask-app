@@ -26,6 +26,7 @@ import unittest
 from miiflask.flask.serializers.cordra import (
     parse_transform_parameters,
     quantity_object_to_cordra_content,
+    REPRESENTED_QUANTITY_CONTEXT
 )
 
 
@@ -120,7 +121,7 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
         )
 
         self.assertEqual(cordra_content["schema_version"], "1.0.0")
-        self.assertEqual(cordra_content["object_type"], "MlayerQuantityObject")
+        self.assertEqual(cordra_content["object_type"], "RepresentedQuantity")
 
         self.assertEqual(
             cordra_content["mlayer"],
@@ -226,7 +227,8 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
 
         expected = {
             "schema_version": "1.0.0",
-            "object_type": "MlayerQuantityObject",
+            "object_type": "RepresentedQuantity",
+            #"@context": REPRESENTED_QUANTITY_CONTEXT,
             "mlayer": {
                 "natural_id": "AS2:SC1",
                 "aspect_id": "AS2",
