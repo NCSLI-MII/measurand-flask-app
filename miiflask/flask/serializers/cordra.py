@@ -19,8 +19,9 @@ from __future__ import annotations
 
 import ast
 import json
+import re
 from typing import Any
-
+from urllib.parse import urlsplit
 
 CORDRA_SCHEMA_VERSION = "1.0.0"
 MLAYER_SOURCE_SYSTEM = "mlayer"
@@ -32,11 +33,9 @@ REPRESENTED_QUANTITY_CONTEXT = {
     "scale": "https://example.org/mlayer/scale/",
     "unit": "https://example.org/mlayer/unit/",
     "system": "https://example.org/mlayer/system/",
-    "transforms_to": {
-        "@id": "https://example.org/mlayer/transformsTo",
-        "@type": "@id"
-    }
+    "transforms_to": {"@id": "https://example.org/mlayer/transformsTo", "@type": "@id"},
 }
+
 
 def parse_transform_parameters(parameters: Any) -> Any:
     """
@@ -85,7 +84,6 @@ def parse_transform_parameters(parameters: Any) -> Any:
     return parameters
 
 
-
 def normalize_transforms_to(transforms_to: Any) -> list[dict[str, Any]]:
     if not transforms_to:
         return []
@@ -130,6 +128,12 @@ def quantity_object_to_cordra_content(data: dict[str, Any]) -> dict[str, Any]:
     scale_id = data.get("scale_id")
 
     natural_id = data.get("natural_id") or f"{aspect_id}:{scale_id}"
+    aspect_references, aspect_sources = split_references_and_sources(
+        data.get("aspect_reference")
+    )
+    unit_references, unit_sources = split_references_and_sources(
+        data.get("unit_reference")
+    )
 
     return {
         "schema_version": CORDRA_SCHEMA_VERSION,
@@ -150,7 +154,8 @@ def quantity_object_to_cordra_content(data: dict[str, Any]) -> dict[str, Any]:
             "id": aspect_id,
             "name": data.get("aspect_name"),
             "symbol": data.get("aspect_symbol"),
-            "reference": data.get("aspect_reference"),
+            "reference": aspect_references,
+            "sources": aspect_sources,
         },
         "scale": {
             "id": scale_id,
@@ -162,7 +167,8 @@ def quantity_object_to_cordra_content(data: dict[str, Any]) -> dict[str, Any]:
             "id": data.get("unit_id"),
             "name": data.get("unit_name"),
             "symbol": data.get("unit_symbol"),
-            "reference": data.get("unit_reference"),
+            "reference": unit_references,
+            "sources": unit_sources,
         },
         "system": {
             "symbol": data.get("system"),
@@ -171,3 +177,94 @@ def quantity_object_to_cordra_content(data: dict[str, Any]) -> dict[str, Any]:
         "transforms_to": normalize_transforms_to(data.get("transforms_to")),
     }
 
+
+_HTTP_URI_PATTERN = re.compile(r"https?://[^\s,;]+")
+
+
+def _is_http_uri(value: str) -> bool:
+    """
+    Return True when value is an absolute HTTP or HTTPS URI.
+    """
+    try:
+        parsed = urlsplit(value)
+    except ValueError:
+        return False
+
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def _unique_strings(values: list[str]) -> list[str]:
+    """
+    Remove duplicate strings while preserving their original order.
+    """
+    return list(dict.fromkeys(values))
+
+
+def split_references_and_sources(
+    value: Any,
+) -> tuple[list[str] | None, list[str] | None]:
+    """
+    Separate aspect references into URI references and textual sources.
+
+    Examples:
+
+        "https://example.org/a, https://example.org/b"
+
+    becomes:
+
+        (
+            ["https://example.org/a", "https://example.org/b"],
+            None,
+        )
+
+    and:
+
+        "https://example.org/a, A textual publication citation"
+
+    becomes:
+
+        (
+            ["https://example.org/a"],
+            ["A textual publication citation"],
+        )
+
+    A list or tuple is also accepted.
+    """
+    if value is None:
+        return None, None
+
+    values = value if isinstance(value, (list, tuple)) else [value]
+
+    references: list[str] = []
+    sources: list[str] = []
+
+    for raw_value in values:
+        if raw_value is None:
+            continue
+
+        text = str(raw_value).strip()
+
+        if not text:
+            continue
+
+        # Extract all HTTP/HTTPS URLs from the value.
+        matches = list(_HTTP_URI_PATTERN.finditer(text))
+
+        for match in matches:
+            uri = match.group(0).rstrip(".,)")
+
+            if _is_http_uri(uri):
+                references.append(uri)
+
+        # Remove the extracted URLs. Anything left is treated as a
+        # bibliographic or textual source rather than as a URI.
+        remaining_text = _HTTP_URI_PATTERN.sub("", text)
+        remaining_text = remaining_text.strip(" \t\r\n,;")
+
+        if remaining_text:
+            sources.append(remaining_text)
+
+    references = _unique_strings(references)
+    sources = _unique_strings(sources)
+
+    return references or None, sources or None
