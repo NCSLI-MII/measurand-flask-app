@@ -128,12 +128,9 @@ def quantity_object_to_cordra_content(data: dict[str, Any]) -> dict[str, Any]:
     scale_id = data.get("scale_id")
 
     natural_id = data.get("natural_id") or f"{aspect_id}:{scale_id}"
-    aspect_references, aspect_sources = split_references_and_sources(
-        data.get("aspect_reference")
-    )
-    unit_references, unit_sources = split_references_and_sources(
-        data.get("unit_reference")
-    )
+    aspect_sources = split_references_and_sources(data.get("aspect_reference"))
+    unit_sources = split_references_and_sources(data.get("unit_reference"))
+
 
     return {
         "schema_version": CORDRA_SCHEMA_VERSION,
@@ -154,7 +151,6 @@ def quantity_object_to_cordra_content(data: dict[str, Any]) -> dict[str, Any]:
             "id": aspect_id,
             "name": data.get("aspect_name"),
             "symbol": data.get("aspect_symbol"),
-            "reference": aspect_references,
             "sources": aspect_sources,
         },
         "scale": {
@@ -167,7 +163,6 @@ def quantity_object_to_cordra_content(data: dict[str, Any]) -> dict[str, Any]:
             "id": data.get("unit_id"),
             "name": data.get("unit_name"),
             "symbol": data.get("unit_symbol"),
-            "reference": unit_references,
             "sources": unit_sources,
         },
         "system": {
@@ -236,7 +231,7 @@ def split_references_and_sources(
     values = value if isinstance(value, (list, tuple)) else [value]
 
     references: list[str] = []
-    sources: list[str] = []
+    citations: list[str] = []
 
     for raw_value in values:
         if raw_value is None:
@@ -262,9 +257,13 @@ def split_references_and_sources(
         remaining_text = remaining_text.strip(" \t\r\n,;")
 
         if remaining_text:
-            sources.append(remaining_text)
+            citations.append(remaining_text)
 
     references = _unique_strings(references)
-    sources = _unique_strings(sources)
+    citations = _unique_strings(citations)
+    combined = [
+        *(references or []),
+        *(citations or []),
+    ]
 
-    return references or None, sources or None
+    return list(dict.fromkeys(combined)) or None
