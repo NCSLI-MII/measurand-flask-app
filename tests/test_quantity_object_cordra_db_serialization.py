@@ -294,7 +294,9 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
                 "id": "AS2",
                 "name": "mass",
                 "symbol": None,
-                "reference": "https://si-digital-framework.org/quantities/MASS",
+                "sources": [
+                    "https://si-digital-framework.org/quantities/MASS",
+                ],
             },
             "scale": {
                 "id": "SC1",
@@ -306,7 +308,9 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
                 "id": "UN1",
                 "name": "kilogram",
                 "symbol": "kg",
-                "reference": "https://si-digital-framework.org/SI/units/kilogram",
+                "sources": [
+                    "https://si-digital-framework.org/SI/units/kilogram",
+                ],
             },
             "system": {
                 "symbol": "SI",
