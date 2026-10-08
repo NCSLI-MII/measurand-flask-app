@@ -5,9 +5,7 @@
 #
 # Distributed under terms of the Copyright © Her Majesty the Queen in Right of Canada, as represented by the Minister of Statistics Canada, 2019. license.
 
-"""
-
-"""
+""" """
 # tests/test_quantity_object_cordra_serialization.py
 #! /usr/bin/env python3
 # vim:fenc=utf-8
@@ -24,9 +22,10 @@ future API and external Cordra synchronization application will rely on.
 import unittest
 
 from miiflask.flask.serializers.cordra import (
+    REPRESENTED_QUANTITY_CONTEXT,
     parse_transform_parameters,
     quantity_object_to_cordra_content,
-    REPRESENTED_QUANTITY_CONTEXT
+    split_references_and_sources,
 )
 
 
@@ -67,10 +66,10 @@ def mass_ratio_gram_transform(parameters=None):
     Return a representative transform from kilogram to gram.
     """
     return {
-        "aspect_scale":{
+        "aspect_scale": {
             "aspect_id": "AS2",
             "scale_id": "SC86",
-            },
+        },
         "aspect_name": "mass",
         "function": "lambda x: a*x",
         "is_cast": False,
@@ -116,9 +115,7 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
             ]
         )
 
-        cordra_content = quantity_object_to_cordra_content(
-            serialized_quantity_object
-        )
+        cordra_content = quantity_object_to_cordra_content(serialized_quantity_object)
 
         self.assertEqual(cordra_content["schema_version"], "1.0.0")
         self.assertEqual(cordra_content["object_type"], "RepresentedQuantity")
@@ -149,7 +146,9 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
                 "id": "AS2",
                 "name": "mass",
                 "symbol": None,
-                "reference": "https://si-digital-framework.org/quantities/MASS",
+                "sources": [
+                    "https://si-digital-framework.org/quantities/MASS",
+                ],
             },
         )
 
@@ -169,7 +168,9 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
                 "id": "UN1",
                 "name": "kilogram",
                 "symbol": "kg",
-                "reference": "https://si-digital-framework.org/SI/units/kilogram",
+                "sources": [
+                    "https://si-digital-framework.org/SI/units/kilogram",
+                ],
             },
         )
 
@@ -201,18 +202,16 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
         self.assertEqual(transform["function"], "lambda x: a*x")
         self.assertEqual(transform["parameters"], {"a": "1E+3"})
 
-    def test_quantity_object_cordra_content_uses_json_object_for_transform_parameters(self):
+    def test_quantity_object_cordra_content_uses_json_object_for_transform_parameters(
+        self,
+    ):
         serialized_quantity_object = mass_ratio_kilogram_serialized_quantity_object(
             transforms_to=[
-                mass_ratio_gram_transform(
-                    parameters="{'a': '1E+3'}"
-                ),
+                mass_ratio_gram_transform(parameters="{'a': '1E+3'}"),
             ]
         )
 
-        cordra_content = quantity_object_to_cordra_content(
-            serialized_quantity_object
-        )
+        cordra_content = quantity_object_to_cordra_content(serialized_quantity_object)
 
         parameters = cordra_content["transforms_to"][0]["parameters"]
 
@@ -228,7 +227,7 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
         expected = {
             "schema_version": "1.0.0",
             "object_type": "RepresentedQuantity",
-            #"@context": REPRESENTED_QUANTITY_CONTEXT,
+            # "@context": REPRESENTED_QUANTITY_CONTEXT,
             "mlayer": {
                 "natural_id": "AS2:SC1",
                 "aspect_id": "AS2",
@@ -245,7 +244,9 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
                 "id": "AS2",
                 "name": "mass",
                 "symbol": None,
-                "reference": "https://si-digital-framework.org/quantities/MASS",
+                "sources": [
+                    "https://si-digital-framework.org/quantities/MASS",
+                ],
             },
             "scale": {
                 "id": "SC1",
@@ -257,7 +258,9 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
                 "id": "UN1",
                 "name": "kilogram",
                 "symbol": "kg",
-                "reference": "https://si-digital-framework.org/SI/units/kilogram",
+                "sources": [
+                    "https://si-digital-framework.org/SI/units/kilogram",
+                ],
             },
             "system": {
                 "symbol": "SI",
@@ -266,14 +269,47 @@ class QuantityObjectCordraSerializationTestCase(unittest.TestCase):
             "transforms_to": [],
         }
 
-        actual = quantity_object_to_cordra_content(
-            serialized_quantity_object
-        )
+        actual = quantity_object_to_cordra_content(serialized_quantity_object)
 
         self.assertEqual(actual, expected)
+
+    def test_split_references_and_sources_preserves_urls_and_citations(self):
+        value = (
+            "https://cie.co.at/eilvterm/17-21-050, "
+            "The CIE system of physical photometry "
+            "(ISO/CIE 23539:2023)"
+        )
+
+        sources = split_references_and_sources(value)
+
+        self.assertEqual(
+            sources,
+            [
+                "https://cie.co.at/eilvterm/17-21-050",
+                ("The CIE system of physical photometry (ISO/CIE 23539:2023)"),
+            ],
+        )
+
+    def test_textual_unit_reference_is_serialized_as_a_source(self):
+        serialized_quantity_object = mass_ratio_kilogram_serialized_quantity_object()
+        serialized_quantity_object["unit_reference"] = "SI Brochure"
+
+        cordra_content = quantity_object_to_cordra_content(serialized_quantity_object)
+
+        self.assertEqual(
+            cordra_content["unit"]["sources"],
+            ["SI Brochure"],
+        )
+        self.assertNotIn("reference", cordra_content["unit"])
+
+    def test_serializer_does_not_emit_reference_properties(self):
+        serialized_quantity_object = mass_ratio_kilogram_serialized_quantity_object()
+
+        cordra_content = quantity_object_to_cordra_content(serialized_quantity_object)
+
+        self.assertNotIn("reference", cordra_content["aspect"])
+        self.assertNotIn("reference", cordra_content["unit"])
 
 
 if __name__ == "__main__":
     unittest.main()
-
-
