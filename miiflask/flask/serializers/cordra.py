@@ -131,7 +131,6 @@ def quantity_object_to_cordra_content(data: dict[str, Any]) -> dict[str, Any]:
     aspect_sources = split_references_and_sources(data.get("aspect_reference"))
     unit_sources = split_references_and_sources(data.get("unit_reference"))
 
-
     return {
         "schema_version": CORDRA_SCHEMA_VERSION,
         "object_type": "RepresentedQuantity",
@@ -197,7 +196,7 @@ def _unique_strings(values: list[str]) -> list[str]:
 
 def split_references_and_sources(
     value: Any,
-) -> tuple[list[str] | None, list[str] | None]:
+) -> list[str] | None:
     """
     Separate aspect references into URI references and textual sources.
 

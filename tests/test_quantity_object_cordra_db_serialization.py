@@ -40,7 +40,7 @@ from miiflask.flask.models.schemas import QuantityObjectSchema
 from miiflask.flask.serializers.cordra import (
     parse_transform_parameters,
     quantity_object_to_cordra_content,
-    REPRESENTED_QUANTITY_CONTEXT
+    REPRESENTED_QUANTITY_CONTEXT,
 )
 from miiflask.mappers.mlayer_json_mapper import (
     MlayerJsonImportConfig,
@@ -116,9 +116,7 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
         application schema.
         """
         with Session(self.engine) as session:
-            quantity_object = self._get_mass_ratio_kilogram_quantity_object(
-                session
-            )
+            quantity_object = self._get_mass_ratio_kilogram_quantity_object(session)
 
             schema = QuantityObjectSchema()
             serialized = schema.dump(quantity_object)
@@ -148,7 +146,7 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
 
         self.assertEqual(cordra_content["schema_version"], "1.0.0")
         self.assertEqual(cordra_content["object_type"], "RepresentedQuantity")
-        #self.assertEqual(cordra_content["@context"], REPRESENTED_QUANTITY_CONTEXT)
+        # self.assertEqual(cordra_content["@context"], REPRESENTED_QUANTITY_CONTEXT)
 
         self.assertIn("mlayer", cordra_content)
         self.assertIn("quantity", cordra_content)
@@ -173,11 +171,16 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
         )
         self.assertEqual(cordra_content["quantity"]["symbol"], "ratio kg")
 
-        self.assertEqual(cordra_content["aspect"]["id"], "AS2")
-        self.assertEqual(cordra_content["aspect"]["name"], "mass")
         self.assertEqual(
-            cordra_content["aspect"]["reference"],
-            "https://si-digital-framework.org/quantities/MASS",
+            cordra_content["aspect"],
+            {
+                "id": "AS2",
+                "name": "mass",
+                "symbol": None,
+                "sources": [
+                    "https://si-digital-framework.org/quantities/MASS",
+                ],
+            },
         )
 
         self.assertEqual(cordra_content["scale"]["id"], "SC1")
@@ -185,12 +188,16 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
         self.assertEqual(cordra_content["scale"]["symbol"], "ratio kg")
         self.assertEqual(cordra_content["scale"]["type"], "ratio")
 
-        self.assertEqual(cordra_content["unit"]["id"], "UN1")
-        self.assertEqual(cordra_content["unit"]["name"], "kilogram")
-        self.assertEqual(cordra_content["unit"]["symbol"], "kg")
         self.assertEqual(
-            cordra_content["unit"]["reference"],
-            "https://si-digital-framework.org/SI/units/kilogram",
+            cordra_content["unit"],
+            {
+                "id": "UN1",
+                "name": "kilogram",
+                "symbol": "kg",
+                "sources": [
+                    "https://si-digital-framework.org/SI/units/kilogram",
+                ],
+            },
         )
 
         self.assertEqual(cordra_content["system"]["symbol"], "SI")
@@ -212,7 +219,7 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
 
         self.assertIn("kind", first_transform)
         self.assertIn("is_cast", first_transform)
-        
+
         self.assertIn("aspect_scale", first_transform)
         self.assertIsInstance(first_transform["aspect_scale"], dict)
         self.assertIn("aspect_id", first_transform["aspect_scale"])
@@ -226,7 +233,9 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
         self.assertIn("parameters", first_transform)
         self.assertIn("relation", first_transform)
 
-    def test_quantity_object_cordra_content_uses_json_object_for_transform_parameters(self):
+    def test_quantity_object_cordra_content_uses_json_object_for_transform_parameters(
+        self,
+    ):
         serialized = self._serialize_mass_ratio_kilogram()
 
         cordra_content = quantity_object_to_cordra_content(serialized)
@@ -344,7 +353,7 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
         }
 
         gram_transform = None
-        
+
         for transform in cordra_content["transforms_to"]:
             aspect_scale = transform.get("aspect_scale") or {}
 
@@ -376,4 +385,3 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
