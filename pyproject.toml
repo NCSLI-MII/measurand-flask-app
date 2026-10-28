@@ -1,0 +1,33 @@
+[project]
+name = "miiflask"
+version = "0.1.0"
+description = "Flask application"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "Flask>=3.1,<4",
+    "Flask-Admin>=2.0,<3",
+    "Flask-WTF>=1.2,<2",
+    "SQLAlchemy>=2.0,<3",
+    "marshmallow-sqlalchemy>=1.4,<2",
+    "requests>=2.32,<3",
+    "gunicorn>=24.0,<25",
+    "graphviz>=0.21,<1",
+    "xmltodict>=1.0,<2",
+    "marshmallow>=4.0,<5",
+    # Add these only if you import them directly:
+    # "xmlschema>=4.3,<5",
+    "xmlschema>=4.3,<5",
+]
+
+[dependency-groups]
+dev = [
+    "pip-audit>=2.7",
+    "pre-commit>=4.7.0",
+    "ruff>=0.6",
+    # add coverage, mypy, etc. if desired
+]
+test = [
+    # unittest is stdlib; add helpers if you use any:
+    # "coverage>=7",
+]
+
