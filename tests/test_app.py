@@ -9,22 +9,28 @@
 """
 
 """
+import os
+os.environ["FLASK_CONFIG"] = "test"      # or however your app selects config
+from miiflask.flask.app import create_app
 import unittest
-
-from miiflask.flask.app import app
+from miiflask.flask.config import TestingConfig
 
 
 class TestAppCase(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.app = create_app(TestingConfig)
 
     def setUp(self):
-        self.app = app.test_client()
-        self.app_context = app.app_context()
-        self.app_context.push()
-    
-    def test_home_route(self):
-        response = self.app.get('/')
-        self.assertEqual(response.status_code, 200)
-        print(response.json)
-    
+        self.client = self.app.test_client()
+        self.ctx = self.app.app_context()
+        self.ctx.push()
+
     def tearDown(self):
-        self.app_context.pop()
+        self.ctx.pop()
+
+    def test_home_route(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+
+

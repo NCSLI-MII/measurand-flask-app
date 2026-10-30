@@ -16,7 +16,7 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from miiflask.flask.db import bind_engine
+from miiflask.flask.db import create_schema
 from miiflask.flask.models import mlayer
 
 from miiflask.mappers.mlayer_json_mapper import (
@@ -75,7 +75,7 @@ class ValidateDbTestCase(unittest.TestCase):
             future=True,
         )
 
-        bind_engine(engine)
+        create_schema(engine)
 
         parms = {
             "path": str(self.data_dir),

@@ -1,104 +1,80 @@
 name: validation
-on: 
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
   workflow_dispatch:
 
-jobs:
-  validate-taxonomy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+permissions:
+  contents: read
 
-      - name: Create directories
-        run: |
-          mkdir -p resources/repo/measurand-taxonomy
-          mkdir -p resources/repo/m-layer
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      FLASK_CONFIG: test
+    steps:
+      - uses: actions/checkout@v5
+
       - name: Checkout taxonomy
         uses: actions/checkout@v5
-        with: 
+        with:
           repository: NCSLI-MII/measurand-taxonomy
-          path: resources/repo/measurand-taxonomy 
+          path: resources/repo/measurand-taxonomy
+          ref: v0.3.0-beta
+          fetch-depth: 1
 
       - name: Checkout mlayer
         uses: actions/checkout@v5
-        with: 
+        with:
           repository: NCSLI-MII/m-layer
-          path: resources/repo/m-layer 
-      
-      - name: Conda
-        uses: conda-incubator/setup-miniconda@v3
+          path: resources/repo/m-layer
+          ref: v1.1.0
+          fetch-depth: 1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
         with:
-          activate-environment: measurand-flask-app
-          environment-file: environment.yml
-          miniforge-version: "latest"
-          auto-update-conda: true
-          auto-activate-base: true
+          version: 0.13.6
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      - name: Conda environments
-        shell: bash -el {0}
-        run: |
-          conda init
-          conda info
-          #eval "$(mamba shell hook --shell bash)"
-          conda env list
-          conda activate measurand-flask-app
-          conda list
-            
-      
-      - name: list resources
-        run: |
-          pwd
-          echo "Repo"
-          ls resources/repo
-          echo "Taxonomy"
-          ls resources/repo/measurand-taxonomy
-          echo "Mlayer"
-          ls resources/repo/m-layer
-          
-      
-      - name: Validate taxonomy and mlayer
-        id: validate
-        shell: bash -el {0}
-        run: |
-          #eval "$(mamba shell hook --shell bash)"
-          conda env list
-          conda activate measurand-flask-app
-          conda list
-          which python
-          python -m unittest tests/test_validate.py 
+      - name: Set up Python
+        run: uv python install 3.12
 
-      - name: Conda update
-        run: |
-          # mamba update -y -f environment.yml 
-          # eval "$(mamba shell hook --shell bash)"
-          #mamba update --all --dry-run
-          conda update --all
-          conda env export > updated_environment.yml
-          conda list -e > updated_requirements_conda.txt
-          #mamba list --revisions
-          #diff environment.yml updated_environment.yml
-          #diff requirements.txt updated_requirements_conda.txt
+      - name: Install dependencies (locked)
+        run: uv sync --locked --all-groups
 
-      - name: Upload environment
-        uses: actions/upload-artifact@v4
-        with:
-          name: updated_environment.yml
-          path: updated_environment.yml
-       
-      - name: Upload requirements
-        uses: actions/upload-artifact@v4
-        with:
-          name: updated_requirements_conda.txt
-          path: updated_requirements_conda.txt
-
-      - name: Validate taxonomy and mlayer
-        id: post-validate
+      - name: Verify requirements.txt is in sync with uv.lock
         run: |
-          eval "$(mamba shell hook --shell bash)"
-          mamba env list
-          mamba activate measurand-flask-app
-          mamba list
-          which python
-          python -m unittest tests/test_validate_db_json.py 
-   
+          mkdir -p /tmp/check
+          cp requirements.txt /tmp/check/original.txt
+          uv export --format requirements-txt --no-hashes --no-dev -o requirements.txt
+          if ! diff -u /tmp/check/original.txt requirements.txt; then
+            echo "::error::requirements.txt is out of sync with uv.lock. Run 'uv export' locally and commit."
+            # restore to avoid confusing subsequent steps
+            cp /tmp/check/original.txt requirements.txt
+            exit 1
+          fi
+
+      - name: Security audit
+        run: uv run pip-audit
+        continue-on-error: true   # flip to --strict after initial triage
+
+      - name: Run tests
+        run: uv run python -m unittest discover -v
+
+      - name: Diagnostic info (on failure)
+        if: failure()
+        run: |
+          uv run which python
+          uv pip list
+          ls -la resources/repo/measurand-taxonomy || true
+          ls -la resources/repo/m-layer || true
 

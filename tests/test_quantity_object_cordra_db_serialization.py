@@ -33,7 +33,7 @@ from pathlib import Path
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
-from miiflask.flask.db import bind_engine
+from miiflask.flask.db import create_schema
 from miiflask.flask.models import mlayer
 from miiflask.flask.models.mlayer import QuantityObject
 from miiflask.flask.models.schemas import QuantityObjectSchema
@@ -81,7 +81,7 @@ class QuantityObjectCordraDbSerializationTestCase(unittest.TestCase):
             future=True,
         )
 
-        bind_engine(self.engine)
+        create_schema(self.engine)
 
     def tearDown(self):
         self.tmpdir.cleanup()

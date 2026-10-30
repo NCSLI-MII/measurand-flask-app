@@ -66,50 +66,49 @@ from miiflask.flask.admin.views import (
         KcdbBranchView
         )
 
-from miiflask.flask.db import Session
 
 class MainIndexLink(MenuLink):
     def get_url(self):
         return url_for('main.index')
 
 def init_admin(app):
+    session = app.extensions["miiflask"]["session_factory"]
 
-
-        admin = Admin(app, name="mii", theme=Bootstrap4Theme(swatch="cerulean"))
-        admin.add_view(ModelView(Domain, Session()))
-        admin.add_view(AspectView(Aspect, Session(), category="Mlayer"))
-        admin.add_view(ScaleView(Scale, Session(), category="Mlayer"))
-        admin.add_view(UnitView(Unit, Session(), category="Mlayer"))
-        admin.add_view(QuantityObjectView(QuantityObject, Session(), category="Mlayer"))
-        admin.add_view(MyModelView(Prefix, Session(), category="Mlayer"))
-        #admin.add_view(CastConversionView(Conversion, Session(), category="Mlayer"))
-        #admin.add_view(CastConversionView(Cast, Session(), category="Mlayer"))
-        admin.add_view(
-                ConversionCastView(
-                    ConversionCast,
-                    Session(),
-                    name="Conversions / Casts",
-                    endpoint="conversioncast",
-                    category="Mlayer"
-                    )
+    admin = Admin(app, name="mii", theme=Bootstrap4Theme(swatch="cerulean"))
+    admin.add_view(ModelView(Domain, session))
+    admin.add_view(AspectView(Aspect, session, category="Mlayer"))
+    admin.add_view(ScaleView(Scale, session, category="Mlayer"))
+    admin.add_view(UnitView(Unit, session, category="Mlayer"))
+    admin.add_view(QuantityObjectView(QuantityObject, session, category="Mlayer"))
+    admin.add_view(MyModelView(Prefix, session, category="Mlayer"))
+    #admin.add_view(CastConversionView(Conversion, session, category="Mlayer"))
+    #admin.add_view(CastConversionView(Cast, session, category="Mlayer"))
+    admin.add_view(
+            ConversionCastView(
+                ConversionCast,
+                session,
+                name="Conversions / Casts",
+                endpoint="conversioncast",
+                category="Mlayer"
                 )
- 
-        admin.add_view(MyModelView(Transform, Session(), category="Mlayer"))
-        admin.add_view(DimensionView(Dimension, Session(), category="Mlayer"))
-        admin.add_view(MyModelView(System, Session(), category="Mlayer"))
-        admin.add_view(ParameterView(Parameter, Session(), category="Measurand"))
-        admin.add_view(MyModelView(Discipline, Session(), category="Measurand"))
-        admin.add_view(MeasurandTaxonView(MeasurandTaxon, Session(), category="Measurand"))
-        admin.add_view(KcdbServiceView(KcdbServiceClass, Session(), category="KCDB"))
-        admin.add_view(MyModelView(KcdbQuantity, Session(), category="KCDB"))
-        admin.add_view(MyModelView(KcdbArea, Session(), category="KCDB"))
-        admin.add_view(KcdbBranchView(KcdbBranch, Session(), category="KCDB"))
-        admin.add_view(MyModelView(KcdbService, Session(), category="KCDB"))
-        admin.add_view(MyModelView(KcdbSubservice, Session(), category="KCDB"))
-        admin.add_view(MyModelView(KcdbIndividualService, Session(), category="KCDB"))
-        admin.add_view(MyModelView(KcdbInstrument, Session(), category="KCDB"))
-        admin.add_view(MyModelView(KcdbInstrumentMethod, Session(), category="KCDB"))
-        admin.add_view(MyModelView(KcdbParameter, Session(), category="KCDB"))
-        admin.add_view(CMCView(KcdbCmc, Session(), category="KCDB"))
-            
-        admin.add_link(MainIndexLink(name='Homepage'))
+            )
+
+    admin.add_view(MyModelView(Transform, session, category="Mlayer"))
+    admin.add_view(DimensionView(Dimension, session, category="Mlayer"))
+    admin.add_view(MyModelView(System, session, category="Mlayer"))
+    admin.add_view(ParameterView(Parameter, session, category="Measurand"))
+    admin.add_view(MyModelView(Discipline, session, category="Measurand"))
+    admin.add_view(MeasurandTaxonView(MeasurandTaxon, session, category="Measurand"))
+    admin.add_view(KcdbServiceView(KcdbServiceClass, session, category="KCDB"))
+    admin.add_view(MyModelView(KcdbQuantity, session, category="KCDB"))
+    admin.add_view(MyModelView(KcdbArea, session, category="KCDB"))
+    admin.add_view(KcdbBranchView(KcdbBranch, session, category="KCDB"))
+    admin.add_view(MyModelView(KcdbService, session, category="KCDB"))
+    admin.add_view(MyModelView(KcdbSubservice, session, category="KCDB"))
+    admin.add_view(MyModelView(KcdbIndividualService, session, category="KCDB"))
+    admin.add_view(MyModelView(KcdbInstrument, session, category="KCDB"))
+    admin.add_view(MyModelView(KcdbInstrumentMethod, session, category="KCDB"))
+    admin.add_view(MyModelView(KcdbParameter, session, category="KCDB"))
+    admin.add_view(CMCView(KcdbCmc, session, category="KCDB"))
+        
+    admin.add_link(MainIndexLink(name='Homepage'))

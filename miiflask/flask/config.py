@@ -17,6 +17,7 @@ import os
 class Config:
     DEBUG = False
     TESTING = False
+    DB_PATH = None
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_ADMIN_SWATCH = "cerulean"
@@ -26,11 +27,13 @@ class Config:
 
 class TestingConfig(Config):
     TESTING = True
+    LOG_LEVEL = "DEBUG"
     # SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask.db"
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    LOG_LEVEL = "DEBUG"
     SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/miiflask/miiflask.db"
 
 
@@ -40,6 +43,8 @@ class DemoConfig(Config):
 
 class ProductionConfig(Config):
     PRODUCTION = True
-    DB_PATH = os.path.join(os.getenv("APP_DATA_DIR"), "miiflask.db") 
+    LOG_LEVEL = "INFO"
+    APP_DATA_DIR = os.getenv("APP_DATA_DIR", "/var/lib/miiflask")
+    DB_PATH = os.path.join(APP_DATA_DIR, "miiflask.db") 
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + DB_PATH
 
