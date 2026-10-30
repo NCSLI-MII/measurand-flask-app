@@ -53,12 +53,15 @@ jobs:
 
       - name: Verify requirements.txt is in sync with uv.lock
         run: |
-          uv export --format requirements-txt --no-hashes --no-dev -o requirements.txt.generated
-          diff -u requirements.txt requirements.txt.generated || {
+          mkdir -p /tmp/check
+          cp requirements.txt /tmp/check/original.txt
+          uv export --format requirements-txt --no-hashes --no-dev -o requirements.txt
+          if ! diff -u /tmp/check/original.txt requirements.txt; then
             echo "::error::requirements.txt is out of sync with uv.lock. Run 'uv export' locally and commit."
+            # restore to avoid confusing subsequent steps
+            cp /tmp/check/original.txt requirements.txt
             exit 1
-          }
-          rm requirements.txt.generated
+          fi
 
       - name: Security audit
         run: uv run pip-audit
