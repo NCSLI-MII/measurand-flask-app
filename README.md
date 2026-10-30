@@ -534,6 +534,74 @@ The initialized database should be located at:
 
 `/data/miiflask.db`
 
+## Development
+Developing the application now relies on uv to improve depenency requirements. 
+The commands related to the application can executed using `uv run python ...`
+
+### Testing
+```bash
+uv run python -m unittest discover
+mkdir /tmp/mlayer
+export APP_DATA_DIR=/tmp/mlayer
+uv run sh init.sh $APP_DATA_DIR
+uv run python -c "
+from sqlalchemy import create_engine, text
+e = create_engine('sqlite:////tmp/mlayer/miiflask.db')
+with e.connect() as c:
+    tables = c.execute(text(\"SELECT name FROM sqlite_master WHERE type='table'\")).all()
+    print(tables)
+"
+uv run python -m unittest discover 2>&1 | grep -i warning
+uv run gunicorn --bind 0.0.0.0:8081 -w 1 wsgi
+uv run python -c "
+import os; os.environ['FLASK_CONFIG']='test'
+from miiflask.flask.config import TestingConfig
+from miiflask.flask.app import create_app
+a = create_app(TestingConfig)
+b = create_app(TestingConfig)
+sf_a = a.extensions['miiflask']['session_factory']
+sf_b = b.extensions['miiflask']['session_factory']
+print('Isolated:', sf_a is not sf_b)
+"
+```
+
+### Updating
+```bash
+git status
+git diff
+
+# Confirm lock is current
+uv lock 
+
+# Venv matches lock exactly
+uv sync --all-groups
+
+# Regenerate the legacy requirements for ansible
+uv export --format requirements-txt --no-hashes --no-dev -o requirements.txt
+
+# Test before CI
+uv run python -m unittest discover
+
+#End to end testing
+# End-to-end: init script + app boot
+rm -rf /tmp/miiflask-scratch && mkdir -p /tmp/miiflask-scratch
+APP_DATA_DIR=/tmp/miiflask-scratch uv run ./init.sh
+
+# Smoke-test the Flask app starts
+APP_DATA_DIR=/tmp/miiflask-scratch FLASK_CONFIG=production \
+  uv run python -c "from wsgi import application; print('OK')"
+
+
+# Security audit
+uv run pip-audit
+find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null
+uv run pre-commit run --all-files
+
+
+git commit -m "chore(deps): migrate to uv + refactor for testability ..."
+git push -u origin feature/uv-migration
+```
+
 ## Creating a release
 Use the following process to create a new application release.
 

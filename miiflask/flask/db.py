@@ -9,30 +9,49 @@
 """
 Define the SQLAlchemy base
 Stackoverflow 51106264
+Modified based on Opus AI
+Ensures no module level session, 1 session scoped per flask app
 """
+# db.py
 from sqlalchemy import MetaData, select
-from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
-from flask import abort, make_response
-# from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, scoped_session, declarative_base
+from flask import abort, make_response, current_app
 
 metadata_obj = MetaData()
 Base = declarative_base(metadata=metadata_obj)
-Session = scoped_session(sessionmaker())
 
-def bind_engine(engine):
-    metadata_obj.bind = engine
-    Session.configure(bind=engine)
+
+def create_schema(engine):
+    """Create all tables. Safe to call from any context (Flask or CLI)."""
     Base.metadata.create_all(engine)
 
+
+def attach_session(app, engine):
+    """Attach a per-app scoped_session. Call from Flask's create_app()."""
+    app.extensions.setdefault("miiflask", {})
+    app.extensions["miiflask"]["engine"] = engine
+    app.extensions["miiflask"]["session_factory"] = scoped_session(
+        sessionmaker(bind=engine, future=True)
+    )
+
+
 def get_session():
-    return Session()
+    """Scoped session for the current Flask app."""
+    return current_app.extensions["miiflask"]["session_factory"]
+
+
+def remove_session():
+    factory = current_app.extensions.get("miiflask", {}).get("session_factory")
+    if factory is not None:
+        factory.remove()
+
 
 def get_or_404(model, id):
-    session = get_session()
-    obj = session.get(model, id)
+    obj = get_session().get(model, id)
     if obj is None:
         abort(404)
     return obj
+
 
 def obj_serialize_json(model, model_schema, id):
     obj = get_or_404(model, id)
@@ -40,6 +59,7 @@ def obj_serialize_json(model, model_schema, id):
     response = make_response(schema)
     response.mimetype = "application/json"
     return response
+
 
 def objs_serialize_json(model, model_schema):
     objs = get_session().scalars(select(model)).all()
@@ -49,3 +69,4 @@ def objs_serialize_json(model, model_schema):
     response = make_response(schemas)
     response.mimetype = "application/json"
     return response
+

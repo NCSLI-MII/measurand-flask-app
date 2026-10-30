@@ -5,9 +5,9 @@ description = "Flask application"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "Flask>=3.1,<4",
-    "Flask-Admin>=2.0,<3",
+    "Flask-Admin>=2.0.2,<2.1",
     "Flask-WTF>=1.2,<2",
-    "SQLAlchemy>=2.0,<3",
+    "SQLAlchemy[asyncio]>=2.0,<3",
     "marshmallow-sqlalchemy>=1.4,<2",
     "requests>=2.32,<3",
     "gunicorn>=24.0,<25",

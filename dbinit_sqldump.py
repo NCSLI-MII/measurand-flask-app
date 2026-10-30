@@ -16,7 +16,7 @@ import logging
 from sqlalchemy.orm import Session
 from miiflask.flask.models import mlayer
 from sqlalchemy import create_engine
-from miiflask.flask.db import bind_engine
+from miiflask.flask.db import create_schema
 
 from miiflask.mappers.mlayer_sql_dump_mapper import (
     MlayerDumpImportConfig,
@@ -71,7 +71,7 @@ def run_taxonomy_import(args):
         future=True,
     )
 
-    bind_engine(engine)
+    create_schema(engine)
 
     with Session(engine) as session:
         mapper = TaxonomyMapper(session, parms)
