@@ -60,7 +60,8 @@ def create_app(config):
     create_schema(engine)
     attach_session(app, engine)
 
-    init_admin(app)
+    if app.config.get("ENABLE_ADMIN"):
+        init_admin(app)
     app.register_blueprint(main_bp)
     app.register_blueprint(api_bp)
 
