@@ -22,7 +22,8 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_ADMIN_SWATCH = "cerulean"
     SECRET_KEY = "secret"
-    VERSION = "0.12.0"
+    VERSION = "0.12.1"
+    ENABLE_ADMIN = True
 
 
 class TestingConfig(Config):
@@ -47,4 +48,5 @@ class ProductionConfig(Config):
     APP_DATA_DIR = os.getenv("APP_DATA_DIR", "/var/lib/miiflask")
     DB_PATH = os.path.join(APP_DATA_DIR, "miiflask.db") 
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + DB_PATH
+    ENABLE_ADMIN = False
 

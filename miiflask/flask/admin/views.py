@@ -1034,15 +1034,12 @@ class AspectView(MyModelView):
     can_view_details = True
     column_hide_backrefs = False
     column_formatters = {'id': _id_formatter,
-                         'scales': _scale_formatter,
-                         'reference': _ref_formatter}
+                         'scales': _scale_formatter
+                         }
     column_list = ("id",
                    "name",
-                   "ml_name",
                    "scales")
     column_details_list = ("id",
                            "name",
-                           "ml_name",
                            "scales",
-                           "reference"
                            )
